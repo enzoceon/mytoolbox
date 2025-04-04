@@ -88,7 +88,7 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
           </p>
           <a
             href={downloadUrl}
-            download="converted.pdf"
+            download="image2pdf.site.pdf"
             className="shimmer-effect px-8 py-3 rounded-full bg-gradient-primary text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow flex items-center"
           >
             <Download size={18} className="mr-2" />

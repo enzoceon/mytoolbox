@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
 import { toast } from "sonner";
@@ -151,9 +150,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         <h3 className="text-lg font-medium mb-2">Drop your images here</h3>
         <p className="text-sm text-muted-foreground mb-4 text-center">
           Supports JPG, PNG and other image formats
-        </p>
-        <p className="text-sm text-blue-500 font-medium mb-4">
-          Select multiple images to combine into one PDF
         </p>
         <div className="flex items-center space-x-2">
           <hr className="w-10 border-gray-200" />
