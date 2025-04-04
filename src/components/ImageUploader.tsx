@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
 import { toast } from "sonner";
@@ -70,6 +71,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     if (e.target.files && e.target.files.length > 0) {
       validateAndProcessFiles(Array.from(e.target.files));
     }
+    
+    // Reset the file input value so the same file(s) can be selected again
+    if (e.target.value) {
+      e.target.value = '';
+    }
   }, [validateAndProcessFiles]);
 
   const handleBrowseClick = useCallback(() => {
@@ -129,6 +135,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
             >
               Add More Images
             </button>
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileInput}
+              multiple
+            />
           </div>
         </div>
       </div>
