@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, Image, Check, X } from 'lucide-react';
+import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
+import { toast } from "sonner";
 
 interface ImageUploaderProps {
   onImageSelect: (file: File) => void;
@@ -14,7 +15,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   onRemoveImage 
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [isLargeFile, setIsLargeFile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Maximum file size (20MB)
+  const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -26,24 +31,41 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     setIsDragging(false);
   }, []);
 
+  const validateAndProcessFile = useCallback((file: File) => {
+    // Check if it's an image
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+    
+    // Check file size
+    if (file.size > MAX_FILE_SIZE) {
+      toast.warning("This image is very large (over 20MB) and might affect performance", {
+        duration: 5000,
+      });
+      setIsLargeFile(true);
+    } else {
+      setIsLargeFile(false);
+    }
+    
+    onImageSelect(file);
+  }, [onImageSelect]);
+
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     
     const files = e.dataTransfer.files;
     if (files.length) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        onImageSelect(file);
-      }
+      validateAndProcessFile(files[0]);
     }
-  }, [onImageSelect]);
+  }, [validateAndProcessFile]);
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onImageSelect(e.target.files[0]);
+      validateAndProcessFile(e.target.files[0]);
     }
-  }, [onImageSelect]);
+  }, [validateAndProcessFile]);
 
   const handleBrowseClick = useCallback(() => {
     if (fileInputRef.current) {
@@ -75,8 +97,17 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           <div className="p-4 text-center">
             <p className="text-sm text-muted-foreground mb-1">Image ready for conversion</p>
             <div className="flex items-center justify-center">
-              <Check className="text-green-500 h-4 w-4 mr-1" />
-              <span className="text-xs text-green-500 font-medium">File selected</span>
+              {isLargeFile ? (
+                <div className="flex items-center text-amber-500">
+                  <AlertCircle className="h-4 w-4 mr-1" />
+                  <span className="text-xs font-medium">Large file - PDF quality may vary</span>
+                </div>
+              ) : (
+                <div className="flex items-center text-green-500">
+                  <Check className="h-4 w-4 mr-1" />
+                  <span className="text-xs font-medium">File selected</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -100,13 +131,16 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         <p className="text-sm text-muted-foreground mb-4 text-center">
           Supports JPG, PNG and other image formats
         </p>
+        <p className="text-xs text-muted-foreground mb-4 text-center">
+          Maximum file size: 20MB
+        </p>
         <div className="flex items-center space-x-2">
           <hr className="w-10 border-gray-200" />
           <span className="text-xs text-muted-foreground">OR</span>
           <hr className="w-10 border-gray-200" />
         </div>
         <button
-          className="mt-4 px-6 py-2 rounded-full bg-gradient-primary text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow"
+          className="mt-4 px-6 py-2 rounded-full bg-gradient-primary text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow transform hover:scale-105 duration-200"
           onClick={handleBrowseClick}
         >
           Browse Files

@@ -16,39 +16,50 @@ const Index = () => {
   const [isConverting, setIsConverting] = useState(false);
 
   const handleImageSelect = useCallback((file: File) => {
-    // Check file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("File too large. Please select an image under 10MB.");
-      return;
+    try {
+      // Create preview URL
+      const url = URL.createObjectURL(file);
+      setSelectedFile(file);
+      setPreviewUrl(url);
+      setPdfUrl(null); // Reset previous conversion
+      
+      // For very large files, warn the user
+      if (file.size > 10 * 1024 * 1024) { // Over 10MB
+        console.log("Large file detected:", file.size / (1024 * 1024), "MB");
+      }
+    } catch (error) {
+      console.error("Error processing file:", error);
+      toast.error("Failed to process the selected image");
     }
-
-    // Create preview URL
-    const url = URL.createObjectURL(file);
-    setSelectedFile(file);
-    setPreviewUrl(url);
-    setPdfUrl(null); // Reset previous conversion
   }, []);
 
   const handleRemoveImage = useCallback(() => {
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
+    }
     setSelectedFile(null);
     setPreviewUrl(null);
     setPdfUrl(null);
-  }, [previewUrl]);
+  }, [previewUrl, pdfUrl]);
 
   const handleConvert = useCallback(() => {
     if (!previewUrl) return;
     
     setIsConverting(true);
+    toast.loading("Converting your image...");
+    
     simulateConversion(previewUrl)
       .then((url) => {
         setPdfUrl(url);
+        toast.dismiss();
         toast.success("Image successfully converted to PDF!");
       })
       .catch((error) => {
         console.error("Conversion error:", error);
+        toast.dismiss();
         toast.error("Error converting image. Please try again.");
       })
       .finally(() => {
@@ -62,7 +73,7 @@ const Index = () => {
       <Header />
       
       <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-10">
-        {/* Hero Section - Removed the three lines */}
+        {/* Hero Section */}
         <section className="text-center mb-12 animate-fade-in">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             Transform Images to <span className="bg-gradient-primary bg-clip-text text-transparent">PDFs</span> in Seconds

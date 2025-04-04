@@ -1,4 +1,3 @@
-
 import { jsPDF } from "jspdf";
 
 /**
@@ -16,34 +15,57 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
         const imgWidth = image.width;
         const imgHeight = image.height;
         
-        // Create PDF with dimensions that match the image aspect ratio
+        // Calculate appropriate dimensions while keeping aspect ratio
+        let pdfWidth = imgWidth;
+        let pdfHeight = imgHeight;
+        
+        // If image is extremely large, scale it down to reasonable PDF size
+        const MAX_PDF_DIMENSION = 2000; // Maximum dimension in points
+        
+        if (imgWidth > MAX_PDF_DIMENSION || imgHeight > MAX_PDF_DIMENSION) {
+          const scaleFactor = Math.min(
+            MAX_PDF_DIMENSION / imgWidth, 
+            MAX_PDF_DIMENSION / imgHeight
+          );
+          pdfWidth = imgWidth * scaleFactor;
+          pdfHeight = imgHeight * scaleFactor;
+        }
+        
+        // Use standard page formats when possible
+        let format: [number, number] | undefined;
+        if (pdfWidth > pdfHeight) {
+          format = [pdfWidth, pdfHeight];
+        } else {
+          format = [pdfWidth, pdfHeight];
+        }
+        
+        // Create PDF with proper dimensions
         const pdf = new jsPDF({
-          orientation: imgWidth > imgHeight ? "landscape" : "portrait",
+          orientation: pdfWidth > pdfHeight ? "landscape" : "portrait",
           unit: "pt", // Use points for more precise sizing
-          format: [imgWidth, imgHeight]
+          format: format,
+          compress: true // Enable compression
         });
         
-        // Add the image to the PDF at full size without zoom
+        // Add the image to the PDF at proper size
         pdf.addImage({
           imageData: image.src,
-          format: "JPEG",
+          format: determineImageFormat(image.src),
           x: 0,
           y: 0,
-          width: imgWidth,
-          height: imgHeight,
-          compression: "FAST" // Higher quality
+          width: pdfWidth,
+          height: pdfHeight,
+          compression: "MEDIUM" // Balance between quality and file size
         });
         
-        // Set initial view to fit page width
+        // Set PDF viewer preferences to allow zooming
         pdf.setProperties({
+          title: "Converted Image",
+          subject: "Image converted to PDF using Image2PDF",
           viewerPreferences: {
             FitWindow: true,
-            CenterWindow: true
-          },
-          // Set the initial view to display the entire page
-          openAction: {
-            name: 'FitH',
-            args: [null]
+            CenterWindow: true,
+            DisplayDocTitle: true,
           }
         });
         
@@ -61,6 +83,21 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
     
     image.src = imageUrl;
   });
+};
+
+/**
+ * Determines the image format from the data URL
+ * @param dataUrl Image data URL
+ * @returns Image format string (JPEG, PNG, etc.)
+ */
+const determineImageFormat = (dataUrl: string): string => {
+  if (dataUrl.indexOf("data:image/jpeg") === 0) return "JPEG";
+  if (dataUrl.indexOf("data:image/jpg") === 0) return "JPEG";
+  if (dataUrl.indexOf("data:image/png") === 0) return "PNG";
+  if (dataUrl.indexOf("data:image/gif") === 0) return "GIF";
+  if (dataUrl.indexOf("data:image/bmp") === 0) return "BMP";
+  if (dataUrl.indexOf("data:image/webp") === 0) return "WEBP";
+  return "JPEG"; // Default to JPEG
 };
 
 /**
