@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -89,7 +90,7 @@ const Cookies = () => {
             <h2 className="text-xl font-semibold mt-6 mb-3">Contact Us</h2>
             <p>
               If you have any questions about our Cookie Policy, please contact us at:
-              <a href="mailto:image2pdfsite@gmail.com" className="text-primary hover:underline ml-1">image2pdfsite@gmail.com</a>
+              <a href="mailto:image2pdfwebsite@gmail.com" className="text-primary hover:underline ml-1">image2pdfwebsite@gmail.com</a>
             </p>
           </div>
         </section>

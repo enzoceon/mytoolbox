@@ -34,8 +34,8 @@ const Contact = () => {
             
             <div className="flex items-center space-x-2 text-primary font-medium">
               <Mail className="h-5 w-5" />
-              <a href="mailto:image2pdfsite@gmail.com" className="hover:underline">
-                image2pdfsite@gmail.com
+              <a href="mailto:image2pdfwebsite@gmail.com" className="hover:underline">
+                image2pdfwebsite@gmail.com
               </a>
             </div>
             
