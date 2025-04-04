@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -135,6 +134,7 @@ export default {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'gradient-primary': 'linear-gradient(135deg, #6366f1 0%, #0ea5e9 100%)',
+				'gradient-primary-dark': 'linear-gradient(135deg, #4f46e5 0%, #0284c7 100%)',
 				'gradient-shimmer': 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
 			},
 		}

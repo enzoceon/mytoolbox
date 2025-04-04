@@ -61,7 +61,7 @@ const Index = () => {
       <BackgroundAnimation />
       <Header />
       
-      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-10">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-10">
         {/* Hero Section */}
         <section className="text-center mb-12 animate-fade-in">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
@@ -71,37 +71,23 @@ const Index = () => {
             Our free online tool quickly converts your images to PDF documents.
             No registration required.
           </p>
-          
-          {/* Ad Space (Banner) */}
-          <div className="w-full h-[90px] max-w-3xl mx-auto mb-10 rounded-lg bg-gray-100 border flex items-center justify-center text-sm text-muted-foreground">
-            Advertisement Space (728x90)
-          </div>
         </section>
         
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1">
-            {/* Converter Section */}
-            <section className="mb-12">
-              <ImageUploader 
-                onImageSelect={handleImageSelect}
-                selectedImage={previewUrl}
-                onRemoveImage={handleRemoveImage}
-              />
-              
-              <ConversionArea 
-                hasImage={!!previewUrl}
-                onConvert={handleConvert}
-                downloadUrl={pdfUrl}
-                isConverting={isConverting}
-              />
-            </section>
-          </div>
+        {/* Converter Section */}
+        <section className="mb-12 max-w-3xl mx-auto">
+          <ImageUploader 
+            onImageSelect={handleImageSelect}
+            selectedImage={previewUrl}
+            onRemoveImage={handleRemoveImage}
+          />
           
-          {/* Ad Space (Sidebar) */}
-          <div className="lg:w-[300px] h-[250px] rounded-lg bg-gray-100 border flex items-center justify-center text-sm text-muted-foreground self-start sticky top-10">
-            Advertisement Space (300x250)
-          </div>
-        </div>
+          <ConversionArea 
+            hasImage={!!previewUrl}
+            onConvert={handleConvert}
+            downloadUrl={pdfUrl}
+            isConverting={isConverting}
+          />
+        </section>
         
         {/* How to Use Section */}
         <HowToUse />

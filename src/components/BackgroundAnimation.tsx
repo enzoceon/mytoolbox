@@ -1,5 +1,6 @@
 
 import React, { useMemo } from 'react';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Particle {
   id: number;
@@ -12,6 +13,9 @@ interface Particle {
 }
 
 const BackgroundAnimation = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  
   const particles = useMemo(() => {
     return Array.from({ length: 20 }).map((_, index) => ({
       id: index,
@@ -29,7 +33,7 @@ const BackgroundAnimation = () => {
       {particles.map((particle: Particle) => (
         <div
           key={particle.id}
-          className="absolute rounded-full bg-gradient-primary animate-spin-slow"
+          className={`absolute rounded-full ${isDark ? 'bg-gradient-primary-dark' : 'bg-gradient-primary'} animate-spin-slow`}
           style={{
             left: particle.x,
             top: particle.y,
@@ -42,7 +46,7 @@ const BackgroundAnimation = () => {
           }}
         />
       ))}
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-[100px]" />
+      <div className={`absolute inset-0 ${isDark ? 'bg-background/90' : 'bg-background/80'} backdrop-blur-[100px]`} />
     </div>
   );
 };
