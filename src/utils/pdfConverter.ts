@@ -17,25 +17,35 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
         const imgHeight = image.height;
         
         // Create PDF with dimensions that match the image aspect ratio
-        // Use A4 (210x297mm) as a reference but maintain the image aspect ratio
-        let orientation: "portrait" | "landscape" = "portrait";
-        let pdfWidth: number;
-        let pdfHeight: number;
-        
-        // Determine orientation
-        if (imgWidth > imgHeight) {
-          orientation = "landscape";
-        }
-        
-        // Create new PDF with the appropriate orientation
         const pdf = new jsPDF({
-          orientation: orientation,
-          unit: "px",
+          orientation: imgWidth > imgHeight ? "landscape" : "portrait",
+          unit: "pt", // Use points for more precise sizing
           format: [imgWidth, imgHeight]
         });
         
-        // Add the image to the PDF at actual size
-        pdf.addImage(image.src, "JPEG", 0, 0, imgWidth, imgHeight);
+        // Add the image to the PDF at full size without zoom
+        pdf.addImage({
+          imageData: image.src,
+          format: "JPEG",
+          x: 0,
+          y: 0,
+          width: imgWidth,
+          height: imgHeight,
+          compression: "FAST" // Higher quality
+        });
+        
+        // Set initial view to fit page width
+        pdf.setProperties({
+          viewerPreferences: {
+            FitWindow: true,
+            CenterWindow: true
+          },
+          // Set the initial view to display the entire page
+          openAction: {
+            name: 'FitH',
+            args: [null]
+          }
+        });
         
         // Convert to data URL for download
         const pdfOutput = pdf.output("datauristring");
