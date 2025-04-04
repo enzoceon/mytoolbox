@@ -6,13 +6,13 @@ const HowToUse = () => {
   const steps = [
     {
       icon: <Upload className="h-8 w-8 text-indigo-500" />,
-      title: 'Upload Your Image',
-      description: 'Drag and drop your image file or click to browse and select from your device.'
+      title: 'Upload Your Images',
+      description: 'Drag and drop multiple image files or click to browse and select from your device.'
     },
     {
       icon: <FileImage className="h-8 w-8 text-indigo-500" />,
       title: 'Convert to PDF',
-      description: 'Click the "Convert to PDF" button to transform your image into a high-quality PDF document.'
+      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document.'
     },
     {
       icon: <Download className="h-8 w-8 text-indigo-500" />,

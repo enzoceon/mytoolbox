@@ -3,17 +3,19 @@ import React, { useState } from 'react';
 import { Download, ArrowDown, Check } from 'lucide-react';
 
 interface ConversionAreaProps {
-  hasImage: boolean;
+  hasImages: boolean;
   onConvert: () => void;
   downloadUrl: string | null;
   isConverting: boolean;
+  imageCount: number;
 }
 
 const ConversionArea: React.FC<ConversionAreaProps> = ({
-  hasImage,
+  hasImages,
   onConvert,
   downloadUrl,
-  isConverting
+  isConverting,
+  imageCount
 }) => {
   const [showAnimation, setShowAnimation] = useState(false);
   
@@ -28,7 +30,7 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
     }, 2000);
   };
 
-  if (!hasImage) {
+  if (!hasImages) {
     return null;
   }
 
@@ -40,7 +42,10 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
           className="px-8 py-3 rounded-full pulse-btn text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow flex items-center"
           disabled={isConverting}
         >
-          Convert to PDF
+          {imageCount > 1 
+            ? `Convert ${imageCount} Images to PDF` 
+            : "Convert to PDF"
+          }
         </button>
       )}
       
@@ -51,7 +56,10 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
               <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin-normal" />
             </div>
             <p className="text-sm font-medium text-muted-foreground">
-              Converting image to PDF...
+              {imageCount > 1 
+                ? `Converting ${imageCount} images to PDF...` 
+                : "Converting image to PDF..."
+              }
             </p>
           </div>
           
