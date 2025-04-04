@@ -10,6 +10,7 @@ A beautiful, free online tool to convert images to PDF files.
 - No registration or installation required
 - Dark/Light mode
 - Responsive design for all devices
+- Fast and efficient conversion
 
 ## Technology Stack
 
