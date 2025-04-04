@@ -30,7 +30,7 @@ const Header = () => {
               Image2PDF
             </h1>
             <p className="text-xs text-muted-foreground">
-              Fast. Free. Beautiful.
+              Fast. Free. Fluid.
             </p>
           </div>
         </Link>
