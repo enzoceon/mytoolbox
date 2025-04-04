@@ -16,8 +16,7 @@ const Header = () => {
       scrollToElement(hash);
     } else {
       // If we're on another page, navigate to home page with hash
-      // Adjusted for HashRouter
-      window.location.href = `/#/${hash}`;
+      window.location.href = `/#${hash}`;
     }
   };
 
@@ -43,7 +42,7 @@ const Header = () => {
             Home
           </Link>
           <a 
-            href="/#how-to-use" 
+            href="#how-to-use" 
             onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >

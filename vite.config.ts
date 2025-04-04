@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "./", // Set base path for GitHub Pages
+  base: "/", // Change from "./" to "/" for Vercel deployment
   plugins: [
     react(),
     mode === 'development' &&

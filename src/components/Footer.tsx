@@ -14,8 +14,7 @@ const Footer = () => {
       scrollToElement(hash);
     } else {
       // If we're on another page, navigate to home page with hash
-      // Adjusted for HashRouter
-      window.location.href = `/#/${hash}`;
+      window.location.href = `/#${hash}`;
     }
   };
 
@@ -41,7 +40,7 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="/#how-to-use" 
+                  href="#how-to-use" 
                   onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
