@@ -1,8 +1,28 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Upload, FileImage, Download } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const HowToUse = () => {
+  const location = useLocation();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  useEffect(() => {
+    // Check if the URL hash matches this section
+    if (location.hash === '#how-to-use' && sectionRef.current) {
+      // Add delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        // Apply offset of 80px to account for header
+        const yOffset = -80;
+        const element = sectionRef.current;
+        if (element) {
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [location]);
+
   const steps = [
     {
       icon: <Upload className="h-8 w-8 text-indigo-500" />,
@@ -22,7 +42,7 @@ const HowToUse = () => {
   ];
 
   return (
-    <section id="how-to-use" className="py-16 px-6 sm:px-10">
+    <section id="how-to-use" ref={sectionRef} className="py-16 px-6 sm:px-10">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">How to Use Image2PDF</h2>

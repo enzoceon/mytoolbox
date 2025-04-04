@@ -1,8 +1,23 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { scrollToElement } from '@/utils/scrollUtils';
 
 const Footer = () => {
+  const location = useLocation();
+
+  const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    
+    if (location.pathname === '/') {
+      // If we're already on the home page, just scroll to the element
+      scrollToElement(hash);
+    } else {
+      // If we're on another page, navigate to home page with hash
+      window.location.href = `/#${hash}`;
+    }
+  };
+
   return (
     <footer className="w-full py-8 px-6 md:px-10 mt-20 border-t">
       <div className="max-w-7xl mx-auto">
@@ -24,7 +39,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="/#how-to-use" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <a 
+                  href="/#how-to-use" 
+                  onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
                   How to Use
                 </a>
               </li>
