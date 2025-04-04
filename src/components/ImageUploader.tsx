@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
 import { toast } from "sonner";
@@ -18,9 +17,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [isLargeFile, setIsLargeFile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Maximum file size (20MB)
-  const MAX_FILE_SIZE = 20 * 1024 * 1024;
-
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
@@ -38,9 +34,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       return;
     }
     
-    // Check file size
-    if (file.size > MAX_FILE_SIZE) {
-      toast.warning("This image is very large (over 20MB) and might affect performance", {
+    // Check file size but don't limit to 20MB
+    if (file.size > 20 * 1024 * 1024) {
+      toast.warning("This image is very large and might affect performance", {
         duration: 5000,
       });
       setIsLargeFile(true);
@@ -130,9 +126,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         <h3 className="text-lg font-medium mb-2">Drop your image here</h3>
         <p className="text-sm text-muted-foreground mb-4 text-center">
           Supports JPG, PNG and other image formats
-        </p>
-        <p className="text-xs text-muted-foreground mb-4 text-center">
-          Maximum file size: 20MB
         </p>
         <div className="flex items-center space-x-2">
           <hr className="w-10 border-gray-200" />
