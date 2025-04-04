@@ -12,33 +12,30 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
     
     image.onload = () => {
       try {
-        // Calculate optimal PDF size while maintaining aspect ratio
+        // Get the image dimensions
         const imgWidth = image.width;
         const imgHeight = image.height;
-        const maxWidth = 210; // A4 width in mm
-        const maxHeight = 297; // A4 height in mm
         
-        let pdfWidth = maxWidth;
-        let pdfHeight = (imgHeight * pdfWidth) / imgWidth;
+        // Create PDF with dimensions that match the image aspect ratio
+        // Use A4 (210x297mm) as a reference but maintain the image aspect ratio
+        let orientation: "portrait" | "landscape" = "portrait";
+        let pdfWidth: number;
+        let pdfHeight: number;
         
-        // If height exceeds A4, scale based on height
-        if (pdfHeight > maxHeight) {
-          pdfHeight = maxHeight;
-          pdfWidth = (imgWidth * pdfHeight) / imgHeight;
+        // Determine orientation
+        if (imgWidth > imgHeight) {
+          orientation = "landscape";
         }
         
-        // Create PDF with calculated dimensions
+        // Create new PDF with the appropriate orientation
         const pdf = new jsPDF({
-          orientation: pdfWidth > pdfHeight ? "landscape" : "portrait",
-          unit: "mm",
+          orientation: orientation,
+          unit: "px",
+          format: [imgWidth, imgHeight]
         });
         
-        // Calculate positioning to center the image
-        const x = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
-        const y = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
-        
-        // Add the image to the PDF
-        pdf.addImage(image.src, "JPEG", x, y, pdfWidth, pdfHeight);
+        // Add the image to the PDF at actual size
+        pdf.addImage(image.src, "JPEG", 0, 0, imgWidth, imgHeight);
         
         // Convert to data URL for download
         const pdfOutput = pdf.output("datauristring");
