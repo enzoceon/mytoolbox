@@ -20,8 +20,8 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
         let pdfWidth = imgWidth;
         let pdfHeight = imgHeight;
         
-        // If image is extremely large, scale it down to reasonable PDF size
-        const MAX_PDF_DIMENSION = 2000; // Maximum dimension in points
+        // If image is extremely large, scale it down for better performance
+        const MAX_PDF_DIMENSION = 3000; // Maximum dimension in points (increased from 2000)
         
         if (imgWidth > MAX_PDF_DIMENSION || imgHeight > MAX_PDF_DIMENSION) {
           const scaleFactor = Math.min(

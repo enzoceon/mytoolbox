@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
 import { toast } from "sonner";
@@ -34,9 +35,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       return;
     }
     
-    // Check file size but don't limit to 20MB
-    if (file.size > 20 * 1024 * 1024) {
-      toast.warning("This image is very large and might affect performance", {
+    // Just warn about large files but don't limit the size
+    if (file.size > 50 * 1024 * 1024) {
+      toast.warning("This is a very large image that may take longer to process", {
         duration: 5000,
       });
       setIsLargeFile(true);
