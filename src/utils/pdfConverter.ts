@@ -50,7 +50,7 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
         // Add the image to the PDF at proper size
         pdf.addImage({
           imageData: image.src,
-          format: determineImageFormat(image.src),
+          format: determineImageFormat(image.src) as any, // Fix: Cast to 'any' to resolve type error
           x: 0,
           y: 0,
           width: pdfWidth,
@@ -62,12 +62,11 @@ export const convertImageToPdf = (imageUrl: string): Promise<string> => {
         pdf.setProperties({
           title: "Converted Image",
           subject: "Image converted to PDF using Image2PDF",
-          viewerPreferences: {
-            FitWindow: true,
-            CenterWindow: true,
-            DisplayDocTitle: true,
-          }
+          // Fix: Remove viewerPreferences as it's not supported in DocumentProperties
         });
+        
+        // Enable PDF initial view settings for better display
+        pdf.setDisplayMode("fullwidth", "continuous");
         
         // Convert to data URL for download
         const pdfOutput = pdf.output("datauristring");
