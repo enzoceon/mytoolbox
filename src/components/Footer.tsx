@@ -14,7 +14,8 @@ const Footer = () => {
       scrollToElement(hash);
     } else {
       // If we're on another page, navigate to home page with hash
-      window.location.href = `/#${hash}`;
+      // Adjusted for HashRouter
+      window.location.href = `/#/${hash}`;
     }
   };
 
