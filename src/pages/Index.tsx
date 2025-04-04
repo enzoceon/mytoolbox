@@ -62,15 +62,11 @@ const Index = () => {
       <Header />
       
       <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-10">
-        {/* Hero Section */}
+        {/* Hero Section - Removed the three lines */}
         <section className="text-center mb-12 animate-fade-in">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             Transform Images to <span className="bg-gradient-primary bg-clip-text text-transparent">PDFs</span> in Seconds
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Our free online tool quickly converts your images to PDF documents.
-            No registration required.
-          </p>
         </section>
         
         {/* Converter Section */}

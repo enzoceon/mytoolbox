@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
@@ -15,7 +16,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) return savedTheme;
     
-    // Otherwise, check for system preference
+    // Check for system preference, but default to light if not specified
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     return prefersDark ? 'dark' : 'light';
   });
@@ -33,6 +34,21 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     // Save the preference to localStorage
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // Listen for changes in system color scheme preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      // Only update if user hasn't explicitly set a preference
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));

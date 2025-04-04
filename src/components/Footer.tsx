@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -18,24 +19,24 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#how-to-use" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/#how-to-use" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   How to Use
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -44,19 +45,19 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/cookies" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Cookie Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
