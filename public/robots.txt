@@ -6,5 +6,6 @@ Disallow: /404.html
 Sitemap: https://image2pdf.site/sitemap.xml
 
 # Image2PDF - Free Online Image to PDF Converter
-# Convert JPG, PNG, and other image formats to PDF for free
+# Convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free
 # No registration, no watermarks, secure and easy to use
+# Privacy-focused: all processing happens in your browser

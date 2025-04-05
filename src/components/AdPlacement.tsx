@@ -29,6 +29,7 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
     // Only initialize AdSense if content is loaded
     if (contentLoaded && adRef.current && window.adsbygoogle) {
       try {
+        console.log('Initializing AdSense ad');
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (error) {
         console.error('AdSense error:', error);
@@ -42,8 +43,8 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
   }
   
   return (
-    <div className={`ad-container my-8 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
-      <div ref={adRef}>
+    <div className={`ad-container my-6 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
+      <div ref={adRef} className="w-full h-full">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', width: '100%', height: '100%' }}

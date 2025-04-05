@@ -10,6 +10,7 @@ import BackgroundAnimation from '@/components/BackgroundAnimation';
 import HowToUse from '@/components/HowToUse';
 import AdPlacement from '@/components/AdPlacement';
 import { Helmet } from 'react-helmet-async';
+import { FileImage, Check, Clock, FileCheck } from 'lucide-react';
 
 const Index = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -123,8 +124,9 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Image2PDF - Free Online Image to PDF Converter Tool</title>
-        <meta name="description" content="Convert JPG, PNG, and other image formats to PDF for free. No registration, no watermarks. Secure, fast, and easy-to-use online image to PDF converter." />
+        <meta name="description" content="Convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks. Secure, fast, and easy-to-use online image to PDF converter." />
         <link rel="canonical" href="https://image2pdf.site/" />
+        <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert image to pdf online, free pdf converter, image conversion tool" />
       </Helmet>
       
       <BackgroundAnimation />
@@ -132,7 +134,7 @@ const Index = () => {
       
       <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-10">
         {/* Hero Section */}
-        <section className="text-center mb-12 animate-fade-in">
+        <section className="text-center mb-10 animate-fade-in">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             Transform Images to <span className="bg-gradient-primary bg-clip-text text-transparent">PDFs</span> in Seconds
           </h1>
@@ -142,7 +144,7 @@ const Index = () => {
         </section>
         
         {/* Converter Section - Main content for AdSense compliance */}
-        <section className="mb-12 max-w-3xl mx-auto">
+        <section className="mb-10 max-w-3xl mx-auto">
           <ImageUploader 
             onImageSelect={handleImageSelect}
             selectedImages={previewUrls.length > 0 ? previewUrls : null}
@@ -168,12 +170,53 @@ const Index = () => {
         {/* How to Use Section - Additional valuable content */}
         <HowToUse />
         
+        {/* Key Features Section - Added for SEO and user value */}
+        <section className="py-8 px-6 sm:px-10 my-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Key Features</h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+              <div className="glass-card p-4 rounded-xl flex flex-col items-center text-center">
+                <Check className="h-10 w-10 text-green-500 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Privacy Focused</h3>
+                <p className="text-sm text-muted-foreground">
+                  All processing happens in your browser. Your files never leave your device.
+                </p>
+              </div>
+              
+              <div className="glass-card p-4 rounded-xl flex flex-col items-center text-center">
+                <FileImage className="h-10 w-10 text-blue-500 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Multiple Formats</h3>
+                <p className="text-sm text-muted-foreground">
+                  Supports JPG, PNG, GIF, BMP, WEBP, TIFF and more image formats.
+                </p>
+              </div>
+              
+              <div className="glass-card p-4 rounded-xl flex flex-col items-center text-center">
+                <Clock className="h-10 w-10 text-amber-500 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Lightning Fast</h3>
+                <p className="text-sm text-muted-foreground">
+                  Convert your images to PDF in seconds with our optimized processing.
+                </p>
+              </div>
+              
+              <div className="glass-card p-4 rounded-xl flex flex-col items-center text-center">
+                <FileCheck className="h-10 w-10 text-purple-500 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Quality Preserved</h3>
+                <p className="text-sm text-muted-foreground">
+                  Maintains original image quality and resolution in the PDF output.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         {/* More Valuable Content for SEO and AdSense compliance */}
-        <section className="py-16 px-6 sm:px-10">
+        <section className="py-8 px-6 sm:px-10">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Why Choose Image2PDF?</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               <div className="glass-card p-6 rounded-xl">
                 <h3 className="text-xl font-semibold mb-3">100% Free & No Watermarks</h3>
                 <p className="text-muted-foreground">
@@ -205,10 +248,47 @@ const Index = () => {
           </div>
         </section>
         
+        {/* FAQ Section - Great for SEO */}
+        <section className="py-8 px-6 sm:px-10 mb-10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
+            
+            <div className="space-y-4 mt-6">
+              <div className="glass-card p-5 rounded-xl">
+                <h3 className="text-lg font-semibold mb-2">How do I convert images to PDF?</h3>
+                <p className="text-muted-foreground">
+                  Simply drag and drop your images onto the upload area, or click to select files from your device. Once uploaded, click the "Convert to PDF" button and download your PDF when ready.
+                </p>
+              </div>
+              
+              <div className="glass-card p-5 rounded-xl">
+                <h3 className="text-lg font-semibold mb-2">What image formats are supported?</h3>
+                <p className="text-muted-foreground">
+                  Image2PDF supports all common image formats including JPG, JPEG, PNG, GIF, BMP, WEBP, and TIFF. If you have images in other formats, you may need to convert them first.
+                </p>
+              </div>
+              
+              <div className="glass-card p-5 rounded-xl">
+                <h3 className="text-lg font-semibold mb-2">Is there a limit to how many images I can convert?</h3>
+                <p className="text-muted-foreground">
+                  You can convert multiple images at once, but for optimal performance, we recommend keeping the total file size under 50MB. If you need to convert larger batches, you may want to process them in smaller groups.
+                </p>
+              </div>
+              
+              <div className="glass-card p-5 rounded-xl">
+                <h3 className="text-lg font-semibold mb-2">Are my images safe when using this tool?</h3>
+                <p className="text-muted-foreground">
+                  Absolutely! Your images are processed entirely in your browser and never uploaded to our servers. This ensures complete privacy and security for your sensitive documents.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         {/* Bottom AdSense placement - Only shown when there's substantial content */}
         <AdPlacement 
           format="rectangle" 
-          className="mt-8 mb-12" 
+          className="mt-6 mb-10" 
           contentLoaded={hasSubstantialContent && !isConverting}
         />
       </main>
