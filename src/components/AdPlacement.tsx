@@ -23,7 +23,9 @@ const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', classN
   useEffect(() => {
     try {
       // Push the ad after the component mounts
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      if (window.adsbygoogle) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
     } catch (error) {
       console.error('AdSense error:', error);
     }
@@ -31,15 +33,16 @@ const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', classN
   
   return (
     <div className={`ad-container my-8 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
-      <ins
-        className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client="ca-pub-1941496122967255"
-        data-ad-slot="auto"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-        ref={adRef}
-      ></ins>
+      <div ref={adRef}>
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'block', width: '100%', height: '100%' }}
+          data-ad-client="ca-pub-1941496122967255"
+          data-ad-slot="auto"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+      </div>
     </div>
   );
 };

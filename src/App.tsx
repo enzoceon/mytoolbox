@@ -51,7 +51,9 @@ const App = () => {
   useEffect(() => {
     try {
       // Type-safe access to adsbygoogle
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      if (window.adsbygoogle) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
     } catch (error) {
       console.error("AdSense initialization error:", error);
     }
