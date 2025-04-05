@@ -11,12 +11,12 @@
   <url>
     <loc>https://image2pdf.site/</loc>
     <lastmod>2025-04-05</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://image2pdf.site/og-image.jpg</image:loc>
       <image:title>Image2PDF - Free Online Image to PDF Converter</image:title>
-      <image:caption>Convert images to PDF easily with our free online tool</image:caption>
+      <image:caption>Convert images to PDF easily with our free online tool - no registration required</image:caption>
     </image:image>
   </url>
   
@@ -26,6 +26,10 @@
     <lastmod>2025-04-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://image2pdf.site/about-preview.jpg</image:loc>
+      <image:title>About Image2PDF</image:title>
+    </image:image>
   </url>
   
   <!-- Privacy Policy -->

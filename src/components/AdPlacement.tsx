@@ -37,14 +37,14 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
     }
   }, [contentLoaded]);
   
-  // Don't render anything if no content is loaded to avoid gaps
+  // Don't render at all if no content is loaded
   if (!contentLoaded) {
     return null;
   }
   
   return (
-    <div className={`ad-container my-4 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
-      <div ref={adRef} className="w-full h-full">
+    <div className={`ad-container flex justify-center items-center ${adClasses[format]} ${className}`} style={{minHeight: 0, height: 'auto'}}>
+      <div ref={adRef} className="w-full">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', width: '100%', height: '100%' }}
@@ -53,10 +53,6 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
           data-ad-format="auto"
           data-full-width-responsive="true"
         ></ins>
-        {/* Fallback content to prevent layout shifts if ad doesn't load */}
-        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center bg-muted/10 opacity-0">
-          <span className="text-xs text-muted-foreground">Advertisement</span>
-        </div>
       </div>
     </div>
   );

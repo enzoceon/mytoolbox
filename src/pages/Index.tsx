@@ -123,18 +123,50 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Image2PDF - Free Online Image to PDF Converter Tool</title>
-        <meta name="description" content="Convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks. Secure, fast, and easy-to-use online image to PDF converter." />
+        <title>Image2PDF - Free Online Image to PDF Converter | No Registration Required</title>
+        <meta name="description" content="Instantly convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks, no file size limits. Privacy-focused browser-based conversion." />
         <link rel="canonical" href="https://image2pdf.site/" />
-        <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert image to pdf online, free pdf converter, image conversion tool" />
+        <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert image to pdf online, free pdf converter, image conversion tool, browser-based pdf conversion, no watermarks, privacy-focused" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://image2pdf.site/" />
+        <meta property="og:title" content="Image2PDF - Convert Images to PDF Instantly | 100% Free" />
+        <meta property="og:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration." />
+        <meta property="og:image" content="https://image2pdf.site/og-image.jpg" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://image2pdf.site/" />
+        <meta property="twitter:title" content="Image2PDF - Convert Images to PDF Instantly | 100% Free" />
+        <meta property="twitter:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration." />
+        <meta property="twitter:image" content="https://image2pdf.site/og-image.jpg" />
+        
+        {/* Structured Data for Rich Snippets */}
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Image2PDF",
+            "url": "https://image2pdf.site/",
+            "description": "Free online tool to convert images to PDF documents without watermarks or registration.",
+            "applicationCategory": "Utility",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          }
+        `}</script>
       </Helmet>
       
       <BackgroundAnimation />
       <Header />
       
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-10">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-8">
         {/* Hero Section */}
-        <section className="text-center mb-10 animate-fade-in">
+        <section className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             Transform Images to <span className="bg-gradient-primary bg-clip-text text-transparent">PDFs</span> in Seconds
           </h1>
@@ -144,7 +176,7 @@ const Index = () => {
         </section>
         
         {/* Converter Section - Main content for AdSense compliance */}
-        <section className="mb-10 max-w-3xl mx-auto">
+        <section className="mb-8 max-w-3xl mx-auto">
           <ImageUploader 
             onImageSelect={handleImageSelect}
             selectedImages={previewUrls.length > 0 ? previewUrls : null}
@@ -171,11 +203,11 @@ const Index = () => {
         <HowToUse />
         
         {/* Key Features Section - Added for SEO and user value */}
-        <section className="py-8 px-6 sm:px-10 my-4">
+        <section className="py-6 px-4 sm:px-8 my-2">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Key Features</h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <div className="glass-card p-4 rounded-xl flex flex-col items-center text-center">
                 <Check className="h-10 w-10 text-green-500 mb-3" />
                 <h3 className="text-lg font-semibold mb-2">Privacy Focused</h3>
@@ -212,11 +244,11 @@ const Index = () => {
         </section>
         
         {/* More Valuable Content for SEO and AdSense compliance */}
-        <section className="py-8 px-6 sm:px-10">
+        <section className="py-6 px-4 sm:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Why Choose Image2PDF?</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="glass-card p-6 rounded-xl">
                 <h3 className="text-xl font-semibold mb-3">100% Free & No Watermarks</h3>
                 <p className="text-muted-foreground">
@@ -249,7 +281,7 @@ const Index = () => {
         </section>
         
         {/* FAQ Section - Great for SEO */}
-        <section className="py-8 px-6 sm:px-10 mb-10">
+        <section className="py-6 px-4 sm:px-8 mb-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
             
@@ -288,7 +320,7 @@ const Index = () => {
         {/* Bottom AdSense placement - Only shown when there's substantial content */}
         <AdPlacement 
           format="rectangle" 
-          className="mt-6 mb-10" 
+          className="mb-8" 
           contentLoaded={hasSubstantialContent && !isConverting}
         />
       </main>

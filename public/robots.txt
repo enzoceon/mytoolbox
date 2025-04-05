@@ -29,3 +29,9 @@ Crawl-delay: 1
 # Sitemap location
 Sitemap: https://image2pdf.site/sitemap.xml
 
+# Important pages
+Allow: /about
+Allow: /privacy
+Allow: /terms
+Allow: /cookies
+Allow: /contact
