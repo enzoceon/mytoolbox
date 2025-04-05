@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AdPlacementProps {
   format?: 'horizontal' | 'vertical' | 'rectangle';
@@ -11,12 +11,23 @@ interface AdPlacementProps {
  * This component ensures ads are only shown on content-rich pages
  */
 const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', className = '' }) => {
+  const adRef = useRef<HTMLDivElement>(null);
+  
   // Format-specific classes
   const adClasses = {
     horizontal: 'w-full h-[90px] md:h-[90px]',
     vertical: 'w-[160px] h-[600px]',
     rectangle: 'w-[300px] h-[250px]',
   };
+  
+  useEffect(() => {
+    try {
+      // Push the ad after the component mounts
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error('AdSense error:', error);
+    }
+  }, []);
   
   return (
     <div className={`ad-container my-8 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
@@ -27,13 +38,8 @@ const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', classN
         data-ad-slot="auto"
         data-ad-format="auto"
         data-full-width-responsive="true"
+        ref={adRef}
       ></ins>
-      {/* Ad initialization script */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        `
-      }} />
     </div>
   );
 };

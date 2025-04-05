@@ -50,6 +50,7 @@ const App = () => {
   // Initialize AdSense when component mounts
   useEffect(() => {
     try {
+      // Type-safe access to adsbygoogle
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (error) {
       console.error("AdSense initialization error:", error);
