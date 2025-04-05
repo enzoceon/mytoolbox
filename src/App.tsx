@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -47,17 +46,8 @@ const App = () => {
     };
   }, []);
 
-  // Initialize AdSense when component mounts
-  useEffect(() => {
-    try {
-      // Type-safe access to adsbygoogle
-      if (window.adsbygoogle) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
-    } catch (error) {
-      console.error("AdSense initialization error:", error);
-    }
-  }, []);
+  // We're removing the duplicate AdSense initialization here
+  // as it should only happen when content is present
 
   return (
     <QueryClientProvider client={queryClient}>

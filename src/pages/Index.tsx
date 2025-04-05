@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { toast } from "sonner";
 import { simulateConversion } from '@/utils/pdfConverter';
 import Header from '@/components/Header';
@@ -16,6 +16,25 @@ const Index = () => {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+
+  // Track user interaction
+  useEffect(() => {
+    const handleInteraction = () => {
+      setHasUserInteracted(true);
+    };
+
+    // Listen for user interaction events
+    document.addEventListener('click', handleInteraction, { once: true });
+    document.addEventListener('keydown', handleInteraction, { once: true });
+    document.addEventListener('scroll', handleInteraction, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
+      document.removeEventListener('scroll', handleInteraction);
+    };
+  }, []);
 
   const handleImageSelect = useCallback((files: File[]) => {
     try {
@@ -26,6 +45,9 @@ const Index = () => {
       setSelectedFiles(prev => [...prev, ...files]);
       setPreviewUrls(prev => [...prev, ...urls]);
       setPdfUrl(null); // Reset previous conversion
+      
+      // Mark that user has interacted
+      setHasUserInteracted(true);
       
       // For very large files, warn the user
       const totalSize = files.reduce((sum, file) => sum + file.size, 0);
@@ -94,6 +116,9 @@ const Index = () => {
       });
   }, [previewUrls]);
 
+  // Determine if we have substantial content to show ads
+  const hasSubstantialContent = previewUrls.length > 0 || hasUserInteracted;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -134,10 +159,11 @@ const Index = () => {
           />
         </section>
         
-        {/* AdSense placement - Only shown when there's content on the page */}
-        {previewUrls.length > 0 && !isConverting && (
-          <AdPlacement format="horizontal" />
-        )}
+        {/* AdSense placement - Only shown when there's content on the page and user has interacted */}
+        <AdPlacement 
+          format="horizontal" 
+          contentLoaded={hasSubstantialContent && !isConverting} 
+        />
         
         {/* How to Use Section - Additional valuable content */}
         <HowToUse />
@@ -180,7 +206,11 @@ const Index = () => {
         </section>
         
         {/* Bottom AdSense placement - Only shown when there's substantial content */}
-        <AdPlacement format="rectangle" className="mt-8 mb-12" />
+        <AdPlacement 
+          format="rectangle" 
+          className="mt-8 mb-12" 
+          contentLoaded={hasSubstantialContent && !isConverting}
+        />
       </main>
       
       <Footer />

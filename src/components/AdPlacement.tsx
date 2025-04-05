@@ -4,13 +4,18 @@ import React, { useEffect, useRef } from 'react';
 interface AdPlacementProps {
   format?: 'horizontal' | 'vertical' | 'rectangle';
   className?: string;
+  contentLoaded?: boolean; // New prop to check if content has been loaded
 }
 
 /**
  * AdPlacement component for displaying Google AdSense ads
- * This component ensures ads are only shown on content-rich pages
+ * This component ensures ads are only shown when content is present
  */
-const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', className = '' }) => {
+const AdPlacement: React.FC<AdPlacementProps> = ({ 
+  format = 'horizontal', 
+  className = '',
+  contentLoaded = false // Default to false
+}) => {
   const adRef = useRef<HTMLDivElement>(null);
   
   // Format-specific classes
@@ -21,15 +26,20 @@ const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', classN
   };
   
   useEffect(() => {
-    try {
-      // Push the ad after the component mounts
-      if (window.adsbygoogle) {
+    // Only initialize AdSense if content is loaded
+    if (contentLoaded && adRef.current && window.adsbygoogle) {
+      try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        console.error('AdSense error:', error);
       }
-    } catch (error) {
-      console.error('AdSense error:', error);
     }
-  }, []);
+  }, [contentLoaded]);
+  
+  // Don't render the ad if no content is loaded
+  if (!contentLoaded) {
+    return null;
+  }
   
   return (
     <div className={`ad-container my-8 mx-auto flex justify-center items-center ${adClasses[format]} ${className}`}>
