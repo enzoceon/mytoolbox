@@ -9,7 +9,7 @@ interface AdPlacementProps {
 
 /**
  * AdPlacement component for displaying Google AdSense ads
- * Enhanced version with proper sizing to prevent layout gaps
+ * Enhanced version with fallback content to prevent layout gaps
  */
 const AdPlacement: React.FC<AdPlacementProps> = ({ 
   format = 'horizontal', 
@@ -18,9 +18,9 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
 }) => {
   const adRef = useRef<HTMLDivElement>(null);
   
-  // Format-specific classes with more precise sizing
+  // Format-specific classes
   const adClasses = {
-    horizontal: 'h-[90px] md:h-[90px]',
+    horizontal: 'w-full h-[90px] md:h-[90px]',
     vertical: 'w-[160px] h-[600px]',
     rectangle: 'w-[300px] h-[250px]',
   };
@@ -43,8 +43,8 @@ const AdPlacement: React.FC<AdPlacementProps> = ({
   }
   
   return (
-    <div className={`ad-container flex justify-center items-center ${adClasses[format]} ${className}`}>
-      <div ref={adRef} className="w-full h-full">
+    <div className={`ad-container flex justify-center items-center ${adClasses[format]} ${className}`} style={{minHeight: 0, height: 'auto'}}>
+      <div ref={adRef} className="w-full">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', width: '100%', height: '100%' }}
