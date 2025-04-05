@@ -1,11 +1,31 @@
 
-User-agent: *
-Allow: /
-Disallow: /404.html
-
-Sitemap: https://image2pdf.site/sitemap.xml
-
 # Image2PDF - Free Online Image to PDF Converter
 # Convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free
 # No registration, no watermarks, secure and easy to use
 # Privacy-focused: all processing happens in your browser
+
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+# Allow search engines to crawl JS and CSS files
+Allow: /*.js$
+Allow: /*.css$
+
+# Image files
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.webp$
+
+# Document files
+Allow: /*.pdf$
+
+# Crawl delay
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://image2pdf.site/sitemap.xml
+
