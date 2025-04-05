@@ -1,0 +1,34 @@
+
+About Image2PDF
+
+Domain: image2pdf.site
+Purpose: Free online tool to convert images to PDF
+Service Overview: Image2PDF provides a free online service that converts images (JPG, PNG, etc.) to PDF format.
+
+Key Features:
+- Client-side processing (images never leave the user's device)
+- No registration required
+- No watermarks
+- Multiple image conversion support
+- High-quality output
+- Mobile responsive design
+
+Content Policy:
+Our website offers high-quality, original content that provides users with valuable information about image to PDF conversion. We maintain clear and accessible pages with meaningful content that serves our users' needs.
+
+AdSense Compliance:
+- We follow all Google AdSense Program Policies
+- All ads are placed on pages with substantial original content
+- No ads are placed on pages with minimal content
+- No ads are placed on error pages, thank you pages, or login pages
+- Our website does not contain any prohibited content
+
+Website Structure:
+- Homepage with the conversion tool
+- About Us page with information about our service
+- Privacy Policy outlining our data practices
+- Terms of Service for using our website
+- Cookie Policy explaining our cookie usage
+- Contact page for user inquiries
+
+For verification purposes, please contact: image2pdfsite@gmail.com
