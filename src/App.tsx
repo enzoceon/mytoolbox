@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,8 +32,8 @@ const ScrollToTop = () => {
   return null;
 };
 
-const App = () => {
-  // Disable right-click context menu
+// Custom component to handle context menu prevention
+const ContextMenuHandler = () => {
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
@@ -46,9 +47,10 @@ const App = () => {
     };
   }, []);
 
-  // We're removing the duplicate AdSense initialization here
-  // as it should only happen when content is present
+  return null;
+};
 
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
@@ -58,6 +60,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
+              <ContextMenuHandler />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
