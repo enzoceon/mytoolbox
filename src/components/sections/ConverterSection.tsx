@@ -28,7 +28,7 @@ const ConverterSection = () => {
         </p>
       </div>
 
-      <div className="w-full max-w-md px-4">
+      <div className="w-full max-w-md mx-auto px-4">
         <ImageUploader
           onImageSelect={handleImageSelect}
           selectedImages={previewUrls}
