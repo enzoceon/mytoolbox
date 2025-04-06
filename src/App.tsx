@@ -9,6 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
+import AllTools from "./pages/AllTools";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -65,6 +66,7 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/converter" element={<Index />} />
+                <Route path="/tools" element={<AllTools />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />

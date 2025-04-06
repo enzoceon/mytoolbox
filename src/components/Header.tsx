@@ -40,7 +40,7 @@ const Header = () => {
       icon: <Home className="h-5 w-5" />,
       items: [
         { name: "Home", path: "/" },
-        { name: "Converter", path: "/converter" },
+        { name: "All Tools", path: "/tools" },
       ]
     },
     {
@@ -48,56 +48,56 @@ const Header = () => {
       icon: <FileImage className="h-5 w-5" />,
       items: [
         { name: "Image to PDF", path: "/converter" },
-        { name: "PDF to Image", path: "/" },
+        { name: "PDF to Image", path: "/tools" },
       ]
     },
     {
       title: "Video",
       icon: <Video className="h-5 w-5" />,
       items: [
-        { name: "Video Converter", path: "/" },
-        { name: "Video Compressor", path: "/" },
+        { name: "Video Converter", path: "/tools" },
+        { name: "Video Compressor", path: "/tools" },
       ]
     },
     {
       title: "Audio",
       icon: <Music className="h-5 w-5" />,
       items: [
-        { name: "Audio Converter", path: "/" },
-        { name: "Audio Compressor", path: "/" },
+        { name: "Audio Converter", path: "/tools" },
+        { name: "Audio Compressor", path: "/tools" },
       ]
     },
     {
       title: "PDF",
       icon: <FileText className="h-5 w-5" />,
       items: [
-        { name: "Unlock PDF", path: "/" },
-        { name: "Protect PDF", path: "/" },
-        { name: "HTML to PDF", path: "/" },
+        { name: "Unlock PDF", path: "/tools" },
+        { name: "Protect PDF", path: "/tools" },
+        { name: "HTML to PDF", path: "/tools" },
       ]
     },
     {
       title: "Text",
       icon: <File className="h-5 w-5" />,
       items: [
-        { name: "Text Editor", path: "/" },
-        { name: "OCR", path: "/" },
+        { name: "Text Editor", path: "/tools" },
+        { name: "OCR", path: "/tools" },
       ]
     },
     {
       title: "Scanner & Camera",
       icon: <Camera className="h-5 w-5" />,
       items: [
-        { name: "Scan Document", path: "/" },
-        { name: "Camera to PDF", path: "/" },
+        { name: "Scan Document", path: "/tools" },
+        { name: "Camera to PDF", path: "/tools" },
       ]
     },
     {
       title: "File & Device",
       icon: <Folder className="h-5 w-5" />,
       items: [
-        { name: "File Converter", path: "/" },
-        { name: "File Compressor", path: "/" },
+        { name: "File Converter", path: "/tools" },
+        { name: "File Compressor", path: "/tools" },
       ]
     },
   ];
@@ -109,7 +109,7 @@ const Header = () => {
           <FileImage className="h-8 w-8 text-indigo-500" />
           <div>
             <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Image to PDF
+              EveryTools
             </h1>
             <p className="text-xs text-muted-foreground">
               Fast. Free. Fluid.
@@ -123,15 +123,15 @@ const Header = () => {
           <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Home
           </Link>
-          <Link to="/converter" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Converter
+          <Link to="/tools" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            All Tools
           </Link>
           <a 
             href="#how-to-use" 
             onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            How to Use
+            How It Works
           </a>
           <Link to="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             About
@@ -156,7 +156,7 @@ const Header = () => {
             <DrawerContent className="h-[100dvh] p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
-                  <h2 className="font-semibold">Image to PDF</h2>
+                  <h2 className="font-semibold">EveryTools</h2>
                   <DrawerClose className="rounded-full p-2 hover:bg-muted">
                     <X className="h-4 w-4" />
                     <span className="sr-only">Close</span>
