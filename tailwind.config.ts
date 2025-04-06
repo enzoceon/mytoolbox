@@ -88,10 +88,6 @@ const config: Config = {
       },
       backgroundImage: {
         "gradient-primary": "linear-gradient(to right, hsl(var(--accent)), hsl(var(--accent) / 0.8))",
-        "gradient-space": "linear-gradient(to bottom, #0f172a, #1e293b)",
-        "gradient-dark-card": "linear-gradient(135deg, rgba(59, 60, 74, 0.4), rgba(43, 44, 55, 0.2))",
-        "gradient-premium": "linear-gradient(135deg, rgba(66, 58, 109, 0.6), rgba(39, 35, 67, 0.3))",
-        "gradient-glow": "linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0.03))",
       },
     },
   },

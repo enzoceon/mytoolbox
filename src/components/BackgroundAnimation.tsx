@@ -19,10 +19,10 @@ const BackgroundAnimation = () => {
   
   const particles = useMemo(() => {
     return Array.from({ length: 30 }).map((_, index) => {
-      // Generate colors in the blue/purple/indigo spectrum for a premium feel
-      const colorHue = Math.floor(Math.random() * 40) + 230; // 230-270 (blues, purples)
+      // Generate colors in the blue/purple/pink spectrum for a cosmic feel
+      const colorHue = Math.floor(Math.random() * 60) + 220; // 220-280 (blues, purples)
       const colorSaturation = Math.floor(Math.random() * 30) + 70; // 70-100%
-      const colorLightness = Math.floor(Math.random() * 20) + 55; // 55-75%
+      const colorLightness = Math.floor(Math.random() * 30) + 50; // 50-80%
       
       return {
         id: index,
@@ -32,23 +32,23 @@ const BackgroundAnimation = () => {
         animationDuration: `${Math.random() * 30 + 15}s`,
         delay: `-${Math.random() * 30}s`,
         opacity: `${Math.random() * 0.3 + 0.05}`,
-        color: `hsla(${colorHue}, ${colorSaturation}%, ${colorLightness}%, ${isDark ? 0.15 : 0.08})`,
+        color: `hsla(${colorHue}, ${colorSaturation}%, ${colorLightness}%, 0.15)`,
       };
     });
-  }, [isDark]);
+  }, []);
   
-  // Stars for the cosmic background (more visible in dark mode)
+  // Stars for the cosmic background
   const stars = useMemo(() => {
-    return Array.from({ length: isDark ? 70 : 40 }).map((_, index) => ({
+    return Array.from({ length: 50 }).map((_, index) => ({
       id: index,
       x: `${Math.random() * 100}%`,
       y: `${Math.random() * 100}%`,
       size: `${Math.random() * 0.15 + 0.05}rem`,
       animationDuration: `${Math.random() * 3 + 1}s`,
       delay: `-${Math.random() * 3}s`,
-      opacity: `${Math.random() * (isDark ? 0.8 : 0.5) + (isDark ? 0.2 : 0.1)}`,
+      opacity: `${Math.random() * 0.8 + 0.2}`,
     }));
-  }, [isDark]);
+  }, []);
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-space">
@@ -88,14 +88,8 @@ const BackgroundAnimation = () => {
         />
       ))}
       
-      {/* Premium overlay gradient for dark mode */}
-      <div 
-        className={`absolute inset-0 ${
-          isDark 
-            ? 'bg-gradient-premium backdrop-blur-[80px]' 
-            : 'bg-background/60 backdrop-blur-[50px]'
-        }`} 
-      />
+      {/* Overlay to make the background more subtle */}
+      <div className={`absolute inset-0 ${isDark ? 'bg-background/70' : 'bg-background/60'} backdrop-blur-[50px]`} />
     </div>
   );
 };
