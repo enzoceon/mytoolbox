@@ -94,3 +94,60 @@
     opacity: 0;
   }
 }
+
+/* Waving border animation for search bar */
+.cosmic-search {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.cosmic-search::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    #8B5CF6,
+    #0EA5E9,
+    #D946EF,
+    #F97316,
+    #8B5CF6
+  );
+  background-size: 400% 400%;
+  z-index: -1;
+  animation: wavingBorder 8s linear infinite;
+  border-radius: 0.6rem;
+}
+
+@keyframes wavingBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.galaxy-input {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .galaxy-input {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.galaxy-input:focus {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.dark .galaxy-input:focus {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}

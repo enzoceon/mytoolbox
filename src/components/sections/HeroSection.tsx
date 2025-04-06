@@ -46,13 +46,13 @@ const HeroSection = () => {
           <div className="mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <div className="w-full md:w-1/2 relative">
-                <div className="relative rounded-md overflow-hidden">
+                <div className="relative rounded-md overflow-hidden cosmic-search">
                   <Input
                     type="text"
                     placeholder="Search tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border bg-card/50 focus:border-accent pl-10"
+                    className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
                   />
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Search className="h-4 w-4 text-muted-foreground" />
