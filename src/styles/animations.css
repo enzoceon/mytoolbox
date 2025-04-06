@@ -99,16 +99,16 @@
 .cosmic-search {
   position: relative;
   border-radius: 0.5rem;
-  overflow: hidden;
+  background-color: transparent;
 }
 
 .cosmic-search::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(
     45deg,
     #8B5CF6,
@@ -121,6 +121,13 @@
   z-index: -1;
   animation: wavingBorder 8s linear infinite;
   border-radius: 0.6rem;
+  pointer-events: none;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  padding: 2px;
 }
 
 @keyframes wavingBorder {
@@ -151,3 +158,4 @@
 .dark .galaxy-input:focus {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
 }
+
