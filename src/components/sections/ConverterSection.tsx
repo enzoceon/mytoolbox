@@ -18,8 +18,8 @@ const ConverterSection = () => {
   } = useImageConversion();
 
   return (
-    <section id="converter" className="py-12 px-4 bg-[#020814] min-h-screen flex flex-col items-center justify-center">
-      <div className="max-w-2xl mx-auto text-center mb-8">
+    <section id="converter" className="bg-[#020814] min-h-screen flex flex-col items-center justify-center">
+      <div className="max-w-2xl mx-auto text-center mb-8 px-4">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
           Transform Images to <span className="text-blue-500">PDFs</span> in Seconds
         </h1>
@@ -28,7 +28,7 @@ const ConverterSection = () => {
         </p>
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md px-4">
         <ImageUploader
           onImageSelect={handleImageSelect}
           selectedImages={previewUrls}

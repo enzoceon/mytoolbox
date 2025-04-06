@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ImageConversionProvider } from '@/components/conversion/ImageConversionProvider';
 import ConverterSection from '@/components/sections/ConverterSection';
+import HowToUse from '@/components/HowToUse';
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <main className="flex-grow">
         <ImageConversionProvider>
           <ConverterSection />
+          <HowToUse />
         </ImageConversionProvider>
       </main>
       <Footer />
