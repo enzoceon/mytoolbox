@@ -9,6 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
+import PdfToImage from "./pages/PdfToImage";
 import AllTools from "./pages/AllTools";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -66,6 +67,7 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/converter" element={<Index />} />
+                <Route path="/pdf-to-image" element={<PdfToImage />} />
                 <Route path="/tools" element={<AllTools />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />

@@ -34,6 +34,7 @@ interface Tool {
   path: string;
   category: Exclude<ToolCategory, 'All'>;
   popular?: boolean;
+  available?: boolean;
 }
 
 const AllTools = () => {
@@ -69,14 +70,17 @@ const AllTools = () => {
       path: '/converter',
       category: 'Image',
       popular: true,
+      available: true,
     },
     {
       id: 'pdf-to-image',
       name: 'PDF to Image',
       description: 'Extract images from PDF files in high quality',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
+      path: '/pdf-to-image',
       category: 'Document',
+      popular: true,
+      available: true,
     },
     {
       id: 'jpg-to-png',
@@ -314,7 +318,9 @@ const AllTools = () => {
                     <h3 className="text-lg font-semibold">{tool.name}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4 flex-grow">{tool.description}</p>
-                  <Button size="sm" className="self-start">Use Tool</Button>
+                  <Button size="sm" className="self-start">
+                    {tool.available ? 'Use Tool' : 'Coming Soon'}
+                  </Button>
                 </Link>
               ))}
             </div>
@@ -344,6 +350,10 @@ const AllTools = () => {
                   <div>
                     <h3 className="text-base font-semibold mb-1">{tool.name}</h3>
                     <p className="text-xs text-muted-foreground">{tool.description}</p>
+                    {tool.available ? 
+                      <span className="inline-block text-xs text-green-500 mt-1">Available</span> : 
+                      <span className="inline-block text-xs text-orange-500 mt-1">Coming Soon</span>
+                    }
                   </div>
                 </Link>
               ))}
