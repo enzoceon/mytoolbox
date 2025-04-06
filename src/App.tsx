@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,8 +16,6 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
 
 // ScrollToTop component to handle scrolling on route changes
 const ScrollToTop = () => {
@@ -53,35 +50,44 @@ const ContextMenuHandler = () => {
   return null;
 };
 
-const App = () => {
+// Create AppContent component to use hooks inside BrowserRouter
+const AppContent = () => {
+  const queryClient = new QueryClient();
+  
   return (
     <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <ThemeProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <ContextMenuHandler />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/converter" element={<Index />} />
-                <Route path="/pdf-to-image" element={<PdfToImage />} />
-                <Route path="/tools" element={<AllTools />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/cookies" element={<Cookies />} />
-                <Route path="/contact" element={<Contact />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </ThemeProvider>
-      </HelmetProvider>
+      <ScrollToTop />
+      <ContextMenuHandler />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/converter" element={<Index />} />
+        <Route path="/pdf-to-image" element={<PdfToImage />} />
+        <Route path="/tools" element={<AllTools />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/contact" element={<Contact />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </QueryClientProvider>
+  );
+};
+
+const App = () => {
+  return (
+    <HelmetProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 };
 
