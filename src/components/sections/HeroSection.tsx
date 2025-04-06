@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -44,7 +44,7 @@ const HeroSection = () => {
             Free Online Tools For <span className="text-accent">Everyone</span>
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Convert, edit, and transform files online with no registration required. All processing happens in your browser.
+            The free toolbox for everyone
           </p>
           
           {/* Search and Filters */}
@@ -70,15 +70,34 @@ const HeroSection = () => {
             </form>
           </div>
           
-          {/* AI Tools Button */}
-          <div className="mb-6 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+          {/* AI Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+            <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Brain className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Text Generator</p>
+              </div>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Bot className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Chatbot</p>
+              </div>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image Generator</p>
+              </div>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Summarizer</p>
+              </div>
+            </div>
             <Button 
               onClick={navigateToAITools} 
               variant="outline" 
-              className="shine-effect pulse-btn w-full sm:w-auto"
+              className="mt-4 pulse-btn w-full sm:w-auto"
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
-              Explore AI Tools
+              Explore All AI Tools
             </Button>
           </div>
           
