@@ -30,7 +30,7 @@ const HeroSection = () => {
   };
 
   // Define tool categories
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI'];
 
   const navigateToAITools = () => {
     navigate('/tools?category=AI');

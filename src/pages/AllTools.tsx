@@ -27,7 +27,8 @@ type ToolCategory =
   | 'Video'
   | 'Audio'
   | 'Text'
-  | 'Utility';
+  | 'Utility'
+  | 'AI';
 
 interface Tool {
   id: string;
@@ -97,7 +98,7 @@ const AllTools = () => {
       description: 'Generate creative text content using advanced AI',
       icon: <Sparkles className="h-6 w-6 text-purple-500" />,
       path: '/tools',
-      category: 'Text',
+      category: 'AI',
       popular: true,
     },
     {
@@ -106,7 +107,7 @@ const AllTools = () => {
       description: 'Create stunning images from text descriptions',
       icon: <Brain className="h-6 w-6 text-blue-500" />,
       path: '/tools',
-      category: 'Image',
+      category: 'AI',
       popular: true,
     },
     {
@@ -115,7 +116,7 @@ const AllTools = () => {
       description: 'Get answers and assistance from an AI-powered chatbot',
       icon: <MessageSquare className="h-6 w-6 text-green-500" />,
       path: '/tools',
-      category: 'Utility',
+      category: 'AI',
       popular: true,
     },
     {
@@ -124,7 +125,7 @@ const AllTools = () => {
       description: 'Automatically summarize long articles and documents',
       icon: <Bot className="h-6 w-6 text-orange-500" />,
       path: '/tools',
-      category: 'Text',
+      category: 'AI',
     },
     {
       id: 'image-to-pdf',
@@ -303,7 +304,7 @@ const AllTools = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI'];
 
   return (
     <div className="min-h-screen flex flex-col">
