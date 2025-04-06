@@ -1,60 +1,47 @@
 
 import React from 'react';
-import ImageUploader from '@/components/ImageUploader';
+import { useImageConversion } from '@/components/conversion/ImageConversionProvider';
 import ConversionArea from '@/components/ConversionArea';
-import AdPlacement from '@/components/AdPlacement';
+import ImageUploader from '@/components/ImageUploader';
 
-interface ConverterSectionProps {
-  selectedFiles: File[];
-  previewUrls: string[];
-  pdfUrl: string | null;
-  isConverting: boolean;
-  hasUserInteracted: boolean;
-  onImageSelect: (files: File[]) => void;
-  onRemoveImage: (index: number) => void;
-  onRemoveAllImages: () => void;
-  onConvert: () => void;
-}
+const ConverterSection = () => {
+  const {
+    selectedFiles,
+    previewUrls,
+    pdfUrl,
+    isConverting,
+    hasUserInteracted,
+    handleImageSelect,
+    handleRemoveImage,
+    handleRemoveAllImages,
+    handleConvert
+  } = useImageConversion();
 
-const ConverterSection: React.FC<ConverterSectionProps> = ({
-  selectedFiles,
-  previewUrls,
-  pdfUrl,
-  isConverting,
-  hasUserInteracted,
-  onImageSelect,
-  onRemoveImage,
-  onRemoveAllImages,
-  onConvert
-}) => {
-  // Determine if we have substantial content to show ads
-  const hasSubstantialContent = previewUrls.length > 0 || hasUserInteracted;
-  
   return (
-    <>
-      <section className="mb-8 max-w-3xl mx-auto">
-        <ImageUploader 
-          onImageSelect={onImageSelect}
-          selectedImages={previewUrls.length > 0 ? previewUrls : null}
-          onRemoveImage={onRemoveImage}
-          onRemoveAllImages={onRemoveAllImages}
-        />
-        
-        <ConversionArea 
-          hasImages={previewUrls.length > 0}
-          onConvert={onConvert}
-          downloadUrl={pdfUrl}
-          isConverting={isConverting}
-          imageCount={previewUrls.length}
-        />
-      </section>
+    <section id="converter" className="my-8 glass-card p-8 rounded-xl">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+        Convert Images to PDF
+      </h2>
       
-      {/* AdSense placement - Only shown when there's content on the page and user has interacted */}
-      <AdPlacement 
-        format="horizontal" 
-        contentLoaded={hasSubstantialContent && !isConverting} 
-      />
-    </>
+      <div className="my-8">
+        <div className="flex flex-col items-center">
+          <ImageUploader
+            onImageSelect={handleImageSelect}
+            selectedImages={previewUrls}
+            onRemoveImage={handleRemoveImage}
+            onRemoveAll={handleRemoveAllImages}
+          />
+          
+          <ConversionArea
+            hasImages={previewUrls.length > 0}
+            onConvert={handleConvert}
+            downloadUrl={pdfUrl}
+            isConverting={isConverting}
+            imageCount={previewUrls.length}
+          />
+        </div>
+      </div>
+    </section>
   );
 };
 
