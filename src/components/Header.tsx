@@ -8,11 +8,11 @@ import {
   Button,
 } from "@/components/ui/button";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Header = () => {
   const location = useLocation();
@@ -48,7 +48,7 @@ const Header = () => {
       icon: <FileImage className="h-5 w-5" />,
       items: [
         { name: "Image to PDF", path: "/converter" },
-        { name: "PDF to Image", path: "/tools" },
+        { name: "PDF to Image", path: "/pdf-to-image" },
       ]
     },
     {
@@ -144,23 +144,28 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <ThemeToggle />
           
-          <Drawer>
-            <DrawerTrigger asChild>
+          <Sheet>
+            <SheetTrigger asChild>
               <button 
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Menu"
               >
                 <Menu className="h-5 w-5" />
               </button>
-            </DrawerTrigger>
-            <DrawerContent className="h-[100dvh] p-0">
+            </SheetTrigger>
+            <SheetContent 
+              className="h-[100dvh] p-0"
+              // Remove onPointerDownOutside and onEscapeKeyDown to prevent closing on outside click or escape key
+              onPointerDownOutside={(e) => e.preventDefault()}
+              onEscapeKeyDown={(e) => e.preventDefault()}
+            >
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                   <h2 className="font-semibold">EveryTools</h2>
-                  <DrawerClose className="rounded-full p-2 hover:bg-muted">
+                  <SheetClose className="rounded-full p-2 hover:bg-muted">
                     <X className="h-4 w-4" />
                     <span className="sr-only">Close</span>
-                  </DrawerClose>
+                  </SheetClose>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <div className="py-4">
@@ -172,14 +177,14 @@ const Header = () => {
                         </div>
                         <div className="mt-1 pl-8">
                           {category.items.map((item) => (
-                            <DrawerClose asChild key={item.name}>
+                            <SheetClose asChild key={item.name}>
                               <Link 
                                 to={item.path}
                                 className="flex py-3 text-sm text-muted-foreground hover:text-foreground"
                               >
                                 {item.name}
                               </Link>
-                            </DrawerClose>
+                            </SheetClose>
                           ))}
                         </div>
                       </div>
@@ -187,8 +192,8 @@ const Header = () => {
                   </div>
                 </div>
               </div>
-            </DrawerContent>
-          </Drawer>
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
     </header>
@@ -196,3 +201,4 @@ const Header = () => {
 };
 
 export default Header;
+
