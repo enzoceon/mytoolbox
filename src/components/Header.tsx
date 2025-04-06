@@ -14,10 +14,14 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Button,
+} from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const Header = () => {
   const location = useLocation();
@@ -136,47 +140,53 @@ const Header = () => {
         </div>
         
         <div className="flex items-center space-x-4">
-          {/* Menu and Theme toggle side by side on desktop and mobile */}
-          <Popover>
-            <PopoverTrigger asChild>
+          {/* Theme toggle now on the left and menu on the right */}
+          <ThemeToggle />
+          
+          <Drawer>
+            <DrawerTrigger asChild>
               <button 
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Menu"
               >
                 <Menu className="h-5 w-5" />
               </button>
-            </PopoverTrigger>
-            <PopoverContent 
-              className="w-72 p-0 bg-popover border-popover-foreground" 
-              align="end" 
-              sideOffset={8}
-            >
-              <div className="max-h-[80vh] overflow-y-auto py-2">
-                {menuCategories.map((category) => (
-                  <div key={category.title} className="px-2 py-2">
-                    <div className="flex items-center px-3 py-2 text-sm font-medium">
-                      {category.icon}
-                      <span className="ml-2">{category.title}</span>
-                    </div>
-                    <div className="mt-1 pl-8">
-                      {category.items.map((item) => (
-                        <Link 
-                          key={item.name} 
-                          to={item.path}
-                          className="block px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-md"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
+            </DrawerTrigger>
+            <DrawerContent className="h-full max-h-[100dvh] p-0">
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-center p-4 border-b">
+                  <h2 className="font-semibold">Menu</h2>
+                  <DrawerClose className="rounded-full p-2 hover:bg-muted">
+                    <X className="h-4 w-4" />
+                    <span className="sr-only">Close</span>
+                  </DrawerClose>
+                </div>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="py-4">
+                    {menuCategories.map((category) => (
+                      <div key={category.title} className="px-4 py-3">
+                        <div className="flex items-center py-2 text-base font-medium">
+                          {category.icon}
+                          <span className="ml-3">{category.title}</span>
+                        </div>
+                        <div className="mt-1 pl-8">
+                          {category.items.map((item) => (
+                            <Link 
+                              key={item.name} 
+                              to={item.path}
+                              className="flex py-3 text-sm text-muted-foreground hover:text-foreground"
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
-            </PopoverContent>
-          </Popover>
-          
-          <ThemeToggle />
+            </DrawerContent>
+          </Drawer>
         </div>
       </nav>
       
