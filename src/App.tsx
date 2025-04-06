@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,10 +7,9 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
-import HomePage from "./pages/HomePage";
+import AllTools from "./pages/AllTools";
 import Index from "./pages/Index";
 import PdfToImage from "./pages/PdfToImage";
-import AllTools from "./pages/AllTools";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -59,7 +59,7 @@ const AppContent = () => {
       <ScrollToTop />
       <ContextMenuHandler />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<AllTools />} />
         <Route path="/converter" element={<Index />} />
         <Route path="/pdf-to-image" element={<PdfToImage />} />
         <Route path="/tools" element={<AllTools />} />

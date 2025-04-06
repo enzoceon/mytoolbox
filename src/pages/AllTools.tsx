@@ -6,7 +6,8 @@ import {
   FileImage, FileText, Video, Music, 
   File, Clock, Camera, Calendar, 
   Code, Search, Type, BarChart, 
-  QrCode, Edit, Palette, Lock
+  QrCode, Edit, Palette, Lock,
+  Check, Shield, ArrowRight
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,6 +16,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import AdPlacement from '@/components/AdPlacement';
+import FeaturesSection from '@/components/sections/FeaturesSection';
+import WhyChooseSection from '@/components/sections/WhyChooseSection';
+import FaqSection from '@/components/sections/FaqSection';
 
 // Define tool types
 type ToolCategory = 
@@ -245,52 +249,59 @@ const AllTools = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>All Tools - EveryTools | Browse Our Free Online Tools</title>
-        <meta name="description" content="Browse our complete collection of free online tools. Converters, compressors, generators and more - all free and with no registration required." />
-        <link rel="canonical" href="https://everytools.site/tools" />
+        <title>EveryTools - Free Online Tools For Everyone | No Registration Required</title>
+        <meta name="description" content="Access free online tools for file conversion, editing, and much more. No registration, no watermarks, no file size limits. Fast. Free. Fluid." />
+        <link rel="canonical" href="https://everytools.site/" />
       </Helmet>
       
       <BackgroundAnimation />
       <Header />
       
-      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-8">
-        <section className="mb-10 text-center animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            All <span className="bg-gradient-primary bg-clip-text text-transparent">Tools</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Browse our complete collection of free online tools to make your digital tasks easier.
-          </p>
-        </section>
-        
-        {/* Search and Filters */}
-        <section className="mb-10">
-          <div className="flex flex-col md:flex-row gap-4 items-center mb-6">
-            <div className="w-full md:w-1/2">
-              <Input
-                type="text"
-                placeholder="Search tools..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 w-full md:w-1/2 justify-center md:justify-end">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={activeCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveCategory(category)}
-                  className={activeCategory === category ? "bg-gradient-primary" : ""}
-                >
-                  {category}
-                </Button>
-              ))}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="py-16 md:py-24">
+          <div className="container px-4 mx-auto">
+            <div className="text-center mx-auto max-w-3xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in">
+                The <span className="bg-gradient-primary bg-clip-text text-transparent">Digital Toolbox</span> For Everyone
+              </h1>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                Dozens of powerful online tools to make your digital life easier. Convert, edit, and transform files with no registration required.
+              </p>
+              
+              {/* Search and Filters */}
+              <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+                <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                  <div className="w-full md:w-1/2">
+                    <Input
+                      type="text"
+                      placeholder="Search tools..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Category Filter Pills */}
+              <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.4s" }}>
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={activeCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveCategory(category)}
+                    className={activeCategory === category ? "bg-gradient-primary" : ""}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
-        
+
         {/* AdSense placement */}
         <AdPlacement 
           format="horizontal" 
@@ -299,80 +310,162 @@ const AllTools = () => {
         
         {/* Popular Tools */}
         {activeCategory === 'All' && searchQuery === '' && (
-          <section className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Popular Tools</h2>
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent flex-grow mx-4"></div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.filter(tool => tool.popular).map(tool => (
-                <Link
-                  key={tool.id}
-                  to={tool.path}
-                  className="glass-card p-6 rounded-xl hover:shadow-lg transition-all hover:scale-105 flex flex-col h-full"
-                >
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+          <section className="py-12">
+            <div className="container px-4 mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">Popular Tools</h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Discover our most-used tools that users love.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {tools.filter(tool => tool.popular).map(tool => (
+                  <Link
+                    key={tool.id}
+                    to={tool.path}
+                    className="glass-card p-6 rounded-xl text-center hover:shadow-lg transition-shadow hover:scale-105"
+                  >
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
                       {tool.icon}
                     </div>
-                    <h3 className="text-lg font-semibold">{tool.name}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4 flex-grow">{tool.description}</p>
-                  <Button size="sm" className="self-start">
-                    {tool.available ? 'Use Tool' : 'Coming Soon'}
-                  </Button>
-                </Link>
-              ))}
+                    <h3 className="text-lg font-semibold mb-2">{tool.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {tool.description}
+                    </p>
+                    <Button size="sm" className={tool.available ? "bg-gradient-primary" : ""}>
+                      {tool.available ? 'Use Tool' : 'Coming Soon'}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
             </div>
           </section>
         )}
         
         {/* All Tools List */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">
-              {activeCategory !== 'All' ? `${activeCategory} Tools` : 'All Tools'}
-            </h2>
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent flex-grow mx-4"></div>
-          </div>
-          
-          {filteredTools.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredTools.map(tool => (
-                <Link
-                  key={tool.id}
-                  to={tool.path}
-                  className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start"
+        <section className="py-12">
+          <div className="container px-4 mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold mb-4">
+                {activeCategory !== 'All' ? `${activeCategory} Tools` : 'All Tools'}
+              </h2>
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent flex-grow mx-4"></div>
+            </div>
+            
+            {filteredTools.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredTools.map(tool => (
+                  <Link
+                    key={tool.id}
+                    to={tool.path}
+                    className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3 shrink-0">
+                      {tool.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold mb-1">{tool.name}</h3>
+                      <p className="text-xs text-muted-foreground">{tool.description}</p>
+                      {tool.available ? 
+                        <span className="inline-block text-xs text-green-500 mt-1">Available</span> : 
+                        <span className="inline-block text-xs text-orange-500 mt-1">Coming Soon</span>
+                      }
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <p className="text-lg text-muted-foreground">No tools found matching your search criteria.</p>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setActiveCategory('All');
+                  }}
                 >
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3 shrink-0">
-                    {tool.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold mb-1">{tool.name}</h3>
-                    <p className="text-xs text-muted-foreground">{tool.description}</p>
-                    {tool.available ? 
-                      <span className="inline-block text-xs text-green-500 mt-1">Available</span> : 
-                      <span className="inline-block text-xs text-orange-500 mt-1">Coming Soon</span>
-                    }
-                  </div>
-                </Link>
-              ))}
+                  Reset Filters
+                </Button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Key Features Section */}
+        <FeaturesSection />
+        
+        {/* How It Works Section */}
+        <section id="how-to-use" className="py-16 bg-muted/30">
+          <div className="container px-4 mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Using EveryTools is simple and straightforward. Follow these three easy steps.
+              </p>
             </div>
-          ) : (
-            <div className="text-center py-10">
-              <p className="text-lg text-muted-foreground">No tools found matching your search criteria.</p>
-              <Button 
-                variant="outline" 
-                className="mt-4"
-                onClick={() => {
-                  setSearchQuery('');
-                  setActiveCategory('All');
-                }}
-              >
-                Reset Filters
-              </Button>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="glass-card p-8 rounded-xl text-center relative hover:shadow-lg transition-shadow">
+                <div className="absolute -top-4 -left-4 w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold">
+                  1
+                </div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
+                  <Check className="h-8 w-8 text-indigo-500" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Choose Your Tool</h3>
+                <p className="text-sm text-muted-foreground">
+                  Browse our collection of tools and select the one you need for your task.
+                </p>
+              </div>
+              
+              <div className="glass-card p-8 rounded-xl text-center relative hover:shadow-lg transition-shadow">
+                <div className="absolute -top-4 -left-4 w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold">
+                  2
+                </div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
+                  <FileImage className="h-8 w-8 text-indigo-500" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Upload Your Files</h3>
+                <p className="text-sm text-muted-foreground">
+                  Drag and drop your files or click to browse and select from your device.
+                </p>
+              </div>
+              
+              <div className="glass-card p-8 rounded-xl text-center relative hover:shadow-lg transition-shadow">
+                <div className="absolute -top-4 -left-4 w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold">
+                  3
+                </div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
+                  <ArrowRight className="h-8 w-8 text-indigo-500" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Get Results</h3>
+                <p className="text-sm text-muted-foreground">
+                  Process your files and download the results with a single click.
+                </p>
+              </div>
             </div>
-          )}
+          </div>
+        </section>
+        
+        {/* Why Choose Section */}
+        <WhyChooseSection />
+        
+        {/* FAQ Section */}
+        <FaqSection />
+        
+        {/* CTA Section */}
+        <section className="py-16 bg-gradient-primary text-white">
+          <div className="container px-4 mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Simplify Your Digital Life?</h2>
+            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+              Access our complete collection of free online tools now. No registration required!
+            </p>
+            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+              Get Started
+            </Button>
+          </div>
         </section>
         
         {/* Bottom Ad */}
@@ -382,17 +475,19 @@ const AllTools = () => {
           contentLoaded={hasUserInteracted} 
         />
         
-        {/* CTA Section */}
-        <section className="mt-16 glass-card rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Can't find what you need?</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            We're constantly adding new tools based on user feedback. Let us know what tool you'd like to see next!
-          </p>
-          <Link to="/contact">
-            <Button className="bg-gradient-primary hover:shadow-lg transition-shadow">
-              Suggest a Tool
-            </Button>
-          </Link>
+        {/* Contact CTA Section */}
+        <section className="mt-16 glass-card rounded-xl p-8 text-center mx-auto max-w-4xl mb-16">
+          <div className="container px-4">
+            <h2 className="text-2xl font-bold mb-4">Can't find what you need?</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
+              We're constantly adding new tools based on user feedback. Let us know what tool you'd like to see next!
+            </p>
+            <Link to="/contact">
+              <Button className="bg-gradient-primary hover:shadow-lg transition-shadow">
+                Suggest a Tool
+              </Button>
+            </Link>
+          </div>
         </section>
       </main>
       
