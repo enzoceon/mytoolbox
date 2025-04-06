@@ -54,9 +54,6 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      fontFamily: {
-        sans: ["Poppins", "sans-serif"],
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -71,62 +68,64 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "bounce-soft": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        "spin-slow": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "spin-normal": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "slide-up": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "scale-up": {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
-        "progress": {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" },
+        shimmer: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "0 0" },
         },
         "pulse-soft": {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.8" },
         },
-        "shimmer": {
-          "0%": { backgroundPosition: "200% 0" },
-          "100%": { backgroundPosition: "0 0" },
+        progress: {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" },
+        },
+        "bounce-soft": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "scale-up": {
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "nebula-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "star-twinkle": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+        "planet-float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-15px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "bounce-soft": "bounce-soft 2s ease-in-out infinite",
-        "spin-slow": "spin-slow 20s linear infinite",
-        "spin-normal": "spin-normal 1s linear infinite",
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "slide-up": "slide-up 0.4s ease-out forwards",
-        "scale-up": "scale-up 0.4s ease-out forwards",
-        "progress": "progress 1.5s ease-in-out forwards",
-        "pulse-soft": "pulse-soft 2s ease-in-out infinite",
+        "pulse-soft": "pulse-soft 3s infinite ease-in-out",
+        progress: "progress 2s ease-in-out infinite",
+        "spin-normal": "spin 1s linear infinite",
+        "bounce-soft": "bounce-soft 2s infinite ease-in-out",
+        "scale-up": "scale-up 0.4s ease-out",
+        "slide-up": "slide-up 0.3s ease-out",
+        "fade-in": "fade-in 0.5s ease-out",
+        "nebula-spin": "nebula-spin 60s linear infinite",
+        "star-twinkle": "star-twinkle 3s ease-in-out infinite",
+        "planet-float": "planet-float 6s ease-in-out infinite",
       },
       backgroundImage: {
-        "gradient-primary": "linear-gradient(to right, #6366f1, #8b5cf6, #d946ef)",
-        "gradient-primary-dark": "linear-gradient(to right, #4f46e5, #7c3aed, #c026d3)",
-        "gradient-shimmer": "linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent)",
-        "gradient-space": "linear-gradient(to bottom, #0f172a, #1e293b, #334155)",
-        "gradient-cosmic": "linear-gradient(135deg, rgba(25, 30, 50, 0.8) 0%, rgba(66, 50, 111, 0.8) 50%, rgba(130, 80, 190, 0.7) 100%)",
-        "gradient-nebula": "radial-gradient(circle, rgba(99, 102, 241, 0.15) 20%, rgba(192, 38, 211, 0.15) 70%, rgba(236, 72, 153, 0.1) 100%)",
+        "gradient-space": "linear-gradient(to bottom, #0f172a, #1e293b)",
+        "gradient-primary": "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+        "gradient-primary-dark": "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)",
+        "gradient-shimmer": "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)",
+        "gradient-cosmic": "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)",
+        "gradient-nebula": "radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(91,33,182,0.1) 50%, transparent 70%)",
       },
     },
   },

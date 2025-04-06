@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { FileImage, Menu, X, Moon, Sun, FileText, Lock, Unlock, Video, Music, Camera, Folder, File, Home } from 'lucide-react';
+import { FileImage, X, AlignJustify, FileText, Lock, Unlock, Video, Music, Camera, Folder, File, Home } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 import { scrollToElement } from '@/utils/scrollUtils';
@@ -150,7 +150,7 @@ const Header = () => {
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border border-white/20 hover:from-indigo-500/60 hover:to-purple-500/60"
                 aria-label="Menu"
               >
-                <Menu className="h-5 w-5" />
+                <AlignJustify className="h-5 w-5" />
               </button>
             </SheetTrigger>
             <SheetContent 
