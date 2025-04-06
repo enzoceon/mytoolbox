@@ -103,7 +103,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="w-full py-4 px-6 sm:px-10 flex justify-between items-center animate-fade-in sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
+    <header className="w-full py-4 px-6 sm:px-10 flex justify-between items-center animate-fade-in sticky top-0 z-50 bg-background/80 backdrop-blur-md">
       <div className="flex items-center space-x-2">
         <Link to="/" className="flex items-center space-x-2">
           <FileImage className="h-8 w-8 text-indigo-500" />
@@ -147,43 +147,40 @@ const Header = () => {
           <Sheet>
             <SheetTrigger asChild>
               <button 
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 border border-white/10"
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Menu"
               >
                 <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
             <SheetContent 
-              className="w-full sm:max-w-none h-[100dvh] p-0 border-none"
+              className="h-[100dvh] p-0"
               // Remove onPointerDownOutside and onEscapeKeyDown to prevent closing on outside click or escape key
               onPointerDownOutside={(e) => e.preventDefault()}
               onEscapeKeyDown={(e) => e.preventDefault()}
-              side="right"
             >
-              <div className="flex flex-col h-full bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl">
-                <div className="flex justify-between items-center p-6 border-b border-white/10">
-                  <h2 className="font-semibold text-xl bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">EveryTools</h2>
-                  <SheetClose className="rounded-full p-2 hover:bg-white/10 transition-colors">
-                    <X className="h-5 w-5" />
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-center p-4 border-b">
+                  <h2 className="font-semibold">EveryTools</h2>
+                  <SheetClose className="rounded-full p-2 hover:bg-muted">
+                    <X className="h-4 w-4" />
                     <span className="sr-only">Close</span>
                   </SheetClose>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <div className="py-4">
                     {menuCategories.map((category) => (
-                      <div key={category.title} className="px-6 py-3 border-b border-white/5 last:border-0">
+                      <div key={category.title} className="px-4 py-3 border-b border-border/40 last:border-0">
                         <div className="flex items-center py-2 text-base font-medium">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-indigo-500/20 to-purple-500/20 mr-3">
-                            {category.icon}
-                          </div>
-                          <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">{category.title}</span>
+                          {category.icon}
+                          <span className="ml-3">{category.title}</span>
                         </div>
-                        <div className="mt-2 pl-11">
+                        <div className="mt-1 pl-8">
                           {category.items.map((item) => (
                             <SheetClose asChild key={item.name}>
                               <Link 
                                 to={item.path}
-                                className="flex py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                                className="flex py-3 text-sm text-muted-foreground hover:text-foreground"
                               >
                                 {item.name}
                               </Link>
@@ -204,3 +201,4 @@ const Header = () => {
 };
 
 export default Header;
+
