@@ -18,28 +18,31 @@ const ConverterSection = () => {
   } = useImageConversion();
 
   return (
-    <section id="converter" className="my-8 glass-card p-8 rounded-xl">
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-        Convert Images to PDF
-      </h2>
-      
-      <div className="my-8">
-        <div className="flex flex-col items-center">
-          <ImageUploader
-            onImageSelect={handleImageSelect}
-            selectedImages={previewUrls}
-            onRemoveImage={handleRemoveImage}
-            onRemoveAllImages={handleRemoveAllImages}
-          />
+    <section id="converter" className="py-12 px-4 bg-[#020814] min-h-screen flex flex-col items-center justify-center">
+      <div className="max-w-2xl mx-auto text-center mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          Transform Images to <span className="text-blue-500">PDFs</span> in Seconds
+        </h1>
+        <p className="text-lg text-gray-400 max-w-xl mx-auto">
+          Convert single or multiple images to PDF while preserving exact dimensions and quality. Free, secure, and no registration required.
+        </p>
+      </div>
+
+      <div className="w-full max-w-md">
+        <ImageUploader
+          onImageSelect={handleImageSelect}
+          selectedImages={previewUrls}
+          onRemoveImage={handleRemoveImage}
+          onRemoveAllImages={handleRemoveAllImages}
+        />
           
-          <ConversionArea
-            hasImages={previewUrls.length > 0}
-            onConvert={handleConvert}
-            downloadUrl={pdfUrl}
-            isConverting={isConverting}
-            imageCount={previewUrls.length}
-          />
-        </div>
+        <ConversionArea
+          hasImages={previewUrls.length > 0}
+          onConvert={handleConvert}
+          downloadUrl={pdfUrl}
+          isConverting={isConverting}
+          imageCount={previewUrls.length}
+        />
       </div>
     </section>
   );

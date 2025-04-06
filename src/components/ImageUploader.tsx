@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, Image, Check, X, AlertCircle } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { toast } from "sonner";
 
 interface ImageUploaderProps {
@@ -17,7 +17,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   onRemoveAllImages
 }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [isLargeFile, setIsLargeFile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -41,17 +40,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     
     if (files.length !== imageFiles.length) {
       toast.warning(`${files.length - imageFiles.length} non-image files were ignored`);
-    }
-    
-    // Check if any files are large
-    const largeFiles = imageFiles.filter(file => file.size > 50 * 1024 * 1024);
-    if (largeFiles.length > 0) {
-      toast.warning("Some files are very large and may take longer to process", {
-        duration: 5000,
-      });
-      setIsLargeFile(true);
-    } else {
-      setIsLargeFile(false);
     }
     
     onImageSelect(imageFiles);
@@ -105,15 +93,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                 key={index} 
                 className="relative rounded-xl overflow-hidden shadow-xl glass-card"
               >
-                <div className="absolute top-3 right-3 z-10">
-                  <button 
-                    onClick={() => onRemoveImage(index)}
-                    className="p-1.5 bg-white/80 hover:bg-white rounded-full text-red-500 shadow-sm transition-colors"
-                    aria-label="Remove image"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
+                <button 
+                  onClick={() => onRemoveImage(index)}
+                  className="absolute top-3 right-3 p-1.5 bg-white/80 hover:bg-white rounded-full text-red-500 shadow-sm transition-colors z-10"
+                  aria-label="Remove image"
+                >
+                  &times;
+                </button>
                 <div className="aspect-w-16 aspect-h-9 bg-gray-100">
                   <img 
                     src={imgUrl} 
@@ -153,25 +139,25 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div className="w-full animate-fade-in">
       <div 
-        className={`drop-area w-full max-w-md mx-auto flex flex-col items-center justify-center ${isDragging ? 'drop-area-active' : ''}`}
+        className={`drop-area w-full max-w-md mx-auto p-10 border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center bg-[#080e1a] ${isDragging ? 'border-blue-300 bg-[#0c1224]' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-4 p-4 rounded-full bg-blue-50 text-blue-500">
-          <Upload size={24} className="animate-bounce-soft" />
+        <div className="mb-6 p-5 rounded-full bg-blue-50 text-blue-500">
+          <Upload size={32} className="text-blue-500" />
         </div>
-        <h3 className="text-lg font-medium mb-2">Drop your images here</h3>
-        <p className="text-sm text-muted-foreground mb-4 text-center">
+        <h3 className="text-xl font-medium mb-2 text-white">Drop your images here</h3>
+        <p className="text-sm text-gray-400 mb-4 text-center">
           Supports JPG, PNG and other image formats
         </p>
-        <div className="flex items-center space-x-2">
-          <hr className="w-10 border-gray-200" />
-          <span className="text-xs text-muted-foreground">OR</span>
-          <hr className="w-10 border-gray-200" />
+        <div className="flex items-center my-4 w-full max-w-[280px]">
+          <hr className="flex-grow border-gray-600" />
+          <span className="px-4 text-sm text-gray-400">OR</span>
+          <hr className="flex-grow border-gray-600" />
         </div>
         <button
-          className="mt-4 px-6 py-2 rounded-full bg-gradient-primary text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow transform hover:scale-105 duration-200"
+          className="mt-4 px-8 py-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
           onClick={handleBrowseClick}
         >
           Browse Files
