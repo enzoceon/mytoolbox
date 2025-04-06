@@ -11,7 +11,7 @@ import ConverterSection from '@/components/sections/ConverterSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import WhyChooseSection from '@/components/sections/WhyChooseSection';
 import FaqSection from '@/components/sections/FaqSection';
-import { ImageConversionProvider } from '@/components/conversion/ImageConversionProvider';
+import { ImageConversionProvider, useImageConversion } from '@/components/conversion/ImageConversionProvider';
 import SEOMetadata from '@/components/SEO/SEOMetadata';
 
 const Index = () => {
@@ -53,9 +53,8 @@ const Index = () => {
 
 // Simple wrapper component to conditionally render ad placement
 const AdPlacementWrapper = () => {
-  const { hasUserInteracted, isConverting } = React.useContext(
-    require('@/components/conversion/ImageConversionProvider').useImageConversion()
-  );
+  // Use the context hook directly 
+  const { hasUserInteracted, isConverting } = useImageConversion();
   
   return (
     <AdPlacement 

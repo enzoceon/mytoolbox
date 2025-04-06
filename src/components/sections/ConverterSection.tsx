@@ -29,7 +29,7 @@ const ConverterSection = () => {
             onImageSelect={handleImageSelect}
             selectedImages={previewUrls}
             onRemoveImage={handleRemoveImage}
-            onRemoveAll={handleRemoveAllImages}
+            onRemoveAllImages={handleRemoveAllImages}
           />
           
           <ConversionArea
