@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -272,14 +271,16 @@ const AllTools = () => {
               {/* Search and Filters */}
               <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-                  <div className="w-full md:w-1/2">
-                    <Input
-                      type="text"
-                      placeholder="Search tools..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full"
-                    />
+                  <div className="w-full md:w-1/2 relative">
+                    <div className="relative rounded-md overflow-hidden cosmic-search">
+                      <Input
+                        type="text"
+                        placeholder="Search tools..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -454,19 +455,6 @@ const AllTools = () => {
         
         {/* FAQ Section */}
         <FaqSection />
-        
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-primary text-white">
-          <div className="container px-4 mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Simplify Your Digital Life?</h2>
-            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-              Access our complete collection of free online tools now. No registration required!
-            </p>
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
-              Get Started
-            </Button>
-          </div>
-        </section>
         
         {/* Bottom Ad */}
         <AdPlacement 

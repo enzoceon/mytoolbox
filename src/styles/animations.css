@@ -36,6 +36,22 @@
   }
 }
 
+/* Glowing Border Animation */
+@keyframes glow-border {
+  0% {
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.4), 0 0 10px rgba(192, 38, 211, 0.2);
+    border-color: rgba(99, 102, 241, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(192, 38, 211, 0.5), 0 0 15px rgba(236, 72, 153, 0.3);
+    border-color: rgba(192, 38, 211, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.4), 0 0 10px rgba(192, 38, 211, 0.2);
+    border-color: rgba(99, 102, 241, 0.7);
+  }
+}
+
 /* Space-themed Animations */
 .star-twinkle {
   animation: twinkle 3s ease-in-out infinite;
@@ -74,4 +90,26 @@
   100% {
     background-position: 0 0;
   }
+}
+
+/* Cosmic Search Effect */
+.cosmic-search {
+  transition: all 0.3s ease;
+  animation: glow-border 3s infinite alternate;
+  border-width: 2px;
+  border-style: solid;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+}
+
+.cosmic-search:focus-within {
+  animation: glow-border 1.5s infinite alternate;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+/* Galaxy input effect */
+.galaxy-input {
+  background: linear-gradient(to right, rgba(99, 102, 241, 0.05), rgba(192, 38, 211, 0.05), rgba(236, 72, 153, 0.05));
+  backdrop-filter: blur(8px);
 }
