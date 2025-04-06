@@ -162,6 +162,8 @@
 /* Animation for features, cards and sections */
 .feature-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .feature-card:hover {
@@ -209,4 +211,89 @@
 .faq-item:hover {
   transform: scale(1.01);
   box-shadow: 0 4px 20px -5px rgba(139, 92, 246, 0.2);
+}
+
+/* Shine effect for feature cards */
+.shine-effect-parent {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-animation::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: shine 1s forwards;
+}
+
+.dark .shine-animation::after {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+@keyframes shine {
+  0% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(10) rotate(45deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(20) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* Button shine effect */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: buttonShine 3s infinite ease-in-out;
+}
+
+@keyframes buttonShine {
+  0% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(10) rotate(45deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(20) rotate(45deg);
+    opacity: 0;
+  }
 }

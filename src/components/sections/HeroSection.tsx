@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -13,7 +13,8 @@ type ToolCategory =
   | 'Video'
   | 'Audio'
   | 'Text'
-  | 'Utility';
+  | 'Utility'
+  | 'AI';
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +32,10 @@ const HeroSection = () => {
   // Define tool categories
   const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility'];
 
+  const navigateToAITools = () => {
+    navigate('/tools?category=AI');
+  };
+
   return (
     <section className="py-12 md:py-20">
       <div className="container px-4 mx-auto">
@@ -43,7 +48,7 @@ const HeroSection = () => {
           </p>
           
           {/* Search and Filters */}
-          <div className="mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <div className="w-full md:w-1/2 relative">
                 <div className="relative rounded-md overflow-hidden cosmic-search">
@@ -63,6 +68,18 @@ const HeroSection = () => {
                 Find Tools <Search className="ml-2 h-5 w-5" />
               </Button>
             </form>
+          </div>
+          
+          {/* AI Tools Button */}
+          <div className="mb-6 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+            <Button 
+              onClick={navigateToAITools} 
+              variant="outline" 
+              className="shine-effect pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore AI Tools
+            </Button>
           </div>
           
           {/* Category Filter Pills */}
