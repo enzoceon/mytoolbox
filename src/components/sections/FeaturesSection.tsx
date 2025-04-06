@@ -13,7 +13,7 @@ const FeaturesSection: React.FC = () => {
             <Check className="h-10 w-10 text-green-500 mb-3" />
             <h3 className="text-lg font-semibold mb-2">Privacy Focused</h3>
             <p className="text-sm text-muted-foreground">
-              All processing happens in your browser. Your files never leave your device.
+              Your data stays on your device with client-side processing. No uploads to external servers, ensuring complete privacy.
             </p>
           </div>
           
@@ -21,7 +21,7 @@ const FeaturesSection: React.FC = () => {
             <FileImage className="h-10 w-10 text-blue-500 mb-3" />
             <h3 className="text-lg font-semibold mb-2">Multiple Formats</h3>
             <p className="text-sm text-muted-foreground">
-              Supports JPG, PNG, GIF, BMP, WEBP, TIFF and more image formats.
+              Wide format compatibility including JPG, PNG, WebP, TIFF, GIF, and BMP with automatic format detection.
             </p>
           </div>
           
@@ -29,7 +29,7 @@ const FeaturesSection: React.FC = () => {
             <Clock className="h-10 w-10 text-amber-500 mb-3" />
             <h3 className="text-lg font-semibold mb-2">Lightning Fast</h3>
             <p className="text-sm text-muted-foreground">
-              Convert your images to PDF in seconds with our optimized processing.
+              Advanced algorithms process your files instantly, with batch conversion capabilities for multiple images.
             </p>
           </div>
           
@@ -37,7 +37,7 @@ const FeaturesSection: React.FC = () => {
             <FileCheck className="h-10 w-10 text-purple-500 mb-3" />
             <h3 className="text-lg font-semibold mb-2">Quality Preserved</h3>
             <p className="text-sm text-muted-foreground">
-              Maintains original image quality and resolution in the PDF output.
+              Lossless conversion technology ensures your images maintain their original clarity, resolution and color accuracy.
             </p>
           </div>
         </div>
