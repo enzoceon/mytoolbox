@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder } from 'lucide-react';
 import {
@@ -82,7 +81,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       ]
     },
   ];
-
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
