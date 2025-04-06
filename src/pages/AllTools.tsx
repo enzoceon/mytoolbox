@@ -45,7 +45,7 @@ const AllTools = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('All');
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const [toolsGridRef = useRef<HTMLDivElement>(null);
+  const toolsGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleInteraction = () => {
