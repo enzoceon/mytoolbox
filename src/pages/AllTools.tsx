@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -427,17 +428,19 @@ const AllTools = () => {
           contentLoaded={hasUserInteracted} 
         />
         
-        <section className="mt-16 glass-card rounded-xl p-8 text-center mx-auto max-w-4xl mb-16 shimmer-bg">
-          <div className="container px-4">
-            <h2 className="text-2xl font-bold mb-4 glow-text">Can't find what you need?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-              We're constantly adding new tools based on user feedback. Let us know what tool you'd like to see next!
-            </p>
-            <Link to="/contact">
-              <Button className="bg-gradient-primary hover:shadow-lg transition-shadow cosmic-btn">
-                Suggest a Tool
-              </Button>
-            </Link>
+        <section className="py-12">
+          <div className="container px-4 mx-auto">
+            <div className="glass-card rounded-xl p-8 text-center mx-auto max-w-4xl shadow-md">
+              <h2 className="text-2xl font-bold mb-4 glow-text">Can't find what you need?</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
+                We're constantly adding new tools based on user feedback. Let us know what tool you'd like to see next!
+              </p>
+              <Link to="/contact">
+                <Button className="bg-gradient-primary hover:shadow-lg transition-shadow cosmic-btn">
+                  Suggest a Tool
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
