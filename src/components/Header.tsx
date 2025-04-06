@@ -1,202 +1,23 @@
 
-import React, { useState } from 'react';
-import { FileImage, X, AlignJustify, FileText, Lock, Unlock, Video, Music, Camera, Folder, File, Home } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import Logo from './header/Logo';
+import MainNavLinks from './header/MainNavLinks';
 import ThemeToggle from './ThemeToggle';
-import { scrollToElement } from '@/utils/scrollUtils';
-import {
-  Button,
-} from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import MobileMenu from './header/MobileMenu';
 
 const Header = () => {
-  const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-    e.preventDefault();
-    
-    if (location.pathname === '/') {
-      // If we're already on the home page, just scroll to the element
-      scrollToElement(hash);
-    } else {
-      // If we're on another page, navigate to home page with hash
-      window.location.href = `/#${hash}`;
-    }
-    
-    // Close mobile menu if open
-    setMobileMenuOpen(false);
-  };
-
-  // Menu categories based on the reference image
-  const menuCategories = [
-    {
-      title: "Home",
-      icon: <Home className="h-5 w-5" />,
-      items: [
-        { name: "Home", path: "/" },
-        { name: "All Tools", path: "/tools" },
-      ]
-    },
-    {
-      title: "Photo & Image",
-      icon: <FileImage className="h-5 w-5" />,
-      items: [
-        { name: "Image to PDF", path: "/converter" },
-        { name: "PDF to Image", path: "/pdf-to-image" },
-      ]
-    },
-    {
-      title: "Video",
-      icon: <Video className="h-5 w-5" />,
-      items: [
-        { name: "Video Converter", path: "/tools" },
-        { name: "Video Compressor", path: "/tools" },
-      ]
-    },
-    {
-      title: "Audio",
-      icon: <Music className="h-5 w-5" />,
-      items: [
-        { name: "Audio Converter", path: "/tools" },
-        { name: "Audio Compressor", path: "/tools" },
-      ]
-    },
-    {
-      title: "PDF",
-      icon: <FileText className="h-5 w-5" />,
-      items: [
-        { name: "Unlock PDF", path: "/tools" },
-        { name: "Protect PDF", path: "/tools" },
-        { name: "HTML to PDF", path: "/tools" },
-      ]
-    },
-    {
-      title: "Text",
-      icon: <File className="h-5 w-5" />,
-      items: [
-        { name: "Text Editor", path: "/tools" },
-        { name: "OCR", path: "/tools" },
-      ]
-    },
-    {
-      title: "Scanner & Camera",
-      icon: <Camera className="h-5 w-5" />,
-      items: [
-        { name: "Scan Document", path: "/tools" },
-        { name: "Camera to PDF", path: "/tools" },
-      ]
-    },
-    {
-      title: "File & Device",
-      icon: <Folder className="h-5 w-5" />,
-      items: [
-        { name: "File Converter", path: "/tools" },
-        { name: "File Compressor", path: "/tools" },
-      ]
-    },
-  ];
-
   return (
     <header className="w-full py-4 px-6 sm:px-10 flex justify-between items-center animate-fade-in sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
       <div className="flex items-center space-x-2">
-        <Link to="/" className="flex items-center space-x-2">
-          <FileImage className="h-8 w-8 text-indigo-500" />
-          <div>
-            <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              EveryTools
-            </h1>
-            <p className="text-xs text-muted-foreground">
-              Fast. Free. Fluid.
-            </p>
-          </div>
-        </Link>
+        <Logo />
       </div>
       
       <nav className="flex items-center space-x-6">
-        <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Home
-          </Link>
-          <Link to="/tools" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            All Tools
-          </Link>
-          <a 
-            href="#how-to-use" 
-            onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            How It Works
-          </a>
-          <Link to="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            About
-          </Link>
-          <Link to="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Contact
-          </Link>
-        </div>
+        <MainNavLinks />
         
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          
-          <Sheet>
-            <SheetTrigger asChild>
-              <button 
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border border-white/20 hover:from-indigo-500/60 hover:to-purple-500/60"
-                aria-label="Menu"
-              >
-                <AlignJustify className="h-5 w-5" />
-              </button>
-            </SheetTrigger>
-            <SheetContent 
-              className="w-[100vw] sm:max-w-none h-[100dvh] p-0 border-none"
-              // Prevent closing on outside click or escape key
-              onPointerDownOutside={(e) => e.preventDefault()}
-              onEscapeKeyDown={(e) => e.preventDefault()}
-              side="right"
-            >
-              <div className="flex flex-col h-full bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl">
-                <div className="flex justify-between items-center p-6 border-b border-white/10">
-                  <h2 className="font-semibold text-xl bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">EveryTools</h2>
-                  <SheetClose className="rounded-full p-2 hover:bg-white/10 transition-colors">
-                    <X className="h-5 w-5" />
-                    <span className="sr-only">Close</span>
-                  </SheetClose>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                  <div className="py-4">
-                    {menuCategories.map((category) => (
-                      <div key={category.title} className="px-6 py-3 border-b border-white/5 last:border-0">
-                        <div className="flex items-center py-2 text-base font-medium">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-indigo-500/30 to-purple-500/30 mr-3">
-                            {category.icon}
-                          </div>
-                          <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent dark:from-white dark:to-white/80">{category.title}</span>
-                        </div>
-                        <div className="mt-2 pl-11">
-                          {category.items.map((item) => (
-                            <SheetClose asChild key={item.name}>
-                              <Link 
-                                to={item.path}
-                                className="flex py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                              >
-                                {item.name}
-                              </Link>
-                            </SheetClose>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <MobileMenu />
         </div>
       </nav>
     </header>
