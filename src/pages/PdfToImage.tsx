@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -22,7 +21,6 @@ const PdfToImage = () => {
   const [pageCount, setPageCount] = useState(0);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
-  // Track user interaction for AdSense
   useEffect(() => {
     const handleInteraction = () => {
       setHasUserInteracted(true);
@@ -39,7 +37,6 @@ const PdfToImage = () => {
     };
   }, []);
   
-  // Cleanup preview URL when component unmounts
   useEffect(() => {
     return () => {
       if (previewUrl) {
@@ -49,17 +46,14 @@ const PdfToImage = () => {
   }, [previewUrl]);
 
   const handlePdfSelect = (file: File) => {
-    // Clean up previous preview if any
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
     
-    // Create a new preview
     const url = URL.createObjectURL(file);
     setSelectedFile(file);
     setPreviewUrl(url);
     
-    // Reset download URL
     if (downloadUrl) {
       setDownloadUrl(null);
     }
@@ -83,14 +77,11 @@ const PdfToImage = () => {
 
     setIsConverting(true);
     
-    // Simulate page count detection
     setTimeout(() => {
-      // Random page count between 1 and 10 for simulation
       const simulatedPageCount = Math.floor(Math.random() * 10) + 1;
       setPageCount(simulatedPageCount);
     }, 800);
     
-    // Simulate conversion process
     setTimeout(() => {
       setIsConverting(false);
       setDownloadUrl(URL.createObjectURL(new Blob(['dummy data'], { type: 'application/zip' })));
@@ -106,21 +97,18 @@ const PdfToImage = () => {
         <meta name="keywords" content="pdf to image, pdf to jpg, pdf to png, extract images from pdf, convert pdf pages to images, free pdf converter, no watermarks, high quality" />
         <link rel="canonical" href="https://image2pdf.site/pdf-to-image" />
         
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://image2pdf.site/pdf-to-image" />
         <meta property="og:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
         <meta property="og:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
         <meta property="og:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
         
-        {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://image2pdf.site/pdf-to-image" />
         <meta property="twitter:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
         <meta property="twitter:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
         <meta property="twitter:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
         
-        {/* Structured Data for Rich Snippets */}
         <script type="application/ld+json">{`
           {
             "@context": "https://schema.org",
@@ -178,13 +166,11 @@ const PdfToImage = () => {
           />
         </section>
         
-        {/* AdSense placement - Only shown when there's content on the page and user has interacted */}
         <AdPlacement 
           format="horizontal" 
           contentLoaded={hasUserInteracted && !isConverting} 
         />
         
-        {/* How to Use Section */}
         <section id="how-to-use" className="py-16 px-6 sm:px-10">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -222,13 +208,10 @@ const PdfToImage = () => {
           </div>
         </section>
         
-        {/* Features Section */}
         <FeaturesSection />
         
-        {/* Why Choose Section */}
         <WhyChooseSection />
         
-        {/* FAQ Section */}
         <FaqSection />
       </main>
       
