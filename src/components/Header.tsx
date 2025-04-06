@@ -40,13 +40,14 @@ const Header = () => {
       icon: <Home className="h-5 w-5" />,
       items: [
         { name: "Home", path: "/" },
+        { name: "Converter", path: "/converter" },
       ]
     },
     {
       title: "Photo & Image",
       icon: <FileImage className="h-5 w-5" />,
       items: [
-        { name: "Image to PDF", path: "/" },
+        { name: "Image to PDF", path: "/converter" },
         { name: "PDF to Image", path: "/" },
       ]
     },
@@ -122,6 +123,9 @@ const Header = () => {
           <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Home
           </Link>
+          <Link to="/converter" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Converter
+          </Link>
           <a 
             href="#how-to-use" 
             onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
@@ -138,7 +142,6 @@ const Header = () => {
         </div>
         
         <div className="flex items-center space-x-4">
-          {/* Moved menu button to the right corner */}
           <ThemeToggle />
           
           <Drawer>

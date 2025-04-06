@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
+import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -62,7 +63,8 @@ const App = () => {
               <ScrollToTop />
               <ContextMenuHandler />
               <Routes>
-                <Route path="/" element={<Index />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/converter" element={<Index />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />

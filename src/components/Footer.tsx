@@ -39,6 +39,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/converter" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Converter
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="#how-to-use" 
                   onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
