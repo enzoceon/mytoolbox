@@ -32,7 +32,7 @@ const HowToUse = () => {
     {
       icon: <FileImage className="h-8 w-8 text-indigo-500" />,
       title: 'Arrange and Preview',
-      description: 'Review your images, rearrange their order if needed, and remove any you don't want to include in your PDF.'
+      description: "Review your images, rearrange their order if needed, and remove any you don't want to include in your PDF."
     },
     {
       icon: <Download className="h-8 w-8 text-indigo-500" />,
