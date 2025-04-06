@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/sheet";
 import MenuCategory from './MenuCategory';
 
-const MobileMenu = () => {
+interface MobileMenuProps {
+  icon?: React.ReactNode;
+}
+
+const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
   // Menu categories based on the reference image
   const menuCategories = [
     {
@@ -86,7 +90,7 @@ const MobileMenu = () => {
           className="p-2 text-foreground bg-accent/10 hover:bg-accent/15 rounded-md flex items-center justify-center"
           aria-label="Menu"
         >
-          <AlignJustify className="h-5 w-5" /> {/* Three-line menu icon */}
+          {icon || <AlignJustify className="h-5 w-5" />} {/* Use provided icon or default */}
         </button>
       </SheetTrigger>
       <SheetContent 
