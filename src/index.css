@@ -10,7 +10,7 @@
     --background: 210 40% 98%;
     --foreground: 222 47% 11%;
 
-    --card: 0 0% 100%;
+    --card: 220 30% 98%;
     --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
@@ -25,8 +25,8 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 226 70% 55%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -36,25 +36,16 @@
     --ring: 222 47% 11%;
 
     --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
+    --background: 224 71.4% 5%;
     --foreground: 210 20% 98%;
 
-    --card: 224 71.4% 4.1%;
+    --card: 224 71.4% 8%;
     --card-foreground: 210 20% 98%;
 
-    --popover: 224 71.4% 4.1%;
+    --popover: 224 71.4% 5%;
     --popover-foreground: 210 20% 98%;
 
     --primary: 210 20% 98%;
@@ -66,7 +57,7 @@
     --muted: 215 27.9% 16.9%;
     --muted-foreground: 217.9 10.6% 64.9%;
 
-    --accent: 215 27.9% 16.9%;
+    --accent: 224 71.4% 40%;
     --accent-foreground: 210 20% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -86,26 +77,25 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-image: radial-gradient(circle at 50% 50%, 
-      rgba(120, 130, 250, 0.1) 0%, 
-      rgba(223, 226, 255, 0.05) 40%, 
-      rgba(255, 255, 255, 0) 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-sm dark:bg-white/10 dark:border-white/5;
+    @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-md dark:bg-black/50 dark:border-gray-800;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   }
   
   .glass-card:hover {
-    @apply transform -translate-y-1 bg-white/90 dark:bg-white/15;
+    @apply transform -translate-y-1 bg-white/95 dark:bg-black/60;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   }
   
   .pulse-btn {
-    @apply animate-pulse-soft bg-gradient-primary dark:bg-gradient-primary-dark;
+    @apply bg-accent text-white dark:bg-accent dark:text-white;
   }
   
   .shimmer-effect {
@@ -113,54 +103,104 @@
   }
   
   .shimmer-effect::after {
-    @apply content-[''] absolute top-0 left-0 w-full h-full bg-gradient-shimmer;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
     animation: shimmer 2s infinite;
-    background-size: 200% 100%;
   }
   
   .drop-area {
-    @apply border-2 border-dashed border-blue-300 dark:border-blue-700 rounded-xl p-8 transition-all duration-300 ease-in-out;
+    @apply border-2 border-dashed border-accent/50 dark:border-accent/50 rounded-xl p-8 transition-all duration-300 ease-in-out;
   }
   
   .drop-area-active {
-    @apply border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/20;
+    @apply border-accent bg-accent/10 dark:border-accent dark:bg-accent/20;
   }
-  
-  /* Space-themed elements */
-  .cosmic-card {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl;
-    box-shadow: 0 8px 32px rgba(131, 146, 254, 0.1);
-  }
-  
-  .cosmic-button {
-    @apply bg-gradient-cosmic text-white rounded-full px-6 py-3 shadow-lg;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-  
-  .nebula-blob {
-    @apply absolute rounded-full opacity-20 blur-3xl;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 20%, rgba(192, 38, 211, 0.2) 70%, rgba(236, 72, 153, 0.1) 100%);
-  }
-  
-  .star {
-    @apply absolute rounded-full bg-white;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  }
-  
-  /* Enhanced search input */
-  .search-input {
-    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md rounded-md border border-white/20 dark:border-white/10 focus-within:border-indigo-300 dark:focus-within:border-indigo-500 transition-colors;
-  }
+}
 
-  /* Light theme specific improvements */
-  .light .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
-    border: 1px solid rgba(220, 225, 235, 0.7);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* Remove any gap that might be causing layout issues */
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Animation for shimmer effect */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
   }
-  
-  .light .glass-card:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Animation for fading in elements */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation for scaling elements */
+.animate-scale-up {
+  animation: scaleUp 0.3s ease-out forwards;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Star twinkling animation */
+.star-twinkle {
+  animation: twinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+/* Pulse animation for buttons */
+.animate-pulse-soft {
+  animation: pulseSoft 2s infinite;
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
   }
 }

@@ -83,10 +83,10 @@ const MobileMenu = () => {
     <Sheet>
       <SheetTrigger asChild>
         <button 
-          className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border border-white/20 hover:from-indigo-500/60 hover:to-purple-500/60"
+          className="p-2 text-foreground bg-accent/10 hover:bg-accent/15 rounded-md flex items-center justify-center"
           aria-label="Menu"
         >
-          <AlignJustify className="h-5 w-5" />
+          <AlignJustify className="h-5 w-5" /> {/* Three-line menu icon */}
         </button>
       </SheetTrigger>
       <SheetContent 
@@ -96,10 +96,10 @@ const MobileMenu = () => {
         onEscapeKeyDown={(e) => e.preventDefault()}
         side="right"
       >
-        <div className="flex flex-col h-full bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl">
-          <div className="flex justify-between items-center p-6 border-b border-white/10">
-            <h2 className="font-semibold text-xl bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">EveryTools</h2>
-            <SheetClose className="rounded-full p-2 hover:bg-white/10 transition-colors">
+        <div className="flex flex-col h-full bg-background">
+          <div className="flex justify-between items-center p-6 border-b">
+            <h2 className="font-semibold text-xl text-foreground">EveryTools</h2>
+            <SheetClose className="rounded-full p-2 hover:bg-accent/10 transition-colors">
               <X className="h-5 w-5" />
               <span className="sr-only">Close</span>
             </SheetClose>

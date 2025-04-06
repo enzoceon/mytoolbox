@@ -32,14 +32,14 @@ const HeroSection = () => {
   const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility'];
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-20">
       <div className="container px-4 mx-auto">
         <div className="text-center mx-auto max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in">
-            The <span className="bg-gradient-primary bg-clip-text text-transparent">Digital Toolbox</span> For Everyone
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-foreground animate-fade-in">
+            Free Online Tools For <span className="text-accent">Everyone</span>
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Dozens of powerful online tools to make your digital life easier. Convert, edit, and transform files with no registration required.
+            Convert, edit, and transform files online with no registration required. All processing happens in your browser.
           </p>
           
           {/* Search and Filters */}
@@ -52,14 +52,14 @@ const HeroSection = () => {
                     placeholder="Search tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent pl-10"
+                    className="w-full border bg-card/50 focus:border-accent pl-10"
                   />
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Search className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </div>
               </div>
-              <Button type="submit" size="lg" className="w-full md:w-auto bg-gradient-primary hover:shadow-lg transition-shadow">
+              <Button type="submit" className="w-full md:w-auto bg-accent hover:bg-accent/90 text-white">
                 Find Tools <Search className="ml-2 h-5 w-5" />
               </Button>
             </form>
@@ -73,7 +73,7 @@ const HeroSection = () => {
                 variant={activeCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => setActiveCategory(category)}
-                className={activeCategory === category ? "bg-gradient-primary" : ""}
+                className={activeCategory === category ? "bg-accent text-white hover:bg-accent/90" : ""}
               >
                 {category}
               </Button>

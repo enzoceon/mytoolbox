@@ -1,21 +1,24 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, FileText, Check, X, AlertCircle } from 'lucide-react';
+import { Upload, FileText, Check, X, AlertCircle, EyeIcon } from 'lucide-react';
 import { toast } from "sonner";
 
 interface PdfUploaderProps {
   onPdfSelect: (file: File) => void;
   selectedPdf: string | null;
   onRemovePdf: () => void;
+  pageCount?: number;
 }
 
 const PdfUploader: React.FC<PdfUploaderProps> = ({ 
   onPdfSelect, 
   selectedPdf,
-  onRemovePdf
+  onRemovePdf,
+  pageCount = 0
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isLargeFile, setIsLargeFile] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -75,13 +78,17 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
     }
   }, []);
 
+  const togglePreview = () => {
+    setShowPreview(!showPreview);
+  };
+
   // Render PDF preview if file is selected
   if (selectedPdf) {
     return (
       <div className="w-full animate-scale-up">
         <div className="relative w-full max-w-md mx-auto">
           <div className="mb-4 flex justify-between items-center">
-            <h3 className="text-lg font-medium">Selected PDF</h3>
+            <h3 className="text-lg font-medium text-foreground">Selected PDF</h3>
             <button 
               onClick={onRemovePdf}
               className="px-3 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-600 rounded-md transition-colors"
@@ -101,11 +108,34 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
               </button>
             </div>
             <div className="p-6 flex flex-col items-center">
-              <div className="mb-4 w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
-                <FileText size={32} className="text-blue-500" />
+              <div className="mb-4 w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center">
+                <FileText size={32} className="text-accent" />
               </div>
-              <p className="text-base font-medium mb-1">PDF Ready for Conversion</p>
-              <p className="text-sm text-muted-foreground">Your PDF will be converted to images</p>
+              <p className="text-base font-medium mb-1 text-foreground">
+                PDF Ready for Conversion
+                {pageCount > 0 && ` (${pageCount} pages)`}
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Your PDF will be converted to high-quality images
+              </p>
+              
+              <button
+                onClick={togglePreview}
+                className="px-4 py-2 bg-accent/10 text-accent rounded-md hover:bg-accent/20 flex items-center gap-2 mb-3"
+              >
+                <EyeIcon size={18} />
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </button>
+              
+              {showPreview && (
+                <div className="w-full h-72 border border-gray-200 dark:border-gray-700 rounded-md mt-2 overflow-hidden">
+                  <iframe
+                    src={selectedPdf}
+                    title="PDF Preview"
+                    className="w-full h-full"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -122,20 +152,20 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-4 p-4 rounded-full bg-blue-50 text-blue-500">
+        <div className="mb-4 p-4 rounded-full bg-accent/10 text-accent">
           <Upload size={24} className="animate-bounce-soft" />
         </div>
-        <h3 className="text-lg font-medium mb-2">Drop your PDF here</h3>
+        <h3 className="text-lg font-medium mb-2 text-foreground">Drop your PDF here</h3>
         <p className="text-sm text-muted-foreground mb-4 text-center">
           Select a PDF file to convert to images
         </p>
         <div className="flex items-center space-x-2">
-          <hr className="w-10 border-gray-200" />
+          <hr className="w-10 border-gray-200 dark:border-gray-700" />
           <span className="text-xs text-muted-foreground">OR</span>
-          <hr className="w-10 border-gray-200" />
+          <hr className="w-10 border-gray-200 dark:border-gray-700" />
         </div>
         <button
-          className="mt-4 px-6 py-2 rounded-full bg-gradient-primary text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow transform hover:scale-105 duration-200"
+          className="mt-4 px-6 py-2 rounded-md bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-all transform hover:scale-105 duration-200"
           onClick={handleBrowseClick}
         >
           Browse Files
