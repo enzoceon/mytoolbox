@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Upload, FileImage, Download } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -19,7 +20,10 @@ const HowToUse = () => {
     }
   }, [location]);
 
-  const steps = [
+  // Determine if we're on the PDF to Image page
+  const isPdfToImage = location.pathname === '/pdf-to-image';
+  
+  const imageToPathSteps = [
     {
       icon: <Upload className="h-8 w-8 text-blue-500" />,
       title: 'Upload Your Images',
@@ -36,14 +40,39 @@ const HowToUse = () => {
       description: 'Once conversion is complete, download your PDF file with a single click.'
     }
   ];
+  
+  const pdfToImageSteps = [
+    {
+      icon: <Upload className="h-8 w-8 text-blue-500" />,
+      title: 'Upload Your PDF',
+      description: 'Drag and drop a PDF file or click to browse and select from your device.'
+    },
+    {
+      icon: <FileImage className="h-8 w-8 text-blue-500" />,
+      title: 'Convert to Images',
+      description: 'Click the "Convert to Images" button to transform your PDF pages into high-quality images.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Download Your Images',
+      description: 'Once conversion is complete, download all images as a ZIP file or view individual pages.'
+    }
+  ];
+  
+  // Choose the appropriate steps based on the current page
+  const steps = isPdfToImage ? pdfToImageSteps : imageToPathSteps;
+  const toolName = isPdfToImage ? 'PDF to Image' : 'Image2PDF';
 
   return (
     <section id="how-to-use" ref={sectionRef} className="py-12 px-4 bg-[#020814]">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">How to Use Image2PDF</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">How to Use {toolName}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Converting your images to PDF is simple and fast. Follow these three easy steps to get started.
+            {isPdfToImage 
+              ? 'Converting your PDF to images is simple and fast. Follow these three easy steps to get started.'
+              : 'Converting your images to PDF is simple and fast. Follow these three easy steps to get started.'
+            }
           </p>
         </div>
         

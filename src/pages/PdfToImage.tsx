@@ -1,222 +1,215 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PdfUploader from '@/components/PdfUploader';
 import PdfConversionArea from '@/components/PdfConversionArea';
 import SpaceBackground from '@/components/SpaceBackground';
-import AdPlacement from '@/components/AdPlacement';
-import { toast } from 'sonner';
-import { FileText, FileImage, Download } from 'lucide-react';
 import HowToUse from '@/components/HowToUse';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import FaqSection from '@/components/sections/FaqSection';
 import WhyChooseSection from '@/components/sections/WhyChooseSection';
+import { Helmet } from 'react-helmet-async';
+import JSZip from 'jszip';
+import { toast } from "sonner";
+
+// PDF.js library imports
+import * as pdfjsLib from 'pdfjs-dist';
+import { GlobalWorkerOptions } from 'pdfjs-dist';
+
+// Set worker path to pdf.js worker
+GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 const PdfToImage = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedPdf, setSelectedPdf] = useState<File | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
   const [pageCount, setPageCount] = useState(0);
-  const [hasUserInteracted, setHasUserInteracted] = useState(false);
-
-  useEffect(() => {
-    const handleInteraction = () => {
-      setHasUserInteracted(true);
-    };
-
-    document.addEventListener('click', handleInteraction, { once: true });
-    document.addEventListener('keydown', handleInteraction, { once: true });
-    document.addEventListener('scroll', handleInteraction, { once: true });
-    
-    return () => {
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('keydown', handleInteraction);
-      document.removeEventListener('scroll', handleInteraction);
-    };
-  }, []);
+  const [convertedImages, setConvertedImages] = useState<string[]>([]);
   
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  const handlePdfSelect = (file: File) => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+  const handlePdfSelect = async (file: File) => {
+    // Clear previous results
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
     }
-    
-    const url = URL.createObjectURL(file);
-    setSelectedFile(file);
-    setPreviewUrl(url);
-    
     if (downloadUrl) {
-      setDownloadUrl(null);
-    }
-  };
-
-  const handleRemovePdf = () => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+      URL.revokeObjectURL(downloadUrl);
     }
     
-    setSelectedFile(null);
-    setPreviewUrl(null);
+    setSelectedPdf(file);
+    const fileUrl = URL.createObjectURL(file);
+    setPdfUrl(fileUrl);
     setDownloadUrl(null);
-    setPageCount(0);
-  };
-
-  const handleConvertPdf = () => {
-    if (!selectedFile) {
-      return;
+    setConvertedImages([]);
+    
+    try {
+      // Load the PDF to get page count
+      const loadingTask = pdfjsLib.getDocument(fileUrl);
+      const pdf = await loadingTask.promise;
+      setPageCount(pdf.numPages);
+    } catch (error) {
+      console.error("Error loading PDF:", error);
+      toast.error("Error loading PDF. Please try another file.");
+      handleRemovePdf();
     }
-
-    setIsConverting(true);
-    
-    setTimeout(() => {
-      const simulatedPageCount = Math.floor(Math.random() * 10) + 1;
-      setPageCount(simulatedPageCount);
-    }, 800);
-    
-    setTimeout(() => {
-      setIsConverting(false);
-      setDownloadUrl(URL.createObjectURL(new Blob(['dummy data'], { type: 'application/zip' })));
-      toast.success("PDF successfully converted to images!");
-    }, 3000);
   };
-
+  
+  const handleRemovePdf = () => {
+    if (selectedPdf) {
+      setSelectedPdf(null);
+      
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+        setPdfUrl(null);
+      }
+      
+      if (downloadUrl) {
+        URL.revokeObjectURL(downloadUrl);
+        setDownloadUrl(null);
+      }
+      
+      // Clear converted images
+      convertedImages.forEach(url => URL.revokeObjectURL(url));
+      setConvertedImages([]);
+      
+      setPageCount(0);
+    }
+  };
+  
+  const convertPdfToImage = async () => {
+    if (!pdfUrl) return;
+    
+    setIsConverting(true);
+    toast.loading("Converting PDF to images...");
+    
+    try {
+      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+      const pdf = await loadingTask.promise;
+      const imageUrls: string[] = [];
+      
+      // Create a zip file for multiple pages
+      const zip = new JSZip();
+      const imgFolder = zip.folder("images");
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        
+        const viewport = page.getViewport({ scale: 2.0 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        if (!context) {
+          throw new Error("Could not get canvas context");
+        }
+        
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+        
+        // Convert canvas to blob
+        const imgBlob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else resolve(new Blob());
+          }, 'image/png');
+        });
+        
+        // Add to zip file
+        if (imgFolder) {
+          imgFolder.file(`page-${i}.png`, imgBlob);
+        }
+        
+        // Create URL for preview
+        const imgUrl = URL.createObjectURL(imgBlob);
+        imageUrls.push(imgUrl);
+      }
+      
+      // Generate zip file for download
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const zipUrl = URL.createObjectURL(zipBlob);
+      
+      setConvertedImages(imageUrls);
+      setDownloadUrl(zipUrl);
+      toast.dismiss();
+      toast.success(`PDF successfully converted to ${imageUrls.length} images!`);
+    } catch (error) {
+      console.error("Error converting PDF to images:", error);
+      toast.dismiss();
+      toast.error("Error converting PDF. Please try again.");
+    } finally {
+      setIsConverting(false);
+    }
+  };
+  
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Helmet>
-        <title>PDF to Image - Convert PDF to JPG, PNG online for free | No Watermarks</title>
-        <meta name="description" content="Convert your PDF files to high-quality images online for free. Extract JPG, PNG from PDF with no registration, no watermarks, and instant downloads. Secure and fast conversion." />
-        <meta name="keywords" content="pdf to image, pdf to jpg, pdf to png, extract images from pdf, convert pdf pages to images, free pdf converter, no watermarks, high quality" />
-        <link rel="canonical" href="https://image2pdf.site/pdf-to-image" />
-        
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://image2pdf.site/pdf-to-image" />
-        <meta property="og:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
-        <meta property="og:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
-        <meta property="og:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
-        
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://image2pdf.site/pdf-to-image" />
-        <meta property="twitter:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
-        <meta property="twitter:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
-        <meta property="twitter:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
-        
-        <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "PDF to Image Converter",
-            "url": "https://image2pdf.site/pdf-to-image",
-            "description": "Free online tool to convert PDF files to high-quality JPG, PNG images without watermarks or registration.",
-            "applicationCategory": "Utility",
-            "operatingSystem": "Web Browser",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "featureList": [
-              "Convert PDF to JPG, PNG",
-              "Extract images from PDF",
-              "No registration required",
-              "No watermarks",
-              "High quality conversion",
-              "Convert multiple pages at once",
-              "Browser-based processing for privacy",
-              "Instant download"
-            ]
-          }
-        `}</script>
+        <title>PDF to Image Converter - Free Online Tool</title>
+        <meta name="description" content="Convert PDF files to high-quality images (JPG, PNG) for free. No registration or installation required. Process files securely in your browser." />
       </Helmet>
       
       <SpaceBackground />
-      <Header />
       
-      <main className="flex-1 container max-w-5xl mx-auto px-4 py-8">
-        <section className="text-center mb-12 animate-fade-in">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-            Convert <span className="bg-gradient-primary bg-clip-text text-transparent">PDF to Images</span> in Seconds
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            Transform your PDF files into high-quality JPG images while preserving exact quality. Fast. Free. Fluid.
-          </p>
-        </section>
-
-        <section className="mb-16 max-w-3xl mx-auto">
-          <PdfUploader 
-            onPdfSelect={handlePdfSelect}
-            selectedPdf={previewUrl}
-            onRemovePdf={handleRemovePdf}
-          />
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold mb-4 tracking-tight bg-gradient-primary bg-clip-text text-transparent animate-fade-in">
+              PDF to Image Converter
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              Convert PDF files to high-quality images with ease. Free, secure, and browser-based.
+            </p>
+          </div>
           
-          <PdfConversionArea 
-            hasPdf={!!previewUrl}
-            onConvert={handleConvertPdf}
-            downloadUrl={downloadUrl}
-            isConverting={isConverting}
-            pageCount={pageCount}
-          />
-        </section>
-        
-        <AdPlacement 
-          format="horizontal" 
-          contentLoaded={hasUserInteracted && !isConverting} 
-        />
-        
-        <section id="how-to-use" className="py-16 px-6 sm:px-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">How to Convert PDF to Images</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Converting your PDF files to images is simple and fast. Follow these three easy steps to get started.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="glass-card p-6 rounded-xl text-center transition-transform hover:scale-105 duration-300">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                  <FileText className="h-8 w-8 text-indigo-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Upload Your PDF</h3>
-                <p className="text-sm text-muted-foreground">Drag and drop your PDF file or click to browse and select from your device.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-xl text-center transition-transform hover:scale-105 duration-300">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                  <FileImage className="h-8 w-8 text-indigo-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Convert to Images</h3>
-                <p className="text-sm text-muted-foreground">Click the "Convert to Images" button to transform your PDF into high-quality images.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-xl text-center transition-transform hover:scale-105 duration-300">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                  <Download className="h-8 w-8 text-indigo-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Download Images</h3>
-                <p className="text-sm text-muted-foreground">Once conversion is complete, download your image files with a single click.</p>
-              </div>
+          <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <div className="w-full max-w-md">
+              <PdfUploader
+                onPdfSelect={handlePdfSelect}
+                selectedPdf={pdfUrl}
+                onRemovePdf={handleRemovePdf}
+                pageCount={pageCount}
+              />
             </div>
           </div>
-        </section>
+          
+          <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
+            <PdfConversionArea
+              hasPdf={!!selectedPdf}
+              onConvert={convertPdfToImage}
+              downloadUrl={downloadUrl}
+              isConverting={isConverting}
+              pageCount={pageCount}
+              convertedImages={convertedImages}
+            />
+          </div>
+          
+          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            <HowToUse />
+          </div>
+          
+          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+            <FeaturesSection />
+          </div>
+          
+          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <WhyChooseSection />
+          </div>
+          
+          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.7s" }}>
+            <FaqSection />
+          </div>
+        </main>
         
-        <FeaturesSection />
-        
-        <WhyChooseSection />
-        
-        <FaqSection />
-      </main>
-      
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 };
 
