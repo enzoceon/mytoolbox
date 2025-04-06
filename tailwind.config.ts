@@ -1,14 +1,14 @@
 
 import type { Config } from "tailwindcss";
 
-const config: Config = {
-  darkMode: ["class"],
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+export default {
+  darkMode: "class",
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,13 +44,13 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      fontFamily: {
-        sans: ['Poppins', 'system-ui', 'sans-serif'],
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      backgroundImage: {
+        "gradient-primary": "linear-gradient(to right, hsl(var(--accent)), hsl(var(--accent)/0.8))",
       },
       keyframes: {
         "accordion-down": {
@@ -61,37 +61,12 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        shimmer: {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" }
-        },
-        progress: {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" }
-        },
-        "bounce-soft": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" }
-        },
-        "slide-up": {
-          "0%": { transform: "translateY(20px)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" }
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "shimmer": "shimmer 2s infinite",
-        "progress": "progress 2s ease-in-out",
-        "bounce-soft": "bounce-soft 2s infinite",
-        "slide-up": "slide-up 0.5s ease-out",
-      },
-      backgroundImage: {
-        "gradient-primary": "linear-gradient(to right, hsl(var(--accent)), hsl(var(--accent) / 0.8))",
       },
     },
   },
-  plugins: [],
-}
-
-export default config;
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
