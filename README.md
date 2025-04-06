@@ -1,5 +1,5 @@
 
-# Image2PDF
+# EveryTools
 
 A beautiful, free online tool to convert images to PDF files.
 
