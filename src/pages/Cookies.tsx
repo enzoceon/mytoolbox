@@ -1,103 +1,113 @@
 
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 
 const Cookies = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
+      <Helmet>
+        <title>Cookie Policy - EveryTools</title>
+        <meta name="description" content="Learn about how EveryTools uses cookies on our website to enhance your browsing experience." />
+      </Helmet>
+      
       <BackgroundAnimation />
       <Header />
       
-      <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-10">
-        <div className="mb-4">
-          <Link to="/">
-            <Button variant="ghost" className="flex items-center gap-1 mb-4">
-              <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Button>
-          </Link>
-        </div>
-        
-        <section className="glass-card rounded-xl p-8 mb-10 animate-fade-in">
-          <h1 className="text-3xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">Cookie Policy</h1>
+      <main className="min-h-screen py-8 px-4 max-w-4xl mx-auto">
+        <div className="glass-card p-8 rounded-xl">
+          <h1 className="text-3xl font-bold mb-6">Cookie Policy</h1>
           
-          <div className="space-y-4 text-foreground">
-            <p><strong>Last Updated: April 04, 2025</strong></p>
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-3">What Are Cookies</h2>
+            <p className="mb-4 text-muted-foreground">
+              As is common practice with almost all professional websites, this site uses cookies, 
+              which are tiny files that are downloaded to your computer, to improve your experience. 
+              This page describes what information they gather, how we use it, and why we sometimes 
+              need to store these cookies. We will also share how you can prevent these cookies from 
+              being stored, however, this may downgrade or 'break' certain elements of the site's functionality.
+            </p>
+          </section>
+          
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-3">How We Use Cookies</h2>
+            <p className="mb-4 text-muted-foreground">
+              We use cookies for a variety of reasons detailed below. Unfortunately, in most cases, 
+              there are no industry standard options for disabling cookies without completely disabling 
+              the functionality and features they add to this site. It is recommended that you leave 
+              on all cookies if you are not sure whether you need them or not in case they are used 
+              to provide a service that you use.
+            </p>
+          </section>
+          
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-3">Disabling Cookies</h2>
+            <p className="mb-4 text-muted-foreground">
+              You can prevent the setting of cookies by adjusting the settings on your browser 
+              (see your browser Help for how to do this). Be aware that disabling cookies will 
+              affect the functionality of this and many other websites that you visit. Disabling 
+              cookies will usually result in also disabling certain functionality and features 
+              of this site. Therefore it is recommended that you do not disable cookies.
+            </p>
+          </section>
+          
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-3">The Cookies We Set</h2>
             
-            <p>
-              This Cookie Policy explains how Image2PDF uses cookies and similar technologies to recognize you when
-              you visit our website. It explains what these technologies are and why we use them, as well as your
-              rights to control our use of them.
+            <h3 className="text-lg font-medium mt-4 mb-2">Site preferences cookies</h3>
+            <p className="mb-4 text-muted-foreground">
+              In order to provide you with a great experience on this site, we provide the 
+              functionality to set your preferences for how this site runs when you use it. 
+              In order to remember your preferences, we need to set cookies so that this 
+              information can be called whenever you interact with a page is affected by 
+              your preferences.
             </p>
             
-            <h2 className="text-xl font-semibold mt-6 mb-3">What Are Cookies?</h2>
-            <p>
-              Cookies are small data files that are placed on your computer or mobile device when you visit a website.
-              Cookies are widely used by website owners to make their websites work efficiently and provide reporting
-              information.
+            <h3 className="text-lg font-medium mt-4 mb-2">Third-Party Cookies</h3>
+            <p className="mb-4 text-muted-foreground">
+              In some special cases, we also use cookies provided by trusted third parties. 
+              The following section details which third party cookies you might encounter 
+              through this site.
             </p>
-            
-            <h2 className="text-xl font-semibold mt-6 mb-3">How We Use Cookies</h2>
-            <p>
-              Image2PDF uses cookies for several reasons:
-            </p>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>To remember your preferences and settings</li>
-              <li>To understand how you use our website</li>
-              <li>To enhance the performance and functionality of our service</li>
-              <li>To provide analytics about how our website is used</li>
+            <ul className="list-disc pl-6 mb-4 text-muted-foreground">
+              <li className="mb-2">
+                This site uses Google Analytics which is one of the most widespread and trusted 
+                analytics solutions on the web for helping us to understand how you use the site 
+                and ways that we can improve your experience. These cookies may track things such 
+                as how long you spend on the site and the pages that you visit so we can continue 
+                to produce engaging content.
+              </li>
+              <li className="mb-2">
+                We also use Google AdSense cookies to serve advertisements on our site. These cookies 
+                are used to personalize the advertisements that we show to you so that they are 
+                meaningful to you. These cookies also help us to keep track of the efficiency of our 
+                advertising campaigns.
+              </li>
             </ul>
-            
-            <h2 className="text-xl font-semibold mt-6 mb-3">Types of Cookies We Use</h2>
-            
-            <h3 className="text-lg font-medium mt-4 mb-2">Essential Cookies</h3>
-            <p>
-              These cookies are necessary for the website to function properly. They enable core functionality such as
-              security, network management, and accessibility. You may disable these by changing your browser settings,
-              but this may affect how the website functions.
+          </section>
+          
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-3">More Information</h2>
+            <p className="mb-4 text-muted-foreground">
+              Hopefully that has clarified things for you and as was previously mentioned, if there 
+              is something that you aren't sure whether you need or not, it's usually safer to leave 
+              cookies enabled in case it does interact with one of the features you use on our site.
             </p>
-            
-            <h3 className="text-lg font-medium mt-4 mb-2">Analytics Cookies</h3>
-            <p>
-              These cookies collect information that helps us understand how you use our website, which pages you
-              visited and when, and how many people are using specific features. All information these cookies collect
-              is aggregated and anonymous.
+            <p className="mb-4 text-muted-foreground">
+              However, if you are still looking for more information, then you can contact us through 
+              one of our preferred contact methods:
             </p>
-            
-            <h3 className="text-lg font-medium mt-4 mb-2">Preference Cookies</h3>
-            <p>
-              These cookies allow our website to remember choices you make (such as your preferred theme) and provide
-              enhanced, personalized features.
-            </p>
-            
-            <h2 className="text-xl font-semibold mt-6 mb-3">Your Cookie Choices</h2>
-            <p>
-              Most web browsers allow you to control cookies through their settings preferences. However, if you limit
-              the ability of websites to set cookies, you may worsen your overall user experience, as it will no longer
-              be personalized to you.
-            </p>
-            
-            <h2 className="text-xl font-semibold mt-6 mb-3">Changes to This Cookie Policy</h2>
-            <p>
-              We may update our Cookie Policy from time to time. We will notify you of any changes by posting the new
-              Cookie Policy on this page and updating the "Last Updated" date.
-            </p>
-            
-            <h2 className="text-xl font-semibold mt-6 mb-3">Contact Us</h2>
-            <p>
-              If you have any questions about our Cookie Policy, please contact us at:
-              <a href="mailto:image2pdfsite@gmail.com" className="text-primary hover:underline ml-1">image2pdfsite@gmail.com</a>
-            </p>
-          </div>
-        </section>
+            <ul className="list-disc pl-6 text-muted-foreground">
+              <li>Email: everytoolssite@gmail.com</li>
+            </ul>
+          </section>
+        </div>
       </main>
       
       <Footer />
-    </div>
+    </>
   );
 };
 
