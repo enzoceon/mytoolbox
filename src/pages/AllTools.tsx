@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -46,7 +45,7 @@ const AllTools = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('All');
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const toolsGridRef = useRef<HTMLDivElement>(null);
+  const [toolsGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleInteraction = () => {
@@ -93,41 +92,6 @@ const AllTools = () => {
   }, [searchQuery, activeCategory]);
 
   const tools: Tool[] = [
-    {
-      id: 'ai-text-generator',
-      name: 'AI Text Generator',
-      description: 'Generate creative text content using advanced AI',
-      icon: <Sparkles className="h-6 w-6 text-purple-500" />,
-      path: '/tools',
-      category: 'AI',
-      popular: true,
-    },
-    {
-      id: 'ai-image-generator',
-      name: 'AI Image Generator',
-      description: 'Create stunning images from text descriptions',
-      icon: <Brain className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
-      category: 'AI',
-      popular: true,
-    },
-    {
-      id: 'ai-chatbot',
-      name: 'AI Chatbot Assistant',
-      description: 'Get answers and assistance from an AI-powered chatbot',
-      icon: <MessageSquare className="h-6 w-6 text-green-500" />,
-      path: '/tools',
-      category: 'AI',
-      popular: true,
-    },
-    {
-      id: 'ai-content-summarizer',
-      name: 'AI Content Summarizer',
-      description: 'Automatically summarize long articles and documents',
-      icon: <Bot className="h-6 w-6 text-orange-500" />,
-      path: '/tools',
-      category: 'AI',
-    },
     {
       id: 'image-to-pdf',
       name: 'Image to PDF',
@@ -294,6 +258,42 @@ const AllTools = () => {
       icon: <Music className="h-6 w-6 text-purple-500" />,
       path: '/tools',
       category: 'Text',
+    },
+    // AI tools placed after text-to-speech as requested
+    {
+      id: 'ai-text-generator',
+      name: 'AI Text Generator',
+      description: 'Generate creative text content using advanced AI',
+      icon: <Sparkles className="h-6 w-6 text-purple-500" />,
+      path: '/tools',
+      category: 'AI',
+      popular: true,
+    },
+    {
+      id: 'ai-image-generator',
+      name: 'AI Image Generator',
+      description: 'Create stunning images from text descriptions',
+      icon: <Brain className="h-6 w-6 text-blue-500" />,
+      path: '/tools',
+      category: 'AI',
+      popular: true,
+    },
+    {
+      id: 'ai-chatbot',
+      name: 'AI Chatbot Assistant',
+      description: 'Get answers and assistance from an AI-powered chatbot',
+      icon: <MessageSquare className="h-6 w-6 text-green-500" />,
+      path: '/tools',
+      category: 'AI',
+      popular: true,
+    },
+    {
+      id: 'ai-content-summarizer',
+      name: 'AI Content Summarizer',
+      description: 'Automatically summarize long articles and documents',
+      icon: <Bot className="h-6 w-6 text-orange-500" />,
+      path: '/tools',
+      category: 'AI',
     },
   ];
 

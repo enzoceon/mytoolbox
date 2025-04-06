@@ -1,3 +1,4 @@
+
 /* Cosmic animations and effects for the dark theme */
 
 .cosmic-glow {
@@ -5,7 +6,7 @@
 }
 
 .dark .cosmic-glow {
-  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.7));
+  filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.8));
 }
 
 .space-object {
@@ -42,11 +43,12 @@
 }
 
 .glow-text {
-  /* Removed text shadow completely */
+  /* No text shadow for light mode */
 }
 
 .dark .glow-text {
-  /* Removed text shadow completely */
+  /* Add subtle glow in dark mode */
+  text-shadow: 0 0 8px rgba(138, 75, 255, 0.3);
 }
 
 .cosmic-btn {
@@ -128,7 +130,7 @@
 }
 
 .dark .galaxy-input {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
 }
 
 .galaxy-input:focus {
@@ -136,7 +138,7 @@
 }
 
 .dark .galaxy-input:focus {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
 }
 
 /* Animation for features, cards and sections */
@@ -152,7 +154,7 @@
 }
 
 .dark .feature-card:hover {
-  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
 }
 
 .stagger-animate {
@@ -178,7 +180,7 @@
     filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.4));
   }
   100% {
-    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.7));
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.8));
   }
 }
 
@@ -190,7 +192,7 @@
 
 .faq-item:hover {
   transform: scale(1.01);
-  box-shadow: 0 4px 20px -5px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 20px -5px rgba(139, 92, 246, 0.3);
 }
 
 /* Shine effect for feature cards */

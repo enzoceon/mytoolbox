@@ -55,17 +55,17 @@
     --secondary-foreground: 213 24% 95%;
 
     --muted: 232 25% 18%;
-    --muted-foreground: 215 16% 70%;
+    --muted-foreground: 215 16% 80%;
 
-    --accent: 250 70% 62%;
+    --accent: 250 80% 65%;
     --accent-foreground: 213 24% 95%;
 
-    --destructive: 0 72% 41%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 213 24% 95%;
 
-    --border: 232 25% 18%;
-    --input: 232 25% 18%;
-    --ring: 224 76% 65%;
+    --border: 232 25% 24%;
+    --input: 232 25% 24%;
+    --ring: 224 76% 70%;
   }
 }
 
@@ -85,7 +85,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-md dark:bg-slate-900/70 dark:border-indigo-900/30 dark:shadow-indigo-900/10;
+    @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-md dark:bg-slate-900/70 dark:border-indigo-900/40 dark:shadow-indigo-900/20;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   }
   
@@ -96,7 +96,7 @@
   
   .pulse-btn {
     @apply bg-accent text-white dark:bg-accent dark:text-white;
-    box-shadow: 0 0 15px 2px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 0 15px 2px rgba(124, 58, 237, 0.4);
   }
   
   .shimmer-effect {
@@ -120,11 +120,11 @@
   }
   
   .drop-area {
-    @apply border-2 border-dashed border-accent/50 dark:border-accent/40 rounded-xl p-8 transition-all duration-300 ease-in-out;
+    @apply border-2 border-dashed border-accent/50 dark:border-accent/50 rounded-xl p-8 transition-all duration-300 ease-in-out;
   }
   
   .drop-area-active {
-    @apply border-accent bg-accent/10 dark:border-accent/60 dark:bg-accent/20;
+    @apply border-accent bg-accent/10 dark:border-accent/70 dark:bg-accent/20;
   }
   
   .bg-gradient-space {
@@ -132,11 +132,11 @@
   }
   
   .bg-gradient-primary {
-    @apply bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-indigo-600 dark:to-purple-600;
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-indigo-500 dark:to-purple-500;
   }
   
   .bg-gradient-nebula {
-    @apply bg-gradient-to-r from-purple-500/20 via-indigo-500/20 to-blue-500/20 dark:from-purple-600/30 dark:via-indigo-600/30 dark:to-blue-600/30;
+    @apply bg-gradient-to-r from-purple-500/20 via-indigo-500/20 to-blue-500/20 dark:from-purple-600/40 dark:via-indigo-600/40 dark:to-blue-600/40;
   }
   
   .glow-text {
@@ -163,7 +163,7 @@
   }
 }
 
-/* Animation for fading in elements */
+/* ... keep existing code (all the animations and other CSS rules) */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
