@@ -13,9 +13,6 @@ import ConverterSection from '@/components/sections/ConverterSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import WhyChooseSection from '@/components/sections/WhyChooseSection';
 import FaqSection from '@/components/sections/FaqSection';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { FileImage, FileText, Video } from 'lucide-react';
 
 const Index = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -130,8 +127,8 @@ const Index = () => {
       <Helmet>
         <title>Image to PDF - Free Online Image to PDF Converter | No Registration Required</title>
         <meta name="description" content="Instantly convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks, no file size limits. Fast. Free. Fluid." />
+        <meta name="keywords" content="image to pdf, jpg to pdf, png to pdf, image converter, pdf creator, free conversion, no watermarks, batch conversion, high quality, online tool" />
         <link rel="canonical" href="https://image2pdf.site/" />
-        <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert image to pdf online, free pdf converter, image conversion tool, browser-based pdf conversion, no watermarks, privacy-focused" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
@@ -161,7 +158,16 @@ const Index = () => {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
-            }
+            },
+            "featureList": [
+              "Convert JPG, PNG, GIF, BMP, WEBP, TIFF to PDF",
+              "No registration required",
+              "No watermarks",
+              "High quality conversion",
+              "Multiple images to single PDF",
+              "Browser-based processing for privacy",
+              "Instant download"
+            ]
           }
         `}</script>
       </Helmet>
@@ -188,65 +194,6 @@ const Index = () => {
         
         {/* How to Use Section - Additional valuable content */}
         <HowToUse />
-        
-        {/* Popular Tools Section - Added above Key Features */}
-        <section className="py-12">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Popular Tools</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Try our other popular conversion tools to enhance your productivity.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card p-6 rounded-xl text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                <FileText className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">PDF to Image</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Extract high-quality images from PDF files easily.
-              </p>
-              <Button variant="outline" size="sm" className="rounded-full" asChild>
-                <Link to="/pdf-to-image">Use Tool</Link>
-              </Button>
-            </div>
-            
-            <div className="glass-card p-6 rounded-xl text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-50 flex items-center justify-center">
-                <FileText className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">PDF Merger</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Combine multiple PDF files into a single document easily.
-              </p>
-              <Button variant="outline" size="sm" className="rounded-full" asChild>
-                <Link to="/tools">Use Tool</Link>
-              </Button>
-            </div>
-            
-            <div className="glass-card p-6 rounded-xl text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-50 flex items-center justify-center">
-                <Video className="h-8 w-8 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Video Compressor</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Compress video files without significant quality loss.
-              </p>
-              <Button variant="outline" size="sm" className="rounded-full" asChild>
-                <Link to="/tools">Use Tool</Link>
-              </Button>
-            </div>
-          </div>
-          
-          <div className="mt-8 text-center">
-            <Link to="/tools">
-              <Button size="lg" className="bg-gradient-primary hover:shadow-lg transition-shadow">
-                See All Tools
-              </Button>
-            </Link>
-          </div>
-        </section>
         
         {/* Key Features Section - Added for SEO and user value */}
         <FeaturesSection />

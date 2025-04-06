@@ -101,9 +101,52 @@ const PdfToImage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>PDF to Image - Convert PDF to JPG online for free</title>
-        <meta name="description" content="Convert your PDF files to high-quality images online for free. No registration, no watermarks, and instant downloads. Fast, free, and secure PDF to JPG conversion." />
+        <title>PDF to Image - Convert PDF to JPG, PNG online for free | No Watermarks</title>
+        <meta name="description" content="Convert your PDF files to high-quality images online for free. Extract JPG, PNG from PDF with no registration, no watermarks, and instant downloads. Secure and fast conversion." />
+        <meta name="keywords" content="pdf to image, pdf to jpg, pdf to png, extract images from pdf, convert pdf pages to images, free pdf converter, no watermarks, high quality" />
         <link rel="canonical" href="https://image2pdf.site/pdf-to-image" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://image2pdf.site/pdf-to-image" />
+        <meta property="og:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
+        <meta property="og:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
+        <meta property="og:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://image2pdf.site/pdf-to-image" />
+        <meta property="twitter:title" content="PDF to Image - Convert PDF to JPG/PNG with No Watermarks | Free Online Tool" />
+        <meta property="twitter:description" content="Convert PDF to images online with our free tool. No registration, no watermarks, high-quality conversion. Fast. Free. Fluid." />
+        <meta property="twitter:image" content="https://image2pdf.site/pdf-to-image-og.jpg" />
+        
+        {/* Structured Data for Rich Snippets */}
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "PDF to Image Converter",
+            "url": "https://image2pdf.site/pdf-to-image",
+            "description": "Free online tool to convert PDF files to high-quality JPG, PNG images without watermarks or registration.",
+            "applicationCategory": "Utility",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "featureList": [
+              "Convert PDF to JPG, PNG",
+              "Extract images from PDF",
+              "No registration required",
+              "No watermarks",
+              "High quality conversion",
+              "Convert multiple pages at once",
+              "Browser-based processing for privacy",
+              "Instant download"
+            ]
+          }
+        `}</script>
       </Helmet>
       
       <SpaceBackground />

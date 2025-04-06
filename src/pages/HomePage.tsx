@@ -65,7 +65,40 @@ const HomePage = () => {
       <Helmet>
         <title>EveryTools - Free Online Tools For Everyone | No Registration Required</title>
         <meta name="description" content="Access free online tools for file conversion, editing, and much more. No registration, no watermarks, no file size limits. Fast. Free. Fluid." />
+        <meta name="keywords" content="online tools, file converter, image to pdf, pdf to image, video converter, audio tools, document tools, free tools, no registration, no watermark" />
         <link rel="canonical" href="https://everytools.site/" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://everytools.site/" />
+        <meta property="og:title" content="EveryTools - Free Online Tools For Everyone | No Registration" />
+        <meta property="og:description" content="Access dozens of free online tools for file conversion, editing and more. No registration, no watermarks. Fast. Free. Fluid." />
+        <meta property="og:image" content="/og-image.jpg" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://everytools.site/" />
+        <meta property="twitter:title" content="EveryTools - Free Online Tools For Everyone | No Registration" />
+        <meta property="twitter:description" content="Access dozens of free online tools for file conversion, editing and more. No registration, no watermarks. Fast. Free. Fluid." />
+        <meta property="twitter:image" content="/og-image.jpg" />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "EveryTools",
+            "url": "https://everytools.site/",
+            "description": "Free online tools for file conversion, editing, and much more. No registration, no watermarks, no file size limits.",
+            "applicationCategory": "Utility",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          }
+        `}</script>
       </Helmet>
       
       <BackgroundAnimation />
@@ -84,7 +117,7 @@ const HomePage = () => {
               </p>
               
               {/* Search and Filters */}
-              <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <div className="mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
                 <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
                   <div className="w-full md:w-1/2 relative">
                     <div className="relative rounded-md overflow-hidden">
@@ -119,26 +152,6 @@ const HomePage = () => {
                     {category}
                   </Button>
                 ))}
-              </div>
-              
-              {/* Can't find what you need box */}
-              <div className="max-w-lg mx-auto mt-12 p-6 glass-card animate-fade-in" style={{ animationDelay: "0.5s" }}>
-                <h3 className="text-xl font-semibold mb-3">Can't find what you need?</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Check out our complete tools collection or contact us to suggest a new tool.
-                </p>
-                <div className="flex flex-wrap gap-3 justify-center">
-                  <Link to="/tools">
-                    <Button variant="outline" size="sm">
-                      Browse All Tools
-                    </Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button variant="outline" size="sm">
-                      Suggest a Tool
-                    </Button>
-                  </Link>
-                </div>
               </div>
             </div>
           </div>
