@@ -44,7 +44,7 @@ const HeroSection = () => {
             Free Online Tools For <span className="text-accent">Everyone</span>
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            The free toolbox for everyone
+            every tools in one place
           </p>
           
           {/* Search and Filters */}
