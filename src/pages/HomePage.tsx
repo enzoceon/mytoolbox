@@ -1,10 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
-  ArrowRight, FileImage, FileText, Video, Music, 
-  Check, Shield, Clock, FileCheck, Search 
+  ArrowRight, Search 
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -26,21 +25,11 @@ type ToolCategory =
   | 'Text'
   | 'Utility';
 
-interface Tool {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  path: string;
-  category: Exclude<ToolCategory, 'All'>;
-  popular?: boolean;
-  available?: boolean;
-}
-
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('All');
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const navigate = useNavigate();
   
   // Track user interaction for AdSense
   React.useEffect(() => {
@@ -60,47 +49,13 @@ const HomePage = () => {
     };
   }, []);
 
-  // Define popular tools
-  const popularTools: Tool[] = [
-    {
-      id: 'image-to-pdf',
-      name: 'Image to PDF',
-      description: 'Convert single or multiple images to PDF while preserving quality',
-      icon: <FileImage className="h-8 w-8 text-blue-600" />,
-      path: '/converter',
-      category: 'Image',
-      popular: true,
-      available: true,
-    },
-    {
-      id: 'pdf-to-image',
-      name: 'PDF to Image',
-      description: 'Extract images from PDF files in high quality',
-      icon: <FileImage className="h-8 w-8 text-blue-500" />,
-      path: '/pdf-to-image',
-      category: 'Document',
-      popular: true,
-      available: true,
-    },
-    {
-      id: 'video-compressor',
-      name: 'Video Compressor',
-      description: 'Reduce video file size while maintaining quality',
-      icon: <Video className="h-8 w-8 text-purple-600" />,
-      path: '/tools',
-      category: 'Video',
-      popular: true,
-    },
-    {
-      id: 'pdf-merger',
-      name: 'PDF Merger',
-      description: 'Combine multiple PDF files into a single document',
-      icon: <FileText className="h-8 w-8 text-green-600" />,
-      path: '/tools',
-      category: 'Document',
-      popular: true,
-    },
-  ];
+  // Handle search submission
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/tools?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   // Define tool categories
   const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility'];
@@ -130,24 +85,25 @@ const HomePage = () => {
               
               {/* Search and Filters */}
               <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
                   <div className="w-full md:w-1/2 relative">
-                    <div className="relative rounded-md overflow-hidden cosmic-search">
+                    <div className="relative rounded-md overflow-hidden">
                       <Input
                         type="text"
                         placeholder="Search tools..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
+                        className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent pl-10"
                       />
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <Search className="h-4 w-4 text-muted-foreground" />
+                      </div>
                     </div>
                   </div>
-                  <Link to="/tools" className="w-full md:w-auto">
-                    <Button size="lg" className="w-full md:w-auto bg-gradient-primary hover:shadow-lg transition-shadow">
-                      See All Tools <Search className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
-                </div>
+                  <Button type="submit" size="lg" className="w-full md:w-auto bg-gradient-primary hover:shadow-lg transition-shadow">
+                    Find Tools <Search className="ml-2 h-5 w-5" />
+                  </Button>
+                </form>
               </div>
               
               {/* Category Filter Pills */}
@@ -164,6 +120,26 @@ const HomePage = () => {
                   </Button>
                 ))}
               </div>
+              
+              {/* Can't find what you need box */}
+              <div className="max-w-lg mx-auto mt-12 p-6 glass-card animate-fade-in" style={{ animationDelay: "0.5s" }}>
+                <h3 className="text-xl font-semibold mb-3">Can't find what you need?</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Check out our complete tools collection or contact us to suggest a new tool.
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <Link to="/tools">
+                    <Button variant="outline" size="sm">
+                      Browse All Tools
+                    </Button>
+                  </Link>
+                  <Link to="/contact">
+                    <Button variant="outline" size="sm">
+                      Suggest a Tool
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -173,47 +149,6 @@ const HomePage = () => {
           format="horizontal" 
           contentLoaded={hasUserInteracted} 
         />
-        
-        {/* Popular Tools */}
-        <section className="py-12">
-          <div className="container px-4 mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Popular Tools</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Discover our most-used tools that users love.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {popularTools.map(tool => (
-                <Link
-                  key={tool.id}
-                  to={tool.path}
-                  className="glass-card p-6 rounded-xl text-center hover:shadow-lg transition-shadow hover:scale-105"
-                >
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                    {tool.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{tool.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {tool.description}
-                  </p>
-                  <Button size="sm" className={tool.available ? "bg-gradient-primary" : ""}>
-                    {tool.available ? 'Use Tool' : 'Coming Soon'}
-                  </Button>
-                </Link>
-              ))}
-            </div>
-            
-            <div className="mt-12 text-center">
-              <Link to="/tools">
-                <Button size="lg" className="bg-gradient-primary hover:shadow-lg transition-shadow">
-                  See All Tools <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
         
         {/* Key Features Section */}
         <FeaturesSection />
@@ -234,7 +169,7 @@ const HomePage = () => {
                   1
                 </div>
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                  <Check className="h-8 w-8 text-indigo-500" />
+                  <ArrowRight className="h-8 w-8 text-indigo-500" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Choose Your Tool</h3>
                 <p className="text-sm text-muted-foreground">
@@ -247,7 +182,7 @@ const HomePage = () => {
                   2
                 </div>
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                  <FileImage className="h-8 w-8 text-indigo-500" />
+                  <ArrowRight className="h-8 w-8 text-indigo-500" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Upload Your Files</h3>
                 <p className="text-sm text-muted-foreground">

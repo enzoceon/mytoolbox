@@ -147,15 +147,15 @@ const Header = () => {
           <Sheet>
             <SheetTrigger asChild>
               <button 
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 border border-white/10"
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors premium-button rounded-full flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border border-white/20 hover:from-indigo-500/60 hover:to-purple-500/60"
                 aria-label="Menu"
               >
                 <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
             <SheetContent 
-              className="w-full sm:max-w-none h-[100dvh] p-0 border-none"
-              // Remove onPointerDownOutside and onEscapeKeyDown to prevent closing on outside click or escape key
+              className="w-[100vw] sm:max-w-none h-[100dvh] p-0 border-none"
+              // Prevent closing on outside click or escape key
               onPointerDownOutside={(e) => e.preventDefault()}
               onEscapeKeyDown={(e) => e.preventDefault()}
               side="right"
@@ -173,10 +173,10 @@ const Header = () => {
                     {menuCategories.map((category) => (
                       <div key={category.title} className="px-6 py-3 border-b border-white/5 last:border-0">
                         <div className="flex items-center py-2 text-base font-medium">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-indigo-500/20 to-purple-500/20 mr-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-indigo-500/30 to-purple-500/30 mr-3">
                             {category.icon}
                           </div>
-                          <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">{category.title}</span>
+                          <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent dark:from-white dark:to-white/80">{category.title}</span>
                         </div>
                         <div className="mt-2 pl-11">
                           {category.items.map((item) => (

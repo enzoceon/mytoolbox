@@ -95,12 +95,13 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-xl dark:bg-white/10 dark:border-white/5;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-sm dark:bg-white/10 dark:border-white/5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   }
   
   .glass-card:hover {
-    @apply transform -translate-y-1 shadow-2xl bg-white/80 dark:bg-white/15;
+    @apply transform -translate-y-1 bg-white/90 dark:bg-white/15;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   }
   
   .pulse-btn {
@@ -144,5 +145,21 @@
   .star {
     @apply absolute rounded-full bg-white;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Enhanced search input */
+  .search-input {
+    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md rounded-md border border-white/20 dark:border-white/10 focus-within:border-indigo-300 dark:focus-within:border-indigo-500 transition-colors;
+  }
+
+  /* Light theme specific improvements */
+  .light .glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+  
+  .light .glass-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
   }
 }
