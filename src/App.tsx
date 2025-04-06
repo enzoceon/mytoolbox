@@ -61,7 +61,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<AllTools />} />
         <Route path="/converter" element={<Index />} />
-        <Route path="/image-to-pdf" element={<PdfToImage />} />
+        <Route path="/pdf-to-image" element={<PdfToImage />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />

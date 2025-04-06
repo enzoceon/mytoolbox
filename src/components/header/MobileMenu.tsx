@@ -28,7 +28,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       icon: <FileImage className="h-5 w-5" />,
       items: [
         { name: "Image to PDF", path: "/converter" },
-        { name: "PDF to Image", path: "/image-to-pdf" },
+        { name: "PDF to Image", path: "/pdf-to-image" },
       ]
     },
     {
