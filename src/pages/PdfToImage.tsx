@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,9 +5,6 @@ import PdfUploader from '@/components/PdfUploader';
 import PdfConversionArea from '@/components/PdfConversionArea';
 import SpaceBackground from '@/components/SpaceBackground';
 import HowToUse from '@/components/HowToUse';
-import FeaturesSection from '@/components/sections/FeaturesSection';
-import FaqSection from '@/components/sections/FaqSection';
-import WhyChooseSection from '@/components/sections/WhyChooseSection';
 import { Helmet } from 'react-helmet-async';
 import JSZip from 'jszip';
 import { toast } from "sonner";
@@ -192,18 +188,6 @@ const PdfToImage = () => {
           
           <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <HowToUse />
-          </div>
-          
-          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            <FeaturesSection />
-          </div>
-          
-          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-            <WhyChooseSection />
-          </div>
-          
-          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.7s" }}>
-            <FaqSection />
           </div>
         </main>
         
