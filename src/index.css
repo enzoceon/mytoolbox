@@ -140,7 +140,7 @@
   }
   
   .glow-text {
-    /* Removed text shadow effect */
+    /* Removed the text shadow effect entirely */
     @apply text-foreground;
   }
 }
