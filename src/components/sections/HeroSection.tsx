@@ -8,7 +8,7 @@ const HeroSection: React.FC = () => {
         Transform Images to <span className="bg-gradient-primary bg-clip-text text-transparent">PDFs</span> in Seconds
       </h1>
       <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-        Convert single or multiple images to PDF while preserving exact dimensions and quality. Free, secure, and no registration required.
+        Convert single or multiple images to PDF while preserving exact dimensions and quality. Fast. Free. Fluid. Frequent.
       </p>
     </section>
   );

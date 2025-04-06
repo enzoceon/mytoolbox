@@ -125,23 +125,23 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Image2PDF - Free Online Image to PDF Converter | No Registration Required</title>
-        <meta name="description" content="Instantly convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks, no file size limits. Privacy-focused browser-based conversion." />
+        <title>Image to PDF - Free Online Image to PDF Converter | No Registration Required</title>
+        <meta name="description" content="Instantly convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks, no file size limits. Fast. Free. Fluid. Frequent." />
         <link rel="canonical" href="https://image2pdf.site/" />
         <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert image to pdf online, free pdf converter, image conversion tool, browser-based pdf conversion, no watermarks, privacy-focused" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://image2pdf.site/" />
-        <meta property="og:title" content="Image2PDF - Convert Images to PDF Instantly | 100% Free" />
-        <meta property="og:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration." />
+        <meta property="og:title" content="Image to PDF - Convert Images to PDF Instantly | 100% Free" />
+        <meta property="og:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration. Fast. Free. Fluid. Frequent." />
         <meta property="og:image" content="https://image2pdf.site/og-image.jpg" />
         
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://image2pdf.site/" />
-        <meta property="twitter:title" content="Image2PDF - Convert Images to PDF Instantly | 100% Free" />
-        <meta property="twitter:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration." />
+        <meta property="twitter:title" content="Image to PDF - Convert Images to PDF Instantly | 100% Free" />
+        <meta property="twitter:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration. Fast. Free. Fluid. Frequent." />
         <meta property="twitter:image" content="https://image2pdf.site/og-image.jpg" />
         
         {/* Structured Data for Rich Snippets */}
@@ -149,9 +149,9 @@ const Index = () => {
           {
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            "name": "Image2PDF",
+            "name": "Image to PDF",
             "url": "https://image2pdf.site/",
-            "description": "Free online tool to convert images to PDF documents without watermarks or registration.",
+            "description": "Free online tool to convert images to PDF documents without watermarks or registration. Fast. Free. Fluid. Frequent.",
             "applicationCategory": "Utility",
             "operatingSystem": "Web Browser",
             "offers": {

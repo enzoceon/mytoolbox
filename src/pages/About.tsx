@@ -13,8 +13,8 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>About Image2PDF - Our Story and Mission</title>
-        <meta name="description" content="Learn about Image2PDF - our mission, values, and how our free online tool helps users convert images to PDF files without registration or watermarks." />
+        <title>About Image to PDF - Our Story and Mission</title>
+        <meta name="description" content="Learn about Image to PDF - our mission, values, and how our free online tool helps users convert images to PDF files without registration or watermarks." />
         <link rel="canonical" href="https://image2pdf.site/about" />
       </Helmet>
       
@@ -31,11 +31,11 @@ const About = () => {
         </div>
         
         <section className="glass-card rounded-xl p-8 mb-10 animate-fade-in">
-          <h1 className="text-3xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">About Image2PDF</h1>
+          <h1 className="text-3xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">About Image to PDF</h1>
           
           <div className="space-y-4 text-foreground">
             <p>
-              Welcome to Image2PDF - the easiest and most elegant way to convert your images to PDF files online.
+              Welcome to Image to PDF - the easiest and most elegant way to convert your images to PDF files online.
             </p>
             
             <p>
@@ -45,7 +45,7 @@ const About = () => {
             
             <h2 className="text-xl font-semibold mt-6 mb-3">Our Story</h2>
             <p>
-              Image2PDF was created out of frustration with existing conversion tools that were either cluttered with ads,
+              Image to PDF was created out of frustration with existing conversion tools that were either cluttered with ads,
               difficult to use, or required payment. We believe that simple digital tools should be accessible to everyone,
               regardless of technical expertise or budget.
             </p>
@@ -86,19 +86,19 @@ const About = () => {
             
             <h2 className="text-xl font-semibold mt-6 mb-3">How It Works</h2>
             <p>
-              Image2PDF uses client-side JavaScript to convert your images to PDF files. This means your images never leave your device -
+              Image to PDF uses client-side JavaScript to convert your images to PDF files. This means your images never leave your device -
               the conversion happens right in your browser, ensuring your data remains private and secure.
             </p>
             
             <h2 className="text-xl font-semibold mt-6 mb-3">Content Quality & AdSense Compliance</h2>
             <p>
-              At Image2PDF, we are committed to providing high-quality, valuable content to our users. Our pages are designed to offer useful 
+              At Image to PDF, we are committed to providing high-quality, valuable content to our users. Our pages are designed to offer useful 
               information and functionality, not just to host advertisements. We strictly adhere to Google AdSense Program Policies, ensuring 
               that advertisements appear only alongside substantial, relevant content that provides real value to our users.
             </p>
             
             <p className="mt-6">
-              Thank you for choosing Image2PDF for your conversion needs. We're constantly working to improve our service,
+              Thank you for choosing Image to PDF for your conversion needs. We're constantly working to improve our service,
               so if you have any feedback or suggestions, please don't hesitate to <Link to="/contact" className="text-primary hover:underline">contact us</Link>.
             </p>
           </div>
@@ -112,8 +112,8 @@ const About = () => {
           
           <div className="space-y-6">
             <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Is Image2PDF really free?</h3>
-              <p>Yes! Image2PDF is completely free to use with no hidden costs. We don't require registration or payment information.</p>
+              <h3 className="text-lg font-medium mb-2">Is Image to PDF really free?</h3>
+              <p>Yes! Image to PDF is completely free to use with no hidden costs. We don't require registration or payment information.</p>
             </div>
             
             <div className="border-b border-gray-200 pb-4">
@@ -132,8 +132,8 @@ const About = () => {
             </div>
             
             <div className="pb-4">
-              <h3 className="text-lg font-medium mb-2">Can I use Image2PDF on my mobile device?</h3>
-              <p>Yes! Image2PDF is fully responsive and works on smartphones and tablets as well as desktop computers.</p>
+              <h3 className="text-lg font-medium mb-2">Can I use Image to PDF on my mobile device?</h3>
+              <p>Yes! Image to PDF is fully responsive and works on smartphones and tablets as well as desktop computers.</p>
             </div>
           </div>
         </section>

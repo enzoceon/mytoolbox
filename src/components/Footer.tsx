@@ -23,10 +23,10 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">Image2PDF</h3>
+            <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">Image to PDF</h3>
             <p className="text-sm text-muted-foreground">
               Convert your images to PDF quickly and easily with our free online tool.
-              No installation required. Fast. Free. Fluid.
+              Fast. Free. Fluid. Frequent.
             </p>
           </div>
           
@@ -83,7 +83,7 @@ const Footer = () => {
         </div>
         
         <div className="mt-10 pt-6 border-t border-gray-200 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Image2PDF. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Image to PDF. All rights reserved.</p>
         </div>
       </div>
     </footer>
