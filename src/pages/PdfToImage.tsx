@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,140 +7,35 @@ import PdfConversionArea from '@/components/PdfConversionArea';
 import SpaceBackground from '@/components/SpaceBackground';
 import HowToUse from '@/components/HowToUse';
 import { Helmet } from 'react-helmet-async';
-import JSZip from 'jszip';
-import { toast } from "sonner";
-
-// PDF.js library imports
-import * as pdfjsLib from 'pdfjs-dist';
-import { GlobalWorkerOptions } from 'pdfjs-dist/build/pdf';
-
-// Set worker path to pdf.js worker
-GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+import PdfWorkerSetup from '@/components/PdfWorkerSetup';
+import { usePdfConverter } from '@/hooks/usePdfConverter';
+import PdfConversionResult from '@/components/PdfConversionResult';
+import { ArrowDown } from 'lucide-react';
 
 const PdfToImage = () => {
-  const [selectedPdf, setSelectedPdf] = useState<File | null>(null);
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [isConverting, setIsConverting] = useState(false);
-  const [pageCount, setPageCount] = useState(0);
-  const [convertedImages, setConvertedImages] = useState<string[]>([]);
+  const {
+    selectedPdf,
+    pdfUrl,
+    downloadUrl,
+    isConverting,
+    pageCount,
+    convertedImages,
+    handlePdfSelect,
+    handleRemovePdf,
+    convertPdfToImage
+  } = usePdfConverter();
   
-  const handlePdfSelect = async (file: File) => {
-    // Clear previous results
-    if (pdfUrl) {
-      URL.revokeObjectURL(pdfUrl);
-    }
-    if (downloadUrl) {
-      URL.revokeObjectURL(downloadUrl);
-    }
-    
-    setSelectedPdf(file);
-    const fileUrl = URL.createObjectURL(file);
-    setPdfUrl(fileUrl);
-    setDownloadUrl(null);
-    setConvertedImages([]);
-    
-    try {
-      // Load the PDF to get page count
-      const loadingTask = pdfjsLib.getDocument(fileUrl);
-      const pdf = await loadingTask.promise;
-      setPageCount(pdf.numPages);
-    } catch (error) {
-      console.error("Error loading PDF:", error);
-      toast.error("Error loading PDF. Please try another file.");
-      handleRemovePdf();
-    }
-  };
+  const [showAnimation, setShowAnimation] = useState(false);
   
-  const handleRemovePdf = () => {
-    if (selectedPdf) {
-      setSelectedPdf(null);
-      
-      if (pdfUrl) {
-        URL.revokeObjectURL(pdfUrl);
-        setPdfUrl(null);
-      }
-      
-      if (downloadUrl) {
-        URL.revokeObjectURL(downloadUrl);
-        setDownloadUrl(null);
-      }
-      
-      // Clear converted images
-      convertedImages.forEach(url => URL.revokeObjectURL(url));
-      setConvertedImages([]);
-      
-      setPageCount(0);
-    }
-  };
-  
-  const convertPdfToImage = async () => {
-    if (!pdfUrl) return;
+  // Show conversion animation when user hits convert
+  const handleConvertClick = () => {
+    setShowAnimation(true);
+    convertPdfToImage();
     
-    setIsConverting(true);
-    toast.loading("Converting PDF to images...");
-    
-    try {
-      const loadingTask = pdfjsLib.getDocument(pdfUrl);
-      const pdf = await loadingTask.promise;
-      const imageUrls: string[] = [];
-      
-      // Create a zip file for multiple pages
-      const zip = new JSZip();
-      const imgFolder = zip.folder("images");
-      
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        
-        const viewport = page.getViewport({ scale: 2.0 });
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        
-        if (!context) {
-          throw new Error("Could not get canvas context");
-        }
-        
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        
-        await page.render({
-          canvasContext: context,
-          viewport: viewport
-        }).promise;
-        
-        // Convert canvas to blob
-        const imgBlob = await new Promise<Blob>((resolve) => {
-          canvas.toBlob((blob) => {
-            if (blob) resolve(blob);
-            else resolve(new Blob());
-          }, 'image/png');
-        });
-        
-        // Add to zip file
-        if (imgFolder) {
-          imgFolder.file(`page-${i}.png`, imgBlob);
-        }
-        
-        // Create URL for preview
-        const imgUrl = URL.createObjectURL(imgBlob);
-        imageUrls.push(imgUrl);
-      }
-      
-      // Generate zip file for download
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
-      const zipUrl = URL.createObjectURL(zipBlob);
-      
-      setConvertedImages(imageUrls);
-      setDownloadUrl(zipUrl);
-      toast.dismiss();
-      toast.success(`PDF successfully converted to ${imageUrls.length} images!`);
-    } catch (error) {
-      console.error("Error converting PDF to images:", error);
-      toast.dismiss();
-      toast.error("Error converting PDF. Please try again.");
-    } finally {
-      setIsConverting(false);
-    }
+    // Reset animation state after conversion is done
+    setTimeout(() => {
+      setShowAnimation(false);
+    }, 2000);
   };
   
   return (
@@ -149,6 +45,7 @@ const PdfToImage = () => {
         <meta name="description" content="Convert PDF files to high-quality images (JPG, PNG) for free. No registration or installation required. Process files securely in your browser." />
       </Helmet>
       
+      <PdfWorkerSetup />
       <SpaceBackground />
       
       <div className="min-h-screen flex flex-col">
@@ -176,14 +73,50 @@ const PdfToImage = () => {
           </div>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <PdfConversionArea
-              hasPdf={!!selectedPdf}
-              onConvert={convertPdfToImage}
-              downloadUrl={downloadUrl}
-              isConverting={isConverting}
-              pageCount={pageCount}
-              convertedImages={convertedImages}
-            />
+            {selectedPdf && !downloadUrl && !isConverting && (
+              <button
+                onClick={handleConvertClick}
+                className="px-8 py-3 rounded-md pulse-btn font-medium shadow-md hover:shadow-lg transition-shadow flex items-center mt-10"
+                disabled={isConverting}
+              >
+                Convert PDF to Images
+              </button>
+            )}
+            
+            {isConverting && (
+              <div className="w-full max-w-md flex flex-col items-center mt-10">
+                <div className="mb-6 flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center mb-3">
+                    <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                  </div>
+                  <p className="text-sm font-medium text-foreground">
+                    Converting PDF to images...
+                    {pageCount > 0 && ` (${pageCount} pages)`}
+                  </p>
+                </div>
+                
+                <div className="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div className="h-full bg-accent animate-progress rounded-full" />
+                </div>
+              </div>
+            )}
+            
+            {showAnimation && !downloadUrl && (
+              <div className="my-6 flex flex-col items-center">
+                <ArrowDown 
+                  size={24} 
+                  className="text-accent animate-bounce-soft"
+                />
+              </div>
+            )}
+            
+            {downloadUrl && (
+              <PdfConversionResult 
+                downloadUrl={downloadUrl}
+                convertedImages={convertedImages}
+                onConvert={convertPdfToImage}
+              />
+            )}
           </div>
           
           <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
