@@ -26,7 +26,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">Image to PDF</h3>
             <p className="text-sm text-muted-foreground">
               Convert your images to PDF quickly and easily with our free online tool.
-              Fast. Free. Fluid. Frequent.
+              Fast. Free. Fluid.
             </p>
           </div>
           
