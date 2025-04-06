@@ -14,13 +14,12 @@ import Footer from '@/components/Footer';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AdPlacement from '@/components/AdPlacement';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import WhyChooseSection from '@/components/sections/WhyChooseSection';
 import FaqSection from '@/components/sections/FaqSection';
 
-// Define tool types
 type ToolCategory = 
   | 'All'
   | 'Image'
@@ -45,14 +44,13 @@ const AllTools = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('All');
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const toolsGridRef = useRef<HTMLDivElement>(null);
 
-  // Track user interaction for AdSense
-  React.useEffect(() => {
+  useEffect(() => {
     const handleInteraction = () => {
       setHasUserInteracted(true);
     };
 
-    // Listen for user interaction events
     document.addEventListener('click', handleInteraction, { once: true });
     document.addEventListener('keydown', handleInteraction, { once: true });
     document.addEventListener('scroll', handleInteraction, { once: true });
@@ -64,7 +62,34 @@ const AllTools = () => {
     };
   }, []);
 
-  // Define all tools
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const toolCards = entry.target.querySelectorAll('.tool-card');
+            toolCards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('stagger-animate');
+              }, index * 50);
+            });
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+    
+    if (toolsGridRef.current) {
+      observer.observe(toolsGridRef.current);
+    }
+    
+    return () => {
+      if (toolsGridRef.current) {
+        observer.unobserve(toolsGridRef.current);
+      }
+    };
+  }, [searchQuery, activeCategory]);
+
   const tools: Tool[] = [
     {
       id: 'ai-text-generator',
@@ -270,10 +295,9 @@ const AllTools = () => {
     },
   ];
 
-  // Filter tools based on search query and active category
   const filteredTools = tools.filter(tool => {
     const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+                        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === 'All' || tool.category === activeCategory;
     
     return matchesSearch && matchesCategory;
@@ -293,18 +317,16 @@ const AllTools = () => {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="py-16 md:py-24">
           <div className="container px-4 mx-auto">
             <div className="text-center mx-auto max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in glow-text">
                 The <span className="bg-gradient-primary bg-clip-text text-transparent">Digital Toolbox</span> For Everyone
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
                 Dozens of powerful online tools to make your digital life easier. Convert, edit, and transform files with no registration required.
               </p>
               
-              {/* Search and Filters */}
               <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
                   <div className="w-full md:w-1/2 relative">
@@ -321,7 +343,6 @@ const AllTools = () => {
                 </div>
               </div>
               
-              {/* Category Filter Pills */}
               <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.4s" }}>
                 {categories.map((category) => (
                   <Button
@@ -329,7 +350,7 @@ const AllTools = () => {
                     variant={activeCategory === category ? "default" : "outline"}
                     size="sm"
                     onClick={() => setActiveCategory(category)}
-                    className={activeCategory === category ? "bg-gradient-primary" : ""}
+                    className={activeCategory === category ? "bg-gradient-primary cosmic-btn" : "cosmic-btn"}
                   >
                     {category}
                   </Button>
@@ -339,31 +360,29 @@ const AllTools = () => {
           </div>
         </section>
 
-        {/* AdSense placement */}
         <AdPlacement 
           format="horizontal" 
           contentLoaded={hasUserInteracted} 
         />
         
-        {/* All Tools List */}
         <section className="py-12">
           <div className="container px-4 mx-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="text-3xl font-bold mb-4 glow-text">
                 {activeCategory !== 'All' ? `${activeCategory} Tools` : 'All Tools'}
               </h2>
               <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent flex-grow mx-4"></div>
             </div>
             
             {filteredTools.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" ref={toolsGridRef}>
                 {filteredTools.map(tool => (
                   <Link
                     key={tool.id}
                     to={tool.path}
-                    className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start"
+                    className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start tool-card opacity-0 feature-card"
                   >
-                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3 shrink-0 pulse-icon">
                       {tool.icon}
                     </div>
                     <div>
@@ -382,7 +401,7 @@ const AllTools = () => {
                 <p className="text-lg text-muted-foreground">No tools found matching your search criteria.</p>
                 <Button 
                   variant="outline" 
-                  className="mt-4"
+                  className="mt-4 cosmic-btn"
                   onClick={() => {
                     setSearchQuery('');
                     setActiveCategory('All');
@@ -395,31 +414,26 @@ const AllTools = () => {
           </div>
         </section>
 
-        {/* Key Features Section */}
         <FeaturesSection />
         
-        {/* How It Works Section */}
         <WhyChooseSection />
         
-        {/* FAQ Section */}
         <FaqSection />
         
-        {/* Bottom Ad */}
         <AdPlacement 
           format="rectangle" 
           className="mt-10" 
           contentLoaded={hasUserInteracted} 
         />
         
-        {/* Contact CTA Section */}
-        <section className="mt-16 glass-card rounded-xl p-8 text-center mx-auto max-w-4xl mb-16">
+        <section className="mt-16 glass-card rounded-xl p-8 text-center mx-auto max-w-4xl mb-16 shimmer-bg">
           <div className="container px-4">
-            <h2 className="text-2xl font-bold mb-4">Can't find what you need?</h2>
+            <h2 className="text-2xl font-bold mb-4 glow-text">Can't find what you need?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
               We're constantly adding new tools based on user feedback. Let us know what tool you'd like to see next!
             </p>
             <Link to="/contact">
-              <Button className="bg-gradient-primary hover:shadow-lg transition-shadow">
+              <Button className="bg-gradient-primary hover:shadow-lg transition-shadow cosmic-btn">
                 Suggest a Tool
               </Button>
             </Link>
