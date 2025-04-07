@@ -50,8 +50,8 @@ const JPGtoPNG = () => {
           </div>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <div className="w-full max-w-3xl">
-              <div className="drop-area border-2 border-dashed border-purple-500/50 rounded-xl p-4 mb-6">
+            <div className="w-full max-w-4xl">
+              <div className="drop-area border-2 border-dashed border-purple-500/50 rounded-xl p-6 mb-6">
                 <ImageUploader
                   onImageSelect={handleImageSelect}
                   selectedImages={previewUrls}
