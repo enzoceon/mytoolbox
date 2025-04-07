@@ -156,8 +156,11 @@ const PdfToImage = () => {
         
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 tracking-tight bg-gradient-primary bg-clip-text text-transparent animate-fade-in">
-              PDF to Image Converter
+            <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
+              <span className="bg-gradient-primary bg-clip-text text-transparent">PDF</span>
+              <span className="text-white"> to </span>
+              <span className="bg-gradient-primary bg-clip-text text-transparent">Image</span>
+              <span className="text-white"> Converter</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
               Convert PDF files to high-quality images with ease. Free, secure, and browser-based.

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Download, ArrowDown, Check, Image, EyeIcon, X } from 'lucide-react';
+import { Download, ArrowDown, Check, Image, EyeIcon, X, ArrowLeft } from 'lucide-react';
 
 interface PdfConversionAreaProps {
   hasPdf: boolean;
@@ -116,6 +116,15 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
           {previewIndex !== null && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
               <div className="relative max-w-4xl max-h-[90vh] w-full">
+                <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                  <button 
+                    onClick={() => setPreviewIndex(null)}
+                    className="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-1"
+                  >
+                    <ArrowLeft size={20} />
+                    <span>Back</span>
+                  </button>
+                </div>
                 <button 
                   onClick={() => setPreviewIndex(null)}
                   className="absolute top-2 right-2 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white"
