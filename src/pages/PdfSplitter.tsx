@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -27,14 +26,6 @@ import {
 } from "@/components/ui/card";
 import { toast } from 'sonner';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { splitPdfFile } from '@/utils/pdfUtils';
 
 const PdfSplitter = () => {
@@ -143,24 +134,6 @@ const PdfSplitter = () => {
       <Header />
       
       <main className="flex-1 container px-4 mx-auto py-12">
-        <div className="mb-6">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/tools">Tools</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>PDF Splitter</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-        
         <BackButton />
         
         <div className="max-w-4xl mx-auto">
