@@ -15,6 +15,7 @@ import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { ImageConversionProvider } from "./components/conversion/ImageConversionProvider";
+import ConverterSection from "./components/sections/ConverterSection";
 
 // ScrollToTop component to handle scrolling on route changes
 const ScrollToTop = () => {
@@ -77,9 +78,6 @@ const AppContent = () => {
     </QueryClientProvider>
   );
 };
-
-// Import ConverterSection here to avoid circular dependencies
-import ConverterSection from "./components/sections/ConverterSection";
 
 const App = () => {
   return (

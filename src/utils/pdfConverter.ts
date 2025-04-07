@@ -85,25 +85,3 @@ export const convertImagesToPdf = async (imageUrls: string[]): Promise<string> =
     }
   });
 };
-
-// Simulate a conversion process with delay for better UX
-export const simulateConversion = async (imageUrls: string[]): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    try {
-      // Add a small delay to show the conversion process
-      // More images = longer delay for better UX
-      const delay = Math.min(1000 + (imageUrls.length * 200), 5000);
-      
-      setTimeout(async () => {
-        try {
-          const pdfUrl = await convertImagesToPdf(imageUrls);
-          resolve(pdfUrl);
-        } catch (error) {
-          reject(error);
-        }
-      }, delay);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};

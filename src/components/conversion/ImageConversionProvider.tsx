@@ -1,7 +1,7 @@
 
 import React, { createContext, useState, useCallback, useContext, ReactNode } from 'react';
 import { toast } from "sonner";
-import { simulateConversion } from '@/utils/pdfConverter';
+import { convertImagesToPdf } from '@/utils/pdfConverter';
 
 type ImageConversionContextType = {
   selectedFiles: File[];
@@ -112,26 +112,27 @@ export const ImageConversionProvider: React.FC<ImageConversionProviderProps> = (
     setPdfUrl(null);
   }, [previewUrls, pdfUrl]);
 
-  const handleConvert = useCallback(() => {
-    if (previewUrls.length === 0) return;
+  const handleConvert = useCallback(async () => {
+    if (previewUrls.length === 0) {
+      toast.error("Please upload at least one image first");
+      return;
+    }
     
     setIsConverting(true);
-    toast.loading(`Converting ${previewUrls.length > 1 ? 'images' : 'image'}...`);
+    toast.loading(`Converting ${previewUrls.length > 1 ? 'images' : 'image'} to PDF...`);
     
-    simulateConversion(previewUrls)
-      .then((url) => {
-        setPdfUrl(url);
-        toast.dismiss();
-        toast.success(`${previewUrls.length > 1 ? 'Images' : 'Image'} successfully converted to PDF!`);
-      })
-      .catch((error) => {
-        console.error("Conversion error:", error);
-        toast.dismiss();
-        toast.error("Error converting images. Please try again.");
-      })
-      .finally(() => {
-        setIsConverting(false);
-      });
+    try {
+      const pdf = await convertImagesToPdf(previewUrls);
+      setPdfUrl(pdf);
+      toast.dismiss();
+      toast.success(`${previewUrls.length > 1 ? 'Images' : 'Image'} successfully converted to PDF!`);
+    } catch (error) {
+      console.error("Conversion error:", error);
+      toast.dismiss();
+      toast.error("Error converting images. Please try again.");
+    } finally {
+      setIsConverting(false);
+    }
   }, [previewUrls]);
 
   const value = {
