@@ -1,9 +1,11 @@
 
-import type { Config } from "tailwindcss";
+import { type Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
-export default {
+const config: Config = {
   darkMode: ["class"],
   content: [
+    "./index.html",
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
@@ -19,6 +21,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Poppins", ...fontFamily.sans],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -54,6 +59,11 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -64,52 +74,46 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(10px)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)"
-          }
+          from: { opacity: "0" },
+          to: { opacity: "1" },
         },
-        "scale-up": {
-          "0%": {
-            transform: "scale(0.95)",
-            opacity: "0"
-          },
-          "100%": {
-            transform: "scale(1)",
-            opacity: "1"
-          }
+        "fade-out": {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
         },
         "slide-up": {
-          "0%": { 
-            transform: "translateY(20px)",
-            opacity: "0" 
-          },
-          "100%": { 
-            transform: "translateY(0)",
-            opacity: "1" 
-          }
+          from: { transform: "translateY(10px)", opacity: "0" },
+          to: { transform: "translateY(0)", opacity: "1" },
+        },
+        "scale-up": {
+          from: { transform: "scale(0.95)", opacity: "0" },
+          to: { transform: "scale(1)", opacity: "1" },
         },
         "progress": {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" }
+          from: { width: "0%" },
+          to: { width: "100%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out",
-        "scale-up": "scale-up 0.3s ease-out",
-        "slide-up": "slide-up 0.3s ease-out",
-        "progress": "progress 2s ease-in-out forwards",
+        "fade-in": "fade-in 0.4s ease-out",
+        "fade-out": "fade-out 0.4s ease-out",
+        "slide-up": "slide-up 0.4s ease-out",
+        "scale-up": "scale-up 0.4s ease-out",
+        "progress": "progress 3s ease-in-out forwards",
       },
       backgroundImage: {
-        'gradient-space': 'linear-gradient(to bottom, #020814 0%, #070e1b 100%)',
+        'gradient-space': 'linear-gradient(to bottom, #020814 0%, #081029 100%)',
+        'gradient-nebula': 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15) 0%, rgba(76, 29, 149, 0.05) 100%)',
+        'gradient-primary': 'linear-gradient(to right, #8b5cf6, #6366f1)',
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [
+    require("tailwindcss-animate"),
+    require('@tailwindcss/aspect-ratio'),
+  ],
+};
+
+export default config;

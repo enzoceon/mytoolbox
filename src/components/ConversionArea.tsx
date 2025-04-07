@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Download } from 'lucide-react';
+import React from 'react';
+import { Download, FileImage } from 'lucide-react';
 
 interface ConversionAreaProps {
   hasImages: boolean;
@@ -22,58 +22,67 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
   }
 
   return (
-    <div className="mt-8 flex flex-col items-center">
+    <div className="mt-6 flex flex-col items-center">
       {!downloadUrl && !isConverting && (
         <button
           onClick={onConvert}
-          className="px-8 py-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
+          className="px-6 py-2.5 rounded-md bg-accent text-white hover:bg-accent/90 transition-colors flex items-center space-x-2"
           disabled={isConverting}
         >
-          {imageCount > 1 
-            ? `Convert ${imageCount} Images to PDF` 
-            : "Convert to PDF"
-          }
+          <FileImage className="h-4 w-4" />
+          <span>
+            {imageCount > 1 
+              ? `Convert ${imageCount} Images to PDF` 
+              : "Convert to PDF"
+            }
+          </span>
         </button>
       )}
       
       {isConverting && (
-        <div className="w-full max-w-md flex flex-col items-center">
-          <div className="mb-4 flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center mb-3">
-              <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            </div>
-            <p className="text-sm font-medium text-gray-300">
+        <div className="w-full flex flex-col items-center py-2">
+          <div className="flex items-center space-x-2 mb-2">
+            <div className="h-5 w-5 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-muted-foreground">
               {imageCount > 1 
-                ? `Converting ${imageCount} images to PDF...` 
-                : "Converting image to PDF..."
+                ? `Converting ${imageCount} images...` 
+                : "Converting image..."
               }
             </p>
           </div>
           
-          <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
-            <div className="h-full bg-blue-500 animate-progress rounded-full" />
+          <div className="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-full bg-accent animate-progress rounded-full"></div>
           </div>
         </div>
       )}
       
       {downloadUrl && (
-        <div className="mt-6 flex flex-col items-center animate-slide-up">
-          <div className="w-10 h-10 rounded-full bg-green-900/30 flex items-center justify-center mb-3">
-            <svg className="text-green-500 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+        <div className="w-full text-center">
+          <div className="flex flex-col items-center mb-4">
+            <div className="mb-2 rounded-full p-2 bg-green-100 dark:bg-green-900/30">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-600 dark:text-green-400">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-green-600 dark:text-green-400">
+              Conversion Complete!
+            </p>
           </div>
-          <p className="mb-4 text-sm font-medium text-green-500">
-            Conversion Complete!
-          </p>
+          
           <a
             href={downloadUrl}
-            download="image-to-pdf.pdf"
-            className="px-8 py-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all flex items-center"
+            download="images-to-pdf.pdf"
+            className="px-6 py-2.5 rounded-md bg-accent text-white hover:bg-accent/90 transition-colors flex items-center justify-center space-x-2 mx-auto w-full sm:w-auto"
           >
-            <Download size={18} className="mr-2" />
-            Download PDF
+            <Download className="h-4 w-4" />
+            <span>Download PDF</span>
           </a>
+          
+          <p className="text-xs text-muted-foreground mt-3">
+            Your files are processed locally and never uploaded to any server
+          </p>
         </div>
       )}
     </div>

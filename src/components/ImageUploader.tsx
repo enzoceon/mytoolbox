@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, Image as ImageIcon } from 'lucide-react';
 import { toast } from "sonner";
 
 interface ImageUploaderProps {
@@ -75,61 +75,58 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   // Render image previews if images are selected
   if (selectedImages && selectedImages.length > 0) {
     return (
-      <div className="w-full animate-scale-up">
-        <div className="relative w-full max-w-md mx-auto">
-          <div className="mb-4 flex justify-between items-center">
-            <h3 className="text-lg font-medium">Selected Images: {selectedImages.length}</h3>
-            <button 
-              onClick={onRemoveAllImages}
-              className="px-3 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-600 rounded-md transition-colors"
+      <div className="w-full">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-sm font-medium text-foreground">Selected Images ({selectedImages.length})</h3>
+          <button 
+            onClick={onRemoveAllImages}
+            className="text-xs px-2 py-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
+          >
+            Remove All
+          </button>
+        </div>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+          {selectedImages.map((imgUrl, index) => (
+            <div 
+              key={index} 
+              className="relative rounded-md overflow-hidden border border-gray-200 dark:border-gray-700"
             >
-              Remove All
-            </button>
-          </div>
-          
-          <div className="space-y-4">
-            {selectedImages.map((imgUrl, index) => (
-              <div 
-                key={index} 
-                className="relative rounded-xl overflow-hidden shadow-xl glass-card"
+              <button 
+                onClick={() => onRemoveImage(index)}
+                className="absolute top-1 right-1 p-1 bg-white dark:bg-gray-800 rounded-full shadow-sm z-10"
+                aria-label="Remove image"
               >
-                <button 
-                  onClick={() => onRemoveImage(index)}
-                  className="absolute top-3 right-3 p-1.5 bg-white/80 hover:bg-white rounded-full text-red-500 shadow-sm transition-colors z-10"
-                  aria-label="Remove image"
-                >
-                  &times;
-                </button>
-                <div className="aspect-w-16 aspect-h-9 bg-gray-100">
-                  <img 
-                    src={imgUrl} 
-                    alt={`Preview ${index + 1}`} 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <p className="text-sm text-muted-foreground">Image {index + 1}</p>
-                </div>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-red-500">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div className="aspect-w-3 aspect-h-2 bg-gray-100 dark:bg-gray-800">
+                <img 
+                  src={imgUrl} 
+                  alt={`Preview ${index + 1}`} 
+                  className="w-full h-full object-cover"
+                />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
           
-          <div className="mt-4 text-center">
-            <button
-              className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 text-sm font-medium hover:bg-blue-200 transition-colors"
-              onClick={handleBrowseClick}
-            >
-              Add More Images
-            </button>
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleFileInput}
-              multiple
-            />
-          </div>
+        <div className="text-center mt-4">
+          <button
+            className="px-4 py-2 text-sm bg-accent/10 text-accent rounded hover:bg-accent/20"
+            onClick={handleBrowseClick}
+          >
+            Add More Images
+          </button>
+          <input
+            type="file"
+            className="hidden"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileInput}
+            multiple
+          />
         </div>
       </div>
     );
@@ -137,39 +134,47 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   // Render upload area if no image is selected
   return (
-    <div className="w-full animate-fade-in">
+    <div className="w-full">
       <div 
-        className={`drop-area w-full max-w-md mx-auto p-6 border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center bg-[#080e1a] ${isDragging ? 'border-blue-300 bg-[#0c1224]' : ''}`}
+        className={`border-2 border-dashed rounded-lg ${isDragging 
+          ? 'border-accent bg-accent/5' 
+          : 'border-gray-300 dark:border-gray-700'
+        } p-6 text-center`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-4 p-4 rounded-full bg-blue-50 text-blue-500">
-          <Upload size={24} className="text-blue-500" />
+        <div className="flex flex-col items-center justify-center">
+          <div className="mb-3 rounded-full p-3 bg-accent/10">
+            <ImageIcon className="h-6 w-6 text-accent" />
+          </div>
+          
+          <h3 className="mb-1 text-sm font-medium text-foreground">Drag & drop images here</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Supports JPG, PNG, GIF, BMP, etc.
+          </p>
+          
+          <div className="flex items-center space-x-3 my-2">
+            <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700"></div>
+            <span className="text-xs text-muted-foreground">or</span>
+            <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          
+          <button
+            className="px-4 py-2 mt-2 bg-accent text-white rounded-md text-sm hover:bg-accent/90"
+            onClick={handleBrowseClick}
+          >
+            Select Images
+          </button>
+          <input
+            type="file"
+            className="hidden"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileInput}
+            multiple
+          />
         </div>
-        <h3 className="text-xl font-medium mb-1 text-white">Drop your images here</h3>
-        <p className="text-sm text-gray-400 mb-3 text-center">
-          Supports JPG, PNG and other image formats
-        </p>
-        <div className="flex items-center my-2 w-full max-w-[200px]">
-          <hr className="flex-grow border-gray-600" />
-          <span className="px-4 text-xs text-gray-400">OR</span>
-          <hr className="flex-grow border-gray-600" />
-        </div>
-        <button
-          className="mt-3 px-6 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
-          onClick={handleBrowseClick}
-        >
-          Browse Files
-        </button>
-        <input
-          type="file"
-          className="hidden"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileInput}
-          multiple
-        />
       </div>
     </div>
   );
