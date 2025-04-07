@@ -72,7 +72,7 @@ const AllTools = () => {
             toolCards.forEach((card, index) => {
               setTimeout(() => {
                 card.classList.add('stagger-animate');
-              }, index * 50);
+              }, index * 25);
             });
           }
         });
@@ -259,7 +259,6 @@ const AllTools = () => {
       path: '/tools',
       category: 'Text',
     },
-    // AI tools placed after text-to-speech as requested
     {
       id: 'ai-text-generator',
       name: 'AI Text Generator',

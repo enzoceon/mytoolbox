@@ -64,7 +64,7 @@ const HowToUse = () => {
   const toolName = isPdfToImage ? 'PDF to Image' : 'Image2PDF';
 
   return (
-    <section id="how-to-use" ref={sectionRef} className="py-12 px-4 bg-[#020814]">
+    <section id="how-to-use" ref={sectionRef} className="py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">How to Use {toolName}</h2>
