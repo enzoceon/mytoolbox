@@ -1,14 +1,9 @@
 
 import React from 'react';
-import { ImageConversionProvider } from '@/components/conversion/ImageConversionProvider';
-import HomePage from './HomePage';
+import { Navigate } from 'react-router-dom';
 
 const Index: React.FC = () => {
-  return (
-    <ImageConversionProvider>
-      <HomePage />
-    </ImageConversionProvider>
-  );
+  return <Navigate to="/" replace />;
 };
 
 export default Index;
