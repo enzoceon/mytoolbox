@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Upload, FileImage, Download } from 'lucide-react';
+import { Upload, FileImage, Download, Palette } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 const HowToUse = () => {
