@@ -13,12 +13,13 @@ import {
   FileImage, 
   Download, 
   Trash2, 
-  RotateCcw, 
+  RotateCcw,
   ArrowLeft,
   Image as ImageIcon
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
+import BackButton from '@/components/BackButton'; // Added BackButton import
 
 const DEFAULT_QUALITY = 75;
 const DEFAULT_MAX_WIDTH = 1200;
@@ -192,6 +193,8 @@ const ImageCompressor = () => {
         <Header />
         
         <main className="flex-1 container mx-auto px-4 py-8">
+          <BackButton /> {/* Added BackButton component */}
+          
           <div className="flex items-center mb-6">
             <Link to="/" className="inline-flex items-center mr-4">
               <Button variant="ghost" size="sm" className="gap-1">

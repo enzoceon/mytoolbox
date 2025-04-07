@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImagePreviewGrid from '@/components/image-uploader/ImagePreviewGrid';
 import UploadBox from '@/components/UploadBox';
+import BackButton from '@/components/BackButton'; // Added BackButton import
 
 const JPGtoPNG = () => {
   const {
@@ -40,6 +41,8 @@ const JPGtoPNG = () => {
         <Header />
         
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+          <BackButton /> {/* Added BackButton component */}
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
               <span className="bg-gradient-primary bg-clip-text text-transparent">JPG</span>
