@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Download, Check, EyeIcon, X } from 'lucide-react';
+import { Download, Check, EyeIcon, X, ArrowDown } from 'lucide-react';
 
 interface PdfConversionAreaProps {
   hasPdf: boolean;
