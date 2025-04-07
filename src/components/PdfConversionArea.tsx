@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { Download, ArrowDown, Check, Image, EyeIcon, X, ArrowLeft } from 'lucide-react';
+import { Download, ArrowDown, Check, X, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface PdfConversionAreaProps {
   hasPdf: boolean;
@@ -21,6 +22,7 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
 }) => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
   
   // Show conversion animation when user hits convert
   const handleConvertClick = () => {
@@ -33,6 +35,27 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
     }, 2000);
   };
 
+  const openPreview = (index: number) => {
+    setPreviewIndex(index);
+    setShowPreview(true);
+  };
+
+  const closePreview = () => {
+    setShowPreview(false);
+  };
+
+  const goToNextImage = () => {
+    if (previewIndex !== null && convertedImages) {
+      setPreviewIndex(Math.min(convertedImages.length - 1, previewIndex + 1));
+    }
+  };
+
+  const goToPrevImage = () => {
+    if (previewIndex !== null) {
+      setPreviewIndex(Math.max(0, previewIndex - 1));
+    }
+  };
+
   if (!hasPdf) {
     return null;
   }
@@ -42,7 +65,7 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
       {!downloadUrl && !isConverting && (
         <button
           onClick={handleConvertClick}
-          className="px-8 py-3 rounded-md pulse-btn font-medium shadow-md hover:shadow-lg transition-shadow flex items-center"
+          className="px-8 py-3 rounded-md pulse-btn font-medium shadow-md hover:shadow-lg transition-shadow flex items-center bg-accent text-white"
           disabled={isConverting}
         >
           Convert PDF to Images
@@ -93,7 +116,7 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
                 {convertedImages.map((img, idx) => (
                   <div key={idx} className="relative group">
                     <button 
-                      onClick={() => setPreviewIndex(idx)}
+                      onClick={() => openPreview(idx)}
                       className="w-full aspect-[3/4] rounded-md overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-accent transition-colors"
                     >
                       <img 
@@ -102,7 +125,10 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <EyeIcon className="w-6 h-6 text-white" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
                       </div>
                     </button>
                     <p className="text-xs text-center mt-1 text-muted-foreground">Page {idx + 1}</p>
@@ -112,52 +138,61 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
             </div>
           )}
           
-          {/* Full-size preview modal */}
-          {previewIndex !== null && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-              <div className="relative max-w-4xl max-h-[90vh] w-full">
-                <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+          {/* Image Preview Dialog */}
+          <Dialog open={showPreview} onOpenChange={setShowPreview}>
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-black border-none">
+              {previewIndex !== null && convertedImages[previewIndex] && (
+                <div className="relative w-full h-full flex flex-col">
+                  <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                    <button 
+                      onClick={closePreview}
+                      className="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-1"
+                    >
+                      <ArrowLeft size={20} />
+                      <span>Back</span>
+                    </button>
+                  </div>
+                  
                   <button 
-                    onClick={() => setPreviewIndex(null)}
-                    className="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-1"
+                    onClick={closePreview}
+                    className="absolute top-4 right-4 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white"
                   >
-                    <ArrowLeft size={20} />
-                    <span>Back</span>
+                    <X size={20} />
                   </button>
+                  
+                  <div className="flex-1 flex items-center justify-center p-4">
+                    <img 
+                      src={convertedImages[previewIndex]} 
+                      alt={`Page ${previewIndex + 1} Preview`}
+                      className="max-h-[80vh] max-w-full object-contain"
+                    />
+                  </div>
+                  
+                  <div className="p-4 bg-black text-white flex items-center justify-between">
+                    <button 
+                      className="p-2 bg-white/20 hover:bg-white/30 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={goToPrevImage}
+                      disabled={previewIndex === 0}
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    
+                    <div className="text-center">
+                      Page {previewIndex + 1} of {convertedImages.length}
+                    </div>
+                    
+                    <button 
+                      className="p-2 bg-white/20 hover:bg-white/30 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={goToNextImage}
+                      disabled={previewIndex === convertedImages.length - 1}
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </div>
                 </div>
-                <button 
-                  onClick={() => setPreviewIndex(null)}
-                  className="absolute top-2 right-2 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white"
-                >
-                  <X size={24} />
-                </button>
-                <img 
-                  src={convertedImages[previewIndex]} 
-                  alt={`Page ${previewIndex + 1} Preview`}
-                  className="w-full h-full object-contain max-h-[90vh]"
-                />
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  <button 
-                    className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full"
-                    onClick={() => setPreviewIndex(Math.max(0, previewIndex - 1))}
-                    disabled={previewIndex === 0}
-                  >
-                    &lt;
-                  </button>
-                  <span className="p-2 bg-black/50 text-white rounded-full">
-                    {previewIndex + 1} / {convertedImages.length}
-                  </span>
-                  <button 
-                    className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full"
-                    onClick={() => setPreviewIndex(Math.min(convertedImages.length - 1, previewIndex + 1))}
-                    disabled={previewIndex === convertedImages.length - 1}
-                  >
-                    &gt;
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+              )}
+            </DialogContent>
+          </Dialog>
           
           <a
             href={downloadUrl}
@@ -167,21 +202,6 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
             <Download size={18} className="mr-2" />
             Download All Images
           </a>
-          
-          <div className="mt-4 flex gap-3">
-            <a
-              href="/tools"
-              className="px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm text-muted-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              Try Another Tool
-            </a>
-            <button
-              onClick={onConvert}
-              className="px-4 py-2 rounded-md bg-accent/10 text-accent text-sm hover:bg-accent/20"
-            >
-              Convert Again
-            </button>
-          </div>
           
           <p className="mt-5 text-xs text-muted-foreground text-center max-w-md">
             Your privacy is important to us. All processing happens directly in your browser, 
