@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -14,12 +13,10 @@ import {
   Download, 
   Trash2, 
   RotateCcw,
-  ArrowLeft,
-  Image as ImageIcon
+  ImageIcon
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
-import BackButton from '@/components/BackButton'; // Added BackButton import
+import BackButton from '@/components/BackButton';
 
 const DEFAULT_QUALITY = 75;
 const DEFAULT_MAX_WIDTH = 1200;
@@ -64,13 +61,11 @@ const ImageCompressor = () => {
 
     const file = files[0];
     
-    // Check if file is an image
     if (!file.type.match('image.*')) {
       toast.error('Please select an image file');
       return;
     }
     
-    // Check file size
     if (file.size > MAX_FILE_SIZE) {
       toast.error('File size exceeds 10MB limit');
       return;
@@ -78,14 +73,12 @@ const ImageCompressor = () => {
 
     setOriginalFile(file);
     
-    // Create preview of original image
     const reader = new FileReader();
     reader.onload = (e) => {
       setOriginalPreview(e.target?.result as string);
     };
     reader.readAsDataURL(file);
     
-    // Reset compressed image when a new file is selected
     setCompressedPreview(null);
     setCompressedBlob(null);
     setCompressionStats(null);
@@ -97,7 +90,6 @@ const ImageCompressor = () => {
     setIsCompressing(true);
     
     try {
-      // Create an image element to load the original image
       const img = new Image();
       img.src = originalPreview;
       
@@ -105,7 +97,6 @@ const ImageCompressor = () => {
         img.onload = () => resolve();
       });
       
-      // Calculate new dimensions, maintaining aspect ratio
       let newWidth = img.width;
       let newHeight = img.height;
       
@@ -115,18 +106,15 @@ const ImageCompressor = () => {
         newHeight = Math.round(newHeight * ratio);
       }
       
-      // Create a canvas to draw the resized image
       const canvas = document.createElement('canvas');
       canvas.width = newWidth;
       canvas.height = newHeight;
       
-      // Draw the image on the canvas
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Could not get canvas context');
       
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
       
-      // Convert canvas to blob with specified quality
       const blob = await new Promise<Blob>((resolve) => {
         canvas.toBlob(
           (blob) => resolve(blob!),
@@ -135,7 +123,6 @@ const ImageCompressor = () => {
         );
       });
       
-      // Convert blob to data URL for preview
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       
@@ -144,7 +131,6 @@ const ImageCompressor = () => {
           setCompressedPreview(reader.result as string);
           setCompressedBlob(blob);
           
-          // Calculate compression stats
           setCompressionStats({
             originalSize: originalFile.size,
             compressedSize: blob.size,
@@ -193,23 +179,14 @@ const ImageCompressor = () => {
         <Header />
         
         <main className="flex-1 container mx-auto px-4 py-8">
-          <BackButton /> {/* Added BackButton component */}
+          <BackButton />
           
-          <div className="flex items-center mb-6">
-            <Link to="/" className="inline-flex items-center mr-4">
-              <Button variant="ghost" size="sm" className="gap-1">
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Image Compressor</h1>
-              <p className="text-muted-foreground">Reduce image file size while maintaining quality</p>
-            </div>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold">Image Compressor</h1>
+            <p className="text-muted-foreground">Reduce image file size while maintaining quality</p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Upload Area */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center">
                 <FileImage className="h-8 w-8 text-blue-400" />
@@ -275,7 +252,6 @@ const ImageCompressor = () => {
               )}
             </div>
             
-            {/* Compression Settings */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-purple-500/20 flex items-center justify-center">
                 <RotateCcw className="h-8 w-8 text-purple-400" />
@@ -333,7 +309,6 @@ const ImageCompressor = () => {
                 </div>
               )}
               
-              {/* Compression Result */}
               {compressedPreview && (
                 <div className="mt-8 pt-6 border-t">
                   <h3 className="text-lg font-semibold mb-4">Compression Result</h3>
