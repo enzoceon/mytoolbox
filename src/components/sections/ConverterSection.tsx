@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { useImageConversion } from '@/components/conversion/ImageConversionProvider';
-import ImageUploader from '@/components/image-uploader';
+import ImagePreviewGrid from '@/components/image-uploader/ImagePreviewGrid';
 import ConversionArea from '@/components/ConversionArea';
-import { FileImage } from 'lucide-react';
 import HowToUse from '@/components/HowToUse';
 import { Helmet } from 'react-helmet-async';
 import SpaceBackground from '@/components/SpaceBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import UploadBox from '@/components/UploadBox';
 
 const ConverterSection = () => {
   const {
@@ -22,6 +22,11 @@ const ConverterSection = () => {
     handleRemoveAllImages,
     handleConvert
   } = useImageConversion();
+
+  // Handler for the UploadBox component
+  const handleFileSelect = (files: FileList) => {
+    handleImageSelect(Array.from(files));
+  };
 
   return (
     <>
@@ -50,14 +55,33 @@ const ConverterSection = () => {
           </div>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <div className="w-full max-w-md">
-              <ImageUploader
-                onImageSelect={handleImageSelect}
-                selectedImages={previewUrls}
-                onRemoveImage={handleRemoveImage}
-                onRemoveAllImages={handleRemoveAllImages}
+            {previewUrls.length > 0 ? (
+              <div className="w-full max-w-md">
+                <ImagePreviewGrid
+                  selectedImages={previewUrls}
+                  onRemoveImage={handleRemoveImage}
+                  onRemoveAllImages={handleRemoveAllImages}
+                  onAddMoreImages={() => document.getElementById('image-file-input')?.click()}
+                />
+                
+                <input
+                  id="image-file-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => e.target.files && handleImageSelect(Array.from(e.target.files))}
+                  multiple
+                  className="hidden"
+                />
+              </div>
+            ) : (
+              <UploadBox 
+                title="Drop your images here"
+                subtitle="Select images to convert to PDF"
+                acceptedFileTypes="image/*"
+                onFileSelect={handleFileSelect}
+                multiple={true}
               />
-            </div>
+            )}
           </div>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
