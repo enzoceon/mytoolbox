@@ -45,7 +45,6 @@ const AllTools = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('All');
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const toolsGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleInteraction = () => {
@@ -62,34 +61,6 @@ const AllTools = () => {
       document.removeEventListener('scroll', handleInteraction);
     };
   }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const toolCards = entry.target.querySelectorAll('.tool-card');
-            toolCards.forEach((card, index) => {
-              setTimeout(() => {
-                card.classList.add('stagger-animate');
-              }, index * 25);
-            });
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "100px" }
-    );
-    
-    if (toolsGridRef.current) {
-      observer.observe(toolsGridRef.current);
-    }
-    
-    return () => {
-      if (toolsGridRef.current) {
-        observer.unobserve(toolsGridRef.current);
-      }
-    };
-  }, [searchQuery, activeCategory]);
 
   const tools: Tool[] = [
     {
@@ -376,12 +347,12 @@ const AllTools = () => {
             </div>
             
             {filteredTools.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" ref={toolsGridRef}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredTools.map(tool => (
                   <Link
                     key={tool.id}
                     to={tool.path}
-                    className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start tool-card opacity-0 feature-card"
+                    className="glass-card p-4 rounded-xl hover:shadow-lg transition-all hover:bg-background/90 flex items-start feature-card"
                   >
                     <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3 shrink-0 pulse-icon">
                       {tool.icon}

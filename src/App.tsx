@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,7 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import { ImageConversionProvider } from "./components/conversion/ImageConversionProvider";
 
 // ScrollToTop component to handle scrolling on route changes
 const ScrollToTop = () => {
@@ -59,7 +59,11 @@ const AppContent = () => {
       <ContextMenuHandler />
       <Routes>
         <Route path="/" element={<AllTools />} />
-        <Route path="/converter" element={<AllTools />} />
+        <Route path="/converter" element={
+          <ImageConversionProvider>
+            <ConverterSection />
+          </ImageConversionProvider>
+        } />
         <Route path="/pdf-to-image" element={<PdfToImage />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
@@ -73,6 +77,9 @@ const AppContent = () => {
     </QueryClientProvider>
   );
 };
+
+// Import ConverterSection here to avoid circular dependencies
+import ConverterSection from "./components/sections/ConverterSection";
 
 const App = () => {
   return (
