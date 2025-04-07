@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare } from 'lucide-react';
@@ -52,16 +51,14 @@ const HeroSection = () => {
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <div className="w-full md:w-1/2 relative">
                 <div className="relative rounded-md overflow-hidden cosmic-search">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
                     placeholder="Search tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
+                    className="w-full border-0 pl-10 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
                   />
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Search className="h-4 w-4 text-muted-foreground" />
-                  </div>
                 </div>
               </div>
               <Button type="submit" className="w-full md:w-auto bg-accent hover:bg-accent/90 text-white">
