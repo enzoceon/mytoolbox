@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Download, ArrowDown, Check, X, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 interface PdfConversionAreaProps {
   hasPdf: boolean;
@@ -138,12 +138,13 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
             </div>
           )}
           
-          {/* Image Preview Dialog */}
+          {/* Image Preview Dialog - Fixed to prevent duplicate buttons and improve accessibility */}
           <Dialog open={showPreview} onOpenChange={setShowPreview}>
             <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-black border-none">
+              <DialogTitle className="sr-only">Image Preview</DialogTitle>
               {previewIndex !== null && convertedImages[previewIndex] && (
                 <div className="relative w-full h-full flex flex-col">
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                  <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
                     <button 
                       onClick={closePreview}
                       className="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-1"
@@ -153,12 +154,7 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
                     </button>
                   </div>
                   
-                  <button 
-                    onClick={closePreview}
-                    className="absolute top-4 right-4 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white"
-                  >
-                    <X size={20} />
-                  </button>
+                  {/* We're removing the duplicate X button since the Dialog already provides one */}
                   
                   <div className="flex-1 flex items-center justify-center p-4">
                     <img 
