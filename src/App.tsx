@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import AllTools from "./pages/AllTools";
 import PdfToImage from "./pages/PdfToImage";
 import JPGtoPNG from "./pages/JPGtoPNG";
+import QrCodeGenerator from "./pages/QrCodeGenerator";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -76,6 +77,7 @@ const AppContent = () => {
             <JPGtoPNG />
           </JPGtoPNGProvider>
         } />
+        <Route path="/qr-code-generator" element={<QrCodeGenerator />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />

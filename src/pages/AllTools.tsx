@@ -187,8 +187,9 @@ const AllTools = () => {
       name: 'QR Code Generator',
       description: 'Create custom QR codes for URLs and text',
       icon: <QrCode className="h-6 w-6 text-gray-500" />,
-      path: '/tools',
+      path: '/qr-code-generator',
       category: 'Utility',
+      available: true,
     },
     {
       id: 'text-editor',
