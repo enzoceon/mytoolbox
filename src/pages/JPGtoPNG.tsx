@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useJPGtoPNG } from '@/components/conversion/JPGtoPNGProvider';
-import ImageUploader from '@/components/ImageUploader';
+import ImageUploader from '@/components/image-uploader';
 import JPGtoPNGConversionArea from '@/components/JPGtoPNGConversionArea';
 import SpaceBackground from '@/components/SpaceBackground';
 import HowToUse from '@/components/HowToUse';

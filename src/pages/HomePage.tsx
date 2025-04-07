@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useImageConversion } from '@/components/conversion/ImageConversionProvider';
-import ImageUploader from '@/components/ImageUploader';
+import ImageUploader from '@/components/image-uploader';
 import ConversionArea from '@/components/ConversionArea';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import HowToUse from '@/components/HowToUse';

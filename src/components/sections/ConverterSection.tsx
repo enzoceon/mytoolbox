@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useImageConversion } from '@/components/conversion/ImageConversionProvider';
-import ImageUploader from '@/components/ImageUploader';
+import ImageUploader from '@/components/image-uploader';
 import ConversionArea from '@/components/ConversionArea';
 import { FileImage } from 'lucide-react';
 import HowToUse from '@/components/HowToUse';
