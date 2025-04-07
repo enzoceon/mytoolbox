@@ -88,8 +88,9 @@ const AllTools = () => {
       name: 'JPG to PNG',
       description: 'Convert JPG images to PNG format with transparency',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
+      path: '/jpg-to-png',
       category: 'Image',
+      available: true,
     },
     {
       id: 'image-compressor',
