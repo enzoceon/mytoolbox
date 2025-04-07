@@ -13,7 +13,6 @@ type ToolCategory =
   | 'Video'
   | 'Audio'
   | 'Text'
-  | 'Utility'
   | 'AI'
   | 'QR Code';
 
@@ -31,7 +30,7 @@ const HeroSection = () => {
   };
 
   // Define tool categories
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI', 'QR Code'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'AI', 'QR Code'];
 
   const navigateToAITools = () => {
     navigate('/tools?category=AI');

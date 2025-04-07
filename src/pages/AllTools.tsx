@@ -31,7 +31,6 @@ type ToolCategory =
   | 'Video'
   | 'Audio'
   | 'Text'
-  | 'Utility'
   | 'AI'
   | 'QR Code';
 
@@ -176,7 +175,7 @@ const AllTools = () => {
       description: 'Create customizable QR codes for websites, text, and contact info with color and size options.',
       icon: <QrCode className="h-6 w-6 text-gray-500" />,
       path: '/qr-code-generator',
-      category: 'Utility',
+      category: 'QR Code',
       available: true,
     },
     {
@@ -194,7 +193,7 @@ const AllTools = () => {
       description: 'Extract precise color codes from images with eyedropper tool and color palette generation.',
       icon: <Palette className="h-6 w-6 text-pink-500" />,
       path: '/color-picker',
-      category: 'Utility',
+      category: 'Text',
       available: true,
     },
     {
@@ -203,7 +202,7 @@ const AllTools = () => {
       description: 'Create strong, secure passwords with customizable length and character combinations.',
       icon: <Lock className="h-6 w-6 text-gray-500" />,
       path: '/password-generator',
-      category: 'Utility',
+      category: 'Text',
       popular: true,
       available: true,
     },
@@ -213,7 +212,7 @@ const AllTools = () => {
       description: 'Create customizable countdown timers for events with shareable links and notifications.',
       icon: <Clock className="h-6 w-6 text-blue-500" />,
       path: '/countdown-timer',
-      category: 'Utility',
+      category: 'Text',
       available: true,
     },
     {
@@ -408,7 +407,7 @@ const AllTools = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI', 'QR Code'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'AI', 'QR Code'];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -436,12 +435,13 @@ const AllTools = () => {
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
                   <div className="w-full md:w-1/2 relative">
                     <div className="relative rounded-md overflow-hidden cosmic-search">
+                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                       <Input
                         type="text"
                         placeholder="Search tools..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
+                        className="w-full border-0 pl-11 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
                       />
                     </div>
                   </div>
