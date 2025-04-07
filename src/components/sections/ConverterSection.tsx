@@ -9,6 +9,7 @@ import SpaceBackground from '@/components/SpaceBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
+import BackButton from '@/components/BackButton';
 
 const ConverterSection = () => {
   const {
@@ -41,6 +42,8 @@ const ConverterSection = () => {
         <Header />
         
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+          <BackButton />
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
               <span className="bg-gradient-primary bg-clip-text text-transparent">Image</span>
