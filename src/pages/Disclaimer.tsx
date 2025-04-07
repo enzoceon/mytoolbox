@@ -4,6 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 const Disclaimer = () => {
   return (
@@ -19,6 +22,14 @@ const Disclaimer = () => {
         <Header />
         
         <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-8">
+          <div className="mb-4">
+            <Link to="/">
+              <Button variant="ghost" className="flex items-center gap-1">
+                <ArrowLeft className="h-4 w-4" /> Back to Home
+              </Button>
+            </Link>
+          </div>
+          
           <div className="glass-card p-8 rounded-xl">
             <h1 className="text-3xl font-bold mb-6">Disclaimer</h1>
             
@@ -51,7 +62,14 @@ const Disclaimer = () => {
                 additions, deletions, or modifications to the contents on the Service at any time without prior notice.
               </p>
               
-              <h2 className="text-xl font-semibold mt-6 text-foreground">3. No Warranties</h2>
+              <h2 className="text-xl font-semibold mt-6 text-foreground">3. Free Services</h2>
+              <p>
+                <strong>All tools and services provided by EveryTools are completely free of charge.</strong> We do not require 
+                any payment, subscription, or hidden fees to access or use our tools. Our service is provided as-is without 
+                any warranty regarding the results or performance of our free tools.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 text-foreground">4. No Warranties</h2>
               <p>
                 The EveryTools website and all tools are provided "as is," with no warranties whatsoever. The Company makes no 
                 express or implied warranties or representations with respect to the accuracy, reliability, completeness, 
@@ -63,46 +81,28 @@ const Disclaimer = () => {
                 may vary depending on the source files and technical limitations.
               </p>
               
-              <h2 className="text-xl font-semibold mt-6 text-foreground">4. External Links</h2>
+              <h2 className="text-xl font-semibold mt-6 text-foreground">5. External Links</h2>
               <p>
                 The Service may contain links to external websites that are not provided or maintained by or in any way 
                 affiliated with the Company. Please note that the Company does not guarantee the accuracy, relevance, 
                 timeliness, or completeness of any information on these external websites.
               </p>
               
-              <h2 className="text-xl font-semibold mt-6 text-foreground">5. Errors and Omissions</h2>
+              <h2 className="text-xl font-semibold mt-6 text-foreground">6. Contact Us</h2>
               <p>
-                The information given by the Service is for general guidance on matters of interest only. Even if the 
-                Company takes every precaution to ensure that the content of the Service is both current and accurate, 
-                errors can occur. Plus, given the changing nature of laws, rules and regulations, there may be delays, 
-                omissions or inaccuracies in the information contained on the Service.
-              </p>
-              <p className="mt-2">
-                The Company is not responsible for any errors or omissions, or for the results obtained from the use of 
-                this information.
+                If you have any questions or concerns about this disclaimer or our services, please contact us:
               </p>
               
-              <h2 className="text-xl font-semibold mt-6 text-foreground">6. Fair Use Disclaimer</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Email: everytoolssite@gmail.com</li>
+              </ul>
+              
               <p>
-                The Company may use copyrighted material which has not always been specifically authorized by the copyright 
-                owner. The Company is making such material available for criticism, comment, news reporting, teaching, 
-                scholarship, or research.
-              </p>
-              <p className="mt-2">
-                The Company believes this constitutes a "fair use" of any such copyrighted material as provided for in 
-                section 107 of the United States Copyright law.
-              </p>
-              <p className="mt-2">
-                If You wish to use copyrighted material from the Service for your own purposes that go beyond fair use, 
-                You must obtain permission from the copyright owner.
+                We aim to respond to all inquiries within 24-48 hours during business days.
               </p>
               
               <p className="mt-10 text-sm">
                 Last Updated: April 7, 2025
-              </p>
-              
-              <p className="mt-6 text-sm">
-                If you have any questions about this Disclaimer, please contact us at support@everytools.site.
               </p>
             </div>
           </div>
