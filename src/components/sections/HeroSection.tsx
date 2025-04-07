@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -36,6 +36,10 @@ const HeroSection = () => {
     navigate('/tools?category=AI');
   };
 
+  const navigateToImageTools = () => {
+    navigate('/tools?category=Image');
+  };
+
   return (
     <section className="py-12 md:py-20">
       <div className="container px-4 mx-auto">
@@ -68,8 +72,40 @@ const HeroSection = () => {
             </form>
           </div>
           
-          {/* AI Section */}
+          {/* Image Tools Section */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+            <h2 className="text-xl font-semibold mb-4">Image Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/converter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image to PDF</p>
+              </Link>
+              <Link to="/pdf-to-image" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Image className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">PDF to Image</p>
+              </Link>
+              <Link to="/jpg-to-png" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Image className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">JPG to PNG</p>
+              </Link>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Image className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image Compressor</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </div>
+            </div>
+            <Button 
+              onClick={navigateToImageTools} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All Image Tools
+            </Button>
+          </div>
+          
+          {/* AI Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.45s" }}>
             <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
@@ -100,7 +136,7 @@ const HeroSection = () => {
           </div>
           
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.4s" }}>
+          <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.5s" }}>
             {categories.map((category) => (
               <Button
                 key={category}

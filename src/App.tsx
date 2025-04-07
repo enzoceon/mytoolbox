@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import AllTools from "./pages/AllTools";
 import PdfToImage from "./pages/PdfToImage";
+import JPGtoPNG from "./pages/JPGtoPNG";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -15,6 +17,7 @@ import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { ImageConversionProvider } from "./components/conversion/ImageConversionProvider";
+import { JPGtoPNGProvider } from "./components/conversion/JPGtoPNGProvider";
 import ConverterSection from "./components/sections/ConverterSection";
 
 // ScrollToTop component to handle scrolling on route changes
@@ -66,6 +69,11 @@ const AppContent = () => {
           </ImageConversionProvider>
         } />
         <Route path="/pdf-to-image" element={<PdfToImage />} />
+        <Route path="/jpg-to-png" element={
+          <JPGtoPNGProvider>
+            <JPGtoPNG />
+          </JPGtoPNGProvider>
+        } />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />

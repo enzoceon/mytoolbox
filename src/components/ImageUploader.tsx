@@ -8,13 +8,17 @@ interface ImageUploaderProps {
   selectedImages: string[] | null;
   onRemoveImage: (index: number) => void;
   onRemoveAllImages: () => void;
+  acceptedFileTypes?: string;
+  restrictionMessage?: string;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ 
   onImageSelect, 
   selectedImages,
   onRemoveImage,
-  onRemoveAllImages
+  onRemoveAllImages,
+  acceptedFileTypes = "image/*",
+  restrictionMessage = "Please select image files only"
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,11 +34,31 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   }, []);
 
   const validateAndProcessFiles = useCallback((files: File[]) => {
-    // Filter non-image files
+    // Check if we have specific file type restrictions
+    if (acceptedFileTypes !== "image/*") {
+      const acceptedTypes = acceptedFileTypes.split(',');
+      const validFiles = Array.from(files).filter(file => 
+        acceptedTypes.some(type => file.type === type)
+      );
+      
+      if (validFiles.length === 0) {
+        toast.error(restrictionMessage);
+        return;
+      }
+      
+      if (files.length !== validFiles.length) {
+        toast.warning(`${files.length - validFiles.length} files were ignored due to invalid format`);
+      }
+      
+      onImageSelect(validFiles);
+      return;
+    }
+    
+    // Default image file validation
     const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
     
     if (imageFiles.length === 0) {
-      toast.error("Please select image files only");
+      toast.error(restrictionMessage);
       return;
     }
     
@@ -43,7 +67,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
     
     onImageSelect(imageFiles);
-  }, [onImageSelect]);
+  }, [onImageSelect, acceptedFileTypes, restrictionMessage]);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -122,7 +146,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           <input
             type="file"
             className="hidden"
-            accept="image/*"
+            accept={acceptedFileTypes}
             ref={fileInputRef}
             onChange={handleFileInput}
             multiple
@@ -146,7 +170,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         </div>
         <h3 className="text-lg font-medium mb-2 text-foreground">Drop your images here</h3>
         <p className="text-sm text-muted-foreground mb-4 text-center">
-          Select image files to convert to PDF
+          {acceptedFileTypes === "image/*" 
+            ? "Select image files to convert" 
+            : acceptedFileTypes.includes("jpeg") 
+              ? "Select JPG/JPEG files to convert to PNG" 
+              : "Select image files to convert"}
         </p>
         <div className="flex items-center space-x-2">
           <hr className="w-10 border-gray-200 dark:border-gray-700" />
@@ -162,7 +190,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         <input
           type="file"
           className="hidden"
-          accept="image/*"
+          accept={acceptedFileTypes}
           ref={fileInputRef}
           onChange={handleFileInput}
           multiple

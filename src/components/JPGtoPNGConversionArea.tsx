@@ -1,0 +1,128 @@
+
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Download, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { toast } from "sonner";
+
+interface JPGtoPNGConversionAreaProps {
+  hasImages: boolean;
+  onConvert: () => void;
+  isConverting: boolean;
+  imageCount: number;
+  convertedImages: { original: string; converted: string }[];
+}
+
+const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
+  hasImages,
+  onConvert,
+  isConverting,
+  imageCount,
+  convertedImages
+}) => {
+  
+  const handleDownloadSingle = (url: string, index: number) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `image_${index + 1}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`PNG image downloaded!`);
+  };
+  
+  const handleDownloadAll = () => {
+    if (convertedImages.length === 0) return;
+    
+    if (convertedImages.length === 1) {
+      handleDownloadSingle(convertedImages[0].converted, 0);
+      return;
+    }
+    
+    // For multiple images, we need to create a zip file
+    // But for simplicity, we'll just download them one by one in this version
+    convertedImages.forEach((image, index) => {
+      setTimeout(() => {
+        handleDownloadSingle(image.converted, index);
+      }, index * 500); // Add a small delay between downloads
+    });
+    
+    toast.success(`Downloading ${convertedImages.length} PNG images...`);
+  };
+  
+  if (!hasImages) {
+    return null;
+  }
+  
+  return (
+    <div className="mt-6 space-y-6">
+      {!isConverting && convertedImages.length === 0 && (
+        <Button
+          onClick={onConvert}
+          className="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:opacity-90 text-white"
+          disabled={isConverting}
+        >
+          <ImageIcon size={18} className="mr-2" />
+          Convert {imageCount > 1 ? `${imageCount} JPGs` : 'JPG'} to PNG
+        </Button>
+      )}
+      
+      {isConverting && (
+        <div className="flex justify-center">
+          <div className="flex flex-col items-center">
+            <Loader2 size={40} className="animate-spin text-purple-500" />
+            <p className="mt-3 text-sm text-muted-foreground">Converting your {imageCount > 1 ? 'images' : 'image'} to PNG...</p>
+          </div>
+        </div>
+      )}
+      
+      {!isConverting && convertedImages.length > 0 && (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted/30 rounded-lg">
+            <h3 className="text-lg font-medium mb-2">Converted Images</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {convertedImages.map((image, index) => (
+                <div key={index} className="relative border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
+                  <img 
+                    src={image.converted} 
+                    alt={`PNG ${index + 1}`} 
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute bottom-0 right-0 p-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-background/80 backdrop-blur-sm"
+                      onClick={() => handleDownloadSingle(image.converted, index)}
+                    >
+                      <Download size={14} className="mr-1" />
+                      PNG
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <Button
+            onClick={handleDownloadAll}
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Download size={18} className="mr-2" />
+            Download {convertedImages.length > 1 ? 'All PNGs' : 'PNG'}
+          </Button>
+          
+          <Button
+            onClick={onConvert}
+            variant="outline"
+            className="w-full"
+          >
+            <ImageIcon size={18} className="mr-2" />
+            Convert Again
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default JPGtoPNGConversionArea;
