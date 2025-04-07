@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Download, Check, EyeIcon, X, ArrowDown } from 'lucide-react';
+import { Download, ArrowDown, Check, Image, EyeIcon, X, ArrowLeft } from 'lucide-react';
 
 interface PdfConversionAreaProps {
   hasPdf: boolean;
@@ -31,11 +31,6 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
     setTimeout(() => {
       setShowAnimation(false);
     }, 2000);
-  };
-  
-  // Close the preview modal
-  const handleClosePreview = () => {
-    setPreviewIndex(null);
   };
 
   if (!hasPdf) {
@@ -117,25 +112,30 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
             </div>
           )}
           
-          {/* Full-size preview modal with proper back button */}
+          {/* Full-size preview modal */}
           {previewIndex !== null && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
               <div className="relative max-w-4xl max-h-[90vh] w-full">
-                {/* Back button - Fixed and prominently displayed */}
+                <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                  <button 
+                    onClick={() => setPreviewIndex(null)}
+                    className="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-1"
+                  >
+                    <ArrowLeft size={20} />
+                    <span>Back</span>
+                  </button>
+                </div>
                 <button 
-                  onClick={handleClosePreview}
-                  className="absolute top-4 left-4 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white flex items-center gap-2"
+                  onClick={() => setPreviewIndex(null)}
+                  className="absolute top-2 right-2 z-10 p-2 bg-white/20 hover:bg-white/30 rounded-full text-white"
                 >
-                  <X size={20} />
-                  <span>Close Preview</span>
+                  <X size={24} />
                 </button>
-                
                 <img 
                   src={convertedImages[previewIndex]} 
                   alt={`Page ${previewIndex + 1} Preview`}
                   className="w-full h-full object-contain max-h-[90vh]"
                 />
-                
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
                   <button 
                     className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full"
@@ -167,6 +167,21 @@ const PdfConversionArea: React.FC<PdfConversionAreaProps> = ({
             <Download size={18} className="mr-2" />
             Download All Images
           </a>
+          
+          <div className="mt-4 flex gap-3">
+            <a
+              href="/tools"
+              className="px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm text-muted-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
+              Try Another Tool
+            </a>
+            <button
+              onClick={onConvert}
+              className="px-4 py-2 rounded-md bg-accent/10 text-accent text-sm hover:bg-accent/20"
+            >
+              Convert Again
+            </button>
+          </div>
           
           <p className="mt-5 text-xs text-muted-foreground text-center max-w-md">
             Your privacy is important to us. All processing happens directly in your browser, 
