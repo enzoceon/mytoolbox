@@ -19,7 +19,8 @@ import {
   ArrowLeft,
   CheckCircle2,
   XCircle,
-  Save
+  Save,
+  Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
