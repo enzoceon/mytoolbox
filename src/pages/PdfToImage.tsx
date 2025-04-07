@@ -5,6 +5,7 @@ import PdfUploader from '@/components/PdfUploader';
 import PdfConversionArea from '@/components/PdfConversionArea';
 import SpaceBackground from '@/components/SpaceBackground';
 import HowToUse from '@/components/HowToUse';
+import BackButton from '@/components/BackButton'; // Added BackButton import
 import { Helmet } from 'react-helmet-async';
 import JSZip from 'jszip';
 import { toast } from "sonner";
@@ -155,6 +156,8 @@ const PdfToImage = () => {
         <Header />
         
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+          <BackButton /> {/* Added BackButton component */}
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
               <span className="bg-gradient-primary bg-clip-text text-transparent">PDF</span>
