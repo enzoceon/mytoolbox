@@ -16,6 +16,7 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import HomePage from "./pages/HomePage";
 
 // ScrollToTop component to handle scrolling on route changes
 const ScrollToTop = () => {
@@ -59,7 +60,7 @@ const AppContent = () => {
       <ScrollToTop />
       <ContextMenuHandler />
       <Routes>
-        <Route path="/" element={<AllTools />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/converter" element={<Index />} />
         <Route path="/pdf-to-image" element={<PdfToImage />} />
         <Route path="/tools" element={<AllTools />} />
