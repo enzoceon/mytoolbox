@@ -54,8 +54,8 @@ const UploadBox: React.FC<UploadBoxProps> = ({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="aspect-[4/3] sm:aspect-[5/3] rounded-3xl border-2 border-dashed border-purple-500/40 flex flex-col items-center justify-center p-8 bg-[#0b101e]">
-        <div className="mb-8 w-20 h-20 rounded-full bg-[#131c33] flex items-center justify-center">
+      <div className="aspect-video rounded-3xl border-2 border-dashed border-purple-500/40 flex flex-col items-center justify-center p-8 bg-[#0b101e]">
+        <div className="mb-6 w-20 h-20 rounded-full bg-[#131c33] flex items-center justify-center">
           <Upload className="h-10 w-10 text-purple-500" />
         </div>
         
