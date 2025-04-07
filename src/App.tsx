@@ -31,6 +31,10 @@ import TextEditor from "./pages/TextEditor";
 import PdfMerger from "./pages/PdfMerger";
 import PdfSplitter from "./pages/PdfSplitter";
 import PdfCompressor from "./pages/PdfCompressor";
+import TextToSpeech from "./pages/TextToSpeech";
+import AudioTrimmer from "./pages/AudioTrimmer";
+import OcrTool from "./pages/OcrTool";
+import AiContentSummarizer from "./pages/AiContentSummarizer";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -91,6 +95,10 @@ const AppContent = () => {
         <Route path="/pdf-merger" element={<PdfMerger />} />
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="/pdf-compressor" element={<PdfCompressor />} />
+        <Route path="/text-to-speech" element={<TextToSpeech />} />
+        <Route path="/audio-trimmer" element={<AudioTrimmer />} />
+        <Route path="/ocr-tool" element={<OcrTool />} />
+        <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />

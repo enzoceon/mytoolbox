@@ -9,7 +9,7 @@ import {
   QrCode, Edit, Palette, Lock,
   Check, Shield, ArrowRight, 
   Sparkles, Brain, MessageSquare, Bot,
-  Scissors, Minimize2, FilePlus
+  Scissors, Minimize2, FilePlus, Volume2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -140,9 +140,10 @@ const AllTools = () => {
       id: 'audio-trimmer',
       name: 'Audio Trimmer',
       description: 'Cut and trim audio files to your desired length',
-      icon: <Music className="h-6 w-6 text-red-500" />,
-      path: '/tools',
+      icon: <Scissors className="h-6 w-6 text-red-500" />,
+      path: '/audio-trimmer',
       category: 'Audio',
+      available: true,
     },
     {
       id: 'pdf-compressor',
@@ -186,8 +187,9 @@ const AllTools = () => {
       name: 'OCR Tool',
       description: 'Extract text from images and scanned documents',
       icon: <Type className="h-6 w-6 text-orange-500" />,
-      path: '/tools',
+      path: '/ocr-tool',
       category: 'Text',
+      available: true,
     },
     {
       id: 'qr-generator',
@@ -239,9 +241,10 @@ const AllTools = () => {
       id: 'text-to-speech',
       name: 'Text to Speech',
       description: 'Convert text to natural-sounding speech',
-      icon: <Music className="h-6 w-6 text-purple-500" />,
-      path: '/tools',
+      icon: <Volume2 className="h-6 w-6 text-purple-500" />,
+      path: '/text-to-speech',
       category: 'Text',
+      available: true,
     },
     {
       id: 'ai-text-generator',
@@ -275,8 +278,9 @@ const AllTools = () => {
       name: 'AI Content Summarizer',
       description: 'Automatically summarize long articles and documents',
       icon: <Bot className="h-6 w-6 text-orange-500" />,
-      path: '/tools',
+      path: '/ai-content-summarizer',
       category: 'AI',
+      available: true,
     },
   ];
 
