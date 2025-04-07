@@ -28,17 +28,17 @@ const HowToUse = () => {
     {
       icon: <Upload className="h-8 w-8 text-blue-500" />,
       title: 'Upload Your JPG Images',
-      description: 'Drag and drop JPG/JPEG files or click to browse and select from your device. Multiple files supported for batch conversion.'
+      description: 'Drag and drop JPG/JPEG files or click to browse and select from your device.'
     },
     {
       icon: <FileImage className="h-8 w-8 text-blue-500" />,
       title: 'Convert to PNG',
-      description: 'Click the "Convert to PNG" button to transform your JPG images into transparent PNG format with preserved quality and details.'
+      description: 'Click the "Convert to PNG" button to transform your JPG images into transparent PNG format.'
     },
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your PNGs',
-      description: 'Once conversion is complete, download all PNG files individually or as a ZIP archive with a single click. No watermarks added.'
+      description: 'Once conversion is complete, download all PNG files or individual images with a single click.'
     }
   ];
   
@@ -46,17 +46,17 @@ const HowToUse = () => {
     {
       icon: <Upload className="h-8 w-8 text-blue-500" />,
       title: 'Upload Your Images',
-      description: 'Drag and drop multiple image files or click to browse and select from your device. Supports JPG, PNG, GIF, BMP, WEBP and TIFF formats.'
+      description: 'Drag and drop multiple image files or click to browse and select from your device.'
     },
     {
       icon: <FileImage className="h-8 w-8 text-blue-500" />,
       title: 'Convert to PDF',
-      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document. Arrange and reorder images as needed before conversion.'
+      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document.'
     },
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your PDF',
-      description: 'Once conversion is complete, download your PDF file with a single click. Your document will be ready to view, share, or print without watermarks.'
+      description: 'Once conversion is complete, download your PDF file with a single click.'
     }
   ];
   
@@ -64,17 +64,17 @@ const HowToUse = () => {
     {
       icon: <Upload className="h-8 w-8 text-blue-500" />,
       title: 'Upload Your PDF',
-      description: 'Drag and drop a PDF file or click to browse and select from your device. Files up to 50MB are supported for high-quality conversion.'
+      description: 'Drag and drop a PDF file or click to browse and select from your device.'
     },
     {
       icon: <FileImage className="h-8 w-8 text-blue-500" />,
       title: 'Convert to Images',
-      description: 'Click the "Convert to Images" button to transform your PDF pages into high-quality images. Choose between JPG or PNG format and adjust quality settings.'
+      description: 'Click the "Convert to Images" button to transform your PDF pages into high-quality images.'
     },
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your Images',
-      description: 'Once conversion is complete, download all images as a ZIP file or view and download individual pages. All images maintain the original PDF quality.'
+      description: 'Once conversion is complete, download all images as a ZIP file or view individual pages.'
     }
   ];
   
@@ -102,8 +102,8 @@ const HowToUse = () => {
             {isJPGtoPNG 
               ? 'Converting your JPG files to transparent PNG images is simple and fast. Follow these three easy steps to get started.'
               : isPdfToImage 
-                ? 'Converting your PDF to high-quality images is simple and fast. Follow these three easy steps to get started.'
-                : 'Converting your images to a professional PDF document is simple and fast. Follow these three easy steps to get started.'
+                ? 'Converting your PDF to images is simple and fast. Follow these three easy steps to get started.'
+                : 'Converting your images to PDF is simple and fast. Follow these three easy steps to get started.'
             }
           </p>
         </div>

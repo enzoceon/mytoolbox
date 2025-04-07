@@ -68,7 +68,7 @@ const AllTools = () => {
     {
       id: 'image-to-pdf',
       name: 'Image to PDF',
-      description: 'Convert JPG, PNG and other image formats to high-quality PDF documents in seconds.',
+      description: 'Convert JPG, PNG and other image formats to PDF',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
       path: '/converter',
       category: 'Image',
@@ -78,7 +78,7 @@ const AllTools = () => {
     {
       id: 'pdf-to-image',
       name: 'PDF to Image',
-      description: 'Extract high-resolution images from PDF files with precise quality control.',
+      description: 'Extract images from PDF files in high quality',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
       path: '/pdf-to-image',
       category: 'Document',
@@ -88,7 +88,7 @@ const AllTools = () => {
     {
       id: 'jpg-to-png',
       name: 'JPG to PNG',
-      description: 'Transform your JPG images to PNG format with transparency support and lossless quality.',
+      description: 'Convert JPG images to PNG format with transparency',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
       path: '/jpg-to-png',
       category: 'Image',
@@ -97,7 +97,7 @@ const AllTools = () => {
     {
       id: 'image-compressor',
       name: 'Image Compressor',
-      description: 'Optimize your images by reducing file size while maintaining visual quality.',
+      description: 'Reduce image file size without losing quality',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
       path: '/image-compressor',
       category: 'Image',
@@ -106,16 +106,40 @@ const AllTools = () => {
     {
       id: 'video-compressor',
       name: 'Video Compressor',
-      description: 'Compress videos for easier sharing while preserving quality and resolution.',
+      description: 'Reduce video file size while maintaining quality',
       icon: <Video className="h-6 w-6 text-purple-500" />,
       path: '/tools',
       category: 'Video',
       popular: true,
     },
     {
+      id: 'video-converter',
+      name: 'Video Converter',
+      description: 'Convert videos between popular formats (MP4, AVI, etc.)',
+      icon: <Video className="h-6 w-6 text-purple-500" />,
+      path: '/tools',
+      category: 'Video',
+    },
+    {
+      id: 'audio-converter',
+      name: 'Audio Converter',
+      description: 'Convert audio files between various formats',
+      icon: <Music className="h-6 w-6 text-red-500" />,
+      path: '/tools',
+      category: 'Audio',
+    },
+    {
+      id: 'audio-compressor',
+      name: 'Audio Compressor',
+      description: 'Reduce audio file size with minimal quality loss',
+      icon: <Music className="h-6 w-6 text-red-500" />,
+      path: '/tools',
+      category: 'Audio',
+    },
+    {
       id: 'audio-trimmer',
       name: 'Audio Trimmer',
-      description: 'Precisely cut and edit audio files to your desired length with waveform visualization.',
+      description: 'Cut and trim audio files to your desired length',
       icon: <Scissors className="h-6 w-6 text-red-500" />,
       path: '/audio-trimmer',
       category: 'Audio',
@@ -124,7 +148,7 @@ const AllTools = () => {
     {
       id: 'pdf-compressor',
       name: 'PDF Compressor',
-      description: 'Reduce PDF file size significantly while maintaining document quality and formatting.',
+      description: 'Reduce PDF file size without losing quality',
       icon: <Minimize2 className="h-6 w-6 text-green-500" />,
       path: '/pdf-compressor',
       category: 'Document',
@@ -133,7 +157,7 @@ const AllTools = () => {
     {
       id: 'pdf-merger',
       name: 'PDF Merger',
-      description: 'Seamlessly combine multiple PDF files into a single organized document with custom ordering.',
+      description: 'Combine multiple PDF files into a single document',
       icon: <FilePlus className="h-6 w-6 text-green-500" />,
       path: '/pdf-merger',
       category: 'Document',
@@ -143,7 +167,7 @@ const AllTools = () => {
     {
       id: 'pdf-splitter',
       name: 'PDF Splitter',
-      description: 'Extract specific pages or split PDF files into multiple documents with precise control.',
+      description: 'Split PDF files into separate pages or sections',
       icon: <Scissors className="h-6 w-6 text-green-500" />,
       path: '/pdf-splitter',
       category: 'Document',
@@ -152,7 +176,7 @@ const AllTools = () => {
     {
       id: 'html-to-pdf',
       name: 'HTML to PDF',
-      description: 'Convert HTML code or web pages to professionally formatted PDF documents with customizable options.',
+      description: 'Convert webpage or HTML code to PDF document',
       icon: <Code className="h-6 w-6 text-yellow-500" />,
       path: '/html-to-pdf',
       category: 'Document',
@@ -161,7 +185,7 @@ const AllTools = () => {
     {
       id: 'ocr-tool',
       name: 'OCR Tool',
-      description: 'Extract and digitize text from images and scanned documents with high accuracy recognition.',
+      description: 'Extract text from images and scanned documents',
       icon: <Type className="h-6 w-6 text-orange-500" />,
       path: '/ocr-tool',
       category: 'Text',
@@ -170,7 +194,7 @@ const AllTools = () => {
     {
       id: 'qr-generator',
       name: 'QR Code Generator',
-      description: 'Create customizable QR codes for websites, text, and contact info with color and size options.',
+      description: 'Create custom QR codes for URLs and text',
       icon: <QrCode className="h-6 w-6 text-gray-500" />,
       path: '/qr-code-generator',
       category: 'Utility',
@@ -179,7 +203,7 @@ const AllTools = () => {
     {
       id: 'text-editor',
       name: 'Text Editor',
-      description: 'Edit and format text with rich formatting tools, spell-checking, and export capabilities.',
+      description: 'Simple text editor with formatting options',
       icon: <Edit className="h-6 w-6 text-blue-500" />,
       path: '/text-editor',
       category: 'Text',
@@ -188,7 +212,7 @@ const AllTools = () => {
     {
       id: 'color-picker',
       name: 'Color Picker',
-      description: 'Extract precise color codes from images with eyedropper tool and color palette generation.',
+      description: 'Select and extract colors from images',
       icon: <Palette className="h-6 w-6 text-pink-500" />,
       path: '/color-picker',
       category: 'Utility',
@@ -197,7 +221,7 @@ const AllTools = () => {
     {
       id: 'password-generator',
       name: 'Password Generator',
-      description: 'Create strong, secure passwords with customizable length and character combinations.',
+      description: 'Generate strong, secure passwords',
       icon: <Lock className="h-6 w-6 text-gray-500" />,
       path: '/password-generator',
       category: 'Utility',
@@ -207,7 +231,7 @@ const AllTools = () => {
     {
       id: 'countdown-timer',
       name: 'Countdown Timer',
-      description: 'Create customizable countdown timers for events with shareable links and notifications.',
+      description: 'Create countdown timers for events and deadlines',
       icon: <Clock className="h-6 w-6 text-blue-500" />,
       path: '/countdown-timer',
       category: 'Utility',
@@ -216,7 +240,7 @@ const AllTools = () => {
     {
       id: 'text-to-speech',
       name: 'Text to Speech',
-      description: 'Convert text to natural-sounding speech with multiple voices, languages, and export options.',
+      description: 'Convert text to natural-sounding speech',
       icon: <Volume2 className="h-6 w-6 text-purple-500" />,
       path: '/text-to-speech',
       category: 'Text',
@@ -225,7 +249,7 @@ const AllTools = () => {
     {
       id: 'ai-text-generator',
       name: 'AI Text Generator',
-      description: 'Create high-quality content, essays, and creative writing with advanced AI assistance.',
+      description: 'Generate creative text content using advanced AI',
       icon: <Sparkles className="h-6 w-6 text-purple-500" />,
       path: '/tools',
       category: 'AI',
@@ -234,7 +258,7 @@ const AllTools = () => {
     {
       id: 'ai-image-generator',
       name: 'AI Image Generator',
-      description: 'Transform text descriptions into unique, custom images with cutting-edge AI technology.',
+      description: 'Create stunning images from text descriptions',
       icon: <Brain className="h-6 w-6 text-blue-500" />,
       path: '/tools',
       category: 'AI',
@@ -243,7 +267,7 @@ const AllTools = () => {
     {
       id: 'ai-chatbot',
       name: 'AI Chatbot Assistant',
-      description: 'Get instant answers and assistance for any question through an intelligent AI conversation.',
+      description: 'Get answers and assistance from an AI-powered chatbot',
       icon: <MessageSquare className="h-6 w-6 text-green-500" />,
       path: '/tools',
       category: 'AI',
@@ -252,7 +276,7 @@ const AllTools = () => {
     {
       id: 'ai-content-summarizer',
       name: 'AI Content Summarizer',
-      description: 'Automatically condense long articles and documents into concise, accurate summaries.',
+      description: 'Automatically summarize long articles and documents',
       icon: <Bot className="h-6 w-6 text-orange-500" />,
       path: '/ai-content-summarizer',
       category: 'AI',
