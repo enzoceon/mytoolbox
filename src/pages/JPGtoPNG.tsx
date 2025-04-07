@@ -50,8 +50,8 @@ const JPGtoPNG = () => {
           </div>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <div className="w-full max-w-md">
-              <div className="drop-area border-2 border-dashed border-purple-500/30 rounded-xl p-10">
+            <div className="w-full max-w-3xl">
+              <div className="drop-area border-2 border-dashed border-purple-500/50 rounded-xl p-4 mb-6">
                 <ImageUploader
                   onImageSelect={handleImageSelect}
                   selectedImages={previewUrls}
@@ -60,12 +60,6 @@ const JPGtoPNG = () => {
                   acceptedFileTypes="image/jpeg,image/jpg"
                   restrictionMessage="Please select JPG/JPEG files only"
                 />
-                {!previewUrls || previewUrls.length === 0 ? (
-                  <div className="text-center mt-4">
-                    <p className="text-xl font-semibold text-white">Drop your JPG here</p>
-                    <p className="text-sm text-gray-400 mt-2">Select a JPG file to convert to PNG</p>
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>

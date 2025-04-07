@@ -59,25 +59,28 @@ const UploadArea: React.FC<UploadAreaProps> = ({
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-10">
+    <div className="w-full flex flex-col items-center justify-center py-16">
       <div 
         className={`w-full flex flex-col items-center justify-center ${isDragging ? 'scale-105 transition-transform' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-4 w-24 h-24 bg-purple-900/30 rounded-full flex items-center justify-center">
+        <div className="mb-6 w-24 h-24 bg-purple-900/30 rounded-full flex items-center justify-center">
           <Upload size={40} className="text-purple-400" />
         </div>
         
-        <div className="flex items-center space-x-4 mt-6">
-          <hr className="w-16 border-gray-600" />
+        <p className="text-2xl font-semibold text-white mb-2">Drop your JPG here</p>
+        <p className="text-base text-gray-400 mb-8">Select a JPG file to convert to PNG</p>
+        
+        <div className="flex items-center space-x-4 mb-8 w-72 justify-center">
+          <hr className="w-20 border-gray-600" />
           <span className="text-sm text-gray-400">OR</span>
-          <hr className="w-16 border-gray-600" />
+          <hr className="w-20 border-gray-600" />
         </div>
         
         <button
-          className="mt-6 px-10 py-3 rounded-full bg-purple-600 text-white text-lg font-medium hover:bg-purple-500 transition-colors"
+          className="px-12 py-3 rounded-full bg-purple-600 text-white text-lg font-medium hover:bg-purple-500 transition-colors w-64"
           onClick={handleBrowseClick}
         >
           Browse Files
