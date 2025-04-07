@@ -1,23 +1,13 @@
 
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { ImageConversionProvider } from '@/components/conversion/ImageConversionProvider';
-import ConverterSection from '@/components/sections/ConverterSection';
-import HowToUse from '@/components/HowToUse';
+import HomePage from './HomePage';
 
-const Index = () => {
+const Index: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-grow">
-        <ImageConversionProvider>
-          <ConverterSection />
-          <HowToUse />
-        </ImageConversionProvider>
-      </main>
-      <Footer />
-    </div>
+    <ImageConversionProvider>
+      <HomePage />
+    </ImageConversionProvider>
   );
 };
 

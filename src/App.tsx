@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,7 +7,6 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import AllTools from "./pages/AllTools";
-import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
 import PdfToImage from "./pages/PdfToImage";
 import About from "./pages/About";
@@ -60,7 +58,7 @@ const AppContent = () => {
       <ScrollToTop />
       <ContextMenuHandler />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Index />} />
         <Route path="/converter" element={<Index />} />
         <Route path="/pdf-to-image" element={<PdfToImage />} />
         <Route path="/tools" element={<AllTools />} />
