@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare } from 'lucide-react';
@@ -39,31 +40,31 @@ const HeroSection = () => {
     <section className="py-12 md:py-20">
       <div className="container px-4 mx-auto">
         <div className="text-center mx-auto max-w-3xl">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-foreground animate-fade-in">
-            Free Online Tools For <span className="text-accent">Everyone</span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground animate-fade-in">
+            Free Online Tools <br />
+            For <span className="text-purple-500">Everyone</span>
           </h1>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
             every tools in one place
           </p>
           
-          {/* Search and Filters */}
-          <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          {/* Search bar with gradient border */}
+          <div className="mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
-              <div className="w-full md:w-1/2 relative">
-                <div className="relative rounded-md overflow-hidden cosmic-search">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Search tools..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border-0 pl-10 bg-transparent focus-visible:ring-0 focus-visible:ring-transparent galaxy-input"
-                  />
+              <div className="w-full relative">
+                <div className="rounded-full overflow-hidden p-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500">
+                  <div className="relative rounded-full overflow-hidden bg-[#0c0d13] flex items-center">
+                    <Search className="absolute left-5 text-gray-400 h-6 w-6" />
+                    <Input
+                      type="text"
+                      placeholder="Search tools..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full border-0 pl-14 py-6 text-lg bg-transparent focus-visible:ring-0 focus-visible:ring-transparent"
+                    />
+                  </div>
                 </div>
               </div>
-              <Button type="submit" className="w-full md:w-auto bg-accent hover:bg-accent/90 text-white">
-                Find Tools <Search className="ml-2 h-5 w-5" />
-              </Button>
             </form>
           </div>
           
