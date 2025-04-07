@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { FileText, Check, X, AlertCircle, EyeIcon } from 'lucide-react';
+import { FileText, Check, X } from 'lucide-react';
 import { toast } from "sonner";
 import UploadBox from './UploadBox';
 
@@ -18,7 +18,6 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
   pageCount = 0
 }) => {
   const [isLargeFile, setIsLargeFile] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
   
   const validateAndProcessFile = useCallback((file: File) => {
     // Validate file is a PDF
@@ -45,10 +44,6 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
       validateAndProcessFile(files[0]);
     }
   }, [validateAndProcessFile]);
-
-  const togglePreview = () => {
-    setShowPreview(!showPreview);
-  };
 
   // Render PDF preview if file is selected
   if (selectedPdf) {
@@ -86,24 +81,6 @@ const PdfUploader: React.FC<PdfUploaderProps> = ({
               <p className="text-sm text-muted-foreground mb-4">
                 Your PDF will be converted to high-quality images
               </p>
-              
-              <button
-                onClick={togglePreview}
-                className="px-4 py-2 bg-accent/10 text-accent rounded-md hover:bg-accent/20 flex items-center gap-2 mb-3"
-              >
-                <EyeIcon size={18} />
-                {showPreview ? "Hide Preview" : "Show Preview"}
-              </button>
-              
-              {showPreview && (
-                <div className="w-full h-72 border border-gray-200 dark:border-gray-700 rounded-md mt-2 overflow-hidden">
-                  <iframe
-                    src={selectedPdf}
-                    title="PDF Preview"
-                    className="w-full h-full"
-                  />
-                </div>
-              )}
             </div>
           </div>
         </div>
