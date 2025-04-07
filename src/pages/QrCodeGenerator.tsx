@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
+import BackButton from '@/components/BackButton';
 import { 
   Download, 
   Copy, 
@@ -79,6 +80,8 @@ const QrCodeGenerator = () => {
         <Header />
         
         <main className="flex-1 container mx-auto px-4 py-8">
+          <BackButton />
+          
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-3">QR Code Generator</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
