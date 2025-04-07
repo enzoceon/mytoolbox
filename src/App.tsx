@@ -15,6 +15,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
+import Refund from "./pages/Refund";
+import Disclaimer from "./pages/Disclaimer";
 import NotFound from "./pages/NotFound";
 import { ImageConversionProvider } from "./components/conversion/ImageConversionProvider";
 import { JPGtoPNGProvider } from "./components/conversion/JPGtoPNGProvider";
@@ -79,6 +81,8 @@ const AppContent = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/cookies" element={<Cookies />} />
+        <Route path="/refund" element={<Refund />} />
+        <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/contact" element={<Contact />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
@@ -104,3 +108,4 @@ const App = () => {
 };
 
 export default App;
+

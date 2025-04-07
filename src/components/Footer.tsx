@@ -83,6 +83,16 @@ const Footer = () => {
                   Cookie Policy
                 </Link>
               </li>
+              <li>
+                <Link to="/refund" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/disclaimer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Disclaimer
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -96,3 +106,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
