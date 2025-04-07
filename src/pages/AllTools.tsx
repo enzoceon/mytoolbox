@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -97,8 +98,9 @@ const AllTools = () => {
       name: 'Image Compressor',
       description: 'Reduce image file size without losing quality',
       icon: <FileImage className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
+      path: '/image-compressor',
       category: 'Image',
+      available: true,
     },
     {
       id: 'video-compressor',
@@ -171,8 +173,9 @@ const AllTools = () => {
       name: 'HTML to PDF',
       description: 'Convert webpage or HTML code to PDF document',
       icon: <Code className="h-6 w-6 text-yellow-500" />,
-      path: '/tools',
+      path: '/html-to-pdf',
       category: 'Document',
+      available: true,
     },
     {
       id: 'ocr-tool',
@@ -204,17 +207,19 @@ const AllTools = () => {
       name: 'Color Picker',
       description: 'Select and extract colors from images',
       icon: <Palette className="h-6 w-6 text-pink-500" />,
-      path: '/tools',
+      path: '/color-picker',
       category: 'Utility',
+      available: true,
     },
     {
       id: 'password-generator',
       name: 'Password Generator',
       description: 'Generate strong, secure passwords',
       icon: <Lock className="h-6 w-6 text-gray-500" />,
-      path: '/tools',
+      path: '/password-generator',
       category: 'Utility',
       popular: true,
+      available: true,
     },
     {
       id: 'countdown-timer',

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,15 +21,16 @@ import NotFound from "./pages/NotFound";
 import { ImageConversionProvider } from "./components/conversion/ImageConversionProvider";
 import { JPGtoPNGProvider } from "./components/conversion/JPGtoPNGProvider";
 import ConverterSection from "./components/sections/ConverterSection";
+import ImageCompressor from "./pages/ImageCompressor";
+import HtmlToPdf from "./pages/HtmlToPdf";
+import ColorPicker from "./pages/ColorPicker";
+import PasswordGenerator from "./pages/PasswordGenerator";
 
-// ScrollToTop component to handle scrolling on route changes
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    // If there's a hash in the URL, let the hash link handling work
     if (!hash) {
-      // Otherwise, scroll to top on route change
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
@@ -38,7 +38,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Custom component to handle context menu prevention
 const ContextMenuHandler = () => {
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
@@ -56,7 +55,6 @@ const ContextMenuHandler = () => {
   return null;
 };
 
-// Create AppContent component to use hooks inside BrowserRouter
 const AppContent = () => {
   const queryClient = new QueryClient();
   
@@ -78,6 +76,10 @@ const AppContent = () => {
           </JPGtoPNGProvider>
         } />
         <Route path="/qr-code-generator" element={<QrCodeGenerator />} />
+        <Route path="/image-compressor" element={<ImageCompressor />} />
+        <Route path="/html-to-pdf" element={<HtmlToPdf />} />
+        <Route path="/color-picker" element={<ColorPicker />} />
+        <Route path="/password-generator" element={<PasswordGenerator />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
@@ -86,7 +88,6 @@ const AppContent = () => {
         <Route path="/refund" element={<Refund />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/contact" element={<Contact />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>
@@ -110,4 +111,3 @@ const App = () => {
 };
 
 export default App;
-
