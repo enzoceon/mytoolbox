@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -13,7 +14,8 @@ type ToolCategory =
   | 'Audio'
   | 'Text'
   | 'Utility'
-  | 'AI';
+  | 'AI'
+  | 'QR Code';
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,7 +31,7 @@ const HeroSection = () => {
   };
 
   // Define tool categories
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI', 'QR Code'];
 
   const navigateToAITools = () => {
     navigate('/tools?category=AI');
@@ -37,6 +39,10 @@ const HeroSection = () => {
 
   const navigateToImageTools = () => {
     navigate('/tools?category=Image');
+  };
+
+  const navigateToQRTools = () => {
+    navigate('/tools?category=QR Code');
   };
 
   return (
@@ -89,7 +95,7 @@ const HeroSection = () => {
               </Link>
               <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <Image className="h-8 w-8 text-purple-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Image Compressor</p>
+                <p className="text-sm font-medium">Background Remover</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
               </div>
             </div>
@@ -100,6 +106,40 @@ const HeroSection = () => {
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
               Explore All Image Tools
+            </Button>
+          </div>
+          
+          {/* QR Code Section - New Addition */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
+            <h2 className="text-xl font-semibold mb-4">QR Code Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/qr-code-generator" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <QrCode className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">QR Generator</p>
+              </Link>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <QrCode className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">QR Scanner</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </div>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <QrCode className="h-8 w-8 text-pink-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">QR Styler</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </div>
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Image className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image to QR</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </div>
+            </div>
+            <Button 
+              onClick={navigateToQRTools} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All QR Tools
             </Button>
           </div>
           

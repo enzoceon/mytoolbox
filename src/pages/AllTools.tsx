@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,10 @@ import {
   QrCode, Edit, Palette, Lock,
   Check, Shield, ArrowRight, 
   Sparkles, Brain, MessageSquare, Bot,
-  Scissors, Minimize2, FilePlus, Volume2
+  Scissors, Minimize2, FilePlus, Volume2,
+  Video as VideoIcon, FileX, Trash, Download,
+  Upload, Unlock, Eye, EyeOff, Share,
+  Image, Plus, Headphones, Crop
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -30,7 +32,8 @@ type ToolCategory =
   | 'Audio'
   | 'Text'
   | 'Utility'
-  | 'AI';
+  | 'AI'
+  | 'QR Code';
 
 interface Tool {
   id: string;
@@ -258,6 +261,143 @@ const AllTools = () => {
       category: 'AI',
       available: true,
     },
+    {
+      id: 'image-to-qr-code-generator',
+      name: 'Image to QR Code',
+      description: 'Convert images into scannable QR codes for easy sharing and storing visual content.',
+      icon: <QrCode className="h-6 w-6 text-blue-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+    },
+    {
+      id: 'video-to-qr-code-generator',
+      name: 'Video to QR Code',
+      description: 'Generate QR codes that link to your video content for convenient mobile access.',
+      icon: <QrCode className="h-6 w-6 text-purple-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+    },
+    {
+      id: 'video-compressor',
+      name: 'Video Compressor',
+      description: 'Reduce video file size while maintaining optimal quality for easier sharing and storage.',
+      icon: <Minimize2 className="h-6 w-6 text-blue-500" />,
+      path: '/tools',
+      category: 'Video',
+      available: false,
+    },
+    {
+      id: 'pdf-watermark',
+      name: 'PDF Watermark',
+      description: 'Add custom text or image watermarks to protect and brand your PDF documents.',
+      icon: <FileText className="h-6 w-6 text-orange-500" />,
+      path: '/tools',
+      category: 'Document',
+      available: false,
+    },
+    {
+      id: 'pdf-locker',
+      name: 'PDF Locker',
+      description: 'Secure your PDF files with password protection to control access to sensitive information.',
+      icon: <Lock className="h-6 w-6 text-red-500" />,
+      path: '/tools',
+      category: 'Document',
+      available: false,
+    },
+    {
+      id: 'audio-extractor',
+      name: 'Audio Extractor',
+      description: 'Extract audio tracks from video files in various formats with quality preservation.',
+      icon: <Headphones className="h-6 w-6 text-green-500" />,
+      path: '/tools',
+      category: 'Audio',
+      available: false,
+    },
+    {
+      id: 'gif-to-video',
+      name: 'GIF to Video',
+      description: 'Convert animated GIFs to video formats for broader compatibility and playback options.',
+      icon: <VideoIcon className="h-6 w-6 text-purple-500" />,
+      path: '/tools',
+      category: 'Video',
+      available: false,
+    },
+    {
+      id: 'video-audio-remover',
+      name: 'Video Audio Remover',
+      description: 'Remove audio tracks from videos to create silent videos for specific use cases.',
+      icon: <VideoIcon className="h-6 w-6 text-gray-500" />,
+      path: '/tools',
+      category: 'Video',
+      available: false,
+    },
+    {
+      id: 'add-audio-to-video',
+      name: 'Add Audio to Video',
+      description: 'Merge audio files with videos to create customized audio-visual content.',
+      icon: <Plus className="h-6 w-6 text-blue-500" />,
+      path: '/tools',
+      category: 'Video',
+      available: false,
+    },
+    {
+      id: 'image-background-remover',
+      name: 'Background Remover',
+      description: 'Automatically remove backgrounds from images with AI-powered precision.',
+      icon: <Crop className="h-6 w-6 text-purple-500" />,
+      path: '/tools',
+      category: 'Image',
+      available: false,
+      popular: true,
+    },
+    {
+      id: 'pdf-password-remover',
+      name: 'PDF Password Remover',
+      description: 'Remove passwords from PDF files you have authorized access to for easier handling.',
+      icon: <Unlock className="h-6 w-6 text-green-500" />,
+      path: '/tools',
+      category: 'Document',
+      available: false,
+    },
+    {
+      id: 'pdf-to-qr-code',
+      name: 'PDF to QR Code',
+      description: 'Convert PDF documents into QR codes for quick document access and sharing.',
+      icon: <QrCode className="h-6 w-6 text-orange-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+    },
+    {
+      id: 'audio-to-qr-code',
+      name: 'Audio to QR Code',
+      description: 'Transform audio files into QR codes that link to your sound content.',
+      icon: <QrCode className="h-6 w-6 text-yellow-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+    },
+    {
+      id: 'qr-code-scanner',
+      name: 'QR Code Scanner',
+      description: 'Scan and decode QR codes directly from your browser using your device camera.',
+      icon: <Search className="h-6 w-6 text-blue-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+      popular: true,
+    },
+    {
+      id: 'qr-code-styler',
+      name: 'QR Code Styler',
+      description: 'Create custom-designed QR codes with colors, logos, and shapes while maintaining scannability.',
+      icon: <Palette className="h-6 w-6 text-pink-500" />,
+      path: '/tools',
+      category: 'QR Code',
+      available: false,
+    },
   ];
 
   const filteredTools = tools.filter(tool => {
@@ -268,7 +408,7 @@ const AllTools = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI'];
+  const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'Utility', 'AI', 'QR Code'];
 
   return (
     <div className="min-h-screen flex flex-col">
