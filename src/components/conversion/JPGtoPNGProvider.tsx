@@ -75,6 +75,7 @@ export const JPGtoPNGProvider: React.FC<JPGtoPNGProviderProps> = ({ children }) 
       // Combine with existing files/urls if any
       setSelectedFiles(prev => [...prev, ...validFiles]);
       setPreviewUrls(prev => [...prev, ...urls]);
+      setConvertedImages([]); // Reset previous conversions
       
       // Mark that user has interacted
       setHasUserInteracted(true);

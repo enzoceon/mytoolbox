@@ -20,8 +20,27 @@ const HowToUse = () => {
     }
   }, [location]);
 
-  // Determine if we're on the PDF to Image page
+  // Determine which page we're on
+  const isJPGtoPNG = location.pathname === '/jpg-to-png';
   const isPdfToImage = location.pathname === '/pdf-to-image';
+  
+  const jpgToPngSteps = [
+    {
+      icon: <Upload className="h-8 w-8 text-blue-500" />,
+      title: 'Upload Your JPG Images',
+      description: 'Drag and drop JPG/JPEG files or click to browse and select from your device.'
+    },
+    {
+      icon: <FileImage className="h-8 w-8 text-blue-500" />,
+      title: 'Convert to PNG',
+      description: 'Click the "Convert to PNG" button to transform your JPG images into transparent PNG format.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Download Your PNGs',
+      description: 'Once conversion is complete, download all PNG files or individual images with a single click.'
+    }
+  ];
   
   const imageToPathSteps = [
     {
@@ -60,8 +79,19 @@ const HowToUse = () => {
   ];
   
   // Choose the appropriate steps based on the current page
-  const steps = isPdfToImage ? pdfToImageSteps : imageToPathSteps;
-  const toolName = isPdfToImage ? 'PDF to Image' : 'Image to PDF';
+  let steps;
+  let toolName;
+  
+  if (isJPGtoPNG) {
+    steps = jpgToPngSteps;
+    toolName = 'JPG to PNG';
+  } else if (isPdfToImage) {
+    steps = pdfToImageSteps;
+    toolName = 'PDF to Image';
+  } else {
+    steps = imageToPathSteps;
+    toolName = 'Image to PDF';
+  }
 
   return (
     <section id="how-to-use" ref={sectionRef} className="py-12 px-4">
@@ -69,9 +99,11 @@ const HowToUse = () => {
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">How to Use {toolName}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            {isPdfToImage 
-              ? 'Converting your PDF to images is simple and fast. Follow these three easy steps to get started.'
-              : 'Converting your images to PDF is simple and fast. Follow these three easy steps to get started.'
+            {isJPGtoPNG 
+              ? 'Converting your JPG files to transparent PNG images is simple and fast. Follow these three easy steps to get started.'
+              : isPdfToImage 
+                ? 'Converting your PDF to images is simple and fast. Follow these three easy steps to get started.'
+                : 'Converting your images to PDF is simple and fast. Follow these three easy steps to get started.'
             }
           </p>
         </div>
@@ -96,4 +128,3 @@ const HowToUse = () => {
 };
 
 export default HowToUse;
-

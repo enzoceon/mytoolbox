@@ -38,8 +38,7 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
       return;
     }
     
-    // For multiple images, we need to create a zip file
-    // But for simplicity, we'll just download them one by one in this version
+    // For multiple images, we'll download them one by one with a small delay
     convertedImages.forEach((image, index) => {
       setTimeout(() => {
         handleDownloadSingle(image.converted, index);
@@ -54,11 +53,11 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
   }
   
   return (
-    <div className="mt-6 space-y-6">
+    <div className="mt-6 space-y-6 w-full max-w-md">
       {!isConverting && convertedImages.length === 0 && (
         <Button
           onClick={onConvert}
-          className="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:opacity-90 text-white"
+          className="w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 hover:opacity-90 text-white py-6 text-lg"
           disabled={isConverting}
         >
           <ImageIcon size={18} className="mr-2" />
@@ -67,7 +66,7 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
       )}
       
       {isConverting && (
-        <div className="flex justify-center">
+        <div className="flex justify-center py-6">
           <div className="flex flex-col items-center">
             <Loader2 size={40} className="animate-spin text-purple-500" />
             <p className="mt-3 text-sm text-muted-foreground">Converting your {imageCount > 1 ? 'images' : 'image'} to PNG...</p>
@@ -105,7 +104,7 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
           
           <Button
             onClick={handleDownloadAll}
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg"
           >
             <Download size={18} className="mr-2" />
             Download {convertedImages.length > 1 ? 'All PNGs' : 'PNG'}
@@ -114,7 +113,7 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
           <Button
             onClick={onConvert}
             variant="outline"
-            className="w-full"
+            className="w-full py-4"
           >
             <ImageIcon size={18} className="mr-2" />
             Convert Again

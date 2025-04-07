@@ -59,35 +59,30 @@ const UploadArea: React.FC<UploadAreaProps> = ({
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center justify-center py-10">
       <div 
-        className={`drop-area w-full max-w-md mx-auto flex flex-col items-center justify-center ${isDragging ? 'drop-area-active' : ''}`}
+        className={`w-full flex flex-col items-center justify-center ${isDragging ? 'scale-105 transition-transform' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-4 p-4 rounded-full bg-accent/10 text-accent">
-          <Upload size={24} className="animate-bounce-soft" />
+        <div className="mb-4 w-24 h-24 bg-purple-900/30 rounded-full flex items-center justify-center">
+          <Upload size={40} className="text-purple-400" />
         </div>
-        <h3 className="text-lg font-medium mb-2 text-foreground">Drop your images here</h3>
-        <p className="text-sm text-muted-foreground mb-4 text-center">
-          {acceptedFileTypes === "image/*" 
-            ? "Select image files to convert" 
-            : acceptedFileTypes.includes("jpeg") 
-              ? "Select JPG/JPEG files to convert to PNG" 
-              : "Select image files to convert"}
-        </p>
-        <div className="flex items-center space-x-2">
-          <hr className="w-10 border-gray-200 dark:border-gray-700" />
-          <span className="text-xs text-muted-foreground">OR</span>
-          <hr className="w-10 border-gray-200 dark:border-gray-700" />
+        
+        <div className="flex items-center space-x-4 mt-6">
+          <hr className="w-16 border-gray-600" />
+          <span className="text-sm text-gray-400">OR</span>
+          <hr className="w-16 border-gray-600" />
         </div>
+        
         <button
-          className="mt-4 px-6 py-2 rounded-md bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-all transform hover:scale-105 duration-200"
+          className="mt-6 px-10 py-3 rounded-full bg-purple-600 text-white text-lg font-medium hover:bg-purple-500 transition-colors"
           onClick={handleBrowseClick}
         >
           Browse Files
         </button>
+        
         <input
           type="file"
           className="hidden"
