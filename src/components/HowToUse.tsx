@@ -61,7 +61,7 @@ const HowToUse = () => {
   
   // Choose the appropriate steps based on the current page
   const steps = isPdfToImage ? pdfToImageSteps : imageToPathSteps;
-  const toolName = isPdfToImage ? 'PDF to Image' : 'Image2PDF';
+  const toolName = isPdfToImage ? 'PDF to Image' : 'Image to PDF';
 
   return (
     <section id="how-to-use" ref={sectionRef} className="py-12 px-4">
@@ -96,3 +96,4 @@ const HowToUse = () => {
 };
 
 export default HowToUse;
+
