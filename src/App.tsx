@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,6 +26,11 @@ import ImageCompressor from "./pages/ImageCompressor";
 import HtmlToPdf from "./pages/HtmlToPdf";
 import ColorPicker from "./pages/ColorPicker";
 import PasswordGenerator from "./pages/PasswordGenerator";
+import CountdownTimer from "./pages/CountdownTimer";
+import TextEditor from "./pages/TextEditor";
+import PdfMerger from "./pages/PdfMerger";
+import PdfSplitter from "./pages/PdfSplitter";
+import PdfCompressor from "./pages/PdfCompressor";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -80,6 +86,11 @@ const AppContent = () => {
         <Route path="/html-to-pdf" element={<HtmlToPdf />} />
         <Route path="/color-picker" element={<ColorPicker />} />
         <Route path="/password-generator" element={<PasswordGenerator />} />
+        <Route path="/countdown-timer" element={<CountdownTimer />} />
+        <Route path="/text-editor" element={<TextEditor />} />
+        <Route path="/pdf-merger" element={<PdfMerger />} />
+        <Route path="/pdf-splitter" element={<PdfSplitter />} />
+        <Route path="/pdf-compressor" element={<PdfCompressor />} />
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />

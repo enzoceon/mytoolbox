@@ -8,7 +8,8 @@ import {
   Code, Search, Type, BarChart, 
   QrCode, Edit, Palette, Lock,
   Check, Shield, ArrowRight, 
-  Sparkles, Brain, MessageSquare, Bot
+  Sparkles, Brain, MessageSquare, Bot,
+  Scissors, Minimize2, FilePlus
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -147,26 +148,29 @@ const AllTools = () => {
       id: 'pdf-compressor',
       name: 'PDF Compressor',
       description: 'Reduce PDF file size without losing quality',
-      icon: <FileText className="h-6 w-6 text-green-500" />,
-      path: '/tools',
+      icon: <Minimize2 className="h-6 w-6 text-green-500" />,
+      path: '/pdf-compressor',
       category: 'Document',
+      available: true,
     },
     {
       id: 'pdf-merger',
       name: 'PDF Merger',
       description: 'Combine multiple PDF files into a single document',
-      icon: <FileText className="h-6 w-6 text-green-500" />,
-      path: '/tools',
+      icon: <FilePlus className="h-6 w-6 text-green-500" />,
+      path: '/pdf-merger',
       category: 'Document',
       popular: true,
+      available: true,
     },
     {
       id: 'pdf-splitter',
       name: 'PDF Splitter',
       description: 'Split PDF files into separate pages or sections',
-      icon: <FileText className="h-6 w-6 text-green-500" />,
-      path: '/tools',
+      icon: <Scissors className="h-6 w-6 text-green-500" />,
+      path: '/pdf-splitter',
       category: 'Document',
+      available: true,
     },
     {
       id: 'html-to-pdf',
@@ -199,8 +203,9 @@ const AllTools = () => {
       name: 'Text Editor',
       description: 'Simple text editor with formatting options',
       icon: <Edit className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
+      path: '/text-editor',
       category: 'Text',
+      available: true,
     },
     {
       id: 'color-picker',
@@ -226,8 +231,9 @@ const AllTools = () => {
       name: 'Countdown Timer',
       description: 'Create countdown timers for events and deadlines',
       icon: <Clock className="h-6 w-6 text-blue-500" />,
-      path: '/tools',
+      path: '/countdown-timer',
       category: 'Utility',
+      available: true,
     },
     {
       id: 'text-to-speech',
