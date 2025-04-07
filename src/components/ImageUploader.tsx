@@ -136,45 +136,37 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div className="w-full">
       <div 
-        className={`border-2 border-dashed rounded-lg ${isDragging 
-          ? 'border-accent bg-accent/5' 
-          : 'border-gray-300 dark:border-gray-700'
-        } p-6 text-center`}
+        className={`drop-area w-full max-w-md mx-auto flex flex-col items-center justify-center ${isDragging ? 'drop-area-active' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="flex flex-col items-center justify-center">
-          <div className="mb-3 rounded-full p-3 bg-accent/10">
-            <ImageIcon className="h-6 w-6 text-accent" />
-          </div>
-          
-          <h3 className="mb-1 text-sm font-medium text-foreground">Drag & drop images here</h3>
-          <p className="text-xs text-muted-foreground mb-3">
-            Supports JPG, PNG, GIF, BMP, etc.
-          </p>
-          
-          <div className="flex items-center space-x-3 my-2">
-            <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700"></div>
-            <span className="text-xs text-muted-foreground">or</span>
-            <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700"></div>
-          </div>
-          
-          <button
-            className="px-4 py-2 mt-2 bg-accent text-white rounded-md text-sm hover:bg-accent/90"
-            onClick={handleBrowseClick}
-          >
-            Select Images
-          </button>
-          <input
-            type="file"
-            className="hidden"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileInput}
-            multiple
-          />
+        <div className="mb-4 p-4 rounded-full bg-accent/10 text-accent">
+          <Upload size={24} className="animate-bounce-soft" />
         </div>
+        <h3 className="text-lg font-medium mb-2 text-foreground">Drop your images here</h3>
+        <p className="text-sm text-muted-foreground mb-4 text-center">
+          Select image files to convert to PDF
+        </p>
+        <div className="flex items-center space-x-2">
+          <hr className="w-10 border-gray-200 dark:border-gray-700" />
+          <span className="text-xs text-muted-foreground">OR</span>
+          <hr className="w-10 border-gray-200 dark:border-gray-700" />
+        </div>
+        <button
+          className="mt-4 px-6 py-2 rounded-md bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-all transform hover:scale-105 duration-200"
+          onClick={handleBrowseClick}
+        >
+          Browse Files
+        </button>
+        <input
+          type="file"
+          className="hidden"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileInput}
+          multiple
+        />
       </div>
     </div>
   );
