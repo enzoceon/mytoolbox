@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -12,7 +13,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import BackButton from '@/components/BackButton';
-import HowToUse from '@/components/HowToUse';
 import { 
   Download, 
   Copy, 
@@ -29,12 +29,14 @@ const QrCodeGenerator = () => {
   const [qrLevel, setQrLevel] = useState('L');
   const qrRef = useRef<HTMLDivElement>(null);
 
+  // Handle QR code download
   const handleDownload = () => {
     if (!qrRef.current) return;
 
     const canvas = qrRef.current.querySelector('canvas');
     if (!canvas) return;
 
+    // Create a temporary link element and trigger download
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
     link.download = 'qrcode.png';
@@ -45,6 +47,7 @@ const QrCodeGenerator = () => {
     toast.success('QR Code downloaded successfully!');
   };
 
+  // Handle copy to clipboard
   const handleCopy = () => {
     if (!qrRef.current) return;
 
@@ -87,6 +90,7 @@ const QrCodeGenerator = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* QR Code Preview */}
             <div className="glass-card p-6 rounded-xl flex flex-col items-center justify-center">
               <div className="mb-4 w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center">
                 <QrCodeIcon className="h-8 w-8 text-indigo-400" />
@@ -128,6 +132,7 @@ const QrCodeGenerator = () => {
               </div>
             </div>
             
+            {/* QR Code Settings */}
             <div className="glass-card p-6 rounded-xl">
               <h2 className="text-xl font-semibold mb-6">QR Code Settings</h2>
               
@@ -229,8 +234,14 @@ const QrCodeGenerator = () => {
             </div>
           </div>
           
-          <div className="mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <HowToUse />
+          <div className="max-w-3xl mx-auto mt-12 glass-card p-6 rounded-xl">
+            <h2 className="text-2xl font-semibold mb-4">How to Use QR Code Generator</h2>
+            <ol className="list-decimal list-inside space-y-3 text-muted-foreground">
+              <li>Enter the URL, text, or contact information you want to encode in the QR code.</li>
+              <li>Customize the size, colors, and error correction level to fit your needs.</li>
+              <li>Download your QR code as a PNG image or copy it to clipboard.</li>
+              <li>Place your QR code on business cards, flyers, websites, or anywhere else you need.</li>
+            </ol>
           </div>
         </main>
         
