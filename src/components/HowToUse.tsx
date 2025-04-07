@@ -23,6 +23,7 @@ const HowToUse = () => {
   // Determine which page we're on
   const isJPGtoPNG = location.pathname === '/jpg-to-png';
   const isPdfToImage = location.pathname === '/pdf-to-image';
+  const isQrCodeGenerator = location.pathname === '/qr-code-generator';
   
   const jpgToPngSteps = [
     {
@@ -38,7 +39,7 @@ const HowToUse = () => {
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your PNGs',
-      description: 'Once conversion is complete, download all PNG files individually or as a ZIP archive with a single click. No watermarks added.'
+      description: 'Once conversion is complete, download all PNG files individually or as a ZIP archive with a single click.'
     }
   ];
   
@@ -51,12 +52,12 @@ const HowToUse = () => {
     {
       icon: <FileImage className="h-8 w-8 text-blue-500" />,
       title: 'Convert to PDF',
-      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document. Arrange and reorder images as needed before conversion.'
+      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document.'
     },
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your PDF',
-      description: 'Once conversion is complete, download your PDF file with a single click. Your document will be ready to view, share, or print without watermarks.'
+      description: 'Once conversion is complete, download your PDF file with a single click.'
     }
   ];
   
@@ -69,12 +70,30 @@ const HowToUse = () => {
     {
       icon: <FileImage className="h-8 w-8 text-blue-500" />,
       title: 'Convert to Images',
-      description: 'Click the "Convert to Images" button to transform your PDF pages into high-quality images. Choose between JPG or PNG format and adjust quality settings.'
+      description: 'Click the "Convert to Images" button to transform your PDF pages into high-quality images. Choose between JPG or PNG format.'
     },
     {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your Images',
-      description: 'Once conversion is complete, download all images as a ZIP file or view and download individual pages. All images maintain the original PDF quality.'
+      description: 'Once conversion is complete, download all images as a ZIP file or view and download individual pages.'
+    }
+  ];
+  
+  const qrCodeGeneratorSteps = [
+    {
+      icon: <FileImage className="h-8 w-8 text-blue-500" />,
+      title: 'Enter QR Code Content',
+      description: 'Type the URL, text, or contact information you want to encode in the QR code. Select the content type from the dropdown.'
+    },
+    {
+      icon: <Palette className="h-8 w-8 text-blue-500" />,
+      title: 'Customize Your QR Code',
+      description: 'Adjust the size, colors, and error correction level to create a unique QR code that matches your requirements.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Download Your QR Code',
+      description: 'Once you\'re satisfied with the preview, download your QR code as a PNG image or copy it to clipboard.'
     }
   ];
   
@@ -88,6 +107,9 @@ const HowToUse = () => {
   } else if (isPdfToImage) {
     steps = pdfToImageSteps;
     toolName = 'PDF to Image';
+  } else if (isQrCodeGenerator) {
+    steps = qrCodeGeneratorSteps;
+    toolName = 'QR Code Generator';
   } else {
     steps = imageToPathSteps;
     toolName = 'Image to PDF';
@@ -95,24 +117,26 @@ const HowToUse = () => {
 
   return (
     <section id="how-to-use" ref={sectionRef} className="py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">How to Use {toolName}</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-3xl mx-auto">
             {isJPGtoPNG 
               ? 'Converting your JPG files to transparent PNG images is simple and fast. Follow these three easy steps to get started.'
               : isPdfToImage 
                 ? 'Converting your PDF to high-quality images is simple and fast. Follow these three easy steps to get started.'
-                : 'Converting your images to a professional PDF document is simple and fast. Follow these three easy steps to get started.'
+                : isQrCodeGenerator
+                  ? 'Generating custom QR codes is simple and fast. Follow these three easy steps to get started.'
+                  : 'Converting your images to a professional PDF document is simple and fast. Follow these three easy steps to get started.'
             }
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step, index) => (
             <div 
               key={index} 
-              className="bg-[#0c1224] p-6 rounded-xl text-center transition-transform hover:scale-105 duration-300 border border-white/10"
+              className="bg-[#0c1224] p-6 rounded-xl text-center transition-all hover:transform hover:scale-105 duration-300 border border-white/10 shadow-lg flex flex-col items-center"
             >
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-900/30 flex items-center justify-center">
                 {step.icon}
