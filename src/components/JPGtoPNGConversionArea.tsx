@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { toast } from "sonner";
+import { downloadWithStandardFilename } from '@/utils/fileUtils';
 
 interface JPGtoPNGConversionAreaProps {
   hasImages: boolean;
@@ -21,12 +22,7 @@ const JPGtoPNGConversionArea: React.FC<JPGtoPNGConversionAreaProps> = ({
 }) => {
   
   const handleDownloadSingle = (url: string, index: number) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `image_${index + 1}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadWithStandardFilename(url, 'png', `image-${index + 1}`);
     toast.success(`PNG image downloaded!`);
   };
   

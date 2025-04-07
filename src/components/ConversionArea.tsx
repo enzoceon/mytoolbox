@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Download, ArrowDown, Check, X, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { getStandardFilename } from '@/utils/fileUtils';
 
 interface ConversionAreaProps {
   hasImages: boolean;
@@ -144,7 +145,7 @@ const ConversionArea: React.FC<ConversionAreaProps> = ({
           
           <a
             href={downloadUrl}
-            download="images-to-pdf.pdf"
+            download={getStandardFilename('pdf')}
             className="px-8 py-3 rounded-md bg-accent text-white font-medium shadow-md hover:shadow-lg transition-shadow flex items-center"
           >
             <Download size={18} className="mr-2" />
