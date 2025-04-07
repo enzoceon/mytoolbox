@@ -20,8 +20,11 @@ const ConverterSection = () => {
   return (
     <section id="converter" className="bg-[#020814] min-h-screen flex flex-col items-center pt-12 pb-16">
       <div className="max-w-2xl mx-auto text-center mb-8 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-          Transform Images to <span className="text-blue-500">PDFs</span> in Seconds
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <span className="bg-gradient-primary bg-clip-text text-transparent">Image</span>
+          <span className="text-white"> to </span>
+          <span className="bg-gradient-primary bg-clip-text text-transparent">PDF</span>
+          <span className="text-white"> Converter</span>
         </h1>
         <p className="text-lg text-gray-400 max-w-xl mx-auto">
           Convert single or multiple images to PDF while preserving exact dimensions and quality. Free, secure, and no registration required.
