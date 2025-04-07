@@ -50,17 +50,17 @@ const UploadBox: React.FC<UploadBoxProps> = ({
 
   return (
     <div 
-      className="w-full max-w-3xl mx-auto"
+      className="w-full"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="aspect-video rounded-3xl border-2 border-dashed border-purple-500/40 flex flex-col items-center justify-center p-8 bg-[#0b101e]">
-        <div className="mb-6 w-20 h-20 rounded-full bg-[#131c33] flex items-center justify-center">
-          <Upload className="h-10 w-10 text-purple-500" />
+      <div className="rounded-2xl border-2 border-dashed border-indigo-400/30 flex flex-col items-center justify-center p-10 bg-[#0e1527]">
+        <div className="mb-8 w-16 h-16 rounded-full bg-[#1a2035] flex items-center justify-center">
+          <Upload className="h-8 w-8 text-indigo-400" />
         </div>
         
-        <h2 className="text-3xl font-semibold text-white mb-3">{title}</h2>
-        <p className="text-xl text-gray-400 mb-8">{subtitle}</p>
+        <h2 className="text-3xl font-medium text-white mb-2">{title}</h2>
+        <p className="text-lg text-gray-400 mb-10 text-center">{subtitle}</p>
         
         <div className="flex items-center space-x-4 mb-8">
           <hr className="w-20 border-gray-600" />
@@ -70,7 +70,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({
         
         <button
           onClick={handleBrowseClick}
-          className="px-10 py-4 text-xl font-medium bg-purple-500 hover:bg-purple-600 text-white rounded-full transition-colors"
+          className="px-10 py-4 text-xl font-medium bg-indigo-500 hover:bg-indigo-600 text-white rounded-full transition-colors"
         >
           Browse Files
         </button>
