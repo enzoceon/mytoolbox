@@ -139,25 +139,25 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div className="w-full animate-fade-in">
       <div 
-        className={`drop-area w-full max-w-md mx-auto p-10 border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center bg-[#080e1a] ${isDragging ? 'border-blue-300 bg-[#0c1224]' : ''}`}
+        className={`drop-area w-full max-w-md mx-auto p-6 border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center bg-[#080e1a] ${isDragging ? 'border-blue-300 bg-[#0c1224]' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="mb-6 p-5 rounded-full bg-blue-50 text-blue-500">
-          <Upload size={32} className="text-blue-500" />
+        <div className="mb-4 p-4 rounded-full bg-blue-50 text-blue-500">
+          <Upload size={24} className="text-blue-500" />
         </div>
-        <h3 className="text-xl font-medium mb-2 text-white">Drop your images here</h3>
-        <p className="text-sm text-gray-400 mb-4 text-center">
+        <h3 className="text-xl font-medium mb-1 text-white">Drop your images here</h3>
+        <p className="text-sm text-gray-400 mb-3 text-center">
           Supports JPG, PNG and other image formats
         </p>
-        <div className="flex items-center my-4 w-full max-w-[280px]">
+        <div className="flex items-center my-2 w-full max-w-[200px]">
           <hr className="flex-grow border-gray-600" />
-          <span className="px-4 text-sm text-gray-400">OR</span>
+          <span className="px-4 text-xs text-gray-400">OR</span>
           <hr className="flex-grow border-gray-600" />
         </div>
         <button
-          className="mt-4 px-8 py-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
+          className="mt-3 px-6 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
           onClick={handleBrowseClick}
         >
           Browse Files

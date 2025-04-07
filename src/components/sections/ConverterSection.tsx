@@ -18,8 +18,8 @@ const ConverterSection = () => {
   } = useImageConversion();
 
   return (
-    <section id="converter" className="bg-[#020814] min-h-screen flex flex-col items-center pt-12 pb-16">
-      <div className="max-w-2xl mx-auto text-center mb-8 px-4">
+    <section id="converter" className="bg-[#020814] min-h-screen flex flex-col items-center pt-8 pb-12">
+      <div className="max-w-2xl mx-auto text-center mb-6 px-4">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           <span className="bg-gradient-primary bg-clip-text text-transparent">Image</span>
           <span className="text-white"> to </span>
