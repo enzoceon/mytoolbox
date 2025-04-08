@@ -31,6 +31,13 @@ const MainNavLinks = () => {
         onClick={(e) => handleHashLinkClick(e, 'how-to-use')} 
         className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
+        How to Use
+      </a>
+      <a 
+        href="#how-it-works" 
+        onClick={(e) => handleHashLinkClick(e, 'how-it-works')} 
+        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+      >
         How It Works
       </a>
       <Link to="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">

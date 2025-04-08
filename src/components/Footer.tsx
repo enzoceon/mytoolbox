@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { scrollToElement } from '@/utils/scrollUtils';
@@ -49,6 +50,15 @@ const Footer = () => {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   How to Use
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#how-it-works" 
+                  onClick={(e) => handleHashLinkClick(e, 'how-it-works')} 
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  How It Works
                 </a>
               </li>
               <li>

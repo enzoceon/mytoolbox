@@ -1,20 +1,20 @@
 
-About Image2PDF
+About MyToolbox
 
-Domain: image2pdf.site
-Purpose: Free online tool to convert images to PDF
-Service Overview: Image2PDF provides a free online service that converts images (JPG, PNG, etc.) to PDF format.
+Domain: mytoolbox.site
+Purpose: Free online tools for file conversion and manipulation
+Service Overview: MyToolbox provides free online services for converting and manipulating various file formats.
 
 Key Features:
-- Client-side processing (images never leave the user's device)
+- Client-side processing (files never leave the user's device)
 - No registration required
 - No watermarks
-- Multiple image conversion support
+- Multiple file format support
 - High-quality output
 - Mobile responsive design
 
 Content Policy:
-Our website offers high-quality, original content that provides users with valuable information about image to PDF conversion. We maintain clear and accessible pages with meaningful content that serves our users' needs.
+Our website offers high-quality, original content that provides users with valuable information about our various tools. We maintain clear and accessible pages with meaningful content that serves our users' needs.
 
 AdSense Compliance:
 - We follow all Google AdSense Program Policies
@@ -24,7 +24,8 @@ AdSense Compliance:
 - Our website does not contain any prohibited content
 
 Website Structure:
-- Homepage with the conversion tool
+- Homepage with featured tools
+- Tool pages with conversion interfaces
 - About Us page with information about our service
 - Privacy Policy outlining our data practices
 - Terms of Service for using our website
