@@ -167,7 +167,7 @@ const tools: ToolType[] = [
   {
     name: "OCR Tool",
     description: "Extract text from images and scanned documents",
-    path: "/ocr-tool",
+    path: "/extract-text-from-image",
     icon: Camera,
     category: "utilities",
     isFunctional: true

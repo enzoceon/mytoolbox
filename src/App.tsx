@@ -113,7 +113,7 @@ const AppContent = () => {
         <Route path="/pdf-compressor" element={<PdfCompressor />} />
         <Route path="/text-to-speech" element={<TextToSpeech />} />
         <Route path="/audio-trimmer" element={<AudioTrimmer />} />
-        <Route path="/ocr-tool" element={<OcrTool />} />
+        <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
         <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-text-generator" element={<AiTextGenerator />} />

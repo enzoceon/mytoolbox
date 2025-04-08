@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain, Crop, Replace, HandMetal, Coffee, Download } from 'lucide-react';
 import {
@@ -78,7 +77,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
         { name: "Text Replacer", path: "/text-replacer" },
         { name: "Text to Handwriting", path: "/text-to-handwriting" },
         { name: "Text to Emoji", path: "/text-to-emoji" },
-        { name: "OCR", path: "/tools" },
+        { name: "OCR", path: "/extract-text-from-image" },
       ]
     },
     {

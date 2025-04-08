@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
@@ -169,7 +170,7 @@ export const tools: ToolType[] = [
     id: 'ocr-tool',
     name: 'Extract Text from Image',
     description: 'Extract text from images and scanned documents',
-    path: '/ocr-tool',
+    path: '/extract-text-from-image',
     icon: Scan,
     category: 'text'
   },
