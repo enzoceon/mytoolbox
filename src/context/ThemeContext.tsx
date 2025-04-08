@@ -10,23 +10,25 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
+// Make sure this is a properly defined function component
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Initialize state with a non-hook conditional approach
+  const [theme, setTheme] = useState<Theme>('light');
+  
+  // Initialize theme on mount only
+  useEffect(() => {
     // Check if theme preference is stored in localStorage
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme') as Theme;
-      if (savedTheme) return savedTheme;
-      
-      // Check for system preference, but default to light if not specified
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      // Check for system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
+      setTheme(prefersDark ? 'dark' : 'light');
     }
-    return 'light'; // Default theme
-  });
+  }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
     // Update the document class when theme changes
     const root = window.document.documentElement;
     
@@ -42,8 +44,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Listen for changes in system color scheme preference
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
     const handleChange = (e: MediaQueryListEvent) => {
