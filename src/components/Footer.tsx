@@ -53,15 +53,6 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#how-it-works" 
-                  onClick={(e) => handleHashLinkClick(e, 'how-it-works')} 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  How It Works
-                </a>
-              </li>
-              <li>
                 <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   About Us
                 </Link>

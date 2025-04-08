@@ -58,21 +58,8 @@ const Refund = () => {
                 <li>Refunds would be processed using the original payment method used for the purchase.</li>
               </ul>
               
-              <h2 className="text-xl font-semibold mt-6 text-foreground">Contact Us</h2>
-              <p>
-                If you have any questions or concerns about our services or this policy, please feel free to contact us:
-              </p>
-              
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Email: contactmytoolbox@gmail.com</li>
-              </ul>
-              
-              <p>
-                We aim to respond to all inquiries within 24-48 hours during business days.
-              </p>
-              
               <p className="mt-10 text-sm">
-                Last Updated: April 7, 2025
+                Last Updated: April 8, 2025
               </p>
             </div>
           </div>
