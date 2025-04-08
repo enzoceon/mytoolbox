@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -64,8 +63,8 @@ const Contact = () => {
               
               <div className="flex items-center space-x-3 text-primary font-medium">
                 <Mail className="h-5 w-5" />
-                <a href="mailto:everytoolssite@gmail.com" className="hover:underline">
-                  everytoolssite@gmail.com
+                <a href="mailto:contactmytoolbox@gmail.com" className="hover:underline">
+                  contactmytoolbox@gmail.com
                 </a>
               </div>
               
@@ -140,7 +139,6 @@ const Contact = () => {
           </div>
         </section>
         
-        {/* Only show ad when there is substantial content */}
         <AdPlacement />
         
         <section className="glass-card rounded-xl p-8 mt-10 animate-fade-in">

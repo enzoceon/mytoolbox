@@ -7,7 +7,7 @@ const Logo = () => {
     <Link to="/" className="flex items-center space-x-2">
       <div>
         <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-          EveryTools
+          MyToolbox
         </h1>
         <p className="text-xs text-muted-foreground">
           Fast. Free. Fluid.

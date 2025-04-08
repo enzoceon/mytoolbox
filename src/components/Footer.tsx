@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { scrollToElement } from '@/utils/scrollUtils';
@@ -23,7 +22,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">EveryTools</h3>
+            <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">MyToolbox</h3>
             <p className="text-sm text-muted-foreground">
               Your one-stop destination for free, powerful online tools. 
               Fast. Free. Fluid.
@@ -98,7 +97,7 @@ const Footer = () => {
         </div>
         
         <div className="mt-10 pt-6 border-t border-gray-200 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} EveryTools. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} MyToolbox. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -106,4 +105,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

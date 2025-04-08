@@ -12,8 +12,8 @@ const Refund = () => {
   return (
     <>
       <Helmet>
-        <title>Refund Policy - EveryTools</title>
-        <meta name="description" content="Learn about our refund policy for services at EveryTools." />
+        <title>Refund Policy - MyToolbox</title>
+        <meta name="description" content="Learn about our refund policy for services at MyToolbox." />
       </Helmet>
       
       <SpaceBackground />
@@ -35,12 +35,12 @@ const Refund = () => {
             
             <div className="space-y-6 text-muted-foreground">
               <p>
-                Thank you for choosing EveryTools. We want to be transparent about our services and policies.
+                Thank you for choosing MyToolbox. We want to be transparent about our services and policies.
               </p>
               
               <h2 className="text-xl font-semibold mt-6 text-foreground">Free Services</h2>
               <p>
-                <strong>All tools and services provided on EveryTools are completely free of charge.</strong> There are no 
+                <strong>All tools and services provided on MyToolbox are completely free of charge.</strong> There are no 
                 hidden fees, subscriptions, or payments required to use any of our conversion tools or utilities.
               </p>
               <p className="mt-2">
@@ -64,7 +64,7 @@ const Refund = () => {
               </p>
               
               <ul className="list-disc pl-6 space-y-2">
-                <li>Email: everytoolssite@gmail.com</li>
+                <li>Email: contactmytoolbox@gmail.com</li>
               </ul>
               
               <p>

@@ -1,5 +1,5 @@
 
-# EveryTools
+# MyToolbox
 
 A beautiful, free online tool to convert images to PDF files.
 
@@ -42,4 +42,3 @@ The built files will be in the `dist` directory.
 ## License
 
 All rights reserved.
-
