@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,12 +35,14 @@ import AudioTrimmer from "./pages/AudioTrimmer";
 import OcrTool from "./pages/OcrTool";
 import AiContentSummarizer from "./pages/AiContentSummarizer";
 import CurrencyConverter from "./pages/CurrencyConverter";
-// Import placeholder pages for our new tools
 import TextReplacer from "./pages/TextReplacer";
 import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
 import VideoToGif from "./pages/VideoToGif";
+import ImageToQR from "./pages/ImageToQR";
+import VideoToQR from "./pages/VideoToQR";
+import AudioToQR from "./pages/AudioToQR";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -107,7 +108,10 @@ const AppContent = () => {
         <Route path="/ocr-tool" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
         
-        {/* New tool routes */}
+        <Route path="/image-to-qr" element={<ImageToQR />} />
+        <Route path="/video-to-qr" element={<VideoToQR />} />
+        <Route path="/audio-to-qr" element={<AudioToQR />} />
+        
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />
         <Route path="/image-cropper" element={<ImageCropper />} />
