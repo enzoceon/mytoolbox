@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify } from 'lucide-react';
@@ -170,7 +169,7 @@ const HeroSection = () => {
               </Link>
               <Link to="/ocr-tool" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <FileSearch className="h-8 w-8 text-pink-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">OCR Tool</p>
+                <p className="text-sm font-medium">Extract Text from Image</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
               </Link>
               <Link to="/text-editor" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">

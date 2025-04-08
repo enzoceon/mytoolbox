@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Upload, Copy, Download, FileText, Search, ImageIcon, Loader2 } from 'lucide-react';
@@ -19,7 +18,6 @@ import { toast } from 'sonner';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import AdPlacement from '@/components/AdPlacement';
 
-// Import Tesseract.js dynamically
 const loadTesseract = async () => {
   const { createWorker } = await import('tesseract.js');
   return { createWorker };
@@ -35,7 +33,6 @@ const OcrTool = () => {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Detect user interaction
   useEffect(() => {
     const handleInteraction = () => {
       setHasUserInteracted(true);
@@ -50,7 +47,6 @@ const OcrTool = () => {
     };
   }, []);
   
-  // Clean up URL object when component unmounts or when a new image is selected
   useEffect(() => {
     return () => {
       if (imageUrl) {
@@ -71,7 +67,6 @@ const OcrTool = () => {
       return;
     }
     
-    // Clean up previous image URL
     if (imageUrl) {
       URL.revokeObjectURL(imageUrl);
     }
@@ -99,7 +94,6 @@ const OcrTool = () => {
         return;
       }
       
-      // Clean up previous image URL
       if (imageUrl) {
         URL.revokeObjectURL(imageUrl);
       }
@@ -125,23 +119,17 @@ const OcrTool = () => {
     setIsProcessing(true);
     
     try {
-      // Load Tesseract.js dynamically
       const { createWorker } = await loadTesseract();
       
-      // Create and initialize worker
       const worker = await createWorker();
       
-      // Load language
       await worker.loadLanguage(language);
       await worker.initialize(language);
       
-      // Recognize text
       const { data } = await worker.recognize(imageUrl);
       
-      // Set recognized text
       setRecognizedText(data.text);
       
-      // Terminate worker
       await worker.terminate();
       
       toast.success('Text recognition completed');
@@ -183,7 +171,6 @@ const OcrTool = () => {
     toast.success('Text file downloaded');
   };
   
-  // Available OCR languages
   const languages = [
     { code: 'eng', name: 'English' },
     { code: 'spa', name: 'Spanish' },
@@ -202,7 +189,7 @@ const OcrTool = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>OCR Tool - Extract Text from Images | EveryTools</title>
+        <title>Extract Text from Image - Free Online OCR Tool | EveryTools</title>
         <meta name="description" content="Extract text from images with our free online OCR (Optical Character Recognition) tool. Supports multiple languages and image formats." />
       </Helmet>
       
@@ -214,7 +201,7 @@ const OcrTool = () => {
         
         <div className="max-w-4xl mx-auto glass-card p-6 rounded-xl shadow-lg">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            <span className="bg-gradient-primary bg-clip-text text-transparent">OCR</span> Tool
+            <span className="bg-gradient-primary bg-clip-text text-transparent">Extract Text</span> from Image
           </h1>
           
           <p className="text-muted-foreground text-center mb-8">
@@ -346,7 +333,7 @@ const OcrTool = () => {
         />
         
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-4">How to Use the OCR Tool</h2>
+          <h2 className="text-2xl font-semibold mb-4">How to Use the Extract Text from Image Tool</h2>
           <div className="glass-card p-6 rounded-xl">
             <ol className="list-decimal list-inside space-y-3 text-muted-foreground">
               <li>Select the language of the text in your image</li>

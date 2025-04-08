@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
@@ -161,7 +160,7 @@ export const tools: ToolType[] = [
   },
   {
     id: 'ocr-tool',
-    name: 'OCR Tool',
+    name: 'Extract Text from Image',
     description: 'Extract text from images and scanned documents',
     path: '/ocr-tool',
     icon: Scan,
@@ -175,7 +174,6 @@ export const tools: ToolType[] = [
     icon: LineChart,
     category: 'text'
   },
-  // New tools based on the user's request
   {
     id: 'currency-converter',
     name: 'Currency Converter',
@@ -295,17 +293,14 @@ export const tools: ToolType[] = [
   }
 ];
 
-// Helper function to get tools by category
 export const getToolsByCategory = (categoryId: string): ToolType[] => {
   return tools.filter(tool => tool.category === categoryId);
 };
 
-// Helper function to get featured tools
 export const getFeaturedTools = (): ToolType[] => {
   return tools.filter(tool => tool.isFeatured);
 };
 
-// Helper function to get new tools
 export const getNewTools = (): ToolType[] => {
   return tools.filter(tool => tool.isNew);
 };
