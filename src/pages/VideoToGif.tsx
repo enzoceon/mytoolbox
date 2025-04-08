@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -11,6 +11,7 @@ import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Download, Upload, FileVideo, Film, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import GIF from 'gif.js';
 
 const VideoToGif = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -21,8 +22,22 @@ const VideoToGif = () => {
   const [quality, setQuality] = useState<number>(80);
   const [processing, setProcessing] = useState<boolean>(false);
   const [videoDuration, setVideoDuration] = useState<number>(0);
+  const [frameRate, setFrameRate] = useState<number>(10);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Clean up URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+      }
+      if (gifUrl) {
+        URL.revokeObjectURL(gifUrl);
+      }
+    };
+  }, [videoUrl, gifUrl]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -85,22 +100,99 @@ const VideoToGif = () => {
     }
   };
 
-  const handleConvertToGif = () => {
-    if (!videoFile) {
+  const captureFrame = (time: number): Promise<ImageData> => {
+    return new Promise((resolve) => {
+      if (videoRef.current && canvasRef.current) {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
+        
+        // Set video to the specific time
+        video.currentTime = time;
+        
+        // When the video has seeked to the correct time, capture the frame
+        const handleSeeked = () => {
+          video.removeEventListener('seeked', handleSeeked);
+          
+          // Set canvas dimensions to match video
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          
+          // Draw the video frame on the canvas
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            resolve(imageData);
+          }
+        };
+        
+        video.addEventListener('seeked', handleSeeked);
+      }
+    });
+  };
+
+  const handleConvertToGif = async () => {
+    if (!videoFile || !videoRef.current || !canvasRef.current) {
       toast.error('Please upload a video first');
       return;
     }
     
     setProcessing(true);
+    toast.info('Processing video to GIF, please wait...');
     
-    // Simulate processing delay
-    setTimeout(() => {
-      // In a real implementation, we would use a library to convert the video to GIF
-      // For this demo, we'll just use a placeholder
-      setGifUrl('https://via.placeholder.com/320x240.gif?text=Converted+GIF');
+    try {
+      const video = videoRef.current;
+      const frameCount = Math.floor(duration * frameRate);
+      const frameDelay = 100 / frameRate; // Delay in ms between frames
+      
+      // Initialize gif.js
+      const gif = new GIF({
+        workers: 2,
+        quality: Math.max(1, Math.min(30, 31 - Math.floor(quality / 3.33))), // Map 10-100 quality to 30-1 (lower is better in gif.js)
+        width: video.videoWidth,
+        height: video.videoHeight,
+        workerScript: 'https://cdn.jsdelivr.net/npm/gif.js/dist/gif.worker.js'
+      });
+      
+      // Capture frames
+      for (let i = 0; i < frameCount; i++) {
+        const currentTime = startTime + (i * duration / frameCount);
+        if (currentTime > videoDuration) break;
+        
+        const imageData = await captureFrame(currentTime);
+        
+        // Add the frame to the gif
+        gif.addFrame(imageData, { delay: frameDelay, copy: true });
+        
+        // Update progress every 10 frames
+        if (i % 10 === 0) {
+          toast.info(`Processing: ${Math.floor((i / frameCount) * 100)}%`, {
+            id: 'gifProgress'
+          });
+        }
+      }
+      
+      // Render the gif
+      gif.on('finished', (blob: Blob) => {
+        // Create URL for the GIF blob
+        const gifObjectUrl = URL.createObjectURL(blob);
+        setGifUrl(gifObjectUrl);
+        setProcessing(false);
+        toast.success('Video converted to GIF successfully!');
+      });
+      
+      gif.on('progress', (progress: number) => {
+        toast.info(`Rendering: ${Math.floor(progress * 100)}%`, {
+          id: 'gifProgress'
+        });
+      });
+      
+      gif.render();
+    } catch (error) {
+      console.error('Error converting video to GIF:', error);
       setProcessing(false);
-      toast.success('Video converted to GIF successfully!');
-    }, 2000);
+      toast.error('Failed to convert video to GIF');
+    }
   };
 
   const handleDownload = () => {
@@ -223,6 +315,19 @@ const VideoToGif = () => {
                           onValueChange={([value]) => setQuality(value)}
                         />
                       </div>
+
+                      <div>
+                        <label className="text-sm font-medium block mb-2">
+                          Frame Rate: {frameRate} fps
+                        </label>
+                        <Slider
+                          value={[frameRate]}
+                          min={5}
+                          max={30}
+                          step={1}
+                          onValueChange={([value]) => setFrameRate(value)}
+                        />
+                      </div>
                     </div>
                     
                     <div className="flex gap-2">
@@ -282,6 +387,7 @@ const VideoToGif = () => {
                     
                     <div className="text-xs text-muted-foreground">
                       <p>Tip: Lower quality settings can result in smaller file sizes.</p>
+                      <p>Higher frame rates produce smoother animations but larger files.</p>
                     </div>
                   </div>
                 ) : (
@@ -293,6 +399,9 @@ const VideoToGif = () => {
               </CardContent>
             </Card>
           </div>
+          
+          {/* Hidden canvas for frame capture */}
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
           
           <div className="mt-8 p-6 border rounded-lg">
             <h2 className="text-xl font-bold mb-4">About Video to GIF Conversion</h2>
