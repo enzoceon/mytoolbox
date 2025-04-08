@@ -34,6 +34,7 @@ const ConverterSection = () => {
       <Helmet>
         <title>Image to PDF Converter - Free Online Tool</title>
         <meta name="description" content="Convert JPG, PNG, GIF, and other image formats to PDF online. Free, secure with no watermarks." />
+        <link rel="canonical" href="https://everytools.site/image-to-pdf" />
       </Helmet>
       
       <SpaceBackground />

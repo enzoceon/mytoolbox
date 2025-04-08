@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain } from 'lucide-react';
 import {
@@ -27,7 +28,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       title: "Photo & Image",
       icon: <FileImage className="h-5 w-5" />,
       items: [
-        { name: "Image to PDF", path: "/converter" },
+        { name: "Image to PDF", path: "/image-to-pdf" },
         { name: "PDF to Image", path: "/pdf-to-image" },
       ]
     },

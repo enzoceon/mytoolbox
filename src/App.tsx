@@ -75,7 +75,7 @@ const AppContent = () => {
       <ContextMenuHandler />
       <Routes>
         <Route path="/" element={<AllTools />} />
-        <Route path="/converter" element={
+        <Route path="/image-to-pdf" element={
           <ImageConversionProvider>
             <ConverterSection />
           </ImageConversionProvider>
