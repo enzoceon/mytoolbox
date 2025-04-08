@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FileVideo, Download, AlertCircle, Info } from 'lucide-react';
@@ -23,6 +24,7 @@ const VideoToQR = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [videoTooLarge, setVideoTooLarge] = useState(false);
+  const [quietZone, setQuietZone] = useState(4);
   
   useEffect(() => {
     return () => {
@@ -100,14 +102,39 @@ const VideoToQR = () => {
     const canvas = document.getElementById('video-qr-code') as HTMLCanvasElement;
     if (!canvas) return;
     
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = `video-qr-code-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    toast.success("QR Code downloaded successfully!");
+    try {
+      // Create a new canvas with proper padding to ensure the quiet zone is preserved
+      const qrWithPadding = document.createElement('canvas');
+      const padding = 20; // Add extra padding around the QR code
+      qrWithPadding.width = canvas.width + (padding * 2);
+      qrWithPadding.height = canvas.height + (padding * 2);
+      
+      const ctx = qrWithPadding.getContext('2d');
+      if (!ctx) {
+        toast.error("Failed to download QR code");
+        return;
+      }
+      
+      // Fill with white background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
+      
+      // Draw the QR code in the center
+      ctx.drawImage(canvas, padding, padding);
+      
+      // Use the new canvas with padding for download
+      const link = document.createElement('a');
+      link.href = qrWithPadding.toDataURL('image/png');
+      link.download = `video-qr-code-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("QR Code downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading QR code:", error);
+      toast.error("Failed to download QR code");
+    }
   };
   
   const handleRemoveVideo = () => {
@@ -202,6 +229,25 @@ const VideoToQR = () => {
                       </div>
                     </div>
                     
+                    <div className="space-y-2">
+                      <Label htmlFor="quietZone">Quiet Zone Size</Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          id="quietZone"
+                          min={0}
+                          max={10}
+                          step={1}
+                          value={[quietZone]}
+                          onValueChange={(values) => setQuietZone(values[0])}
+                          className="flex-1"
+                        />
+                        <span className="text-sm w-12 text-right">{quietZone} modules</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        The quiet zone is the white border around the QR code that improves scanning reliability
+                      </p>
+                    </div>
+                    
                     <Button 
                       className="w-full"
                       onClick={generateQRCode}
@@ -241,6 +287,8 @@ const VideoToQR = () => {
                         value={base64Data}
                         size={qrSize}
                         level="L"
+                        includeMargin={true}
+                        quietZone={quietZone}
                       />
                     </div>
                     

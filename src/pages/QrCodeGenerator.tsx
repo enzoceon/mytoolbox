@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { QrCode, Download, Copy } from 'lucide-react';
@@ -23,6 +24,7 @@ const QrCodeGenerator = () => {
   const [qrBackground, setQrBackground] = useState('#FFFFFF');
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('M');
   const [qrType, setQrType] = useState('url');
+  const [quietZone, setQuietZone] = useState(4);
   
   const formatInputByType = (value: string) => {
     switch (qrType) {
@@ -80,7 +82,26 @@ const QrCodeGenerator = () => {
       const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
       if (!canvas) return;
       
-      canvas.toBlob(async (blob) => {
+      // Create a new canvas with proper padding to ensure the quiet zone is preserved
+      const qrWithPadding = document.createElement('canvas');
+      const padding = 20; // Add extra padding around the QR code
+      qrWithPadding.width = canvas.width + (padding * 2);
+      qrWithPadding.height = canvas.height + (padding * 2);
+      
+      const ctx = qrWithPadding.getContext('2d');
+      if (!ctx) {
+        toast.error("Failed to copy QR code");
+        return;
+      }
+      
+      // Fill with white background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
+      
+      // Draw the QR code in the center
+      ctx.drawImage(canvas, padding, padding);
+      
+      qrWithPadding.toBlob(async (blob) => {
         if (!blob) {
           toast.error("Failed to copy QR code");
           return;
@@ -110,8 +131,28 @@ const QrCodeGenerator = () => {
     if (!canvas) return;
     
     try {
+      // Create a new canvas with proper padding to ensure the quiet zone is preserved
+      const qrWithPadding = document.createElement('canvas');
+      const padding = 20; // Add extra padding around the QR code
+      qrWithPadding.width = canvas.width + (padding * 2);
+      qrWithPadding.height = canvas.height + (padding * 2);
+      
+      const ctx = qrWithPadding.getContext('2d');
+      if (!ctx) {
+        toast.error("Failed to download QR code");
+        return;
+      }
+      
+      // Fill with white background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
+      
+      // Draw the QR code in the center
+      ctx.drawImage(canvas, padding, padding);
+      
+      // Use the new canvas with padding for download
       const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
+      link.href = qrWithPadding.toDataURL('image/png');
       link.download = `qrcode-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
@@ -198,6 +239,25 @@ const QrCodeGenerator = () => {
                     </div>
                   </div>
                   
+                  <div className="space-y-2">
+                    <Label htmlFor="quietZone">Quiet Zone Size</Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        id="quietZone"
+                        min={0}
+                        max={10}
+                        step={1}
+                        value={[quietZone]}
+                        onValueChange={(values) => setQuietZone(values[0])}
+                        className="flex-1"
+                      />
+                      <span className="text-sm w-12 text-right">{quietZone} modules</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      The quiet zone is the white border around the QR code that improves scanning reliability
+                    </p>
+                  </div>
+                  
                   <div className="space-y-3">
                     <Label>Error Correction Level</Label>
                     <RadioGroup 
@@ -282,6 +342,8 @@ const QrCodeGenerator = () => {
                         fgColor={qrForeground}
                         bgColor={qrBackground}
                         level={errorCorrectionLevel as "L" | "M" | "Q" | "H"}
+                        includeMargin={true}
+                        quietZone={quietZone}
                       />
                     </div>
                     
