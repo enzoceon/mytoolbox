@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { QrCode, Download, Copy } from 'lucide-react';
@@ -16,6 +15,7 @@ import HowToUse from '@/components/HowToUse';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
 import { QRCodeCanvas } from 'qrcode.react';
+import { downloadWithStandardFilename } from '@/utils/fileUtils';
 
 const QrCodeGenerator = () => {
   const [qrValue, setQrValue] = useState('https://mytoolbox.site');
@@ -150,13 +150,9 @@ const QrCodeGenerator = () => {
       // Draw the QR code in the center
       ctx.drawImage(canvas, padding, padding);
       
-      // Use the new canvas with padding for download
-      const link = document.createElement('a');
-      link.href = qrWithPadding.toDataURL('image/png');
-      link.download = `qrcode-${Date.now()}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Use the standard filename format
+      const url = qrWithPadding.toDataURL('image/png');
+      downloadWithStandardFilename(url, "png", "qrcode");
       
       toast.success("QR Code downloaded successfully!");
     } catch (error) {

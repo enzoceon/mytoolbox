@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FileVideo, Download, AlertCircle, Info } from 'lucide-react';
@@ -15,6 +14,7 @@ import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
 import { QRCodeCanvas } from 'qrcode.react';
+import { downloadWithStandardFilename } from '@/utils/fileUtils';
 
 const VideoToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -103,9 +103,8 @@ const VideoToQR = () => {
     if (!canvas) return;
     
     try {
-      // Create a new canvas with proper padding to ensure the quiet zone is preserved
       const qrWithPadding = document.createElement('canvas');
-      const padding = 20; // Add extra padding around the QR code
+      const padding = 20;
       qrWithPadding.width = canvas.width + (padding * 2);
       qrWithPadding.height = canvas.height + (padding * 2);
       
@@ -115,20 +114,13 @@ const VideoToQR = () => {
         return;
       }
       
-      // Fill with white background
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
       
-      // Draw the QR code in the center
       ctx.drawImage(canvas, padding, padding);
       
-      // Use the new canvas with padding for download
-      const link = document.createElement('a');
-      link.href = qrWithPadding.toDataURL('image/png');
-      link.download = `video-qr-code-${Date.now()}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const url = qrWithPadding.toDataURL('image/png');
+      downloadWithStandardFilename(url, "png", "video-qr");
       
       toast.success("QR Code downloaded successfully!");
     } catch (error) {
@@ -288,7 +280,6 @@ const VideoToQR = () => {
                         size={qrSize}
                         level="L"
                         includeMargin={true}
-                        quietZone={quietZone}
                       />
                     </div>
                     
