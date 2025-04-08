@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify, BrainCircuit } from 'lucide-react';
@@ -91,7 +92,7 @@ const HeroSection = () => {
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
             <h2 className="text-xl font-semibold mb-4">Converter Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <Link to="/converter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+              <Link to="/image-to-pdf" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
                 <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Image to PDF</p>
               </Link>
@@ -231,24 +232,24 @@ const HeroSection = () => {
                 <QrCode className="h-8 w-8 text-blue-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">QR Generator</p>
               </Link>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+              <Link to="/qr-code-scanner" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <QrCode className="h-8 w-8 text-purple-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">QR Scanner</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+              </Link>
+              <Link to="/qr-code-styler" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <QrCode className="h-8 w-8 text-pink-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">QR Styler</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+              </Link>
+              <Link to="/image-to-qr-code" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <Image className="h-8 w-8 text-green-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Image to QR</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
+              </Link>
             </div>
             <Button 
-              onClick={(e) => navigateToCategory('QR Code')} 
+              onClick={(e) => navigateToCategory('qrcode')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >

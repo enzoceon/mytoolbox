@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
-  Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap
+  Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap, Lock, Video, Mic, Gif, VolumeX, Music,
+  ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit
 } from 'lucide-react';
 
 export interface CategoryType {
@@ -32,6 +34,8 @@ export const categories: CategoryType[] = [
   { id: 'converter', name: 'Converters' },
   { id: 'utility', name: 'Utilities' },
   { id: 'audio', name: 'Audio Tools' },
+  { id: 'video', name: 'Video Tools' },
+  { id: 'qrcode', name: 'QR Code Tools' },
 ];
 
 export const tools: ToolType[] = [
@@ -39,7 +43,7 @@ export const tools: ToolType[] = [
     id: 'image-to-pdf',
     name: 'Image to PDF',
     description: 'Convert JPG, PNG, GIF, and other image formats to PDF document',
-    path: '/converter',
+    path: '/image-to-pdf',
     icon: FileImage,
     category: 'converter',
     isFeatured: true
@@ -68,7 +72,7 @@ export const tools: ToolType[] = [
     description: 'Create custom QR codes for URLs, text, contacts, and more',
     path: '/qr-code-generator',
     icon: QrCode,
-    category: 'utility',
+    category: 'qrcode',
     isFeatured: true
   },
   {
@@ -318,6 +322,151 @@ export const tools: ToolType[] = [
     path: '/clipboard-manager',
     icon: Clipboard,
     category: 'utility',
+    isNew: true
+  },
+  // Adding missing tools from the list
+  {
+    id: 'image-to-qr-code',
+    name: 'Image to QR Code',
+    description: 'Convert images to scannable QR codes',
+    path: '/image-to-qr-code',
+    icon: QrCode,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'video-to-qr-code',
+    name: 'Video to QR Code',
+    description: 'Generate QR codes from video content',
+    path: '/video-to-qr-code',
+    icon: Video,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'video-compressor',
+    name: 'Video Compressor',
+    description: 'Reduce video file size while maintaining quality',
+    path: '/video-compressor',
+    icon: Video,
+    category: 'video',
+    isNew: true
+  },
+  {
+    id: 'pdf-watermark',
+    name: 'PDF Watermark',
+    description: 'Add custom text or image watermarks to PDF documents',
+    path: '/pdf-watermark',
+    icon: Stamp,
+    category: 'pdf',
+    isNew: true
+  },
+  {
+    id: 'pdf-locker',
+    name: 'PDF Locker',
+    description: 'Password protect your PDF files for secure sharing',
+    path: '/pdf-locker',
+    icon: Lock,
+    category: 'pdf',
+    isNew: true
+  },
+  {
+    id: 'audio-extractor',
+    name: 'Audio Extractor',
+    description: 'Extract audio tracks from video files',
+    path: '/audio-extractor',
+    icon: Mic,
+    category: 'audio',
+    isNew: true
+  },
+  {
+    id: 'gif-to-video',
+    name: 'GIF to Video',
+    description: 'Convert animated GIFs to video formats',
+    path: '/gif-to-video',
+    icon: Gif,
+    category: 'video',
+    isNew: true
+  },
+  {
+    id: 'video-audio-remover',
+    name: 'Video Audio Remover',
+    description: 'Remove audio tracks from video files',
+    path: '/video-audio-remover',
+    icon: VolumeX,
+    category: 'video',
+    isNew: true
+  },
+  {
+    id: 'add-audio-to-video',
+    name: 'Add Audio to Video',
+    description: 'Add or replace audio tracks in video files',
+    path: '/add-audio-to-video',
+    icon: Music,
+    category: 'video',
+    isNew: true
+  },
+  {
+    id: 'background-remover',
+    name: 'Background Remover',
+    description: 'Remove backgrounds from images automatically',
+    path: '/background-remover',
+    icon: ImageOff,
+    category: 'image',
+    isNew: true
+  },
+  {
+    id: 'pdf-password-remover',
+    name: 'PDF Password Remover',
+    description: 'Remove passwords from PDF files',
+    path: '/pdf-password-remover',
+    icon: Unlock,
+    category: 'pdf',
+    isNew: true
+  },
+  {
+    id: 'pdf-to-qr-code',
+    name: 'PDF to QR Code',
+    description: 'Generate QR codes from PDF documents',
+    path: '/pdf-to-qr-code',
+    icon: QrCode,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'audio-to-qr-code',
+    name: 'Audio to QR Code',
+    description: 'Convert audio files to QR codes',
+    path: '/audio-to-qr-code',
+    icon: QrCode,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'qr-code-scanner',
+    name: 'QR Code Scanner',
+    description: 'Scan and decode QR codes from images or webcam',
+    path: '/qr-code-scanner',
+    icon: ScanSearch,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'qr-code-styler',
+    name: 'QR Code Styler',
+    description: 'Create custom styled QR codes with logos and colors',
+    path: '/qr-code-styler',
+    icon: PencilRuler,
+    category: 'qrcode',
+    isNew: true
+  },
+  {
+    id: 'pdf-to-text',
+    name: 'PDF to Text',
+    description: 'Extract text content from PDF documents',
+    path: '/pdf-to-text',
+    icon: FileText,
+    category: 'pdf',
     isNew: true
   }
 ];
