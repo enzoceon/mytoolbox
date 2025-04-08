@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
   Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap, Lock, Video, Mic, Gift, VolumeX, Music,
-  ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit
+  ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit, Crop, HandMetal, Replace
 } from 'lucide-react';
 
 export interface CategoryType {
@@ -465,6 +466,33 @@ export const tools: ToolType[] = [
     path: '/pdf-to-text',
     icon: FileText,
     category: 'pdf',
+    isNew: true
+  },
+  {
+    id: 'text-replacer',
+    name: 'Text Replacer',
+    description: 'Quickly find and replace words or phrases in any text block',
+    path: '/text-replacer',
+    icon: Replace,
+    category: 'text',
+    isNew: true
+  },
+  {
+    id: 'image-cropper',
+    name: 'Image Cropper',
+    description: 'Crop images to custom or preset dimensions like square or 16:9',
+    path: '/image-cropper',
+    icon: Crop,
+    category: 'image',
+    isNew: true
+  },
+  {
+    id: 'text-to-handwriting',
+    name: 'Text to Handwriting',
+    description: 'Convert typed text into realistic handwritten-style images',
+    path: '/text-to-handwriting',
+    icon: HandMetal,
+    category: 'text',
     isNew: true
   }
 ];

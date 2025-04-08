@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify, BrainCircuit } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify, BrainCircuit, Crop, Replace, HandMetal, CloudUpload, ImageOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -198,14 +197,14 @@ const HeroSection = () => {
                 <p className="text-sm font-medium">Word Counter</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
               </Link>
-              <Link to="/ai-content-summarizer" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Content Summarizer</p>
+              <Link to="/text-replacer" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Replace className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Text Replacer</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
               </Link>
-              <Link to="/ocr-tool" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <FileSearch className="h-8 w-8 text-pink-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Extract Text from Image</p>
+              <Link to="/text-to-handwriting" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <HandMetal className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Text to Handwriting</p>
                 <span className="text-xs text-purple-500">Coming soon</span>
               </Link>
               <Link to="/text-editor" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
@@ -224,8 +223,41 @@ const HeroSection = () => {
             </Button>
           </div>
           
+          {/* Image Tools Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.42s" }}>
+            <h2 className="text-xl font-semibold mb-4">Image Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/image-cropper" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Crop className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image Cropper</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/image-compressor" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <CloudUpload className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image Compressor</p>
+              </Link>
+              <Link to="/background-remover" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <ImageOff className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Background Remover</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/jpg-to-png" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Image className="h-8 w-8 text-indigo-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">JPG to PNG</p>
+              </Link>
+            </div>
+            <Button 
+              onClick={(e) => navigateToCategory('image')} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All Image Tools
+            </Button>
+          </div>
+          
           {/* QR Code Section */}
-          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.44s" }}>
             <h2 className="text-xl font-semibold mb-4">QR Code Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <Link to="/qr-code-generator" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">

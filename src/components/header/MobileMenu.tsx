@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain } from 'lucide-react';
+import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain, Crop, Replace, HandMetal } from 'lucide-react';
 import {
   Sheet,
   SheetClose,
@@ -30,6 +30,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       items: [
         { name: "Image to PDF", path: "/image-to-pdf" },
         { name: "PDF to Image", path: "/pdf-to-image" },
+        { name: "Image Cropper", path: "/image-cropper" },
+        { name: "JPG to PNG", path: "/jpg-to-png" },
       ]
     },
     {
@@ -72,6 +74,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       icon: <File className="h-5 w-5" />,
       items: [
         { name: "Text Editor", path: "/tools" },
+        { name: "Text Replacer", path: "/text-replacer" },
+        { name: "Text to Handwriting", path: "/text-to-handwriting" },
         { name: "OCR", path: "/tools" },
       ]
     },

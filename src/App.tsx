@@ -36,6 +36,10 @@ import AudioTrimmer from "./pages/AudioTrimmer";
 import OcrTool from "./pages/OcrTool";
 import AiContentSummarizer from "./pages/AiContentSummarizer";
 import CurrencyConverter from "./pages/CurrencyConverter";
+// Import placeholder pages for our new tools
+import TextReplacer from "./pages/TextReplacer";
+import ImageCropper from "./pages/ImageCropper";
+import TextToHandwriting from "./pages/TextToHandwriting";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -103,6 +107,9 @@ const AppContent = () => {
         
         {/* New tool routes */}
         <Route path="/currency-converter" element={<CurrencyConverter />} />
+        <Route path="/text-replacer" element={<TextReplacer />} />
+        <Route path="/image-cropper" element={<ImageCropper />} />
+        <Route path="/text-to-handwriting" element={<TextToHandwriting />} />
         
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
