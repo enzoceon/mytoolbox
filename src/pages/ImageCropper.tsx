@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Cropper } from 'react-cropper';
+import { Cropper, ReactCropperElement } from 'react-cropper';
 import "cropperjs/dist/cropper.css";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -29,7 +29,7 @@ const ImageCropper = () => {
   const [image, setImage] = useState<string | null>(null);
   const [output, setOutput] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number>(0);
-  const cropperRef = useRef<Cropper>(null);
+  const cropperRef = useRef<ReactCropperElement>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleFileSelect = useCallback((files: FileList) => {
@@ -60,7 +60,7 @@ const ImageCropper = () => {
     
     setIsProcessing(true);
     try {
-      const croppedCanvas = cropperRef.current.getCroppedCanvas();
+      const croppedCanvas = cropperRef.current.cropper.getCroppedCanvas();
       if (croppedCanvas) {
         setOutput(croppedCanvas.toDataURL());
         toast.success("Image cropped successfully!");
@@ -75,50 +75,50 @@ const ImageCropper = () => {
 
   const handleReset = useCallback(() => {
     if (!cropperRef.current) return;
-    cropperRef.current.reset();
+    cropperRef.current.cropper.reset();
     setZoom(0);
     setOutput(null);
   }, []);
 
   const handleRotateLeft = useCallback(() => {
     if (!cropperRef.current) return;
-    cropperRef.current.rotate(-90);
+    cropperRef.current.cropper.rotate(-90);
   }, []);
 
   const handleRotateRight = useCallback(() => {
     if (!cropperRef.current) return;
-    cropperRef.current.rotate(90);
+    cropperRef.current.cropper.rotate(90);
   }, []);
 
   const handleZoomChange = useCallback((value: number[]) => {
     if (!cropperRef.current) return;
     const zoomValue = value[0];
     setZoom(zoomValue);
-    cropperRef.current.zoom(zoomValue / 50);
+    cropperRef.current.cropper.zoom(zoomValue / 50);
   }, []);
 
   const handleZoomIn = useCallback(() => {
     if (!cropperRef.current) return;
     const newZoom = Math.min(zoom + 5, 100);
     setZoom(newZoom);
-    cropperRef.current.zoom(0.1);
+    cropperRef.current.cropper.zoom(0.1);
   }, [zoom]);
 
   const handleZoomOut = useCallback(() => {
     if (!cropperRef.current) return;
     const newZoom = Math.max(zoom - 5, 0);
     setZoom(newZoom);
-    cropperRef.current.zoom(-0.1);
+    cropperRef.current.cropper.zoom(-0.1);
   }, [zoom]);
 
   const handleFlipHorizontal = useCallback(() => {
     if (!cropperRef.current) return;
-    cropperRef.current.scaleX(cropperRef.current.getData().scaleX === 1 ? -1 : 1);
+    cropperRef.current.cropper.scaleX(cropperRef.current.cropper.getData().scaleX === 1 ? -1 : 1);
   }, []);
 
   const handleFlipVertical = useCallback(() => {
     if (!cropperRef.current) return;
-    cropperRef.current.scaleY(cropperRef.current.getData().scaleY === 1 ? -1 : 1);
+    cropperRef.current.cropper.scaleY(cropperRef.current.cropper.getData().scaleY === 1 ? -1 : 1);
   }, []);
 
   const handleDownload = useCallback(() => {

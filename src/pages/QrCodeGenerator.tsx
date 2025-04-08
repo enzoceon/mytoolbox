@@ -82,9 +82,8 @@ const QrCodeGenerator = () => {
       const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
       if (!canvas) return;
       
-      // Create a new canvas with proper padding to ensure the quiet zone is preserved
       const qrWithPadding = document.createElement('canvas');
-      const padding = 20; // Add extra padding around the QR code
+      const padding = 20;
       qrWithPadding.width = canvas.width + (padding * 2);
       qrWithPadding.height = canvas.height + (padding * 2);
       
@@ -94,11 +93,9 @@ const QrCodeGenerator = () => {
         return;
       }
       
-      // Fill with white background
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
       
-      // Draw the QR code in the center
       ctx.drawImage(canvas, padding, padding);
       
       qrWithPadding.toBlob(async (blob) => {
@@ -131,9 +128,8 @@ const QrCodeGenerator = () => {
     if (!canvas) return;
     
     try {
-      // Create a new canvas with proper padding to ensure the quiet zone is preserved
       const qrWithPadding = document.createElement('canvas');
-      const padding = 20; // Add extra padding around the QR code
+      const padding = 20;
       qrWithPadding.width = canvas.width + (padding * 2);
       qrWithPadding.height = canvas.height + (padding * 2);
       
@@ -143,14 +139,11 @@ const QrCodeGenerator = () => {
         return;
       }
       
-      // Fill with white background
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, qrWithPadding.width, qrWithPadding.height);
       
-      // Draw the QR code in the center
       ctx.drawImage(canvas, padding, padding);
       
-      // Use the standard filename format
       const url = qrWithPadding.toDataURL('image/png');
       downloadWithStandardFilename(url, "png", "qrcode");
       
@@ -339,7 +332,6 @@ const QrCodeGenerator = () => {
                         bgColor={qrBackground}
                         level={errorCorrectionLevel as "L" | "M" | "Q" | "H"}
                         includeMargin={true}
-                        quietZone={quietZone}
                       />
                     </div>
                     
