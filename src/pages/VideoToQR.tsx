@@ -154,7 +154,7 @@ const VideoToQR = () => {
             </p>
           </div>
           
-          <Alert variant="warning" className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+          <Alert className="bg-amber-500/10 text-amber-500 border-amber-500/20">
             <Info className="h-4 w-4" />
             <AlertTitle>Size Limitations</AlertTitle>
             <AlertDescription>
