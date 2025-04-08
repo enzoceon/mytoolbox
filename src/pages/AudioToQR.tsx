@@ -285,7 +285,6 @@ const AudioToQR = () => {
                         id="audio-qr-code"
                         value={base64Data}
                         size={qrSize}
-                        renderAs="canvas"
                         level="L"
                       />
                     </div>

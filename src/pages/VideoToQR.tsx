@@ -240,7 +240,6 @@ const VideoToQR = () => {
                         id="video-qr-code"
                         value={base64Data}
                         size={qrSize}
-                        renderAs="canvas"
                         level="L"
                       />
                     </div>

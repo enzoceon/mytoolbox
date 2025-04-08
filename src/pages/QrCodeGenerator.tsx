@@ -282,7 +282,6 @@ const QrCodeGenerator = () => {
                         fgColor={qrForeground}
                         bgColor={qrBackground}
                         level={errorCorrectionLevel as "L" | "M" | "Q" | "H"}
-                        renderAs="canvas"
                       />
                     </div>
                     
