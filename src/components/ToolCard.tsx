@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -12,6 +11,29 @@ interface ToolCardProps {
 const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const IconComponent = tool.icon;
   
+  // For AI Image Generator, render a non-interactive card
+  if (tool.path === "/ai-image-generator") {
+    return (
+      <div>
+        <Card className="h-full opacity-50 cursor-not-allowed bg-card border-border">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-start">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <IconComponent className="h-6 w-6 text-indigo-400" />
+              </div>
+              <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                Coming Soon
+              </Badge>
+            </div>
+            <CardTitle className="text-lg mt-2">{tool.name}</CardTitle>
+            <CardDescription>{tool.description}</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
+
+  // Existing behavior for other tools
   return (
     <Link to={tool.path}>
       <Card className="h-full transition-transform hover:scale-105 hover:shadow-lg bg-card border-border">
@@ -39,4 +61,3 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
 };
 
 export default ToolCard;
-
