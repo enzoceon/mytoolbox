@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -49,6 +48,7 @@ import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvid
 import AiImageGenerator from "./pages/AiImageGenerator";
 import AiTextGenerator from "./pages/AiTextGenerator";
 import AiChatbot from "./pages/AiChatbot";
+import ComingSoon from "./pages/ComingSoon";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -113,7 +113,7 @@ const AppContent = () => {
         <Route path="/audio-trimmer" element={<AudioTrimmer />} />
         <Route path="/ocr-tool" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
-        <Route path="/ai-image-generator" element={<AiImageGenerator />} />
+        <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-text-generator" element={<AiTextGenerator />} />
         <Route path="/ai-chatbot" element={<AiChatbot />} />
         
