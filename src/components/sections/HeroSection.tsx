@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode } from 'lucide-react';
@@ -74,7 +75,7 @@ const HeroSection = () => {
                 key={category}
                 variant={activeCategory === category ? "default" : "outline"}
                 size="sm"
-                onClick={() => {
+                onClick={(e) => {
                   setActiveCategory(category);
                   navigateToCategory(category);
                 }}
@@ -110,7 +111,7 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToCategory('Image')} 
+              onClick={(e) => navigateToCategory('Image')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
@@ -144,7 +145,7 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToCategory('QR Code')} 
+              onClick={(e) => navigateToCategory('QR Code')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
@@ -175,7 +176,7 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToCategory('AI')} 
+              onClick={(e) => navigateToCategory('AI')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
