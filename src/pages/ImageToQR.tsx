@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { FileImage, QrCode, Download, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
 import UploadBox from '@/components/UploadBox';
 import AdPlacement from '@/components/AdPlacement';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const ImageToQR = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -187,13 +186,12 @@ const ImageToQR = () => {
               {qrCodeValue ? (
                 <div className="space-y-6 flex flex-col items-center">
                   <div ref={qrRef} className="p-4 bg-white rounded-lg shadow-lg">
-                    <QRCode 
+                    <QRCodeCanvas 
                       value={qrCodeValue} 
                       size={qrSize}
                       fgColor={qrColor}
                       bgColor={qrBgColor}
                       level="H"
-                      renderAs="canvas"
                     />
                   </div>
                   
