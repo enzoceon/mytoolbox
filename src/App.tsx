@@ -35,6 +35,7 @@ import TextToSpeech from "./pages/TextToSpeech";
 import AudioTrimmer from "./pages/AudioTrimmer";
 import OcrTool from "./pages/OcrTool";
 import AiContentSummarizer from "./pages/AiContentSummarizer";
+import CurrencyConverter from "./pages/CurrencyConverter";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -99,6 +100,10 @@ const AppContent = () => {
         <Route path="/audio-trimmer" element={<AudioTrimmer />} />
         <Route path="/ocr-tool" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
+        
+        {/* New tool routes */}
+        <Route path="/currency-converter" element={<CurrencyConverter />} />
+        
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
