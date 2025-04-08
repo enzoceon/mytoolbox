@@ -15,6 +15,7 @@ import Footer from '@/components/Footer';
 import HowToUse from '@/components/HowToUse';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
+import QRCode from 'qrcode.react';
 
 const QrCodeGenerator = () => {
   const [qrValue, setQrValue] = useState('https://mytoolbox.site');
@@ -22,59 +23,30 @@ const QrCodeGenerator = () => {
   const [qrForeground, setQrForeground] = useState('#000000');
   const [qrBackground, setQrBackground] = useState('#FFFFFF');
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('M');
-  const [qrImageUrl, setQrImageUrl] = useState('');
   const [qrType, setQrType] = useState('url');
   
-  // Generate QR code whenever parameters change
-  useEffect(() => {
-    generateQrCode();
-  }, [qrValue, qrSize, qrForeground, qrBackground, errorCorrectionLevel]);
-  
-  const generateQrCode = () => {
-    if (!qrValue.trim()) {
-      setQrImageUrl('');
-      return;
+  const formatInputByType = (value: string) => {
+    switch (qrType) {
+      case 'url':
+        // Add https:// if not present and not empty
+        if (value && !value.match(/^[a-zA-Z]+:\/\//)) {
+          return `https://${value}`;
+        }
+        return value;
+      case 'email':
+        return `mailto:${value}`;
+      case 'phone':
+        return `tel:${value}`;
+      case 'sms':
+        return `sms:${value}`;
+      default:
+        return value;
     }
-    
-    // Construct Google Charts API URL for QR code
-    const apiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${qrSize}x${qrSize}&chl=${encodeURIComponent(qrValue)}&choe=UTF-8&chld=${errorCorrectionLevel}|0&chco=${qrForeground.substring(1)}`;
-    setQrImageUrl(apiUrl);
   };
   
-  const handleDownload = () => {
-    if (!qrImageUrl) return;
-    
-    // Create a temporary link element and trigger download
-    const link = document.createElement('a');
-    link.href = qrImageUrl;
-    link.download = `qrcode-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    toast.success("QR Code downloaded successfully!");
-  };
-  
-  const handleCopyToClipboard = async () => {
-    if (!qrImageUrl) return;
-    
-    try {
-      // Fetch the image as blob
-      const response = await fetch(qrImageUrl);
-      const blob = await response.blob();
-      
-      // Copy to clipboard using the Clipboard API
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          [blob.type]: blob
-        })
-      ]);
-      
-      toast.success("QR Code copied to clipboard!");
-    } catch (err) {
-      console.error("Failed to copy QR code:", err);
-      toast.error("Failed to copy QR code to clipboard");
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQrValue(formatInputByType(value));
   };
   
   const handleQrTypeChange = (value: string) => {
@@ -106,28 +78,55 @@ const QrCodeGenerator = () => {
     }
   };
   
-  const formatInputByType = (value: string) => {
-    switch (qrType) {
-      case 'url':
-        // Add https:// if not present and not empty
-        if (value && !value.match(/^[a-zA-Z]+:\/\//)) {
-          return `https://${value}`;
+  const handleCopyToClipboard = async () => {
+    try {
+      const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
+      if (!canvas) return;
+      
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          toast.error("Failed to copy QR code");
+          return;
         }
-        return value;
-      case 'email':
-        return `mailto:${value}`;
-      case 'phone':
-        return `tel:${value}`;
-      case 'sms':
-        return `sms:${value}`;
-      default:
-        return value;
+        
+        try {
+          // Copy to clipboard using the Clipboard API
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              [blob.type]: blob
+            })
+          ]);
+          
+          toast.success("QR Code copied to clipboard!");
+        } catch (err) {
+          console.error("Failed to copy QR code:", err);
+          toast.error("Failed to copy QR code to clipboard");
+        }
+      });
+    } catch (err) {
+      console.error("Failed to copy QR code:", err);
+      toast.error("Failed to copy QR code to clipboard");
     }
   };
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQrValue(formatInputByType(value));
+  const handleDownload = () => {
+    const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    
+    // Create a temporary link element and trigger download
+    try {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `qrcode-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("QR Code downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading QR code:", error);
+      toast.error("Failed to download QR code");
+    }
   };
 
   return (
@@ -278,14 +277,17 @@ const QrCodeGenerator = () => {
             
             <Card className="bg-card/50 backdrop-blur border-border">
               <CardContent className="flex flex-col items-center justify-center min-h-[400px] p-6">
-                {qrImageUrl ? (
+                {qrValue ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <img 
-                        src={qrImageUrl} 
-                        alt="Generated QR Code" 
-                        className="max-w-full"
-                        style={{ backgroundColor: qrBackground }}
+                      <QRCode 
+                        id="qr-code-canvas"
+                        value={qrValue}
+                        size={qrSize}
+                        fgColor={qrForeground}
+                        bgColor={qrBackground}
+                        level={errorCorrectionLevel as "L" | "M" | "Q" | "H"}
+                        renderAs="canvas"
                       />
                     </div>
                     

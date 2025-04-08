@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import { FileAudio, Download, AlertCircle, PlayCircle, StopCircle, Info } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -14,11 +13,12 @@ import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
+import QRCode from 'qrcode.react';
 
 const AudioToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [qrImageUrl, setQrImageUrl] = useState<string | null>(null);
+  const [base64Data, setBase64Data] = useState<string | null>(null);
   const [qrSize, setQrSize] = useState(250);
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -48,7 +48,7 @@ const AudioToQR = () => {
       setSelectedFile(file);
       setAudioTooLarge(false);
       setErrorMessage(null);
-      setQrImageUrl(null);
+      setBase64Data(null);
       setIsPlaying(false);
       
       // Check file size (warn over 500KB, error over 1MB)
@@ -113,33 +113,27 @@ const AudioToQR = () => {
     try {
       // Convert audio to base64
       const base64Audio = await convertAudioToBase64(selectedFile);
+      setBase64Data(base64Audio);
       
-      // Generate QR code using Google Charts API
-      const apiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${qrSize}x${qrSize}&chl=${encodeURIComponent(base64Audio)}&choe=UTF-8&chld=L|0`;
-      
-      // Check if URL is too long
-      if (apiUrl.length > 4096) {
-        setErrorMessage("Audio data is too large to encode in a QR code. Please use a smaller audio file or try compressing it first.");
-        setQrImageUrl(null);
-        setIsGenerating(false);
-        return;
-      }
-      
-      setQrImageUrl(apiUrl);
+      // Success
+      toast.success("QR code generated successfully");
     } catch (error) {
       console.error("Error generating QR code:", error);
       setErrorMessage("Failed to generate QR code. Please try again with a different audio file.");
-      setQrImageUrl(null);
+      setBase64Data(null);
     } finally {
       setIsGenerating(false);
     }
   };
   
   const handleDownload = () => {
-    if (!qrImageUrl) return;
+    if (!base64Data) return;
+    
+    const canvas = document.getElementById('audio-qr-code') as HTMLCanvasElement;
+    if (!canvas) return;
     
     const link = document.createElement('a');
-    link.href = qrImageUrl;
+    link.href = canvas.toDataURL('image/png');
     link.download = `audio-qr-code-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
@@ -152,7 +146,7 @@ const AudioToQR = () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setSelectedFile(null);
     setPreviewUrl(null);
-    setQrImageUrl(null);
+    setBase64Data(null);
     setErrorMessage(null);
     setAudioTooLarge(false);
     setIsPlaying(false);
@@ -293,13 +287,15 @@ const AudioToQR = () => {
             
             <Card className="bg-card/50 backdrop-blur border-border">
               <CardContent className="flex flex-col items-center justify-center min-h-[400px] p-6">
-                {qrImageUrl ? (
+                {base64Data ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <img 
-                        src={qrImageUrl} 
-                        alt="Generated QR Code" 
-                        className="max-w-full"
+                      <QRCode 
+                        id="audio-qr-code"
+                        value={base64Data}
+                        size={qrSize}
+                        renderAs="canvas"
+                        level="L"
                       />
                     </div>
                     

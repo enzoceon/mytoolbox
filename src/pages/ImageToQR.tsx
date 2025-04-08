@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import { FileImage, Download, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -14,14 +13,16 @@ import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
+import QRCode from 'qrcode.react';
 
 const ImageToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [qrImageUrl, setQrImageUrl] = useState<string | null>(null);
+  const [base64Data, setBase64Data] = useState<string | null>(null);
   const [qrSize, setQrSize] = useState(250);
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [imageTooLarge, setImageTooLarge] = useState(false);
   
   // Clean up URLs when component unmounts
   useEffect(() => {
@@ -42,7 +43,10 @@ const ImageToQR = () => {
       
       // Check file size (max 1MB)
       if (file.size > 1024 * 1024) {
+        setImageTooLarge(true);
         toast.warning('Image is too large, may result in a complex QR code');
+      } else {
+        setImageTooLarge(false);
       }
       
       // Set file and create preview
@@ -50,7 +54,7 @@ const ImageToQR = () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
-      setQrImageUrl(null);
+      setBase64Data(null);
       setErrorMessage(null);
     }
   };
@@ -76,36 +80,27 @@ const ImageToQR = () => {
     try {
       // Convert image to base64
       const base64Image = await convertImageToBase64(selectedFile);
+      setBase64Data(base64Image);
       
-      // Optimize base64 data if needed
-      // For larger images, we might want to resize them first
-      
-      // Generate QR code using Google Charts API
-      const apiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${qrSize}x${qrSize}&chl=${encodeURIComponent(base64Image)}&choe=UTF-8&chld=L|0`;
-      
-      // Check if URL is too long
-      if (apiUrl.length > 2048) {
-        setErrorMessage("Image is too large to encode in a QR code. Please use a smaller image.");
-        setQrImageUrl(null);
-        setIsGenerating(false);
-        return;
-      }
-      
-      setQrImageUrl(apiUrl);
+      // Success
+      toast.success("QR code generated successfully");
     } catch (error) {
       console.error("Error generating QR code:", error);
       setErrorMessage("Failed to generate QR code. Please try again with a different image.");
-      setQrImageUrl(null);
+      setBase64Data(null);
     } finally {
       setIsGenerating(false);
     }
   };
   
   const handleDownload = () => {
-    if (!qrImageUrl) return;
+    if (!base64Data) return;
+    
+    const canvas = document.getElementById('image-qr-code') as HTMLCanvasElement;
+    if (!canvas) return;
     
     const link = document.createElement('a');
-    link.href = qrImageUrl;
+    link.href = canvas.toDataURL('image/png');
     link.download = `image-qr-code-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
@@ -118,8 +113,9 @@ const ImageToQR = () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setSelectedFile(null);
     setPreviewUrl(null);
-    setQrImageUrl(null);
+    setBase64Data(null);
     setErrorMessage(null);
+    setImageTooLarge(false);
   };
 
   return (
@@ -210,6 +206,16 @@ const ImageToQR = () => {
                         <AlertDescription>{errorMessage}</AlertDescription>
                       </Alert>
                     )}
+                    
+                    {imageTooLarge && (
+                      <Alert className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                          This image is large and may create a very complex QR code that's difficult to scan.
+                          Consider using a smaller or compressed image for better results.
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -217,13 +223,15 @@ const ImageToQR = () => {
             
             <Card className="bg-card/50 backdrop-blur border-border">
               <CardContent className="flex flex-col items-center justify-center min-h-[400px] p-6">
-                {qrImageUrl ? (
+                {base64Data ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <img 
-                        src={qrImageUrl} 
-                        alt="Generated QR Code" 
-                        className="max-w-full"
+                      <QRCode 
+                        id="image-qr-code"
+                        value={base64Data}
+                        size={qrSize}
+                        renderAs="canvas"
+                        level="L"
                       />
                     </div>
                     
