@@ -12,8 +12,8 @@ const Disclaimer = () => {
   return (
     <>
       <Helmet>
-        <title>Disclaimer - EveryTools</title>
-        <meta name="description" content="Read important disclaimers regarding the use of EveryTools services and tools." />
+        <title>Disclaimer - MyToolbox</title>
+        <meta name="description" content="Read important disclaimers regarding the use of MyToolbox services and tools." />
       </Helmet>
       
       <SpaceBackground />
@@ -44,15 +44,15 @@ const Disclaimer = () => {
               <h3 className="text-lg font-medium mt-4 text-foreground">Definitions</h3>
               <p>For the purposes of this Disclaimer:</p>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Disclaimer) refers to EveryTools.</li>
-                <li><strong>Service</strong> refers to the tools and applications provided on the EveryTools website.</li>
+                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Disclaimer) refers to MyToolbox.</li>
+                <li><strong>Service</strong> refers to the tools and applications provided on the MyToolbox website.</li>
                 <li><strong>You</strong> means the individual accessing the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
-                <li><strong>Website</strong> refers to EveryTools, accessible from https://everytools.site</li>
+                <li><strong>Website</strong> refers to MyToolbox, accessible from https://mytoolbox.site</li>
               </ul>
               
               <h2 className="text-xl font-semibold mt-6 text-foreground">2. Disclaimer</h2>
               <p>
-                The information contained on the EveryTools website is for general information purposes only. The Company assumes 
+                The information contained on the MyToolbox website is for general information purposes only. The Company assumes 
                 no responsibility for errors or omissions in the contents of the Service.
               </p>
               <p className="mt-2">
@@ -64,14 +64,14 @@ const Disclaimer = () => {
               
               <h2 className="text-xl font-semibold mt-6 text-foreground">3. Free Services</h2>
               <p>
-                <strong>All tools and services provided by EveryTools are completely free of charge.</strong> We do not require 
+                <strong>All tools and services provided by MyToolbox are completely free of charge.</strong> We do not require 
                 any payment, subscription, or hidden fees to access or use our tools. Our service is provided as-is without 
                 any warranty regarding the results or performance of our free tools.
               </p>
               
               <h2 className="text-xl font-semibold mt-6 text-foreground">4. No Warranties</h2>
               <p>
-                The EveryTools website and all tools are provided "as is," with no warranties whatsoever. The Company makes no 
+                The MyToolbox website and all tools are provided "as is," with no warranties whatsoever. The Company makes no 
                 express or implied warranties or representations with respect to the accuracy, reliability, completeness, 
                 quality, performance, or fitness for a particular purpose of its services or tools.
               </p>
@@ -94,7 +94,7 @@ const Disclaimer = () => {
               </p>
               
               <ul className="list-disc pl-6 space-y-2">
-                <li>Email: everytoolssite@gmail.com</li>
+                <li>Email: contactmytoolbox@gmail.com</li>
               </ul>
               
               <p>

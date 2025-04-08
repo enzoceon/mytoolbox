@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { FileVideo, QrCode, Download, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
