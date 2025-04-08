@@ -25,22 +25,12 @@ const ComingSoon: React.FC = () => {
             that will transform your creative process.
           </p>
           
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center">
             <Link to="/tools">
               <Button variant="outline" className="px-6 py-3">
                 Back to Tools
               </Button>
             </Link>
-            
-            <Button 
-              variant="default" 
-              className="px-6 py-3"
-              onClick={() => {
-                window.open('https://discord.com/invite/mytoolbox', '_blank');
-              }}
-            >
-              Join Discord for Updates
-            </Button>
           </div>
         </div>
       </div>
@@ -49,4 +39,3 @@ const ComingSoon: React.FC = () => {
 };
 
 export default ComingSoon;
-
