@@ -40,6 +40,8 @@ import CurrencyConverter from "./pages/CurrencyConverter";
 import TextReplacer from "./pages/TextReplacer";
 import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
+import TextToEmoji from "./pages/TextToEmoji";
+import VideoToGif from "./pages/VideoToGif";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -110,6 +112,8 @@ const AppContent = () => {
         <Route path="/text-replacer" element={<TextReplacer />} />
         <Route path="/image-cropper" element={<ImageCropper />} />
         <Route path="/text-to-handwriting" element={<TextToHandwriting />} />
+        <Route path="/text-to-emoji" element={<TextToEmoji />} />
+        <Route path="/video-to-gif" element={<VideoToGif />} />
         
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />

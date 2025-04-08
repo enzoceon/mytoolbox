@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain, Crop, Replace, HandMetal } from 'lucide-react';
+import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain, Crop, Replace, HandMetal, Coffee, Download } from 'lucide-react';
 import {
   Sheet,
   SheetClose,
@@ -40,6 +40,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       items: [
         { name: "Video Converter", path: "/tools" },
         { name: "Video Compressor", path: "/tools" },
+        { name: "Video to GIF", path: "/video-to-gif" },
       ]
     },
     {
@@ -76,6 +77,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
         { name: "Text Editor", path: "/tools" },
         { name: "Text Replacer", path: "/text-replacer" },
         { name: "Text to Handwriting", path: "/text-to-handwriting" },
+        { name: "Text to Emoji", path: "/text-to-emoji" },
         { name: "OCR", path: "/tools" },
       ]
     },
@@ -93,6 +95,21 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       items: [
         { name: "File Converter", path: "/tools" },
         { name: "File Compressor", path: "/tools" },
+      ]
+    },
+    {
+      title: "Animation",
+      icon: <Download className="h-5 w-5" />,
+      items: [
+        { name: "Video to GIF", path: "/video-to-gif" },
+        { name: "GIF to Video", path: "/gif-to-video" },
+      ]
+    },
+    {
+      title: "Emoji",
+      icon: <Coffee className="h-5 w-5" />,
+      items: [
+        { name: "Text to Emoji", path: "/text-to-emoji" },
       ]
     },
   ];

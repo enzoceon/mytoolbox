@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
   Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap, Lock, Video, Mic, Gift, VolumeX, Music,
-  ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit, Crop, HandMetal, Replace
+  ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit, Crop, HandMetal, Replace, Coffee, Download
 } from 'lucide-react';
 
 export interface CategoryType {
@@ -36,6 +35,8 @@ export const categories: CategoryType[] = [
   { id: 'audio', name: 'Audio Tools' },
   { id: 'video', name: 'Video Tools' },
   { id: 'qrcode', name: 'QR Code Tools' },
+  { id: 'emoji', name: 'Emoji Tools' },
+  { id: 'animation', name: 'Animation Tools' }
 ];
 
 export const tools: ToolType[] = [
@@ -493,6 +494,24 @@ export const tools: ToolType[] = [
     path: '/text-to-handwriting',
     icon: HandMetal,
     category: 'text',
+    isNew: true
+  },
+  {
+    id: 'text-to-emoji',
+    name: 'Text to Emoji',
+    description: 'Enter a word or phrase and get the most relevant emoji or emoji combo',
+    path: '/text-to-emoji',
+    icon: Coffee,
+    category: 'emoji',
+    isNew: true
+  },
+  {
+    id: 'video-to-gif',
+    name: 'Video to GIF',
+    description: 'Upload a video and convert a selected portion into a looping GIF',
+    path: '/video-to-gif',
+    icon: Download,
+    category: 'animation',
     isNew: true
   }
 ];
