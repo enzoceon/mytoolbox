@@ -11,11 +11,11 @@ interface ToolCardProps {
 const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const IconComponent = tool.icon;
   
-  // For AI Image Generator, render a non-interactive card
+  // For AI Image Generator, render a non-navigable card
   if (tool.path === "/ai-image-generator") {
     return (
-      <div>
-        <Card className="h-full opacity-50 cursor-not-allowed bg-card border-border">
+      <div onClick={(e) => e.preventDefault()}>
+        <Card className="h-full bg-card border-border">
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
