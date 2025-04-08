@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -15,7 +16,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   if (tool.path === "/ai-image-generator" || tool.isFunctional === false) {
     return (
       <div onClick={(e) => e.preventDefault()}>
-        <Card className="h-full bg-card border-border">
+        <Card className="h-full transition-transform hover:scale-105 hover:shadow-lg bg-card border-border">
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
