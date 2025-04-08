@@ -1,295 +1,311 @@
-import React, { useState, useRef } from 'react';
-import { FileVideo, QrCode, Download, AlertTriangle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { toast } from "sonner";
+
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import SpaceBackground from '@/components/SpaceBackground';
+import { FileVideo, Download, AlertCircle, Info } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { toast } from "sonner";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
 import UploadBox from '@/components/UploadBox';
-import AdPlacement from '@/components/AdPlacement';
-import { QRCodeCanvas } from 'qrcode.react';
+import BackButton from '@/components/BackButton';
+import SpaceBackground from '@/components/SpaceBackground';
 
 const VideoToQR = () => {
-  const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [qrCodeValue, setQrCodeValue] = useState<string | null>(null);
-  const [qrSize, setQrSize] = useState<number>(200);
-  const [qrColor, setQrColor] = useState<string>('#000000');
-  const [qrBgColor, setQrBgColor] = useState<string>('#ffffff');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [videoTooLarge, setVideoTooLarge] = useState<boolean>(false);
-  const qrRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [qrImageUrl, setQrImageUrl] = useState<string | null>(null);
+  const [qrSize, setQrSize] = useState(250);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [videoTooLarge, setVideoTooLarge] = useState(false);
+  
+  // Clean up URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+  
   const handleFileSelect = (files: FileList) => {
     if (files.length > 0) {
       const file = files[0];
       
-      // Validate file type
+      // Check file type
       if (!file.type.startsWith('video/')) {
-        toast.error("Please select a video file");
+        toast.error('Please select a video file');
         return;
       }
       
-      // Validate file size (max 10MB for direct encoding)
-      if (file.size > 10 * 1024 * 1024) {
+      // Reset states
+      setSelectedFile(file);
+      setVideoTooLarge(false);
+      setErrorMessage(null);
+      setQrImageUrl(null);
+      
+      // Check file size (warn over 500KB, error over 2MB)
+      if (file.size > 2 * 1024 * 1024) {
         setVideoTooLarge(true);
-        toast.warning("Video is large and will only be previewed locally. The QR code will contain metadata only.", {
-          duration: 5000,
-        });
-      } else {
-        setVideoTooLarge(false);
+        toast.error('Video is too large to encode in a QR code (max 2MB)');
+      } else if (file.size > 500 * 1024) {
+        toast.warning('Video is large and may result in a complex QR code');
       }
       
-      // Set the selected file and preview
-      setSelectedVideo(file);
-      setVideoPreview(URL.createObjectURL(file));
-      setQrCodeValue(null); // Reset QR code when new video is selected
+      // Create preview
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
     }
   };
-
-  const generateQRCode = () => {
-    if (!selectedVideo) {
+  
+  const convertVideoToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+  
+  const generateQRCode = async () => {
+    if (!selectedFile) {
       toast.error("Please select a video first");
       return;
     }
     
-    setLoading(true);
-    
     if (videoTooLarge) {
-      // For large videos, create a QR code with video metadata instead of the actual content
-      const metadata = {
-        name: selectedVideo.name,
-        type: selectedVideo.type,
-        size: selectedVideo.size,
-        lastModified: selectedVideo.lastModified,
-        description: "This QR code contains video metadata. The actual video is too large to encode directly."
-      };
-      
-      setQrCodeValue(JSON.stringify(metadata));
-      setLoading(false);
-      toast.success("QR Code with video metadata generated successfully!");
-    } else {
-      // For smaller videos, try to encode the actual content
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && e.target.result) {
-          // Set QR code value to the data URL
-          setQrCodeValue(e.target.result as string);
-          setLoading(false);
-          toast.success("QR Code generated successfully!");
-        }
-      };
-      reader.onerror = () => {
-        toast.error("Failed to read the video file");
-        setLoading(false);
-      };
-      reader.readAsDataURL(selectedVideo);
+      toast.error("Video is too large to encode in a QR code");
+      return;
     }
-  };
-
-  const downloadQRCode = () => {
-    if (!qrRef.current) return;
+    
+    setIsGenerating(true);
+    setErrorMessage(null);
     
     try {
-      const canvas = qrRef.current.querySelector('canvas');
-      if (!canvas) {
-        toast.error("QR Code canvas not found");
+      // Convert video to base64
+      const base64Video = await convertVideoToBase64(selectedFile);
+      
+      // Generate QR code using Google Charts API
+      const apiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${qrSize}x${qrSize}&chl=${encodeURIComponent(base64Video)}&choe=UTF-8&chld=L|0`;
+      
+      // Check if URL is too long
+      if (apiUrl.length > 4096) {
+        setErrorMessage("Video data is too large to encode in a QR code. Please use a smaller video or try compressing it first.");
+        setQrImageUrl(null);
+        setIsGenerating(false);
         return;
       }
       
-      const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-      const downloadLink = document.createElement("a");
-      downloadLink.href = pngUrl;
-      downloadLink.download = `video-qr-code.png`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      toast.success("QR Code downloaded successfully!");
+      setQrImageUrl(apiUrl);
     } catch (error) {
-      console.error("Download error:", error);
-      toast.error("Failed to download QR Code");
+      console.error("Error generating QR code:", error);
+      setErrorMessage("Failed to generate QR code. Please try again with a different video.");
+      setQrImageUrl(null);
+    } finally {
+      setIsGenerating(false);
     }
   };
-
-  const resetState = () => {
-    if (videoPreview) {
-      URL.revokeObjectURL(videoPreview);
-    }
-    setSelectedVideo(null);
-    setVideoPreview(null);
-    setQrCodeValue(null);
+  
+  const handleDownload = () => {
+    if (!qrImageUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = qrImageUrl;
+    link.download = `video-qr-code-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("QR Code downloaded successfully!");
+  };
+  
+  const handleRemoveVideo = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setQrImageUrl(null);
+    setErrorMessage(null);
     setVideoTooLarge(false);
   };
 
   return (
     <>
       <Helmet>
-        <title>Video to QR Code Converter - Free Online Tool | EveryTools</title>
-        <meta name="description" content="Convert your videos to QR codes for easy sharing. No registration, no watermarks, all processing happens in your browser." />
-        <link rel="canonical" href="https://everytools.site/video-to-qr" />
+        <title>Video to QR Code - Convert Videos to QR | MyToolbox</title>
+        <meta name="description" content="Convert small videos to QR codes. Great for sharing short clips, animations, and more." />
+        <meta name="keywords" content="video to qr code, video converter, qr code generator, embed video in qr" />
       </Helmet>
       
       <SpaceBackground />
+      <Header />
       
-      <div className="min-h-screen flex flex-col">
-        <Header />
+      <main className="container mx-auto px-4 py-10 min-h-screen">
+        <BackButton />
         
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
-          <BackButton />
-          
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Video</span>
-              <span className="text-white"> to </span>
-              <span className="bg-gradient-primary bg-clip-text text-transparent">QR Code</span>
-              <span className="text-white"> Converter</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              Convert your videos to QR codes for easy sharing. No registration required.
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-3">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">Video to QR Code</h1>
+            <p className="text-lg text-muted-foreground">
+              Convert small videos to scannable QR codes
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-              <h2 className="text-xl font-semibold mb-4 text-center">Upload Video</h2>
-              
-              {!videoPreview ? (
-                <UploadBox 
-                  title="Drop your video here"
-                  subtitle="Select a video to convert to QR code"
-                  acceptedFileTypes="video/*"
-                  onFileSelect={handleFileSelect}
-                  multiple={false}
-                />
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative rounded-md overflow-hidden border border-white/10">
-                    <video 
-                      ref={videoRef}
-                      src={videoPreview} 
-                      controls
-                      className="w-full h-auto max-h-[300px]"
-                    />
-                  </div>
-                  
-                  {videoTooLarge && (
-                    <div className="text-center text-sm text-yellow-400 flex items-center justify-center">
-                      <AlertTriangle className="h-4 w-4 mr-2" />
-                      <span>This video is too large for full encoding. The QR code will contain metadata only.</span>
+          <Alert variant="warning" className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Size Limitations</AlertTitle>
+            <AlertDescription>
+              Only very small videos (under 2MB) can be encoded into QR codes. For best results, 
+              use videos under 500KB. We recommend short, low resolution clips.
+            </AlertDescription>
+          </Alert>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="bg-card/50 backdrop-blur border-border">
+              <CardContent className="pt-6 space-y-6">
+                {!selectedFile ? (
+                  <UploadBox
+                    title="Upload your video"
+                    subtitle="Select a very small video to convert to QR code (MP4, WEBM, GIF)"
+                    acceptedFileTypes="video/*"
+                    onFileSelect={handleFileSelect}
+                    multiple={false}
+                  />
+                ) : (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Label>Selected Video</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={handleRemoveVideo}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                      <div className="border rounded-lg overflow-hidden bg-background/50">
+                        <video 
+                          src={previewUrl || ''} 
+                          controls
+                          className="w-full h-auto max-h-64 object-contain"
+                        />
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {selectedFile.name} ({Math.round(selectedFile.size / 1024)} KB)
+                      </p>
                     </div>
-                  )}
-                  
-                  <div className="flex justify-between">
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="qrSize">QR Code Size</Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          id="qrSize"
+                          min={100}
+                          max={500}
+                          step={10}
+                          value={[qrSize]}
+                          onValueChange={(values) => setQrSize(values[0])}
+                          className="flex-1"
+                        />
+                        <span className="text-sm w-12 text-right">{qrSize}px</span>
+                      </div>
+                    </div>
+                    
                     <Button 
-                      variant="destructive" 
-                      onClick={resetState}
-                    >
-                      Remove
-                    </Button>
-                    <Button 
+                      className="w-full"
                       onClick={generateQRCode}
-                      disabled={loading}
+                      disabled={isGenerating || videoTooLarge}
                     >
-                      {loading ? (
-                        <>Generating QR Code...</>
-                      ) : (
-                        <>
-                          <QrCode className="mr-2 h-4 w-4" />
-                          Generate QR Code
-                        </>
-                      )}
+                      {isGenerating ? 'Generating...' : 'Generate QR Code'}
                     </Button>
+                    
+                    {errorMessage && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{errorMessage}</AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {videoTooLarge && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                          This video exceeds the 2MB size limit for QR code encoding. 
+                          Please select a smaller video or compress your video first.
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </CardContent>
+            </Card>
             
-            <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-              <h2 className="text-xl font-semibold mb-4 text-center">QR Code Result</h2>
-              
-              {qrCodeValue ? (
-                <div className="space-y-6 flex flex-col items-center">
-                  <div ref={qrRef} className="p-4 bg-white rounded-lg shadow-lg">
-                    <QRCodeCanvas 
-                      value={qrCodeValue} 
-                      size={qrSize}
-                      fgColor={qrColor}
-                      bgColor={qrBgColor}
-                      level="H"
-                    />
-                  </div>
-                  
-                  <div className="w-full grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium block mb-1">QR Size</label>
-                      <input 
-                        type="range" 
-                        min="100" 
-                        max="300" 
-                        value={qrSize} 
-                        onChange={(e) => setQrSize(Number(e.target.value))}
-                        className="w-full"
+            <Card className="bg-card/50 backdrop-blur border-border">
+              <CardContent className="flex flex-col items-center justify-center min-h-[400px] p-6">
+                {qrImageUrl ? (
+                  <div className="space-y-6 w-full flex flex-col items-center">
+                    <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
+                      <img 
+                        src={qrImageUrl} 
+                        alt="Generated QR Code" 
+                        className="max-w-full"
                       />
                     </div>
-                    <div>
-                      <label className="text-sm font-medium block mb-1">QR Color</label>
-                      <input 
-                        type="color" 
-                        value={qrColor} 
-                        onChange={(e) => setQrColor(e.target.value)}
-                        className="w-full h-8 cursor-pointer rounded"
-                      />
-                    </div>
+                    
+                    <Button onClick={handleDownload} className="gap-2">
+                      <Download size={16} />
+                      Download QR Code
+                    </Button>
+                    
+                    <p className="text-xs text-center text-muted-foreground">
+                      Note: This QR code contains the entire video data. When scanned, most QR code 
+                      readers will allow you to view the video. Complex or large videos may result 
+                      in QR codes that are difficult to scan.
+                    </p>
                   </div>
-                  
-                  <Button 
-                    className="w-full" 
-                    onClick={downloadQRCode}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download QR Code
-                  </Button>
-                  
-                  <p className="text-xs text-muted-foreground text-center">
-                    {videoTooLarge ? 
-                      "Note: This QR code contains video metadata only, not the actual video content due to size limitations." :
-                      "Note: The QR code contains the video data. Some QR code scanners may have difficulties reading codes with large amounts of data."
-                    }
-                  </p>
-                </div>
-              ) : (
-                <div className="h-[300px] flex flex-col items-center justify-center text-muted-foreground">
-                  <QrCode className="h-16 w-16 mb-4 opacity-20" />
-                  <p>Upload a video and generate a QR code to see the result here</p>
-                </div>
-              )}
+                ) : (
+                  <div className="text-center space-y-3">
+                    <FileVideo size={100} className="text-muted-foreground mx-auto" />
+                    <p className="text-muted-foreground">
+                      Upload a small video and generate a QR code to see the result here
+                    </p>
+                    <p className="text-xs text-muted-foreground max-w-md">
+                      Only very small videos work well in QR codes. For best results, use short 
+                      videos with low resolution.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="bg-card/30 backdrop-blur rounded-lg p-6 border border-border/50">
+            <h2 className="text-xl font-semibold mb-4">About Video to QR Code</h2>
+            <div className="space-y-4 text-sm">
+              <p>
+                This tool embeds your video data directly within a QR code. When scanned, compatible QR code readers 
+                will display or allow you to access the embedded video.
+              </p>
+              <p>
+                <strong>Important notes:</strong>
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Only very small videos (under 2MB) can be encoded in QR codes</li>
+                <li>Best results come from videos under 500KB</li>
+                <li>We recommend using short, low-resolution videos</li>
+                <li>All processing happens in your browser - your videos are never uploaded to our servers</li>
+                <li>Not all QR code scanners support embedded video playback</li>
+              </ul>
             </div>
           </div>
-          
-          <AdPlacement format="horizontal" className="mt-8" contentLoaded={true} />
-          
-          <div className="mt-8 bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-            <h2 className="text-xl font-semibold mb-4">About Video to QR Code Conversion</h2>
-            <p className="mb-4">
-              This tool allows you to convert videos into QR codes. For small videos (under 10MB), the QR code will contain
-              the actual video data. For larger videos, the QR code will contain metadata about the video.
-            </p>
-            <p className="mb-4">
-              When someone scans the QR code with a compatible QR code reader, they can access the video (for small videos)
-              or see information about the video (for larger files).
-            </p>
-            <p>
-              All processing happens directly in your browser - your videos are never uploaded to any server, 
-              ensuring your privacy and data security.
-            </p>
-          </div>
-        </main>
-        
-        <Footer />
-      </div>
+        </div>
+      </main>
+      
+      <Footer />
     </>
   );
 };

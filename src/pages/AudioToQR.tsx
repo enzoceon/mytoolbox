@@ -1,143 +1,159 @@
 
-import React, { useState, useRef } from 'react';
-import { FileAudio, QrCode, Download, AlertTriangle, Play, Pause } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { toast } from "sonner";
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import SpaceBackground from '@/components/SpaceBackground';
+import { FileAudio, Download, AlertCircle, PlayCircle, StopCircle, Info } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { toast } from "sonner";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
 import UploadBox from '@/components/UploadBox';
-import AdPlacement from '@/components/AdPlacement';
-import { QRCodeCanvas } from 'qrcode.react';
+import BackButton from '@/components/BackButton';
+import SpaceBackground from '@/components/SpaceBackground';
 
 const AudioToQR = () => {
-  const [selectedAudio, setSelectedAudio] = useState<File | null>(null);
-  const [audioPreview, setAudioPreview] = useState<string | null>(null);
-  const [qrCodeValue, setQrCodeValue] = useState<string | null>(null);
-  const [qrSize, setQrSize] = useState<number>(200);
-  const [qrColor, setQrColor] = useState<string>('#000000');
-  const [qrBgColor, setQrBgColor] = useState<string>('#ffffff');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [audioTooLarge, setAudioTooLarge] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const qrRef = useRef<HTMLDivElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [qrImageUrl, setQrImageUrl] = useState<string | null>(null);
+  const [qrSize, setQrSize] = useState(250);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [audioTooLarge, setAudioTooLarge] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  
   const audioRef = useRef<HTMLAudioElement>(null);
-
+  
+  // Clean up URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+  
   const handleFileSelect = (files: FileList) => {
     if (files.length > 0) {
       const file = files[0];
       
-      // Validate file type
+      // Check file type
       if (!file.type.startsWith('audio/')) {
-        toast.error("Please select an audio file");
+        toast.error('Please select an audio file');
         return;
       }
       
-      // Validate file size (max 5MB for direct encoding)
-      if (file.size > 5 * 1024 * 1024) {
+      // Reset states
+      setSelectedFile(file);
+      setAudioTooLarge(false);
+      setErrorMessage(null);
+      setQrImageUrl(null);
+      setIsPlaying(false);
+      
+      // Check file size (warn over 500KB, error over 1MB)
+      if (file.size > 1 * 1024 * 1024) {
         setAudioTooLarge(true);
-        toast.warning("Audio is large and will only be previewed locally. The QR code will contain metadata only.", {
-          duration: 5000,
-        });
-      } else {
-        setAudioTooLarge(false);
+        toast.error('Audio is too large to encode in a QR code (max 1MB)');
+      } else if (file.size > 500 * 1024) {
+        toast.warning('Audio is large and may result in a complex QR code');
       }
       
-      // Set the selected file and preview
-      setSelectedAudio(file);
-      setAudioPreview(URL.createObjectURL(file));
-      setQrCodeValue(null); // Reset QR code when new audio is selected
+      // Create preview
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
     }
   };
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+  
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play()
+        .catch(error => {
+          console.error('Error playing audio:', error);
+          toast.error('Failed to play audio');
+        });
     }
+    
+    setIsPlaying(!isPlaying);
   };
-
-  const handleAudioEnd = () => {
+  
+  // Update isPlaying state when audio ends
+  const handleAudioEnded = () => {
     setIsPlaying(false);
   };
-
-  const generateQRCode = () => {
-    if (!selectedAudio) {
+  
+  const convertAudioToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+  
+  const generateQRCode = async () => {
+    if (!selectedFile) {
       toast.error("Please select an audio file first");
       return;
     }
     
-    setLoading(true);
-    
     if (audioTooLarge) {
-      // For large audio files, create a QR code with audio metadata instead of the actual content
-      const metadata = {
-        name: selectedAudio.name,
-        type: selectedAudio.type,
-        size: selectedAudio.size,
-        lastModified: selectedAudio.lastModified,
-        description: "This QR code contains audio metadata. The actual audio is too large to encode directly."
-      };
-      
-      setQrCodeValue(JSON.stringify(metadata));
-      setLoading(false);
-      toast.success("QR Code with audio metadata generated successfully!");
-    } else {
-      // For smaller audio files, try to encode the actual content
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && e.target.result) {
-          // Set QR code value to the data URL
-          setQrCodeValue(e.target.result as string);
-          setLoading(false);
-          toast.success("QR Code generated successfully!");
-        }
-      };
-      reader.onerror = () => {
-        toast.error("Failed to read the audio file");
-        setLoading(false);
-      };
-      reader.readAsDataURL(selectedAudio);
+      toast.error("Audio is too large to encode in a QR code");
+      return;
     }
-  };
-
-  const downloadQRCode = () => {
-    if (!qrRef.current) return;
+    
+    setIsGenerating(true);
+    setErrorMessage(null);
     
     try {
-      const canvas = qrRef.current.querySelector('canvas');
-      if (!canvas) {
-        toast.error("QR Code canvas not found");
+      // Convert audio to base64
+      const base64Audio = await convertAudioToBase64(selectedFile);
+      
+      // Generate QR code using Google Charts API
+      const apiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${qrSize}x${qrSize}&chl=${encodeURIComponent(base64Audio)}&choe=UTF-8&chld=L|0`;
+      
+      // Check if URL is too long
+      if (apiUrl.length > 4096) {
+        setErrorMessage("Audio data is too large to encode in a QR code. Please use a smaller audio file or try compressing it first.");
+        setQrImageUrl(null);
+        setIsGenerating(false);
         return;
       }
       
-      const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-      const downloadLink = document.createElement("a");
-      downloadLink.href = pngUrl;
-      downloadLink.download = `audio-qr-code.png`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      toast.success("QR Code downloaded successfully!");
+      setQrImageUrl(apiUrl);
     } catch (error) {
-      console.error("Download error:", error);
-      toast.error("Failed to download QR Code");
+      console.error("Error generating QR code:", error);
+      setErrorMessage("Failed to generate QR code. Please try again with a different audio file.");
+      setQrImageUrl(null);
+    } finally {
+      setIsGenerating(false);
     }
   };
-
-  const resetState = () => {
-    if (audioPreview) {
-      URL.revokeObjectURL(audioPreview);
-    }
-    setSelectedAudio(null);
-    setAudioPreview(null);
-    setQrCodeValue(null);
+  
+  const handleDownload = () => {
+    if (!qrImageUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = qrImageUrl;
+    link.download = `audio-qr-code-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("QR Code downloaded successfully!");
+  };
+  
+  const handleRemoveAudio = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setQrImageUrl(null);
+    setErrorMessage(null);
     setAudioTooLarge(false);
     setIsPlaying(false);
   };
@@ -145,191 +161,207 @@ const AudioToQR = () => {
   return (
     <>
       <Helmet>
-        <title>Audio to QR Code Converter - Free Online Tool | EveryTools</title>
-        <meta name="description" content="Convert your audio files to QR codes for easy sharing. No registration, no watermarks, all processing happens in your browser." />
-        <link rel="canonical" href="https://everytools.site/audio-to-qr" />
+        <title>Audio to QR Code - Convert Sound Files to QR | MyToolbox</title>
+        <meta name="description" content="Convert audio files to QR codes. Share music, sound effects, voice messages and more through scannable QR codes." />
+        <meta name="keywords" content="audio to qr code, sound to qr, voice to qr code, music qr code, audio converter" />
       </Helmet>
       
       <SpaceBackground />
+      <Header />
       
-      <div className="min-h-screen flex flex-col">
-        <Header />
+      <main className="container mx-auto px-4 py-10 min-h-screen">
+        <BackButton />
         
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
-          <BackButton />
-          
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Audio</span>
-              <span className="text-white"> to </span>
-              <span className="bg-gradient-primary bg-clip-text text-transparent">QR Code</span>
-              <span className="text-white"> Converter</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              Convert your audio files to QR codes for easy sharing. No registration required.
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-3">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">Audio to QR Code</h1>
+            <p className="text-lg text-muted-foreground">
+              Convert audio files to scannable QR codes to share sounds easily
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-              <h2 className="text-xl font-semibold mb-4 text-center">Upload Audio</h2>
-              
-              {!audioPreview ? (
-                <UploadBox 
-                  title="Drop your audio file here"
-                  subtitle="Select an audio file to convert to QR code"
-                  acceptedFileTypes="audio/*"
-                  onFileSelect={handleFileSelect}
-                  multiple={false}
-                />
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative rounded-md overflow-hidden border border-white/10 p-4 bg-black/20">
-                    <div className="flex items-center justify-center space-x-4">
-                      <Button
-                        onClick={togglePlay}
-                        variant="outline"
-                        size="icon"
-                        className="h-12 w-12 rounded-full"
-                      >
-                        {isPlaying ? (
-                          <Pause className="h-6 w-6" />
-                        ) : (
-                          <Play className="h-6 w-6" />
-                        )}
-                      </Button>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium truncate">{selectedAudio?.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {(selectedAudio?.size ?? 0) < 1024 * 1024
-                            ? `${Math.round((selectedAudio?.size ?? 0) / 1024)} KB`
-                            : `${Math.round((selectedAudio?.size ?? 0) / (1024 * 1024) * 10) / 10} MB`}
-                        </p>
-                        <audio
+          <Alert variant="warning" className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Size Limitations</AlertTitle>
+            <AlertDescription>
+              Only small audio files (under 1MB) can be encoded into QR codes. For best results, 
+              use files under 500KB with shorter duration or compressed formats.
+            </AlertDescription>
+          </Alert>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="bg-card/50 backdrop-blur border-border">
+              <CardContent className="pt-6 space-y-6">
+                {!selectedFile ? (
+                  <UploadBox
+                    title="Upload your audio"
+                    subtitle="Select a small audio file to convert to QR code (MP3, WAV, M4A)"
+                    acceptedFileTypes="audio/*"
+                    onFileSelect={handleFileSelect}
+                    multiple={false}
+                  />
+                ) : (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Label>Selected Audio</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={handleRemoveAudio}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                      <div className="border rounded-lg overflow-hidden bg-background/50 p-4">
+                        <div className="flex items-center gap-3">
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            onClick={togglePlayPause}
+                            className="h-12 w-12 rounded-full"
+                          >
+                            {isPlaying ? (
+                              <StopCircle className="h-6 w-6" />
+                            ) : (
+                              <PlayCircle className="h-6 w-6" />
+                            )}
+                          </Button>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium truncate">
+                              {selectedFile.name}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {Math.round(selectedFile.size / 1024)} KB
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <audio 
                           ref={audioRef}
-                          src={audioPreview}
-                          onEnded={handleAudioEnd}
+                          src={previewUrl || ''}
                           className="hidden"
+                          onEnded={handleAudioEnded}
                         />
                       </div>
                     </div>
-                  </div>
-                  
-                  {audioTooLarge && (
-                    <div className="text-center text-sm text-yellow-400 flex items-center justify-center">
-                      <AlertTriangle className="h-4 w-4 mr-2" />
-                      <span>This audio file is too large for full encoding. The QR code will contain metadata only.</span>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="qrSize">QR Code Size</Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          id="qrSize"
+                          min={100}
+                          max={500}
+                          step={10}
+                          value={[qrSize]}
+                          onValueChange={(values) => setQrSize(values[0])}
+                          className="flex-1"
+                        />
+                        <span className="text-sm w-12 text-right">{qrSize}px</span>
+                      </div>
                     </div>
-                  )}
-                  
-                  <div className="flex justify-between">
+                    
                     <Button 
-                      variant="destructive" 
-                      onClick={resetState}
-                    >
-                      Remove
-                    </Button>
-                    <Button 
+                      className="w-full"
                       onClick={generateQRCode}
-                      disabled={loading}
+                      disabled={isGenerating || audioTooLarge}
                     >
-                      {loading ? (
-                        <>Generating QR Code...</>
-                      ) : (
-                        <>
-                          <QrCode className="mr-2 h-4 w-4" />
-                          Generate QR Code
-                        </>
-                      )}
+                      {isGenerating ? 'Generating...' : 'Generate QR Code'}
                     </Button>
+                    
+                    {errorMessage && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{errorMessage}</AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {audioTooLarge && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                          This audio file exceeds the 1MB size limit for QR code encoding.
+                          Please select a smaller file or compress your audio first.
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </CardContent>
+            </Card>
             
-            <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-              <h2 className="text-xl font-semibold mb-4 text-center">QR Code Result</h2>
-              
-              {qrCodeValue ? (
-                <div className="space-y-6 flex flex-col items-center">
-                  <div ref={qrRef} className="p-4 bg-white rounded-lg shadow-lg">
-                    <QRCodeCanvas 
-                      value={qrCodeValue} 
-                      size={qrSize}
-                      fgColor={qrColor}
-                      bgColor={qrBgColor}
-                      level="H"
-                    />
-                  </div>
-                  
-                  <div className="w-full grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium block mb-1">QR Size</label>
-                      <input 
-                        type="range" 
-                        min="100" 
-                        max="300" 
-                        value={qrSize} 
-                        onChange={(e) => setQrSize(Number(e.target.value))}
-                        className="w-full"
+            <Card className="bg-card/50 backdrop-blur border-border">
+              <CardContent className="flex flex-col items-center justify-center min-h-[400px] p-6">
+                {qrImageUrl ? (
+                  <div className="space-y-6 w-full flex flex-col items-center">
+                    <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
+                      <img 
+                        src={qrImageUrl} 
+                        alt="Generated QR Code" 
+                        className="max-w-full"
                       />
                     </div>
-                    <div>
-                      <label className="text-sm font-medium block mb-1">QR Color</label>
-                      <input 
-                        type="color" 
-                        value={qrColor} 
-                        onChange={(e) => setQrColor(e.target.value)}
-                        className="w-full h-8 cursor-pointer rounded"
-                      />
-                    </div>
+                    
+                    <Button onClick={handleDownload} className="gap-2">
+                      <Download size={16} />
+                      Download QR Code
+                    </Button>
+                    
+                    <p className="text-xs text-center text-muted-foreground">
+                      Note: This QR code contains the entire audio data. When scanned, most QR code 
+                      readers will allow you to play the audio. Complex or large audio files may result 
+                      in QR codes that are difficult to scan.
+                    </p>
                   </div>
-                  
-                  <Button 
-                    className="w-full" 
-                    onClick={downloadQRCode}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download QR Code
-                  </Button>
-                  
-                  <p className="text-xs text-muted-foreground text-center">
-                    {audioTooLarge ? 
-                      "Note: This QR code contains audio metadata only, not the actual audio content due to size limitations." :
-                      "Note: The QR code contains the audio data. Some QR code scanners may have difficulties reading codes with large amounts of data."
-                    }
-                  </p>
-                </div>
-              ) : (
-                <div className="h-[300px] flex flex-col items-center justify-center text-muted-foreground">
-                  <QrCode className="h-16 w-16 mb-4 opacity-20" />
-                  <p>Upload an audio file and generate a QR code to see the result here</p>
-                </div>
-              )}
+                ) : (
+                  <div className="text-center space-y-3">
+                    <FileAudio size={100} className="text-muted-foreground mx-auto" />
+                    <p className="text-muted-foreground">
+                      Upload a small audio file and generate a QR code to see the result here
+                    </p>
+                    <p className="text-xs text-muted-foreground max-w-md">
+                      Only small audio files work well in QR codes. For best results, use short 
+                      audio clips with compressed formats (MP3, AAC).
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="bg-card/30 backdrop-blur rounded-lg p-6 border border-border/50">
+            <h2 className="text-xl font-semibold mb-4">About Audio to QR Code</h2>
+            <div className="space-y-4 text-sm">
+              <p>
+                This tool embeds your audio data directly within a QR code. When scanned, compatible QR code readers 
+                will display or allow you to play the embedded audio.
+              </p>
+              <p>
+                <strong>Suggested uses:</strong>
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Short voice messages or announcements</li>
+                <li>Sound effects for events or presentations</li>
+                <li>Short music clips or jingles</li>
+                <li>Language pronunciation guides</li>
+              </ul>
+              <p className="mt-4">
+                <strong>Important notes:</strong>
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Only small audio files (under 1MB) can be encoded in QR codes</li>
+                <li>Best results come from files under 500KB</li>
+                <li>We recommend using compressed formats (MP3, AAC) rather than WAV</li>
+                <li>All processing happens in your browser - your audio is never uploaded to our servers</li>
+                <li>Not all QR code scanners support embedded audio playback</li>
+              </ul>
             </div>
           </div>
-          
-          <AdPlacement format="horizontal" className="mt-8" contentLoaded={true} />
-          
-          <div className="mt-8 bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-border/40">
-            <h2 className="text-xl font-semibold mb-4">About Audio to QR Code Conversion</h2>
-            <p className="mb-4">
-              This tool allows you to convert audio files into QR codes. For small audio files (under 5MB), the QR code will contain
-              the actual audio data. For larger files, the QR code will contain metadata about the audio.
-            </p>
-            <p className="mb-4">
-              When someone scans the QR code with a compatible QR code reader, they can listen to the audio (for small files)
-              or see information about the audio file (for larger files).
-            </p>
-            <p>
-              All processing happens directly in your browser - your audio files are never uploaded to any server, 
-              ensuring your privacy and data security.
-            </p>
-          </div>
-        </main>
-        
-        <Footer />
-      </div>
+        </div>
+      </main>
+      
+      <Footer />
     </>
   );
 };
