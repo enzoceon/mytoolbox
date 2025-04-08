@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder } from 'lucide-react';
+import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain } from 'lucide-react';
 import {
   Sheet,
   SheetClose,
@@ -45,6 +45,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
       items: [
         { name: "Audio Converter", path: "/tools" },
         { name: "Audio Compressor", path: "/tools" },
+      ]
+    },
+    {
+      title: "AI Tools",
+      icon: <Brain className="h-5 w-5" />,
+      items: [
+        { name: "AI Text Generator", path: "/ai-text-generator" },
+        { name: "AI Content Summarizer", path: "/ai-content-summarizer" },
+        { name: "AI Chatbot", path: "/ai-chatbot" },
+        { name: "AI Image Generator", path: "/ai-image-generator" },
       ]
     },
     {

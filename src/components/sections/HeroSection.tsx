@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify, BrainCircuit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -153,6 +153,41 @@ const HeroSection = () => {
             </Button>
           </div>
           
+          {/* AI Tools Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.38s" }}>
+            <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/ai-text-generator" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Brain className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Text Generator</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/ai-chatbot" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Bot className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Chatbot</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/ai-image-generator" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Image Generator</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/ai-content-summarizer" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Summarizer</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+            </div>
+            <Button 
+              onClick={(e) => navigateToCategory('AI')} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All AI Tools
+            </Button>
+          </div>
+          
           {/* Text Tools Section */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
             <h2 className="text-xl font-semibold mb-4">Text Tools</h2>
@@ -219,41 +254,6 @@ const HeroSection = () => {
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
               Explore All QR Tools
-            </Button>
-          </div>
-          
-          {/* AI Section */}
-          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.45s" }}>
-            <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <Brain className="h-8 w-8 text-purple-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Text Generator</p>
-                <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <Bot className="h-8 w-8 text-blue-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Chatbot</p>
-                <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Image Generator</p>
-                <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Summarizer</p>
-                <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
-            </div>
-            <Button 
-              onClick={(e) => navigateToCategory('AI')} 
-              variant="outline" 
-              className="mt-4 pulse-btn w-full sm:w-auto"
-            >
-              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
-              Explore All AI Tools
             </Button>
           </div>
         </div>

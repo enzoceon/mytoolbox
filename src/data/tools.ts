@@ -3,7 +3,7 @@ import {
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
-  Clipboard, LucideIcon
+  Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap
 } from 'lucide-react';
 
 export interface CategoryType {
@@ -26,6 +26,7 @@ export const categories: CategoryType[] = [
   { id: 'image', name: 'Image Tools' },
   { id: 'pdf', name: 'PDF Tools' },
   { id: 'file', name: 'File Utilities' },
+  { id: 'ai', name: 'AI Tools' },
   { id: 'text', name: 'Text Tools' },
   { id: 'code', name: 'Developer Tools' },
   { id: 'converter', name: 'Converters' },
@@ -172,7 +173,35 @@ export const tools: ToolType[] = [
     description: 'Automatically generate summaries of long texts',
     path: '/ai-content-summarizer',
     icon: LineChart,
-    category: 'text'
+    category: 'ai',
+    isNew: true
+  },
+  {
+    id: 'ai-text-generator',
+    name: 'AI Text Generator',
+    description: 'Generate high-quality text content for various purposes',
+    path: '/ai-text-generator',
+    icon: Brain,
+    category: 'ai',
+    isNew: true
+  },
+  {
+    id: 'ai-chatbot',
+    name: 'AI Chatbot',
+    description: 'Interact with an AI assistant for answering questions',
+    path: '/ai-chatbot',
+    icon: Bot,
+    category: 'ai',
+    isNew: true
+  },
+  {
+    id: 'ai-image-generator',
+    name: 'AI Image Generator',
+    description: 'Create unique images from text descriptions',
+    path: '/ai-image-generator',
+    icon: Sparkles,
+    category: 'ai',
+    isNew: true
   },
   {
     id: 'currency-converter',
