@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
-  Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap, Lock, Video, Mic, Gif, VolumeX, Music,
+  Clipboard, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Zap, Lock, Video, Mic, Gift, VolumeX, Music,
   ImageOff, Unlock, ScanSearch, PencilRuler, Scale, FileDigit
 } from 'lucide-react';
 
@@ -324,7 +323,6 @@ export const tools: ToolType[] = [
     category: 'utility',
     isNew: true
   },
-  // Adding missing tools from the list
   {
     id: 'image-to-qr-code',
     name: 'Image to QR Code',
@@ -384,7 +382,7 @@ export const tools: ToolType[] = [
     name: 'GIF to Video',
     description: 'Convert animated GIFs to video formats',
     path: '/gif-to-video',
-    icon: Gif,
+    icon: Gift,
     category: 'video',
     isNew: true
   },
