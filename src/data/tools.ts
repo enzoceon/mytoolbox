@@ -4,7 +4,7 @@ import {
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
   Layers, FileAudio, Scissors, MoreHorizontal, Scan, LineChart, Columns, DollarSign, Shuffle, Ruler, FileSearch, 
   FileEdit, Archive, FolderArchive, Stamp, Camera, Sparkle, MessageSquare, AlignJustify, Scissors as PixelTool,
-  Clipboard
+  Clipboard, LucideIcon
 } from 'lucide-react';
 
 export interface CategoryType {
@@ -17,7 +17,7 @@ export interface ToolType {
   name: string;
   description: string;
   path: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
   category: string;
   isNew?: boolean;
   isFeatured?: boolean;
@@ -40,7 +40,7 @@ export const tools: ToolType[] = [
     name: 'Image to PDF',
     description: 'Convert JPG, PNG, GIF, and other image formats to PDF document',
     path: '/converter',
-    icon: <FileImage className="h-6 w-6 text-indigo-400" />,
+    icon: FileImage,
     category: 'converter',
     isFeatured: true
   },
@@ -49,7 +49,7 @@ export const tools: ToolType[] = [
     name: 'PDF to Image',
     description: 'Convert PDF pages to high-quality JPG or PNG images',
     path: '/pdf-to-image',
-    icon: <FileDown className="h-6 w-6 text-indigo-400" />,
+    icon: FileDown,
     category: 'pdf',
     isFeatured: true
   },
@@ -58,7 +58,7 @@ export const tools: ToolType[] = [
     name: 'JPG to PNG',
     description: 'Convert JPG images to transparent PNG format',
     path: '/jpg-to-png',
-    icon: <FileUp className="h-6 w-6 text-indigo-400" />,
+    icon: FileUp,
     category: 'image',
     isFeatured: true
   },
@@ -67,7 +67,7 @@ export const tools: ToolType[] = [
     name: 'QR Code Generator',
     description: 'Create custom QR codes for URLs, text, contacts, and more',
     path: '/qr-code-generator',
-    icon: <QrCode className="h-6 w-6 text-indigo-400" />,
+    icon: QrCode,
     category: 'utility',
     isFeatured: true
   },
@@ -76,7 +76,7 @@ export const tools: ToolType[] = [
     name: 'Image Compressor',
     description: 'Reduce image file size while preserving quality',
     path: '/image-compressor',
-    icon: <CloudUpload className="h-6 w-6 text-indigo-400" />,
+    icon: CloudUpload,
     category: 'image'
   },
   {
@@ -84,7 +84,7 @@ export const tools: ToolType[] = [
     name: 'HTML to PDF',
     description: 'Convert HTML code or URL to PDF document',
     path: '/html-to-pdf',
-    icon: <Code className="h-6 w-6 text-indigo-400" />,
+    icon: Code,
     category: 'converter'
   },
   {
@@ -92,7 +92,7 @@ export const tools: ToolType[] = [
     name: 'Color Picker',
     description: 'Select and extract colors from images with HEX, RGB, HSL values',
     path: '/color-picker',
-    icon: <Palette className="h-6 w-6 text-indigo-400" />,
+    icon: Palette,
     category: 'utility'
   },
   {
@@ -100,7 +100,7 @@ export const tools: ToolType[] = [
     name: 'Password Generator',
     description: 'Create strong, secure passwords with custom settings',
     path: '/password-generator',
-    icon: <KeySquare className="h-6 w-6 text-indigo-400" />,
+    icon: KeySquare,
     category: 'utility'
   },
   {
@@ -108,7 +108,7 @@ export const tools: ToolType[] = [
     name: 'Countdown Timer',
     description: 'Create custom countdown timers for events and deadlines',
     path: '/countdown-timer',
-    icon: <Clock className="h-6 w-6 text-indigo-400" />,
+    icon: Clock,
     category: 'utility'
   },
   {
@@ -116,7 +116,7 @@ export const tools: ToolType[] = [
     name: 'Text Editor',
     description: 'Simple online text editor with formatting options',
     path: '/text-editor',
-    icon: <FileText className="h-6 w-6 text-indigo-400" />,
+    icon: FileText,
     category: 'text'
   },
   {
@@ -124,7 +124,7 @@ export const tools: ToolType[] = [
     name: 'PDF Merger',
     description: 'Combine multiple PDF files into a single document',
     path: '/pdf-merger',
-    icon: <Layers className="h-6 w-6 text-indigo-400" />,
+    icon: Layers,
     category: 'pdf'
   },
   {
@@ -132,7 +132,7 @@ export const tools: ToolType[] = [
     name: 'PDF Splitter',
     description: 'Extract specific pages from PDF files',
     path: '/pdf-splitter',
-    icon: <Scissors className="h-6 w-6 text-indigo-400" />,
+    icon: Scissors,
     category: 'pdf'
   },
   {
@@ -140,7 +140,7 @@ export const tools: ToolType[] = [
     name: 'PDF Compressor',
     description: 'Reduce PDF file size while preserving quality',
     path: '/pdf-compressor',
-    icon: <FileArchive className="h-6 w-6 text-indigo-400" />,
+    icon: FileArchive,
     category: 'pdf'
   },
   {
@@ -148,7 +148,7 @@ export const tools: ToolType[] = [
     name: 'Text to Speech',
     description: 'Convert text to natural-sounding speech',
     path: '/text-to-speech',
-    icon: <FileAudio className="h-6 w-6 text-indigo-400" />,
+    icon: FileAudio,
     category: 'audio'
   },
   {
@@ -156,7 +156,7 @@ export const tools: ToolType[] = [
     name: 'Audio Trimmer',
     description: 'Cut and trim audio files with precision',
     path: '/audio-trimmer',
-    icon: <Scissors className="h-6 w-6 text-indigo-400" />,
+    icon: Scissors,
     category: 'audio'
   },
   {
@@ -164,7 +164,7 @@ export const tools: ToolType[] = [
     name: 'OCR Tool',
     description: 'Extract text from images and scanned documents',
     path: '/ocr-tool',
-    icon: <Scan className="h-6 w-6 text-indigo-400" />,
+    icon: Scan,
     category: 'text'
   },
   {
@@ -172,7 +172,7 @@ export const tools: ToolType[] = [
     name: 'AI Content Summarizer',
     description: 'Automatically generate summaries of long texts',
     path: '/ai-content-summarizer',
-    icon: <LineChart className="h-6 w-6 text-indigo-400" />,
+    icon: LineChart,
     category: 'text'
   },
   // New tools based on the user's request
@@ -181,7 +181,7 @@ export const tools: ToolType[] = [
     name: 'Currency Converter',
     description: 'Convert between different currencies with up-to-date exchange rates',
     path: '/currency-converter',
-    icon: <DollarSign className="h-6 w-6 text-indigo-400" />,
+    icon: DollarSign,
     category: 'converter',
     isNew: true
   },
@@ -190,7 +190,7 @@ export const tools: ToolType[] = [
     name: 'Unit Converter',
     description: 'Convert between different units of measurement (length, weight, volume, etc.)',
     path: '/unit-converter',
-    icon: <Ruler className="h-6 w-6 text-indigo-400" />,
+    icon: Ruler,
     category: 'converter',
     isNew: true
   },
@@ -199,7 +199,7 @@ export const tools: ToolType[] = [
     name: 'File Metadata Viewer',
     description: 'View detailed metadata information for any file type',
     path: '/file-metadata',
-    icon: <FileSearch className="h-6 w-6 text-indigo-400" />,
+    icon: FileSearch,
     category: 'file',
     isNew: true
   },
@@ -208,7 +208,7 @@ export const tools: ToolType[] = [
     name: 'File Rename Tool',
     description: 'Batch rename multiple files with custom patterns and sequences',
     path: '/file-rename',
-    icon: <FileEdit className="h-6 w-6 text-indigo-400" />,
+    icon: FileEdit,
     category: 'file',
     isNew: true
   },
@@ -217,7 +217,7 @@ export const tools: ToolType[] = [
     name: 'RAR Extractor',
     description: 'Extract contents from RAR archive files online',
     path: '/rar-extractor',
-    icon: <Archive className="h-6 w-6 text-indigo-400" />,
+    icon: Archive,
     category: 'file',
     isNew: true
   },
@@ -226,7 +226,7 @@ export const tools: ToolType[] = [
     name: 'ZIP Extractor',
     description: 'Extract contents from ZIP archive files without downloading software',
     path: '/zip-extractor',
-    icon: <FolderArchive className="h-6 w-6 text-indigo-400" />,
+    icon: FolderArchive,
     category: 'file',
     isNew: true
   },
@@ -235,7 +235,7 @@ export const tools: ToolType[] = [
     name: 'ZIP File Creator',
     description: 'Create ZIP archives from multiple files and folders',
     path: '/zip-creator',
-    icon: <Archive className="h-6 w-6 text-indigo-400" />,
+    icon: Archive,
     category: 'file',
     isNew: true
   },
@@ -244,7 +244,7 @@ export const tools: ToolType[] = [
     name: 'Image Watermark Generator',
     description: 'Add custom text or image watermarks to protect your images',
     path: '/image-watermark',
-    icon: <Stamp className="h-6 w-6 text-indigo-400" />,
+    icon: Stamp,
     category: 'image',
     isNew: true
   },
@@ -253,7 +253,7 @@ export const tools: ToolType[] = [
     name: 'Image Metadata Viewer',
     description: 'View and optionally remove EXIF and other metadata from images',
     path: '/image-metadata',
-    icon: <Camera className="h-6 w-6 text-indigo-400" />,
+    icon: Camera,
     category: 'image',
     isNew: true
   },
@@ -262,7 +262,7 @@ export const tools: ToolType[] = [
     name: 'Random Text Generator',
     description: 'Generate random text, lorem ipsum, and placeholder content',
     path: '/random-text',
-    icon: <Sparkle className="h-6 w-6 text-indigo-400" />,
+    icon: Sparkle,
     category: 'text',
     isNew: true
   },
@@ -271,7 +271,7 @@ export const tools: ToolType[] = [
     name: 'Word Counter',
     description: 'Count words, characters, sentences, and paragraphs in text',
     path: '/word-counter',
-    icon: <AlignJustify className="h-6 w-6 text-indigo-400" />,
+    icon: AlignJustify,
     category: 'text',
     isNew: true
   },
@@ -280,7 +280,7 @@ export const tools: ToolType[] = [
     name: 'Pixelate Image Tool',
     description: 'Apply pixelation effects to images for censoring or artistic purposes',
     path: '/pixelate-image',
-    icon: <PixelTool className="h-6 w-6 text-indigo-400" />,
+    icon: PixelTool,
     category: 'image',
     isNew: true
   },
@@ -289,7 +289,7 @@ export const tools: ToolType[] = [
     name: 'Clipboard Manager',
     description: 'Store and organize multiple clipboard items for easy access',
     path: '/clipboard-manager',
-    icon: <Clipboard className="h-6 w-6 text-indigo-400" />,
+    icon: Clipboard,
     category: 'utility',
     isNew: true
   }

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode } from 'lucide-react';
