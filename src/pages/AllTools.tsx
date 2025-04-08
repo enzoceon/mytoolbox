@@ -5,15 +5,13 @@ import { Helmet } from 'react-helmet-async';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Search } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { tools, categories, getToolsByCategory } from '@/data/tools';
 import type { ToolType, CategoryType } from '@/data/tools';
 import SpaceBackground from '@/components/SpaceBackground';
-import { Link } from 'react-router-dom';
+import ToolCard from '@/components/ToolCard';
 
 const AllTools = () => {
   const location = useLocation();
@@ -109,71 +107,66 @@ const AllTools = () => {
         
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">All</span>
-              <span className="text-white"> Tools</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight animate-fade-in">
+              <span className="text-white">The </span>
+              <span className="bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">Digital Toolbox</span>
+              <span className="text-white"> For Everyone</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              Browse our complete collection of free online utilities for every need.
+              Dozens of powerful online tools to make your digital life easier.
+              Convert, edit, and transform files with no registration required.
             </p>
           </div>
           
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto mb-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search tools..."
-                className="pl-10 pr-4 py-6 bg-card border-border"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
+              <div className="rounded-full overflow-hidden p-[2px] bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500">
+                <div className="relative rounded-full overflow-hidden bg-[#0c0d13] flex items-center">
+                  <Search className="absolute left-5 text-gray-400 h-5 w-5" />
+                  <Input
+                    type="text"
+                    placeholder="Search tools..."
+                    className="pl-12 pr-4 py-6 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           
           {/* Category Tabs */}
           <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Tabs defaultValue={activeCategory} value={activeCategory} onValueChange={handleCategoryChange}>
-              <div className="overflow-x-auto pb-2">
-                <TabsList className="inline-flex w-auto">
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  {categories.map((category) => (
-                    <TabsTrigger key={category.id} value={category.id}>
-                      {category.name}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+            <div className="overflow-x-auto pb-2 flex justify-center">
+              <div className="flex space-x-2 flex-wrap justify-center gap-2">
+                <Button
+                  variant={activeCategory === 'all' ? 'default' : 'outline'}
+                  className={activeCategory === 'all' ? 'bg-purple-600 hover:bg-purple-700' : 'border-gray-700 bg-[#12131a]'}
+                  onClick={() => handleCategoryChange('all')}
+                >
+                  All
+                </Button>
+                {categories.map((category) => (
+                  <Button
+                    key={category.id}
+                    variant={activeCategory === category.id ? 'default' : 'outline'}
+                    className={activeCategory === category.id ? 'bg-purple-600 hover:bg-purple-700' : 'border-gray-700 bg-[#12131a]'}
+                    onClick={() => handleCategoryChange(category.id)}
+                  >
+                    {category.name}
+                  </Button>
+                ))}
               </div>
-            </Tabs>
+            </div>
           </div>
           
           {/* Tools Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             {filteredTools.length > 0 ? (
-              filteredTools.map((tool) => {
-                const IconComponent = tool.icon;
-                return (
-                  <Link to={tool.path} key={tool.id}>
-                    <Card className="h-full transition-transform hover:scale-105 hover:shadow-lg bg-card border-border">
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-start">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                            <IconComponent className="h-6 w-6 text-indigo-400" />
-                          </div>
-                          {tool.isNew && (
-                            <Badge variant="default" className="bg-purple-600">
-                              New
-                            </Badge>
-                          )}
-                        </div>
-                        <CardTitle className="text-lg mt-2">{tool.name}</CardTitle>
-                        <CardDescription>{tool.description}</CardDescription>
-                      </CardHeader>
-                    </Card>
-                  </Link>
-                );
-              })
+              filteredTools.map((tool) => (
+                <ToolCard key={tool.id} tool={tool} />
+              ))
             ) : (
               <div className="col-span-3 text-center py-20">
                 <h3 className="text-xl font-semibold mb-2">No tools found</h3>

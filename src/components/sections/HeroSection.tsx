@@ -31,16 +31,8 @@ const HeroSection = () => {
   // Define tool categories
   const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'AI', 'QR Code'];
 
-  const navigateToAITools = () => {
-    navigate('/tools?category=AI');
-  };
-
-  const navigateToImageTools = () => {
-    navigate('/tools?category=Image');
-  };
-
-  const navigateToQRTools = () => {
-    navigate('/tools?category=QR Code');
+  const navigateToCategory = (category: string) => {
+    navigate(`/tools?category=${category.toLowerCase()}`);
   };
 
   return (
@@ -48,26 +40,26 @@ const HeroSection = () => {
       <div className="container px-4 mx-auto">
         <div className="text-center mx-auto max-w-3xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground animate-fade-in">
-            Free Online Tools <br />
-            For <span className="text-purple-500">Everyone</span>
+            The <span className="text-purple-500">Digital Toolbox</span> For <span className="text-white">Everyone</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            every tools in one place
+          <p className="text-xl md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            Dozens of powerful online tools to make your digital life easier.
+            Convert, edit, and transform files with no registration required.
           </p>
           
           {/* Search bar with gradient border */}
           <div className="mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <div className="w-full relative">
-                <div className="rounded-full overflow-hidden p-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500">
+                <div className="rounded-full overflow-hidden p-[2px] bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500">
                   <div className="relative rounded-full overflow-hidden bg-[#0c0d13] flex items-center">
-                    <Search className="absolute left-5 text-gray-400 h-6 w-6" />
+                    <Search className="absolute left-5 text-gray-400 h-5 w-5" />
                     <Input
                       type="text"
                       placeholder="Search tools..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full border-0 pl-14 py-6 text-lg bg-transparent focus-visible:ring-0 focus-visible:ring-transparent"
+                      className="w-full border-0 pl-12 py-6 text-lg bg-transparent focus-visible:ring-0 focus-visible:ring-transparent"
                     />
                   </div>
                 </div>
@@ -75,7 +67,27 @@ const HeroSection = () => {
             </form>
           </div>
           
-          {/* Image Tools Section */}
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.5s" }}>
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={activeCategory === category ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  setActiveCategory(category);
+                  navigateToCategory(category);
+                }}
+                className={activeCategory === category 
+                  ? "bg-purple-600 hover:bg-purple-700" 
+                  : "border-gray-700 bg-[#12131a]"}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+          
+          {/* Image Tools Section - We'll keep this section but modify it slightly */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
             <h2 className="text-xl font-semibold mb-4">Image Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -98,7 +110,7 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToImageTools} 
+              onClick={navigateToCategory('Image')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
@@ -107,7 +119,7 @@ const HeroSection = () => {
             </Button>
           </div>
           
-          {/* QR Code Section - New Addition */}
+          {/* QR Code Section - Keep this section but modify slightly */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
             <h2 className="text-xl font-semibold mb-4">QR Code Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -132,7 +144,7 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToQRTools} 
+              onClick={navigateToCategory('QR Code')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
@@ -141,7 +153,7 @@ const HeroSection = () => {
             </Button>
           </div>
           
-          {/* AI Section */}
+          {/* AI Section - Keep this section but modify slightly */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.45s" }}>
             <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -163,28 +175,13 @@ const HeroSection = () => {
               </div>
             </div>
             <Button 
-              onClick={navigateToAITools} 
+              onClick={navigateToCategory('AI')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
               Explore All AI Tools
             </Button>
-          </div>
-          
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-2 w-full justify-center animate-fade-in mb-8" style={{ animationDelay: "0.5s" }}>
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={activeCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveCategory(category)}
-                className={activeCategory === category ? "bg-accent text-white hover:bg-accent/90" : ""}
-              >
-                {category}
-              </Button>
-            ))}
           </div>
         </div>
       </div>
