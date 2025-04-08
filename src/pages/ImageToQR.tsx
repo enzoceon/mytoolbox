@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FileImage, Download, AlertCircle } from 'lucide-react';
@@ -13,7 +12,7 @@ import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const ImageToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -24,7 +23,6 @@ const ImageToQR = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [imageTooLarge, setImageTooLarge] = useState(false);
   
-  // Clean up URLs when component unmounts
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -35,13 +33,11 @@ const ImageToQR = () => {
     if (files.length > 0) {
       const file = files[0];
       
-      // Check file type
       if (!file.type.startsWith('image/')) {
         toast.error('Please select an image file');
         return;
       }
       
-      // Check file size (max 1MB)
       if (file.size > 1024 * 1024) {
         setImageTooLarge(true);
         toast.warning('Image is too large, may result in a complex QR code');
@@ -49,7 +45,6 @@ const ImageToQR = () => {
         setImageTooLarge(false);
       }
       
-      // Set file and create preview
       setSelectedFile(file);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const objectUrl = URL.createObjectURL(file);
@@ -78,11 +73,9 @@ const ImageToQR = () => {
     setErrorMessage(null);
     
     try {
-      // Convert image to base64
       const base64Image = await convertImageToBase64(selectedFile);
       setBase64Data(base64Image);
       
-      // Success
       toast.success("QR code generated successfully");
     } catch (error) {
       console.error("Error generating QR code:", error);
@@ -226,7 +219,7 @@ const ImageToQR = () => {
                 {base64Data ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <QRCode 
+                      <QRCodeCanvas 
                         id="image-qr-code"
                         value={base64Data}
                         size={qrSize}

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FileAudio, Download, AlertCircle, PlayCircle, StopCircle, Info } from 'lucide-react';
@@ -13,7 +12,7 @@ import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const AudioToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -27,7 +26,6 @@ const AudioToQR = () => {
   
   const audioRef = useRef<HTMLAudioElement>(null);
   
-  // Clean up URLs when component unmounts
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -38,20 +36,17 @@ const AudioToQR = () => {
     if (files.length > 0) {
       const file = files[0];
       
-      // Check file type
       if (!file.type.startsWith('audio/')) {
         toast.error('Please select an audio file');
         return;
       }
       
-      // Reset states
       setSelectedFile(file);
       setAudioTooLarge(false);
       setErrorMessage(null);
       setBase64Data(null);
       setIsPlaying(false);
       
-      // Check file size (warn over 500KB, error over 1MB)
       if (file.size > 1 * 1024 * 1024) {
         setAudioTooLarge(true);
         toast.error('Audio is too large to encode in a QR code (max 1MB)');
@@ -59,7 +54,6 @@ const AudioToQR = () => {
         toast.warning('Audio is large and may result in a complex QR code');
       }
       
-      // Create preview
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
@@ -82,7 +76,6 @@ const AudioToQR = () => {
     setIsPlaying(!isPlaying);
   };
   
-  // Update isPlaying state when audio ends
   const handleAudioEnded = () => {
     setIsPlaying(false);
   };
@@ -111,11 +104,9 @@ const AudioToQR = () => {
     setErrorMessage(null);
     
     try {
-      // Convert audio to base64
       const base64Audio = await convertAudioToBase64(selectedFile);
       setBase64Data(base64Audio);
       
-      // Success
       toast.success("QR code generated successfully");
     } catch (error) {
       console.error("Error generating QR code:", error);
@@ -290,7 +281,7 @@ const AudioToQR = () => {
                 {base64Data ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <QRCode 
+                      <QRCodeCanvas 
                         id="audio-qr-code"
                         value={base64Data}
                         size={qrSize}

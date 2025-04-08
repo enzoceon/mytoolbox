@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FileVideo, Download, AlertCircle, Info } from 'lucide-react';
@@ -14,7 +13,7 @@ import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const VideoToQR = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -25,7 +24,6 @@ const VideoToQR = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [videoTooLarge, setVideoTooLarge] = useState(false);
   
-  // Clean up URLs when component unmounts
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -36,19 +34,16 @@ const VideoToQR = () => {
     if (files.length > 0) {
       const file = files[0];
       
-      // Check file type
       if (!file.type.startsWith('video/')) {
         toast.error('Please select a video file');
         return;
       }
       
-      // Reset states
       setSelectedFile(file);
       setVideoTooLarge(false);
       setErrorMessage(null);
       setBase64Data(null);
       
-      // Check file size (warn over 500KB, error over 2MB)
       if (file.size > 2 * 1024 * 1024) {
         setVideoTooLarge(true);
         toast.error('Video is too large to encode in a QR code (max 2MB)');
@@ -56,7 +51,6 @@ const VideoToQR = () => {
         toast.warning('Video is large and may result in a complex QR code');
       }
       
-      // Create preview
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
@@ -87,11 +81,9 @@ const VideoToQR = () => {
     setErrorMessage(null);
     
     try {
-      // Convert video to base64
       const base64Video = await convertVideoToBase64(selectedFile);
       setBase64Data(base64Video);
       
-      // Success
       toast.success("QR code generated successfully");
     } catch (error) {
       console.error("Error generating QR code:", error);
@@ -244,7 +236,7 @@ const VideoToQR = () => {
                 {base64Data ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <QRCode 
+                      <QRCodeCanvas 
                         id="video-qr-code"
                         value={base64Data}
                         size={qrSize}

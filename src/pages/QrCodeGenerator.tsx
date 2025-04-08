@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { QrCode, Download, Copy } from 'lucide-react';
@@ -15,7 +14,7 @@ import Footer from '@/components/Footer';
 import HowToUse from '@/components/HowToUse';
 import BackButton from '@/components/BackButton';
 import SpaceBackground from '@/components/SpaceBackground';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const QrCodeGenerator = () => {
   const [qrValue, setQrValue] = useState('https://mytoolbox.site');
@@ -28,7 +27,6 @@ const QrCodeGenerator = () => {
   const formatInputByType = (value: string) => {
     switch (qrType) {
       case 'url':
-        // Add https:// if not present and not empty
         if (value && !value.match(/^[a-zA-Z]+:\/\//)) {
           return `https://${value}`;
         }
@@ -51,7 +49,6 @@ const QrCodeGenerator = () => {
   
   const handleQrTypeChange = (value: string) => {
     setQrType(value);
-    // Reset the input field when changing type
     setQrValue('');
   };
   
@@ -90,7 +87,6 @@ const QrCodeGenerator = () => {
         }
         
         try {
-          // Copy to clipboard using the Clipboard API
           await navigator.clipboard.write([
             new ClipboardItem({
               [blob.type]: blob
@@ -113,7 +109,6 @@ const QrCodeGenerator = () => {
     const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
     if (!canvas) return;
     
-    // Create a temporary link element and trigger download
     try {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
@@ -280,7 +275,7 @@ const QrCodeGenerator = () => {
                 {qrValue ? (
                   <div className="space-y-6 w-full flex flex-col items-center">
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm">
-                      <QRCode 
+                      <QRCodeCanvas 
                         id="qr-code-canvas"
                         value={qrValue}
                         size={qrSize}
@@ -315,7 +310,6 @@ const QrCodeGenerator = () => {
           </div>
         </div>
         
-        {/* How to Use Section */}
         <HowToUse />
       </main>
       
