@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
@@ -22,6 +21,7 @@ export interface ToolType {
   category: string;
   isNew?: boolean;
   isFeatured?: boolean;
+  isFunctional?: boolean;
 }
 
 export const categories: CategoryType[] = [
