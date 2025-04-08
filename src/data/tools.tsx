@@ -150,7 +150,8 @@ const tools: ToolType[] = [
     description: "Automatically summarize long texts with AI",
     path: "/ai-content-summarizer",
     icon: Wand2,
-    category: "ai-tools"
+    category: "ai-tools",
+    isNew: true
   },
   {
     name: "Currency Converter",

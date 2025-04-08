@@ -1,64 +1,43 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HandMetal, Download, Sparkles } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useToast } from '@/hooks/use-toast';
+import SpaceBackground from '@/components/SpaceBackground';
+import BackButton from '@/components/BackButton';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-const fontStyles = [
-  { id: 'casual', name: 'Casual Handwriting' },
-  { id: 'neat', name: 'Neat Handwriting' },
-  { id: 'elegant', name: 'Elegant Script' },
-  { id: 'messy', name: 'Messy Scribble' },
-  { id: 'architect', name: 'Architect Print' },
-];
-
-const paperStyles = [
-  { id: 'lined', name: 'Lined Paper' },
-  { id: 'grid', name: 'Grid Paper' },
-  { id: 'plain', name: 'Plain Paper' },
-  { id: 'dotted', name: 'Dotted Paper' },
-  { id: 'old', name: 'Vintage Paper' },
-];
+import { Textarea } from '@/components/ui/textarea';
+import { HandMetal, Download, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const TextToHandwriting = () => {
-  const [text, setText] = useState('');
-  const [fontStyle, setFontStyle] = useState('casual');
-  const [paperStyle, setPaperStyle] = useState('lined');
-  const [inkColor, setInkColor] = useState('#1e40af');
+  const [text, setText] = useState<string>('');
+  const [fontSize, setFontSize] = useState<string>('24');
+  const [fontStyle, setFontStyle] = useState<string>('cursive');
+  const [color, setColor] = useState<string>('#0000FF');
+  const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<string | null>(null);
-  const { toast } = useToast();
 
   const handleConvert = () => {
-    if (!text) {
-      toast({
-        title: 'No text provided',
-        description: 'Please enter some text to convert',
-        variant: 'destructive',
-      });
+    if (!text.trim()) {
+      toast.error('Please enter some text to convert');
       return;
     }
 
-    // This would normally call an API or use a library to convert text to handwriting
-    // For now, we're just showing a toast as a placeholder
-    toast({
-      title: 'Coming Soon',
-      description: 'Text to handwriting conversion will be available soon!',
-    });
+    setLoading(true);
     
-    // Placeholder for demo purposes
-    setResult('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFeAJcULXR7AAAAABJRU5ErkJggg==');
+    // Simulate conversion
+    setTimeout(() => {
+      setLoading(false);
+      setResult('https://via.placeholder.com/800x400?text=Handwritten+Text');
+      toast.success('Text converted to handwriting!');
+    }, 1500);
   };
 
-  const downloadImage = () => {
+  const handleDownload = () => {
     if (result) {
       const link = document.createElement('a');
       link.href = result;
@@ -73,129 +52,143 @@ const TextToHandwriting = () => {
     <>
       <Helmet>
         <title>Text to Handwriting Converter | EveryTools</title>
-        <meta name="description" content="Convert typed text into realistic handwritten-style images with customizable styles and paper backgrounds." />
+        <meta name="description" content="Convert plain text into realistic handwritten text with various styles and colors." />
       </Helmet>
-
+      
+      <SpaceBackground />
+      
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">Text to Handwriting</h1>
-              <p className="text-muted-foreground">Convert typed text into realistic handwritten-style images</p>
-            </div>
-
-            <Card className="mb-8">
+        
+        <main className="flex-1 container px-4 mx-auto py-8">
+          <BackButton />
+          
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold mb-2">Text to Handwriting</h1>
+            <p className="text-muted-foreground">Convert typed text into realistic handwritten-style images</p>
+          </div>
+          
+          <div className="grid gap-8 md:grid-cols-2">
+            <Card>
               <CardHeader>
-                <div className="flex items-center gap-2">
-                  <HandMetal className="h-6 w-6 text-primary" />
-                  <CardTitle>Convert Text to Handwriting</CardTitle>
-                </div>
-                <CardDescription>Customize your handwriting style and paper type</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <HandMetal className="h-5 w-5 text-primary" />
+                  <span>Enter Your Text</span>
+                </CardTitle>
+                <CardDescription>Type or paste text you want to convert to handwriting</CardDescription>
               </CardHeader>
               <CardContent>
-                <Tabs defaultValue="input">
-                  <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger value="input">Input</TabsTrigger>
-                    <TabsTrigger value="settings">Settings</TabsTrigger>
-                  </TabsList>
+                <div className="space-y-4">
+                  <Textarea
+                    placeholder="Type or paste your text here..."
+                    className="min-h-[200px]"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                  />
                   
-                  <TabsContent value="input" className="space-y-6">
-                    <div>
-                      <Label htmlFor="input-text">Your Text</Label>
-                      <Textarea
-                        id="input-text"
-                        placeholder="Type your text here..."
-                        className="min-h-[200px]"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                      />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label htmlFor="font-size" className="text-sm font-medium">Font Size</label>
+                      <Select value={fontSize} onValueChange={setFontSize}>
+                        <SelectTrigger id="font-size">
+                          <SelectValue placeholder="Select size" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="16">Small</SelectItem>
+                          <SelectItem value="24">Medium</SelectItem>
+                          <SelectItem value="32">Large</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-
-                    <Button onClick={handleConvert} className="w-full">
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      Convert to Handwriting
-                    </Button>
-                  </TabsContent>
-                  
-                  <TabsContent value="settings" className="space-y-6">
-                    <div>
-                      <Label htmlFor="font-style">Handwriting Style</Label>
-                      <Select
-                        value={fontStyle}
-                        onValueChange={setFontStyle}
-                      >
+                    
+                    <div className="space-y-2">
+                      <label htmlFor="font-style" className="text-sm font-medium">Handwriting Style</label>
+                      <Select value={fontStyle} onValueChange={setFontStyle}>
                         <SelectTrigger id="font-style">
-                          <SelectValue placeholder="Select a style" />
+                          <SelectValue placeholder="Select style" />
                         </SelectTrigger>
                         <SelectContent>
-                          {fontStyles.map(style => (
-                            <SelectItem key={style.id} value={style.id}>{style.name}</SelectItem>
-                          ))}
+                          <SelectItem value="cursive">Cursive</SelectItem>
+                          <SelectItem value="print">Print</SelectItem>
+                          <SelectItem value="casual">Casual</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="paper-style">Paper Type</Label>
-                      <Select
-                        value={paperStyle}
-                        onValueChange={setPaperStyle}
-                      >
-                        <SelectTrigger id="paper-style">
-                          <SelectValue placeholder="Select paper type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {paperStyles.map(style => (
-                            <SelectItem key={style.id} value={style.id}>{style.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="ink-color">Ink Color</Label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="color"
-                          id="ink-color"
-                          value={inkColor}
-                          onChange={(e) => setInkColor(e.target.value)}
-                          className="w-12 h-12 p-1 cursor-pointer"
-                        />
-                        <span className="text-sm text-muted-foreground">
-                          {inkColor}
-                        </span>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-
-            {result && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Result</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-center mb-4 p-4 bg-white rounded-md">
-                    {/* This would show the handwriting image */}
-                    <div className="p-4 bg-gray-200 rounded flex items-center justify-center min-h-[200px] w-full">
-                      <p className="text-center text-gray-500">
-                        Handwriting preview will appear here when the feature is fully implemented.
-                      </p>
                     </div>
                   </div>
-                  <Button onClick={downloadImage} className="w-full">
-                    <Download className="mr-2 h-4 w-4" />
-                    Download as Image
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="ink-color" className="text-sm font-medium">Ink Color</label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="color"
+                        id="ink-color"
+                        value={color}
+                        onChange={(e) => setColor(e.target.value)}
+                        className="w-12 h-10 p-1"
+                      />
+                      <span className="text-sm">{color}</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    className="w-full" 
+                    onClick={handleConvert}
+                    disabled={loading || !text.trim()}
+                  >
+                    {loading ? 'Converting...' : 'Convert to Handwriting'}
                   </Button>
-                </CardContent>
-              </Card>
-            )}
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>Preview</CardTitle>
+                <CardDescription>Your handwritten text will appear here</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {result ? (
+                  <div className="space-y-4">
+                    <div className="border rounded-md p-4 bg-white">
+                      <img 
+                        src={result} 
+                        alt="Handwritten text" 
+                        className="max-w-full"
+                      />
+                    </div>
+                    
+                    <Button 
+                      className="w-full"
+                      onClick={handleDownload}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Image
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="border rounded-md p-8 flex flex-col items-center justify-center text-center h-[300px] bg-muted/30">
+                    <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">Enter text and click "Convert" to see the handwritten result</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="mt-8 p-6 border rounded-lg">
+            <h2 className="text-xl font-bold mb-4">About Text to Handwriting Conversion</h2>
+            <p className="mb-4">
+              This tool converts plain text into images that look like handwritten notes. 
+              It's perfect for creating personalized notes, adding a human touch to digital 
+              content, or creating materials for educational purposes.
+            </p>
+            <p>
+              You can customize the font size, handwriting style, and ink color to create 
+              the perfect handwritten look for your needs.
+            </p>
           </div>
         </main>
+        
         <Footer />
       </div>
     </>

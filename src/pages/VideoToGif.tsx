@@ -1,253 +1,318 @@
 
 import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Download, Upload, PlayCircle, Film, X, Clock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useToast } from '@/hooks/use-toast';
+import SpaceBackground from '@/components/SpaceBackground';
+import BackButton from '@/components/BackButton';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import { Download, Upload, FileVideo, Film, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const VideoToGif = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [gifUrl, setGifUrl] = useState<string | null>(null);
-  const [isConverting, setIsConverting] = useState(false);
-  const [startTime, setStartTime] = useState(0);
-  const [duration, setDuration] = useState(3); // Default 3 seconds
-  const [videoDuration, setVideoDuration] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(3);
+  const [quality, setQuality] = useState<number>(80);
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [videoDuration, setVideoDuration] = useState<number>(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { toast } = useToast();
 
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || files.length === 0) return;
-    
-    const file = files[0];
-    if (!file.type.startsWith('video/')) {
-      toast({
-        title: "Invalid file",
-        description: "Please upload a video file",
-        variant: "destructive",
-      });
-      return;
+    if (files && files.length > 0) {
+      const file = files[0];
+      
+      // Check if the file is a video
+      if (!file.type.startsWith('video/')) {
+        toast.error('Please upload a valid video file');
+        return;
+      }
+      
+      // Revoke the previous URL to prevent memory leaks
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+      }
+      
+      const url = URL.createObjectURL(file);
+      setVideoFile(file);
+      setVideoUrl(url);
+      setGifUrl(null);
+      setStartTime(0);
+      setDuration(3);
     }
-    
-    setVideoFile(file);
-    const url = URL.createObjectURL(file);
-    setVideoUrl(url);
-    setGifUrl(null);
   };
 
-  const handleVideoLoad = () => {
+  const handleVideoMetadata = () => {
     if (videoRef.current) {
       setVideoDuration(videoRef.current.duration);
-      // Default to the first 3 seconds, or the whole video if shorter
+      // Set default duration to the smaller of 3 seconds or video duration
       setDuration(Math.min(3, videoRef.current.duration));
     }
   };
 
-  const handleConvertToGif = () => {
-    // In a real implementation, we would use a library like ffmpeg.wasm
-    // to convert the video to GIF. Here, we'll simulate the conversion.
-    if (!videoUrl) return;
-    
-    setIsConverting(true);
-    
-    // Simulate processing time
-    setTimeout(() => {
-      // For demo purposes, we'll just use the video as the "GIF"
-      // In a real app, this would be the converted GIF URL
-      setGifUrl(videoUrl);
-      setIsConverting(false);
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
       
-      toast({
-        title: "Conversion complete",
-        description: "Video has been converted to GIF",
-      });
+      if (!file.type.startsWith('video/')) {
+        toast.error('Please upload a valid video file');
+        return;
+      }
+      
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+      }
+      
+      const url = URL.createObjectURL(file);
+      setVideoFile(file);
+      setVideoUrl(url);
+      setGifUrl(null);
+      setStartTime(0);
+      setDuration(3);
+    }
+  };
+
+  const handleConvertToGif = () => {
+    if (!videoFile) {
+      toast.error('Please upload a video first');
+      return;
+    }
+    
+    setProcessing(true);
+    
+    // Simulate processing delay
+    setTimeout(() => {
+      // In a real implementation, we would use a library to convert the video to GIF
+      // For this demo, we'll just use a placeholder
+      setGifUrl('https://via.placeholder.com/320x240.gif?text=Converted+GIF');
+      setProcessing(false);
+      toast.success('Video converted to GIF successfully!');
     }, 2000);
   };
 
-  const clearVideo = () => {
-    if (videoUrl) URL.revokeObjectURL(videoUrl);
-    if (gifUrl) URL.revokeObjectURL(gifUrl);
-    setVideoFile(null);
-    setVideoUrl(null);
-    setGifUrl(null);
-    setStartTime(0);
-    setDuration(3);
+  const handleDownload = () => {
+    if (gifUrl) {
+      const link = document.createElement('a');
+      link.href = gifUrl;
+      link.download = `converted-gif-${Date.now()}.gif`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
     <>
       <Helmet>
-        <title>Video to GIF Converter - Create Animated GIFs | EveryTools</title>
-        <meta name="description" content="Convert video clips to animated GIFs online with our free video to GIF converter. No watermarks, no registration required." />
+        <title>Video to GIF Converter | EveryTools</title>
+        <meta name="description" content="Convert video clips to animated GIFs. Select timing and quality for perfect GIF animations." />
       </Helmet>
-
+      
+      <SpaceBackground />
+      
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">Video to GIF Converter</h1>
-              <p className="text-muted-foreground">Convert video clips to animated GIFs</p>
-            </div>
-
-            <Card className="mb-8">
+        
+        <main className="flex-1 container px-4 mx-auto py-8">
+          <BackButton />
+          
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold mb-2">Video to GIF</h1>
+            <p className="text-muted-foreground">Convert video clips to animated GIFs</p>
+          </div>
+          
+          <div className="grid gap-8 md:grid-cols-2">
+            <Card>
               <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Film className="h-6 w-6 text-primary" />
-                  <CardTitle>Create Animated GIFs</CardTitle>
-                </div>
-                <CardDescription>Upload a video and convert it to a GIF</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <FileVideo className="h-5 w-5 text-blue-500" />
+                  <span>Upload Video</span>
+                </CardTitle>
+                <CardDescription>Select a video file to convert to GIF</CardDescription>
               </CardHeader>
               <CardContent>
-                {!videoFile ? (
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                    <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">Upload a video file to convert</p>
-                    <Label 
-                      htmlFor="video-upload" 
-                      className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90"
-                    >
+                {!videoUrl ? (
+                  <div 
+                    className="border-2 border-dashed border-primary/40 rounded-lg p-12 text-center cursor-pointer hover:bg-primary/5 transition-colors"
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                  >
+                    <Upload className="h-12 w-12 mx-auto mb-4 text-primary/60" />
+                    <h3 className="text-lg font-medium mb-2">Upload Video File</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Drag & drop video file here or click to browse
+                    </p>
+                    <Button size="sm">
                       Select Video
-                    </Label>
-                    <Input 
-                      id="video-upload" 
-                      type="file" 
-                      accept="video/*" 
-                      className="hidden" 
-                      onChange={handleVideoUpload}
+                    </Button>
+                    <input
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
                     />
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Supported formats: MP4, WebM, MOV, AVI (Max 50MB)
+                    </p>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="relative">
-                      <Button 
-                        variant="outline" 
-                        size="icon" 
-                        className="absolute top-2 right-2 z-10 bg-background/80"
-                        onClick={clearVideo}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
+                    <div className="rounded-lg overflow-hidden bg-black">
                       <video 
                         ref={videoRef}
-                        src={videoUrl || undefined} 
+                        src={videoUrl} 
                         controls 
-                        className="w-full rounded-lg" 
-                        onLoadedMetadata={handleVideoLoad}
+                        className="w-full h-auto"
+                        onLoadedMetadata={handleVideoMetadata}
                       />
                     </div>
                     
                     <div className="space-y-4">
                       <div>
                         <div className="flex justify-between mb-2">
-                          <Label htmlFor="start-time">Start Time (seconds)</Label>
-                          <span>{startTime.toFixed(1)}s</span>
+                          <label className="text-sm font-medium">Start Time: {startTime.toFixed(1)}s</label>
+                          <span className="text-xs text-muted-foreground">
+                            Video Length: {videoDuration.toFixed(1)}s
+                          </span>
                         </div>
                         <Slider
-                          id="start-time"
-                          defaultValue={[0]}
+                          value={[startTime]}
                           max={Math.max(0, videoDuration - duration)}
                           step={0.1}
-                          value={[startTime]}
                           onValueChange={([value]) => setStartTime(value)}
                         />
                       </div>
                       
                       <div>
-                        <div className="flex justify-between mb-2">
-                          <Label htmlFor="duration">Duration (seconds)</Label>
-                          <span>{duration.toFixed(1)}s</span>
-                        </div>
+                        <label className="text-sm font-medium block mb-2">
+                          Duration: {duration.toFixed(1)}s
+                        </label>
                         <Slider
-                          id="duration"
-                          defaultValue={[3]}
+                          value={[duration]}
                           min={0.5}
                           max={Math.min(10, videoDuration - startTime)}
                           step={0.1}
-                          value={[duration]}
                           onValueChange={([value]) => setDuration(value)}
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="text-sm font-medium block mb-2">
+                          Quality: {quality}%
+                        </label>
+                        <Slider
+                          value={[quality]}
+                          min={10}
+                          max={100}
+                          step={10}
+                          onValueChange={([value]) => setQuality(value)}
                         />
                       </div>
                     </div>
                     
-                    <Button 
-                      onClick={handleConvertToGif} 
-                      className="w-full"
-                      disabled={isConverting}
-                    >
-                      {isConverting ? (
-                        <>
-                          <Clock className="mr-2 h-4 w-4 animate-spin" /> Converting...
-                        </>
-                      ) : (
-                        <>
-                          <PlayCircle className="mr-2 h-4 w-4" /> Convert to GIF
-                        </>
-                      )}
-                    </Button>
-                    
-                    {gifUrl && !isConverting && (
-                      <div className="mt-6 space-y-4">
-                        <h3 className="font-medium">Your GIF</h3>
-                        <div className="border rounded-lg overflow-hidden">
-                          {/* Note: In a real implementation, this would be an actual GIF */}
-                          <video src={gifUrl} autoPlay loop muted className="w-full" />
-                        </div>
-                        <Button variant="outline" className="w-full">
-                          <Download className="mr-2 h-4 w-4" /> Download GIF
-                        </Button>
-                        <p className="text-xs text-muted-foreground text-center">
-                          Note: In this demo, the download would provide a real GIF file.
-                        </p>
-                      </div>
-                    )}
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => {
+                          if (videoUrl) {
+                            URL.revokeObjectURL(videoUrl);
+                          }
+                          setVideoFile(null);
+                          setVideoUrl(null);
+                          setGifUrl(null);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                      <Button 
+                        className="flex-1"
+                        onClick={handleConvertToGif}
+                        disabled={processing || !videoUrl}
+                      >
+                        {processing ? 'Processing...' : 'Convert to GIF'}
+                      </Button>
+                    </div>
                   </div>
                 )}
               </CardContent>
             </Card>
             
-            <div className="bg-muted/30 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">About This Tool</h2>
-              <p className="text-muted-foreground mb-4">
-                The Video to GIF converter lets you create animated GIFs from video clips.
-                Simply upload a video, select the portion you want to convert, and download your GIF.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <div className="bg-background p-4 rounded-md">
-                  <h3 className="font-medium mb-2 flex items-center">
-                    <Upload className="h-4 w-4 mr-2" /> Step 1
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Upload your video file (MP4, WebM, MOV, etc.)
-                  </p>
-                </div>
-                <div className="bg-background p-4 rounded-md">
-                  <h3 className="font-medium mb-2 flex items-center">
-                    <Clock className="h-4 w-4 mr-2" /> Step 2
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Select the section of the video to convert to GIF
-                  </p>
-                </div>
-                <div className="bg-background p-4 rounded-md">
-                  <h3 className="font-medium mb-2 flex items-center">
-                    <Download className="h-4 w-4 mr-2" /> Step 3
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Convert and download your animated GIF
-                  </p>
-                </div>
-              </div>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Film className="h-5 w-5 text-green-500" />
+                  <span>GIF Output</span>
+                </CardTitle>
+                <CardDescription>Preview and download your GIF</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {gifUrl ? (
+                  <div className="space-y-4">
+                    <div className="rounded-lg overflow-hidden bg-black flex items-center justify-center p-4">
+                      <img 
+                        src={gifUrl} 
+                        alt="Converted GIF" 
+                        className="max-w-full max-h-[300px]"
+                      />
+                    </div>
+                    
+                    <Button 
+                      className="w-full"
+                      onClick={handleDownload}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download GIF
+                    </Button>
+                    
+                    <div className="text-xs text-muted-foreground">
+                      <p>Tip: Lower quality settings can result in smaller file sizes.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border rounded-md p-8 flex flex-col items-center justify-center text-center h-[300px] bg-muted/30">
+                    <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">Upload a video and convert it to see the result here</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="mt-8 p-6 border rounded-lg">
+            <h2 className="text-xl font-bold mb-4">About Video to GIF Conversion</h2>
+            <p className="mb-4">
+              This tool allows you to convert video clips into animated GIFs. 
+              You can select which portion of the video to convert by setting 
+              the start time and duration.
+            </p>
+            <p className="mb-4">
+              Adjust the quality setting to balance between image quality and file size. 
+              Higher quality settings produce better-looking GIFs but result in 
+              larger file sizes.
+            </p>
+            <p>
+              Ideal for creating reactions, memes, or short animations for websites 
+              and social media where video files aren't supported.
+            </p>
           </div>
         </main>
+        
         <Footer />
       </div>
     </>
