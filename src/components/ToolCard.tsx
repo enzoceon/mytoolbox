@@ -12,7 +12,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const IconComponent = tool.icon;
   
   // For AI Image Generator, render a non-navigable card
-  if (tool.path === "/ai-image-generator") {
+  if (tool.path === "/ai-image-generator" || tool.isFunctional === false) {
     return (
       <div onClick={(e) => e.preventDefault()}>
         <Card className="h-full bg-card border-border">
@@ -42,15 +42,9 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
               <IconComponent className="h-6 w-6 text-indigo-400" />
             </div>
-            {tool.path === "/ai-image-generator" ? (
-              <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
-                Coming Soon
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
-                Available
-              </Badge>
-            )}
+            <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+              Available
+            </Badge>
           </div>
           <CardTitle className="text-lg mt-2">{tool.name}</CardTitle>
           <CardDescription>{tool.description}</CardDescription>

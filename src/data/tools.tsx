@@ -234,7 +234,7 @@ const tools: ToolType[] = [
     path: "/ai-image-generator",
     icon: Sparkles,
     category: "ai-tools",
-    isFunctional: true
+    isFunctional: false
   },
   {
     name: "AI Text Generator",
