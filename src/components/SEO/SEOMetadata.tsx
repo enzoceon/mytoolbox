@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet-async';
 const SEOMetadata = () => {
   return (
     <Helmet>
-      <title>Image to PDF - Free Online Image to PDF Converter | No Registration Required</title>
-      <meta name="description" content="Instantly convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free. No registration, no watermarks, no file size limits. Fast. Free. Fluid." />
+      <title>Image to PDF Converter - Free Online Tool</title>
+      <meta name="description" content="Access dozens of powerful online tools in MyToolbox. Convert, edit, animate and transform files with no sign up required." />
       <meta name="keywords" content="image to pdf, jpg to pdf, png to pdf, image converter, pdf creator, free conversion, no watermarks, batch conversion, high quality, online tool" />
       <link rel="canonical" href="https://mytoolbox.site/" />
       
@@ -14,14 +14,14 @@ const SEOMetadata = () => {
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://mytoolbox.site/" />
       <meta property="og:title" content="Image to PDF - Convert Images to PDF Instantly | 100% Free" />
-      <meta property="og:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration. Fast. Free. Fluid." />
+      <meta property="og:description" content="Access dozens of powerful online tools in MyToolbox. Convert, edit, animate and transform files with no sign up required." />
       <meta property="og:image" content="https://mytoolbox.site/og-image.jpg" />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://mytoolbox.site/" />
       <meta property="twitter:title" content="Image to PDF - Convert Images to PDF Instantly | 100% Free" />
-      <meta property="twitter:description" content="Convert images to PDF with just a few clicks. Free, secure, browser-based conversion with no watermarks or registration. Fast. Free. Fluid." />
+      <meta property="twitter:description" content="Access dozens of powerful online tools in MyToolbox. Convert, edit, animate and transform files with no sign up required." />
       <meta property="twitter:image" content="https://mytoolbox.site/og-image.jpg" />
       
       {/* Structured Data for Rich Snippets */}
@@ -31,7 +31,7 @@ const SEOMetadata = () => {
           "@type": "WebApplication",
           "name": "Image to PDF",
           "url": "https://mytoolbox.site/",
-          "description": "Free online tool to convert images to PDF documents without watermarks or registration. Fast. Free. Fluid.",
+          "description": "Access dozens of powerful online tools in MyToolbox. Convert, edit, animate and transform files with no sign up required.",
           "applicationCategory": "Utility",
           "operatingSystem": "Web Browser",
           "offers": {
