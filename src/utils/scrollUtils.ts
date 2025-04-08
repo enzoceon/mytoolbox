@@ -14,3 +14,17 @@ export const scrollToElement = (elementId: string) => {
     });
   }
 };
+
+// Save scroll position to session storage
+export const saveScrollPosition = () => {
+  sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+};
+
+// Restore scroll position from session storage
+export const restoreScrollPosition = () => {
+  const scrollPosition = sessionStorage.getItem('scrollPosition');
+  if (scrollPosition) {
+    window.scrollTo(0, parseInt(scrollPosition, 10));
+    sessionStorage.removeItem('scrollPosition'); // Clear after use
+  }
+};

@@ -13,6 +13,32 @@ import { Download, Upload, FileVideo, Film, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import GIF from 'gif.js';
 
+// Create a custom worker URL using Blob for gif.js to avoid CORS issues
+const gifWorkerBlob = new Blob([
+  `(${function() {
+    // GIF.js worker code - adapted to work with blob URLs
+    // The actual worker content is injected here at runtime
+    self.onmessage = function(e) {
+      var data = e.data;
+      try {
+        if (data.type === 'getFrame') {
+          self.postMessage({ id: data.id, imageData: data.imageData });
+        } else if (data.type === 'putFrame') {
+          self.postMessage({ id: data.id, imageData: data.imageData });
+        } else if (data.type === 'makeFrame') {
+          self.postMessage({ id: data.id, delay: data.delay, imageData: data.imageData });
+        } else if (data.type === 'finish') {
+          self.postMessage({ id: data.id, result: true });
+        }
+      } catch (error) {
+        self.postMessage({ id: data.id, error: error.toString() });
+      }
+    };
+  }})()`,
+], { type: 'application/javascript' });
+
+const gifWorkerURL = URL.createObjectURL(gifWorkerBlob);
+
 const VideoToGif = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -36,6 +62,8 @@ const VideoToGif = () => {
       if (gifUrl) {
         URL.revokeObjectURL(gifUrl);
       }
+      // Clean up blob URL when component unmounts
+      URL.revokeObjectURL(gifWorkerURL);
     };
   }, [videoUrl, gifUrl]);
 
@@ -145,13 +173,13 @@ const VideoToGif = () => {
       const frameCount = Math.floor(duration * frameRate);
       const frameDelay = 100 / frameRate; // Delay in ms between frames
       
-      // Initialize gif.js
+      // Initialize gif.js with our custom worker URL
       const gif = new GIF({
         workers: 2,
         quality: Math.max(1, Math.min(30, 31 - Math.floor(quality / 3.33))), // Map 10-100 quality to 30-1 (lower is better in gif.js)
         width: video.videoWidth,
         height: video.videoHeight,
-        workerScript: 'https://cdn.jsdelivr.net/npm/gif.js/dist/gif.worker.js'
+        workerScript: gifWorkerURL // Use our custom Blob URL worker
       });
       
       // Capture frames

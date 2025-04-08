@@ -51,12 +51,17 @@ import AiTextGenerator from "./pages/AiTextGenerator";
 import AiChatbot from "./pages/AiChatbot";
 import ComingSoon from "./pages/ComingSoon";
 import HowToUse from "./pages/HowToUse";
+import { restoreScrollPosition } from "./utils/scrollUtils";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (!hash) {
+    // If we're navigating to /tools, try to restore scroll position
+    if (pathname === '/tools' || pathname === '/') {
+      restoreScrollPosition();
+    } else if (!hash) {
+      // For other pages without hash, scroll to top
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
