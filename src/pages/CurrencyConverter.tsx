@@ -12,8 +12,18 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRightLeft, RefreshCw } from 'lucide-react';
 
+// Define available currency codes
+type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'CAD' | 'AUD' | 'CNY';
+
+// Define the exchange rates structure
+type ExchangeRates = {
+  [key in CurrencyCode]: {
+    [key in CurrencyCode]?: number;
+  };
+};
+
 // Mock exchange rates (would be replaced with real API data)
-const EXCHANGE_RATES = {
+const EXCHANGE_RATES: ExchangeRates = {
   USD: { EUR: 0.92, GBP: 0.78, JPY: 150.2, CAD: 1.35, AUD: 1.48, CNY: 7.23 },
   EUR: { USD: 1.09, GBP: 0.85, JPY: 163.8, CAD: 1.47, AUD: 1.61, CNY: 7.88 },
   GBP: { USD: 1.28, EUR: 1.18, JPY: 192.5, CAD: 1.73, AUD: 1.89, CNY: 9.26 },
@@ -23,7 +33,7 @@ const EXCHANGE_RATES = {
   CNY: { USD: 0.14, EUR: 0.13, GBP: 0.11, JPY: 20.79, CAD: 0.19, AUD: 0.20 }
 };
 
-const CURRENCY_NAMES = {
+const CURRENCY_NAMES: Record<CurrencyCode, string> = {
   USD: "US Dollar",
   EUR: "Euro",
   GBP: "British Pound",
@@ -33,7 +43,7 @@ const CURRENCY_NAMES = {
   CNY: "Chinese Yuan"
 };
 
-const CURRENCY_SYMBOLS = {
+const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
   USD: "$",
   EUR: "€",
   GBP: "£",
@@ -44,8 +54,8 @@ const CURRENCY_SYMBOLS = {
 };
 
 const CurrencyConverter = () => {
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+  const [fromCurrency, setFromCurrency] = useState<CurrencyCode>("USD");
+  const [toCurrency, setToCurrency] = useState<CurrencyCode>("EUR");
   const [amount, setAmount] = useState<string>("1");
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,8 +86,8 @@ const CurrencyConverter = () => {
         if (fromCurrency === toCurrency) {
           setConvertedAmount(numAmount);
         } else {
-          const rate = EXCHANGE_RATES[fromCurrency as keyof typeof EXCHANGE_RATES][toCurrency as keyof typeof EXCHANGE_RATES[typeof fromCurrency]];
-          setConvertedAmount(numAmount * rate);
+          const rate = EXCHANGE_RATES[fromCurrency][toCurrency];
+          setConvertedAmount(numAmount * (rate || 1));
         }
         setIsLoading(false);
       } catch (error) {
@@ -149,14 +159,14 @@ const CurrencyConverter = () => {
               <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-2">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">From</label>
-                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                  <Select value={fromCurrency} onValueChange={(value: CurrencyCode) => setFromCurrency(value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.keys(CURRENCY_NAMES).map(currency => (
+                      {Object.keys(CURRENCY_NAMES).map((currency) => (
                         <SelectItem key={currency} value={currency}>
-                          {CURRENCY_SYMBOLS[currency as keyof typeof CURRENCY_SYMBOLS]} {currency} - {CURRENCY_NAMES[currency as keyof typeof CURRENCY_NAMES]}
+                          {CURRENCY_SYMBOLS[currency as CurrencyCode]} {currency} - {CURRENCY_NAMES[currency as CurrencyCode]}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -174,14 +184,14 @@ const CurrencyConverter = () => {
                 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">To</label>
-                  <Select value={toCurrency} onValueChange={setToCurrency}>
+                  <Select value={toCurrency} onValueChange={(value: CurrencyCode) => setToCurrency(value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.keys(CURRENCY_NAMES).map(currency => (
+                      {Object.keys(CURRENCY_NAMES).map((currency) => (
                         <SelectItem key={currency} value={currency}>
-                          {CURRENCY_SYMBOLS[currency as keyof typeof CURRENCY_SYMBOLS]} {currency} - {CURRENCY_NAMES[currency as keyof typeof CURRENCY_NAMES]}
+                          {CURRENCY_SYMBOLS[currency as CurrencyCode]} {currency} - {CURRENCY_NAMES[currency as CurrencyCode]}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -202,10 +212,10 @@ const CurrencyConverter = () => {
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">Result</div>
                   <div className="text-2xl font-bold">
-                    {CURRENCY_SYMBOLS[fromCurrency as keyof typeof CURRENCY_SYMBOLS]} {parseFloat(amount) ? parseFloat(amount).toLocaleString() : "0"} =
+                    {CURRENCY_SYMBOLS[fromCurrency]} {parseFloat(amount) ? parseFloat(amount).toLocaleString() : "0"} =
                   </div>
                   <div className="text-3xl font-bold text-primary">
-                    {CURRENCY_SYMBOLS[toCurrency as keyof typeof CURRENCY_SYMBOLS]} {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                    {CURRENCY_SYMBOLS[toCurrency]} {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                   </div>
                 </div>
               </div>
