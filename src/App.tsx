@@ -43,6 +43,8 @@ import VideoToGif from "./pages/VideoToGif";
 import ImageToQR from "./pages/ImageToQR";
 import VideoToQR from "./pages/VideoToQR";
 import AudioToQR from "./pages/AudioToQR";
+import FileRenamer from "./pages/FileRenamer";
+import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvider";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -127,6 +129,11 @@ const AppContent = () => {
         <Route path="/refund" element={<Refund />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/file-renamer" element={
+          <FileRenamerProvider>
+            <FileRenamer />
+          </FileRenamerProvider>
+        } />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>

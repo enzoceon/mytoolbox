@@ -1,4 +1,3 @@
-
 import { IconType } from 'react-icons';
 import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon } from 'lucide-react';
 
@@ -32,6 +31,13 @@ const tools: ToolType[] = [
     path: "/jpg-to-png",
     icon: FileImage,
     category: "conversion"
+  },
+  {
+    name: "File Renamer",
+    description: "Easily rename multiple files with custom patterns",
+    path: "/file-renamer",
+    icon: File,
+    category: "utilities"
   },
   {
     name: "QR Code Generator",
