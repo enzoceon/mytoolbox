@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode } from 'lucide-react';
+import { Search, Menu, Sparkles, Bot, Brain, Zap, MessageSquare, Image, QrCode, DollarSign, Ruler, FileSearch, FileEdit, Archive, AlignJustify } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -87,40 +87,109 @@ const HeroSection = () => {
               </Button>
             ))}
           </div>
-          
-          {/* Image Tools Section - We'll keep this section but modify it slightly */}
+
+          {/* Converters Section */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
-            <h2 className="text-xl font-semibold mb-4">Image Tools</h2>
+            <h2 className="text-xl font-semibold mb-4">Converter Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <Link to="/converter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
                 <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Image to PDF</p>
               </Link>
-              <Link to="/pdf-to-image" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
-                <Image className="h-8 w-8 text-blue-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">PDF to Image</p>
+              <Link to="/currency-converter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <DollarSign className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Currency Converter</p>
+              </Link>
+              <Link to="/unit-converter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Ruler className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Unit Converter</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
               </Link>
               <Link to="/jpg-to-png" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
                 <Image className="h-8 w-8 text-green-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">JPG to PNG</p>
               </Link>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
-                <Image className="h-8 w-8 text-purple-500 mx-auto mb-2" />
-                <p className="text-sm font-medium">Background Remover</p>
-                <span className="text-xs text-purple-500">Coming soon</span>
-              </div>
             </div>
             <Button 
-              onClick={(e) => navigateToCategory('Image')} 
+              onClick={(e) => navigateToCategory('converter')} 
               variant="outline" 
               className="mt-4 pulse-btn w-full sm:w-auto"
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
-              Explore All Image Tools
+              Explore All Converters
             </Button>
           </div>
           
-          {/* QR Code Section - Keep this section but modify slightly */}
+          {/* File Tools Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.38s" }}>
+            <h2 className="text-xl font-semibold mb-4">File Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/file-metadata" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <FileSearch className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">File Metadata Viewer</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/file-rename" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <FileEdit className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">File Rename Tool</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/zip-creator" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <Archive className="h-8 w-8 text-amber-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">ZIP File Creator</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/pdf-to-image" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+                <Image className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">PDF to Image</p>
+              </Link>
+            </div>
+            <Button 
+              onClick={(e) => navigateToCategory('file')} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All File Tools
+            </Button>
+          </div>
+          
+          {/* Text Tools Section */}
+          <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
+            <h2 className="text-xl font-semibold mb-4">Text Tools</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link to="/word-counter" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <AlignJustify className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Word Counter</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/ai-content-summarizer" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Content Summarizer</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/ocr-tool" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <FileSearch className="h-8 w-8 text-pink-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">OCR Tool</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+              <Link to="/text-editor" className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
+                <FileEdit className="h-8 w-8 text-indigo-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">Text Editor</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
+              </Link>
+            </div>
+            <Button 
+              onClick={(e) => navigateToCategory('text')} 
+              variant="outline" 
+              className="mt-4 pulse-btn w-full sm:w-auto"
+            >
+              <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
+              Explore All Text Tools
+            </Button>
+          </div>
+          
+          {/* QR Code Section */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.40s" }}>
             <h2 className="text-xl font-semibold mb-4">QR Code Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -154,25 +223,29 @@ const HeroSection = () => {
             </Button>
           </div>
           
-          {/* AI Section - Keep this section but modify slightly */}
+          {/* AI Section */}
           <div className="mb-10 animate-fade-in" style={{ animationDelay: "0.45s" }}>
             <h2 className="text-xl font-semibold mb-4">AI Tools</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <Brain className="h-8 w-8 text-purple-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Text Generator</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
               </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <Bot className="h-8 w-8 text-blue-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Chatbot</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
               </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Image Generator</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
               </div>
-              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform">
+              <div className="glass-card p-4 rounded-lg hover:scale-105 transition-transform opacity-70">
                 <MessageSquare className="h-8 w-8 text-green-500 mx-auto mb-2" />
                 <p className="text-sm font-medium">Summarizer</p>
+                <span className="text-xs text-purple-500">Coming soon</span>
               </div>
             </div>
             <Button 
