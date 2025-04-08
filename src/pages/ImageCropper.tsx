@@ -1,187 +1,355 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Cropper } from 'react-cropper';
+import "cropperjs/dist/cropper.css";
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { Crop, Download, Upload } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
+import { toast } from 'sonner';
+import { 
+  RotateCw, 
+  RotateCcw, 
+  RefreshCw, 
+  Upload, 
+  Download, 
+  Crop as CropIcon, 
+  ZoomIn, 
+  ZoomOut, 
+  Maximize, 
+  AlignCenter,
+  X
+} from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useToast } from '@/hooks/use-toast';
+import UploadBox from '@/components/UploadBox';
+import BackButton from '@/components/BackButton';
 
 const ImageCropper = () => {
   const [image, setImage] = useState<string | null>(null);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  const [cropRatio, setCropRatio] = useState('1:1');
-  const imageRef = useRef<HTMLImageElement>(null);
-  const { toast } = useToast();
+  const [output, setOutput] = useState<string | null>(null);
+  const [zoom, setZoom] = useState<number>(0);
+  const cropperRef = useRef<Cropper>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: 'Invalid file type',
-          description: 'Please upload an image file',
-          variant: 'destructive',
-        });
+  const handleFileSelect = useCallback((files: FileList) => {
+    if (files && files.length > 0) {
+      const file = files[0];
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Please select a valid image file (JPEG, PNG, GIF, WebP, BMP)");
         return;
       }
-
+      
+      // Reset output and zoom when a new image is selected
+      setOutput(null);
+      setZoom(0);
+      
       const reader = new FileReader();
       reader.onload = () => {
         setImage(reader.result as string);
-        setCroppedImage(null);
       };
       reader.readAsDataURL(file);
     }
-  };
+  }, []);
 
-  const handleCrop = () => {
-    if (!image || !imageRef.current) {
-      toast({
-        title: 'No image to crop',
-        description: 'Please upload an image first',
-        variant: 'destructive',
-      });
-      return;
+  const handleCrop = useCallback(() => {
+    if (!cropperRef.current) return;
+    
+    setIsProcessing(true);
+    try {
+      const croppedCanvas = cropperRef.current.getCroppedCanvas();
+      if (croppedCanvas) {
+        setOutput(croppedCanvas.toDataURL());
+        toast.success("Image cropped successfully!");
+      }
+    } catch (error) {
+      console.error("Error cropping image:", error);
+      toast.error("Failed to crop image. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-    
-    // For now this is just a placeholder. In a real implementation,
-    // we would use a library like react-image-crop to handle the cropping
-    toast({
-      title: 'Coming Soon',
-      description: 'Image cropping functionality will be available soon!',
-    });
-    
-    // Placeholder for cropped image (using the original for now)
-    setCroppedImage(image);
-  };
+  }, []);
 
-  const downloadImage = () => {
-    if (croppedImage) {
-      const link = document.createElement('a');
-      link.href = croppedImage;
-      link.download = 'cropped-image.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
+  const handleReset = useCallback(() => {
+    if (!cropperRef.current) return;
+    cropperRef.current.reset();
+    setZoom(0);
+    setOutput(null);
+  }, []);
+
+  const handleRotateLeft = useCallback(() => {
+    if (!cropperRef.current) return;
+    cropperRef.current.rotate(-90);
+  }, []);
+
+  const handleRotateRight = useCallback(() => {
+    if (!cropperRef.current) return;
+    cropperRef.current.rotate(90);
+  }, []);
+
+  const handleZoomChange = useCallback((value: number[]) => {
+    if (!cropperRef.current) return;
+    const zoomValue = value[0];
+    setZoom(zoomValue);
+    cropperRef.current.zoom(zoomValue / 50);
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    if (!cropperRef.current) return;
+    const newZoom = Math.min(zoom + 5, 100);
+    setZoom(newZoom);
+    cropperRef.current.zoom(0.1);
+  }, [zoom]);
+
+  const handleZoomOut = useCallback(() => {
+    if (!cropperRef.current) return;
+    const newZoom = Math.max(zoom - 5, 0);
+    setZoom(newZoom);
+    cropperRef.current.zoom(-0.1);
+  }, [zoom]);
+
+  const handleFlipHorizontal = useCallback(() => {
+    if (!cropperRef.current) return;
+    cropperRef.current.scaleX(cropperRef.current.getData().scaleX === 1 ? -1 : 1);
+  }, []);
+
+  const handleFlipVertical = useCallback(() => {
+    if (!cropperRef.current) return;
+    cropperRef.current.scaleY(cropperRef.current.getData().scaleY === 1 ? -1 : 1);
+  }, []);
+
+  const handleDownload = useCallback(() => {
+    if (!output) return;
+    
+    const link = document.createElement('a');
+    link.download = 'cropped-image.png';
+    link.href = output;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("Image downloaded successfully!");
+  }, [output]);
+
+  const handleRemoveImage = useCallback(() => {
+    setImage(null);
+    setOutput(null);
+    setZoom(0);
+  }, []);
 
   return (
     <>
       <Helmet>
-        <title>Image Cropper - Resize Images Online | EveryTools</title>
-        <meta name="description" content="Crop and resize your images to custom dimensions or popular formats like square, 16:9, 4:3, and more." />
+        <title>Image Cropper - Free Online Image Crop & Resize Tool</title>
+        <meta name="description" content="Crop, resize, and edit your images online. Free online image cropper with no watermarks. Rotate, flip, and resize images easily with our professional tools." />
       </Helmet>
+      
+      <Header />
+      
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <BackButton />
 
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">Image Cropper</h1>
-              <p className="text-muted-foreground">Crop images to custom or preset dimensions like square or 16:9</p>
-            </div>
-
-            <Card className="mb-8">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Crop className="h-6 w-6 text-primary" />
-                  <CardTitle>Upload and Crop</CardTitle>
-                </div>
-                <CardDescription>Select an image to crop to your desired dimensions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <Label htmlFor="image-upload">Upload Image</Label>
-                    <div className="mt-2 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 cursor-pointer" onClick={() => document.getElementById('image-upload')?.click()}>
-                      <div className="text-center">
-                        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                        <div className="mt-2 text-sm text-muted-foreground">
-                          Click to upload or drag and drop
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          PNG, JPG, GIF up to 10MB
-                        </p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+            Image Cropper
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Crop, resize and edit your images online. Select an image to get started.
+          </p>
+        </div>
+        
+        <div className="w-full max-w-5xl mx-auto">
+          {!image ? (
+            <UploadBox
+              title="Upload an image to crop"
+              subtitle="Select or drag & drop a JPEG, PNG, GIF, WebP or BMP image"
+              acceptedFileTypes="image/jpeg, image/png, image/gif, image/webp, image/bmp"
+              onFileSelect={handleFileSelect}
+              multiple={false}
+            />
+          ) : (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <Button 
+                  variant="outline" 
+                  onClick={handleRemoveImage}
+                  className="gap-2"
+                >
+                  <X size={16} />
+                  Remove Image
+                </Button>
+                
+                <Button 
+                  variant="default" 
+                  onClick={handleDownload}
+                  disabled={!output}
+                  className="gap-2"
+                >
+                  <Download size={16} />
+                  Download
+                </Button>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Editor Panel */}
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-medium mb-2">Image Editor</h3>
+                      <div className="relative border rounded-md overflow-hidden bg-checkerboard h-[400px]">
+                        <Cropper
+                          ref={cropperRef}
+                          src={image}
+                          style={{ height: '100%', width: '100%' }}
+                          guides={true}
+                          responsive={true}
+                          checkOrientation={false}
+                          viewMode={1}
+                          background={false}
+                          dragMode="move"
+                          autoCropArea={1}
+                        />
                       </div>
-                      <input
-                        id="image-upload"
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                      />
                     </div>
-                  </div>
 
-                  {image && (
-                    <>
+                    <div className="space-y-4">
                       <div>
-                        <Label htmlFor="crop-ratio">Crop Ratio</Label>
-                        <Select
-                          value={cropRatio}
-                          onValueChange={setCropRatio}
-                        >
-                          <SelectTrigger id="crop-ratio">
-                            <SelectValue placeholder="Select a ratio" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="1:1">1:1 (Square)</SelectItem>
-                            <SelectItem value="4:3">4:3</SelectItem>
-                            <SelectItem value="16:9">16:9</SelectItem>
-                            <SelectItem value="3:2">3:2</SelectItem>
-                            <SelectItem value="2:3">2:3 (Portrait)</SelectItem>
-                            <SelectItem value="custom">Custom</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="flex justify-center">
-                        <div className="max-w-full max-h-[400px] overflow-hidden">
-                          <img
-                            ref={imageRef}
-                            src={image}
-                            alt="Source"
-                            className="max-w-full max-h-[400px] object-contain"
-                          />
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium">Zoom</span>
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={handleZoomOut}
+                              disabled={zoom <= 0}
+                              className="h-7 w-7 p-0"
+                            >
+                              <ZoomOut size={14} />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={handleZoomIn}
+                              disabled={zoom >= 100}
+                              className="h-7 w-7 p-0"
+                            >
+                              <ZoomIn size={14} />
+                            </Button>
+                          </div>
                         </div>
+                        <Slider 
+                          value={[zoom]} 
+                          max={100} 
+                          step={1}
+                          onValueChange={handleZoomChange} 
+                        />
                       </div>
 
-                      <Button onClick={handleCrop} className="w-full">Crop Image</Button>
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                      <div className="grid grid-cols-5 gap-2">
+                        <Button 
+                          variant="outline" 
+                          className="flex flex-col gap-1 h-auto py-2"
+                          onClick={handleRotateLeft}
+                        >
+                          <RotateCcw size={16} />
+                          <span className="text-xs">Rotate Left</span>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex flex-col gap-1 h-auto py-2"
+                          onClick={handleRotateRight}
+                        >
+                          <RotateCw size={16} />
+                          <span className="text-xs">Rotate Right</span>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex flex-col gap-1 h-auto py-2"
+                          onClick={handleFlipHorizontal}
+                        >
+                          <RefreshCw size={16} className="rotate-90" />
+                          <span className="text-xs">Flip H</span>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex flex-col gap-1 h-auto py-2"
+                          onClick={handleFlipVertical}
+                        >
+                          <RefreshCw size={16} />
+                          <span className="text-xs">Flip V</span>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex flex-col gap-1 h-auto py-2"
+                          onClick={handleReset}
+                        >
+                          <AlignCenter size={16} />
+                          <span className="text-xs">Reset</span>
+                        </Button>
+                      </div>
 
-            {croppedImage && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Cropped Result</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-center mb-4">
-                    <img
-                      src={croppedImage}
-                      alt="Cropped"
-                      className="max-w-full max-h-[400px] object-contain"
-                    />
-                  </div>
-                  <Button onClick={downloadImage} className="w-full">
-                    <Download className="mr-2 h-4 w-4" />
-                    Download
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </main>
-        <Footer />
-      </div>
+                      <Button 
+                        className="w-full gap-2" 
+                        onClick={handleCrop}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? (
+                          <>
+                            <RefreshCw size={16} className="animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <CropIcon size={16} />
+                            Crop Image
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Preview Panel */}
+                <Card>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-medium mb-2">Cropped Result</h3>
+                    <div className="border rounded-md overflow-hidden bg-checkerboard h-[400px] flex items-center justify-center">
+                      {output ? (
+                        <img 
+                          src={output} 
+                          alt="Cropped" 
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      ) : (
+                        <div className="text-muted-foreground text-center p-4">
+                          <CropIcon size={48} className="mx-auto mb-2 opacity-50" />
+                          <p>Crop your image to see the result here</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4">
+                      <Button 
+                        className="w-full gap-2" 
+                        onClick={handleDownload}
+                        disabled={!output}
+                      >
+                        <Download size={16} />
+                        Download Cropped Image
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      
+      <Footer />
     </>
   );
 };
