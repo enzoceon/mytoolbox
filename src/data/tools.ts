@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
@@ -178,8 +179,7 @@ export const tools: ToolType[] = [
     description: 'Automatically generate summaries of long texts',
     path: '/ai-content-summarizer',
     icon: LineChart,
-    category: 'ai',
-    isNew: true
+    category: 'ai'
   },
   {
     id: 'ai-text-generator',
@@ -187,8 +187,7 @@ export const tools: ToolType[] = [
     description: 'Generate high-quality text content for various purposes',
     path: '/ai-text-generator',
     icon: Brain,
-    category: 'ai',
-    isNew: true
+    category: 'ai'
   },
   {
     id: 'ai-chatbot',
@@ -196,8 +195,7 @@ export const tools: ToolType[] = [
     description: 'Interact with an AI assistant for answering questions',
     path: '/ai-chatbot',
     icon: Bot,
-    category: 'ai',
-    isNew: true
+    category: 'ai'
   },
   {
     id: 'ai-image-generator',
@@ -205,8 +203,7 @@ export const tools: ToolType[] = [
     description: 'Create unique images from text descriptions',
     path: '/ai-image-generator',
     icon: Sparkles,
-    category: 'ai',
-    isNew: true
+    category: 'ai'
   },
   {
     id: 'currency-converter',
@@ -214,8 +211,7 @@ export const tools: ToolType[] = [
     description: 'Convert between different currencies with up-to-date exchange rates',
     path: '/currency-converter',
     icon: DollarSign,
-    category: 'converter',
-    isNew: true
+    category: 'converter'
   },
   {
     id: 'unit-converter',
@@ -223,8 +219,7 @@ export const tools: ToolType[] = [
     description: 'Convert between different units of measurement (length, weight, volume, etc.)',
     path: '/unit-converter',
     icon: Ruler,
-    category: 'converter',
-    isNew: true
+    category: 'converter'
   },
   {
     id: 'file-metadata-viewer',
@@ -232,8 +227,7 @@ export const tools: ToolType[] = [
     description: 'View detailed metadata information for any file type',
     path: '/file-metadata',
     icon: FileSearch,
-    category: 'file',
-    isNew: true
+    category: 'file'
   },
   {
     id: 'file-rename-tool',
@@ -241,8 +235,7 @@ export const tools: ToolType[] = [
     description: 'Batch rename multiple files with custom patterns and sequences',
     path: '/file-rename',
     icon: FileEdit,
-    category: 'file',
-    isNew: true
+    category: 'file'
   },
   {
     id: 'rar-extractor',
@@ -250,8 +243,7 @@ export const tools: ToolType[] = [
     description: 'Extract contents from RAR archive files online',
     path: '/rar-extractor',
     icon: Archive,
-    category: 'file',
-    isNew: true
+    category: 'file'
   },
   {
     id: 'zip-extractor',
@@ -259,8 +251,7 @@ export const tools: ToolType[] = [
     description: 'Extract contents from ZIP archive files without downloading software',
     path: '/zip-extractor',
     icon: FolderArchive,
-    category: 'file',
-    isNew: true
+    category: 'file'
   },
   {
     id: 'zip-creator',
@@ -268,8 +259,7 @@ export const tools: ToolType[] = [
     description: 'Create ZIP archives from multiple files and folders',
     path: '/zip-creator',
     icon: Archive,
-    category: 'file',
-    isNew: true
+    category: 'file'
   },
   {
     id: 'image-watermark-generator',
@@ -277,8 +267,7 @@ export const tools: ToolType[] = [
     description: 'Add custom text or image watermarks to protect your images',
     path: '/image-watermark',
     icon: Stamp,
-    category: 'image',
-    isNew: true
+    category: 'image'
   },
   {
     id: 'image-metadata-viewer',
@@ -286,8 +275,7 @@ export const tools: ToolType[] = [
     description: 'View and optionally remove EXIF and other metadata from images',
     path: '/image-metadata',
     icon: Camera,
-    category: 'image',
-    isNew: true
+    category: 'image'
   },
   {
     id: 'random-text-generator',
@@ -295,8 +283,7 @@ export const tools: ToolType[] = [
     description: 'Generate random text, lorem ipsum, and placeholder content',
     path: '/random-text',
     icon: Sparkle,
-    category: 'text',
-    isNew: true
+    category: 'text'
   },
   {
     id: 'word-counter',
@@ -304,8 +291,7 @@ export const tools: ToolType[] = [
     description: 'Count words, characters, sentences, and paragraphs in text',
     path: '/word-counter',
     icon: AlignJustify,
-    category: 'text',
-    isNew: true
+    category: 'text'
   },
   {
     id: 'pixelate-image',
@@ -313,8 +299,7 @@ export const tools: ToolType[] = [
     description: 'Apply pixelation effects to images for censoring or artistic purposes',
     path: '/pixelate-image',
     icon: PixelTool,
-    category: 'image',
-    isNew: true
+    category: 'image'
   },
   {
     id: 'clipboard-manager',
@@ -322,8 +307,7 @@ export const tools: ToolType[] = [
     description: 'Store and organize multiple clipboard items for easy access',
     path: '/clipboard-manager',
     icon: Clipboard,
-    category: 'utility',
-    isNew: true
+    category: 'utility'
   },
   {
     id: 'image-to-qr-code',
@@ -331,8 +315,7 @@ export const tools: ToolType[] = [
     description: 'Convert images to scannable QR codes',
     path: '/image-to-qr-code',
     icon: QrCode,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'video-to-qr-code',
@@ -340,8 +323,7 @@ export const tools: ToolType[] = [
     description: 'Generate QR codes from video content',
     path: '/video-to-qr-code',
     icon: Video,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'video-compressor',
@@ -349,8 +331,7 @@ export const tools: ToolType[] = [
     description: 'Reduce video file size while maintaining quality',
     path: '/video-compressor',
     icon: Video,
-    category: 'video',
-    isNew: true
+    category: 'video'
   },
   {
     id: 'pdf-watermark',
@@ -358,8 +339,7 @@ export const tools: ToolType[] = [
     description: 'Add custom text or image watermarks to PDF documents',
     path: '/pdf-watermark',
     icon: Stamp,
-    category: 'pdf',
-    isNew: true
+    category: 'pdf'
   },
   {
     id: 'pdf-locker',
@@ -367,8 +347,7 @@ export const tools: ToolType[] = [
     description: 'Password protect your PDF files for secure sharing',
     path: '/pdf-locker',
     icon: Lock,
-    category: 'pdf',
-    isNew: true
+    category: 'pdf'
   },
   {
     id: 'audio-extractor',
@@ -376,8 +355,7 @@ export const tools: ToolType[] = [
     description: 'Extract audio tracks from video files',
     path: '/audio-extractor',
     icon: Mic,
-    category: 'audio',
-    isNew: true
+    category: 'audio'
   },
   {
     id: 'gif-to-video',
@@ -385,8 +363,7 @@ export const tools: ToolType[] = [
     description: 'Convert animated GIFs to video formats',
     path: '/gif-to-video',
     icon: Gift,
-    category: 'video',
-    isNew: true
+    category: 'video'
   },
   {
     id: 'video-audio-remover',
@@ -394,8 +371,7 @@ export const tools: ToolType[] = [
     description: 'Remove audio tracks from video files',
     path: '/video-audio-remover',
     icon: VolumeX,
-    category: 'video',
-    isNew: true
+    category: 'video'
   },
   {
     id: 'add-audio-to-video',
@@ -403,8 +379,7 @@ export const tools: ToolType[] = [
     description: 'Add or replace audio tracks in video files',
     path: '/add-audio-to-video',
     icon: Music,
-    category: 'video',
-    isNew: true
+    category: 'video'
   },
   {
     id: 'background-remover',
@@ -412,8 +387,7 @@ export const tools: ToolType[] = [
     description: 'Remove backgrounds from images automatically',
     path: '/background-remover',
     icon: ImageOff,
-    category: 'image',
-    isNew: true
+    category: 'image'
   },
   {
     id: 'pdf-password-remover',
@@ -421,8 +395,7 @@ export const tools: ToolType[] = [
     description: 'Remove passwords from PDF files',
     path: '/pdf-password-remover',
     icon: Unlock,
-    category: 'pdf',
-    isNew: true
+    category: 'pdf'
   },
   {
     id: 'pdf-to-qr-code',
@@ -430,8 +403,7 @@ export const tools: ToolType[] = [
     description: 'Generate QR codes from PDF documents',
     path: '/pdf-to-qr-code',
     icon: QrCode,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'audio-to-qr-code',
@@ -439,8 +411,7 @@ export const tools: ToolType[] = [
     description: 'Convert audio files to QR codes',
     path: '/audio-to-qr-code',
     icon: QrCode,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'qr-code-scanner',
@@ -448,8 +419,7 @@ export const tools: ToolType[] = [
     description: 'Scan and decode QR codes from images or webcam',
     path: '/qr-code-scanner',
     icon: ScanSearch,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'qr-code-styler',
@@ -457,8 +427,7 @@ export const tools: ToolType[] = [
     description: 'Create custom styled QR codes with logos and colors',
     path: '/qr-code-styler',
     icon: PencilRuler,
-    category: 'qrcode',
-    isNew: true
+    category: 'qrcode'
   },
   {
     id: 'pdf-to-text',
@@ -466,8 +435,7 @@ export const tools: ToolType[] = [
     description: 'Extract text content from PDF documents',
     path: '/pdf-to-text',
     icon: FileText,
-    category: 'pdf',
-    isNew: true
+    category: 'pdf'
   },
   {
     id: 'text-replacer',
@@ -475,8 +443,7 @@ export const tools: ToolType[] = [
     description: 'Quickly find and replace words or phrases in any text block',
     path: '/text-replacer',
     icon: Replace,
-    category: 'text',
-    isNew: true
+    category: 'text'
   },
   {
     id: 'image-cropper',
@@ -484,8 +451,7 @@ export const tools: ToolType[] = [
     description: 'Crop images to custom or preset dimensions like square or 16:9',
     path: '/image-cropper',
     icon: Crop,
-    category: 'image',
-    isNew: true
+    category: 'image'
   },
   {
     id: 'text-to-handwriting',
@@ -493,8 +459,7 @@ export const tools: ToolType[] = [
     description: 'Convert typed text into realistic handwritten-style images',
     path: '/text-to-handwriting',
     icon: HandMetal,
-    category: 'text',
-    isNew: true
+    category: 'text'
   },
   {
     id: 'text-to-emoji',
@@ -502,8 +467,7 @@ export const tools: ToolType[] = [
     description: 'Enter a word or phrase and get the most relevant emoji or emoji combo',
     path: '/text-to-emoji',
     icon: Coffee,
-    category: 'emoji',
-    isNew: true
+    category: 'emoji'
   },
   {
     id: 'video-to-gif',
@@ -511,8 +475,7 @@ export const tools: ToolType[] = [
     description: 'Upload a video and convert a selected portion into a looping GIF',
     path: '/video-to-gif',
     icon: Download,
-    category: 'animation',
-    isNew: true
+    category: 'animation'
   }
 ];
 

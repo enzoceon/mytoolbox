@@ -7,7 +7,6 @@ export interface ToolType {
   description: string;
   path: string;
   icon: LucideIcon;
-  isNew?: boolean;
   category?: string;
   isFunctional?: boolean;
 }
@@ -179,7 +178,6 @@ const tools: ToolType[] = [
     path: "/ai-content-summarizer",
     icon: Wand2,
     category: "ai-tools",
-    isNew: true,
     isFunctional: true
   },
   {
@@ -236,7 +234,6 @@ const tools: ToolType[] = [
     path: "/ai-image-generator",
     icon: Sparkles,
     category: "ai-tools",
-    isNew: true,
     isFunctional: true
   },
   {
@@ -245,7 +242,6 @@ const tools: ToolType[] = [
     path: "/ai-text-generator",
     icon: Brain,
     category: "ai-tools",
-    isNew: true,
     isFunctional: true
   },
   {
@@ -254,7 +250,6 @@ const tools: ToolType[] = [
     path: "/ai-chatbot",
     icon: Bot,
     category: "ai-tools",
-    isNew: true,
     isFunctional: true
   }
 ];
