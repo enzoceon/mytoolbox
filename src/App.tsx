@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
@@ -55,16 +54,20 @@ import { restoreScrollPosition } from "./utils/scrollUtils";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
+  const navigationType = useNavigationType();
 
   useEffect(() => {
-    // If we're navigating to /tools, try to restore scroll position
-    if (pathname === '/tools' || pathname === '/') {
-      restoreScrollPosition();
+    // If we're navigating to /tools via back navigation, try to restore scroll position
+    if ((pathname === '/tools' || pathname === '/') && navigationType === 'POP') {
+      // Use setTimeout to ensure DOM is fully loaded before scrolling
+      setTimeout(() => {
+        restoreScrollPosition();
+      }, 0);
     } else if (!hash) {
       // For other pages without hash, scroll to top
       window.scrollTo(0, 0);
     }
-  }, [pathname, hash]);
+  }, [pathname, hash, navigationType]);
 
   return null;
 };

@@ -9,8 +9,7 @@ const BackButton = () => {
   const navigate = useNavigate();
   
   const handleBack = () => {
-    saveScrollPosition();
-    navigate('/tools');
+    navigate(-1); // This will trigger the browser's back functionality
   };
   
   return (
