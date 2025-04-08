@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -49,6 +50,7 @@ import AiImageGenerator from "./pages/AiImageGenerator";
 import AiTextGenerator from "./pages/AiTextGenerator";
 import AiChatbot from "./pages/AiChatbot";
 import ComingSoon from "./pages/ComingSoon";
+import HowToUse from "./pages/HowToUse";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -136,6 +138,7 @@ const AppContent = () => {
         <Route path="/refund" element={<Refund />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/how-to-use" element={<HowToUse />} />
         <Route path="/file-renamer" element={
           <FileRenamerProvider>
             <FileRenamer />
