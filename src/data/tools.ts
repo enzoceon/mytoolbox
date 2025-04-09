@@ -355,7 +355,8 @@ export const tools: ToolType[] = [
     description: 'Remove audio tracks from video files',
     path: '/remove-audio-from-video',
     icon: VolumeX,
-    category: 'video'
+    category: 'video',
+    isFunctional: true
   },
   {
     id: 'extract-audio-from-video',
@@ -363,7 +364,8 @@ export const tools: ToolType[] = [
     description: 'Extract audio tracks from video files',
     path: '/extract-audio-from-video',
     icon: Mic,
-    category: 'audio'
+    category: 'audio',
+    isFunctional: true
   },
   {
     id: 'gif-to-video',

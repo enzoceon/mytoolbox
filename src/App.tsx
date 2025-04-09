@@ -45,6 +45,8 @@ import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvid
 import ComingSoon from "./pages/ComingSoon";
 import HowToUse from "./pages/HowToUse";
 import { restoreScrollPosition } from "./utils/scrollUtils";
+import RemoveAudioFromVideo from "./pages/RemoveAudioFromVideo";
+import ExtractAudioFromVideo from "./pages/ExtractAudioFromVideo";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -155,8 +157,8 @@ const AppContent = () => {
             <FileRenamer />
           </FileRenamerProvider>
         } />
-        <Route path="/remove-audio-from-video" element={<ComingSoon />} />
-        <Route path="/extract-audio-from-video" element={<ComingSoon />} />
+        <Route path="/remove-audio-from-video" element={<RemoveAudioFromVideo />} />
+        <Route path="/extract-audio-from-video" element={<ExtractAudioFromVideo />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>
