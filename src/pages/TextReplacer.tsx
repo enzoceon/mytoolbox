@@ -7,6 +7,8 @@ import { Copy, FileText, Replace } from 'lucide-react';
 import { toast } from 'sonner';
 import BackButton from '@/components/BackButton';
 import SEOMetadata from '@/components/SEO/SEOMetadata';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const TextReplacer = () => {
   const [inputText, setInputText] = useState('');
@@ -68,9 +70,10 @@ const TextReplacer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
+      <Header />
       <SEOMetadata />
-      <div className="container max-w-5xl py-8 space-y-6">
+      <div className="container max-w-5xl py-8 space-y-6 flex-grow">
         <BackButton />
         
         <h1 className="text-3xl font-bold text-center mb-8">Text Replacer</h1>
@@ -98,7 +101,7 @@ const TextReplacer = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="ml-auto" 
+                  className="ml-auto hover:bg-accent hover:text-accent-foreground" 
                   onClick={handleCopyOutput}
                 >
                   <Copy className="h-4 w-4 mr-1" />
@@ -122,7 +125,7 @@ const TextReplacer = () => {
           </div>
         </div>
         
-        <div className="bg-card border rounded-lg p-6 space-y-4">
+        <div className="bg-card border rounded-lg p-6 space-y-4 hover:border-input transition-colors">
           <h2 className="text-xl font-medium">Replace Options</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -160,12 +163,13 @@ const TextReplacer = () => {
           
           <Button 
             onClick={handleReplace} 
-            className="w-full"
+            className="w-full hover:bg-primary/90 transition-colors"
           >
             Replace Text
           </Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
