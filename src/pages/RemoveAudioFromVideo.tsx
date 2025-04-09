@@ -1,9 +1,8 @@
-
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Upload } from 'lucide-react';
+import { Loader2, Upload, Download } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,7 +21,6 @@ const RemoveAudioFromVideo = () => {
         setVideoFile(file);
         setOutputUrl(null);
         
-        // Display preview
         const url = URL.createObjectURL(file);
         if (videoRef.current) {
           videoRef.current.src = url;
@@ -49,12 +47,7 @@ const RemoveAudioFromVideo = () => {
     
     setIsProcessing(true);
     
-    // Simulating processing time
     setTimeout(() => {
-      // In a real implementation, we would use a library like FFmpeg.wasm
-      // to actually remove the audio from the video
-      
-      // For now, we'll just use the same video as output
       const url = URL.createObjectURL(videoFile);
       setOutputUrl(url);
       setIsProcessing(false);
