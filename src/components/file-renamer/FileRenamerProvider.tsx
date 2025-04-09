@@ -118,6 +118,7 @@ export const FileRenamerProvider: React.FC<FileRenamerProviderProps> = ({ childr
 
   const applyRenaming = useCallback(() => {
     updatePreviewNames();
+    toast.success("Renaming preview updated");
   }, [updatePreviewNames]);
 
   const handleDownload = useCallback(async () => {
@@ -151,7 +152,7 @@ export const FileRenamerProvider: React.FC<FileRenamerProviderProps> = ({ childr
       // Clean up
       URL.revokeObjectURL(url);
       toast.dismiss();
-      toast.success("Files prepared successfully!");
+      toast.success("Files downloaded successfully!");
     } catch (error) {
       console.error("Error preparing files:", error);
       toast.dismiss();

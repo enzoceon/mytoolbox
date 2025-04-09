@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -112,7 +113,7 @@ const AppContent = () => {
         <Route path="/pdf-merger" element={<PdfMerger />} />
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="/pdf-compressor" element={<PdfCompressor />} />
-        <Route path="/text-to-speech" element={<ComingSoon />} />
+        <Route path="/text-to-speech" element={<TextToSpeech />} />
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
         

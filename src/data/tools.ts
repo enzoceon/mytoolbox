@@ -155,7 +155,8 @@ export const tools: ToolType[] = [
     description: 'Convert text to natural-sounding speech',
     path: '/text-to-speech',
     icon: FileAudio,
-    category: 'audio'
+    category: 'audio',
+    isFunctional: true
   },
   {
     id: 'audio-trimmer',
@@ -233,9 +234,10 @@ export const tools: ToolType[] = [
     id: 'file-rename-tool',
     name: 'File Rename Tool',
     description: 'Batch rename multiple files with custom patterns and sequences',
-    path: '/file-rename',
+    path: '/file-renamer',
     icon: FileEdit,
-    category: 'file'
+    category: 'file',
+    isFunctional: true
   },
   {
     id: 'rar-extractor',

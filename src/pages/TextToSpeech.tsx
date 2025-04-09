@@ -1,11 +1,10 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Play, Pause, Volume2, Download, Mic, RotateCcw } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -42,34 +41,52 @@ const TextToSpeech = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const synth = useRef<SpeechSynthesis | null>(null);
+  const synth = window.speechSynthesis;
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // Initialize speech synthesis
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      synth.current = window.speechSynthesis;
-      
-      // Detect user interaction
-      const handleInteraction = () => {
-        setHasUserInteracted(true);
-      };
-      
-      document.addEventListener('click', handleInteraction, { once: true });
-      document.addEventListener('keydown', handleInteraction, { once: true });
-      
-      return () => {
-        document.removeEventListener('click', handleInteraction);
-        document.removeEventListener('keydown', handleInteraction);
-        
-        // Clean up speech synthesis
-        if (synth.current) {
-          synth.current.cancel();
-        }
-      };
+  // Initialize speech synthesis and load available voices
+  useEffect(() => {
+    // Check if speech synthesis is available
+    if (!synth) {
+      toast.error('Speech synthesis is not supported in your browser');
+      return;
     }
+    
+    // Load available voices
+    const loadVoices = () => {
+      const voices = synth.getVoices();
+      if (voices.length > 0) {
+        setAvailableVoices(voices);
+        console.log('Available voices:', voices);
+      }
+    };
+    
+    // Load voices initially and add event listener for voiceschanged
+    loadVoices();
+    synth.addEventListener('voiceschanged', loadVoices);
+    
+    // Detect user interaction
+    const handleInteraction = () => {
+      setHasUserInteracted(true);
+    };
+    
+    document.addEventListener('click', handleInteraction, { once: true });
+    document.addEventListener('keydown', handleInteraction, { once: true });
+    
+    // Clean up
+    return () => {
+      synth.cancel();
+      synth.removeEventListener('voiceschanged', loadVoices);
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
+      
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+    };
   }, []);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -102,27 +119,52 @@ const TextToSpeech = () => {
     }
 
     // If browser supports SpeechSynthesis
-    if (synth.current) {
+    if (synth) {
       // Cancel any ongoing speech
-      synth.current.cancel();
+      synth.cancel();
       
       // Create a new utterance
       const utterance = new SpeechSynthesisUtterance(text);
       utteranceRef.current = utterance;
       
-      // Get available voices
-      const voices = synth.current.getVoices();
-      
-      // Try to match the selected voice ID with available system voices
-      // This is approximate as browser voices vary
-      const voiceIndex = voice.startsWith('en-US') ? 0 : 
-                        voice.startsWith('en-GB') ? 1 : 
-                        voice.startsWith('es') ? 2 : 
-                        voice.startsWith('fr') ? 3 : 
-                        voice.startsWith('de') ? 4 : 0;
-                        
-      if (voices.length > voiceIndex) {
-        utterance.voice = voices[voiceIndex];
+      // Find a matching voice based on the selected voice ID
+      if (availableVoices.length > 0) {
+        // Try to match language first
+        const languageCode = voice.split('-').slice(0, 2).join('-');
+        const matchingVoices = availableVoices.filter(v => 
+          v.lang.startsWith(languageCode)
+        );
+        
+        // Choose a voice - prefer matching language and gender if possible
+        const isFemaleVoice = voice.endsWith('1'); // Assuming "-1" suffix is female
+        let selectedVoice;
+        
+        if (matchingVoices.length > 0) {
+          // Try to match gender if multiple voices available
+          if (matchingVoices.length > 1) {
+            // This is a simplistic approach as browser APIs don't expose gender directly
+            // We're using name as a heuristic which isn't perfect
+            selectedVoice = matchingVoices.find(v => {
+              const name = v.name.toLowerCase();
+              return isFemaleVoice ? 
+                (name.includes('female') || name.includes('woman')) :
+                (name.includes('male') || name.includes('man'));
+            });
+          }
+          
+          // If no gender match or just one voice, use the first matching language
+          if (!selectedVoice) {
+            selectedVoice = matchingVoices[0];
+          }
+        } else {
+          // Fallback to any voice
+          selectedVoice = availableVoices[0];
+        }
+        
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+          console.log('Selected voice:', selectedVoice.name);
+        }
       }
       
       // Set speech parameters
@@ -136,33 +178,34 @@ const TextToSpeech = () => {
         setIsPlaying(false);
       };
       
-      utterance.onerror = () => {
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
         setIsPlaying(false);
         toast.error('Error occurred while speaking');
       };
       
       // Speak the text
-      synth.current.speak(utterance);
+      synth.speak(utterance);
     } else {
       toast.error('Speech synthesis is not supported in your browser');
     }
   };
 
   const pauseResumeText = () => {
-    if (synth.current) {
-      if (synth.current.paused) {
-        synth.current.resume();
+    if (synth) {
+      if (synth.paused) {
+        synth.resume();
         setIsPlaying(true);
       } else {
-        synth.current.pause();
+        synth.pause();
         setIsPlaying(false);
       }
     }
   };
 
   const stopText = () => {
-    if (synth.current) {
-      synth.current.cancel();
+    if (synth) {
+      synth.cancel();
       setIsPlaying(false);
     }
   };
@@ -174,64 +217,87 @@ const TextToSpeech = () => {
     }
 
     setIsProcessing(true);
+    toast.info('Generating audio file...');
     
-    // This is a simulated audio generation
-    // In a real app, you would call an API to generate audio
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Create an audio context for generating a simple tone
+      // Create an AudioContext
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      const mediaStreamDest = audioContext.createMediaStreamDestination();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      // Create a MediaRecorder to capture the audio
+      const mediaRecorder = new MediaRecorder(mediaStreamDest.stream);
+      const audioChunks: BlobPart[] = [];
       
-      const duration = 2; // seconds
-      
-      oscillator.type = 'sine';
-      oscillator.frequency.value = 440; // A4 note
-      gainNode.gain.value = 0.1;
-      
-      const startTime = audioContext.currentTime;
-      oscillator.start(startTime);
-      oscillator.stop(startTime + duration);
-      
-      // Record the audio
-      const mediaStreamDestination = audioContext.createMediaStreamDestination();
-      gainNode.connect(mediaStreamDestination);
-      
-      const mediaRecorder = new MediaRecorder(mediaStreamDestination.stream);
-      const chunks: BlobPart[] = [];
-      
-      mediaRecorder.ondataavailable = (e) => {
-        chunks.push(e.data);
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
       };
       
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' });
-        const url = URL.createObjectURL(blob);
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        const url = URL.createObjectURL(audioBlob);
+        
+        // Clean up previous URL if it exists
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+        }
+        
         setAudioUrl(url);
         setIsProcessing(false);
         toast.success('Audio generated successfully');
       };
       
+      // Start recording
       mediaRecorder.start();
+      
+      // Create and configure the utterance
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Find a matching voice
+      if (availableVoices.length > 0) {
+        const languageCode = voice.split('-').slice(0, 2).join('-');
+        const matchingVoice = availableVoices.find(v => v.lang.startsWith(languageCode)) || availableVoices[0];
+        utterance.voice = matchingVoice;
+      }
+      
+      utterance.rate = rate;
+      utterance.pitch = pitch;
+      utterance.volume = volume;
+      
+      // We need to connect a speech synthesis to the media stream
+      // This is a workaround since there's no direct API to record speech synthesis
+      // We'll use an audio element to play the speech and capture its output
+      const tempAudio = new Audio();
+      let speechEnded = false;
+      
+      utterance.onend = () => {
+        speechEnded = true;
+        setTimeout(() => {
+          mediaRecorder.stop();
+        }, 500); // Allow a small delay to capture the full audio
+      };
+      
+      // Speak the text and capture using the media recorder
+      synth.speak(utterance);
+      
+      // If speech doesn't end properly, set a maximum timeout
       setTimeout(() => {
-        mediaRecorder.stop();
-      }, duration * 1000 + 500);
+        if (!speechEnded) {
+          mediaRecorder.stop();
+        }
+      }, 30000); // 30 seconds max
       
     } catch (error) {
       console.error('Error generating audio:', error);
       setIsProcessing(false);
-      toast.error('Failed to generate audio');
+      toast.error('Failed to generate audio. Please try again.');
     }
   };
 
   const downloadAudio = () => {
-    if (!audioUrl) return;
+    if (!audioUrl) {
+      toast.error('No audio file available to download');
+      return;
+    }
     
     const link = document.createElement('a');
     link.href = audioUrl;
@@ -256,7 +322,7 @@ const TextToSpeech = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <BackButton />
         
-        <div className="max-w-4xl mx-auto glass-card p-6 rounded-xl shadow-lg">
+        <div className="max-w-4xl mx-auto glass-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
           <h1 className="text-3xl font-bold mb-6 text-center">
             <span className="bg-gradient-primary bg-clip-text text-transparent">Text to Speech</span> Converter
           </h1>
@@ -284,7 +350,7 @@ const TextToSpeech = () => {
                   <SelectTrigger id="voice-select">
                     <SelectValue placeholder="Select a voice" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-popover">
                     {VOICES.map((v) => (
                       <SelectItem key={v.id} value={v.id}>
                         {v.name}
@@ -336,7 +402,7 @@ const TextToSpeech = () => {
             <div className="flex flex-wrap gap-3 justify-center">
               <Button
                 variant="default"
-                className="gap-2"
+                className="gap-2 hover:bg-primary/90 transition-all"
                 onClick={isPlaying ? pauseResumeText : playText}
                 disabled={!text.trim()}
               >
@@ -347,7 +413,7 @@ const TextToSpeech = () => {
               {isPlaying && (
                 <Button
                   variant="outline"
-                  className="gap-2"
+                  className="gap-2 hover:bg-secondary/90 transition-all"
                   onClick={stopText}
                 >
                   <RotateCcw size={16} />
@@ -357,7 +423,7 @@ const TextToSpeech = () => {
               
               <Button
                 variant="secondary"
-                className="gap-2"
+                className="gap-2 hover:bg-secondary/90 transition-all"
                 onClick={generateAudio}
                 disabled={!text.trim() || isProcessing}
               >
@@ -377,7 +443,7 @@ const TextToSpeech = () => {
               {audioUrl && (
                 <Button
                   variant="outline"
-                  className="gap-2"
+                  className="gap-2 hover:bg-muted transition-all"
                   onClick={downloadAudio}
                 >
                   <Download size={16} />
@@ -410,7 +476,7 @@ const TextToSpeech = () => {
         
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold mb-4">How to Use the Text to Speech Tool</h2>
-          <div className="glass-card p-6 rounded-xl">
+          <div className="glass-card p-6 rounded-xl hover:shadow-lg transition-all duration-300">
             <ol className="list-decimal list-inside space-y-3 text-muted-foreground">
               <li>Enter or paste your text in the text area</li>
               <li>Choose your preferred voice from the options</li>
