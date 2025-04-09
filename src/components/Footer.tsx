@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Instagram, Twitter, Youtube, Facebook, TikTok } from 'lucide-react';
+import { Mail, Instagram, Twitter, Youtube, Facebook } from 'lucide-react';
+import TikTokIcon from './icons/TikTokIcon';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -88,7 +89,7 @@ const Footer = () => {
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="TikTok"
               >
-                <TikTok size={16} />
+                <TikTokIcon size={16} />
               </div>
             </div>
           </div>
