@@ -64,7 +64,7 @@ const Footer = () => {
                 href="https://youtube.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
                 aria-label="YouTube"
               >
                 <Youtube size={16} />
@@ -73,7 +73,7 @@ const Footer = () => {
                 href="https://twitter.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
                 aria-label="Twitter"
               >
                 <Twitter size={16} />
@@ -82,7 +82,7 @@ const Footer = () => {
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
                 aria-label="Instagram"
               >
                 <Instagram size={16} />
