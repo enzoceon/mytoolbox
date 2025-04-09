@@ -6,6 +6,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Loader2, Download } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import { useToast } from '@/hooks/use-toast';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import UploadBox from '@/components/UploadBox';
 
 const ExtractAudioFromVideo = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -16,8 +19,8 @@ const ExtractAudioFromVideo = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileSelect = (files: FileList) => {
+    const file = files[0];
     if (file) {
       if (file.type.startsWith('video/')) {
         setVideoFile(file);
@@ -56,7 +59,6 @@ const ExtractAudioFromVideo = () => {
       // to actually extract the audio from the video
       
       // For now, we'll just create an audio element with the video as source
-      // This won't extract the audio but will simulate it for demonstration
       const url = URL.createObjectURL(videoFile);
       setOutputUrl(url);
       setIsProcessing(false);
@@ -89,78 +91,91 @@ const ExtractAudioFromVideo = () => {
   };
   
   return (
-    <div className="container max-w-4xl mx-auto px-4 py-8">
-      <BackButton />
+    <div className="flex flex-col min-h-screen">
+      <Header />
       
-      <h1 className="text-3xl font-bold mb-6">Extract Audio from Video</h1>
-      <p className="mb-6 text-muted-foreground">
-        Upload a video file and extract its audio track as an MP3 file.
-      </p>
-      
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Upload Video</CardTitle>
-          <CardDescription>Select a video file to extract audio</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Input
-                ref={inputRef}
-                type="file"
-                accept="video/*"
-                onChange={handleFileChange}
-                className="cursor-pointer"
-              />
-            </div>
-            
-            {videoFile && (
-              <div className="space-y-4">
-                <p className="text-sm font-medium">Preview:</p>
-                <video 
-                  ref={videoRef} 
-                  controls 
-                  className="w-full rounded-md border border-input"
-                  style={{ maxHeight: '300px' }}
-                />
-              </div>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={handleReset}>Reset</Button>
-          <Button 
-            onClick={handleProcess} 
-            disabled={!videoFile || isProcessing}
-          >
-            {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Extract Audio
-          </Button>
-        </CardFooter>
-      </Card>
-      
-      {outputUrl && (
-        <Card>
+      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+        <BackButton />
+        
+        <h1 className="text-3xl font-bold mb-6">Extract Audio from Video</h1>
+        <p className="mb-6 text-muted-foreground">
+          Upload a video file and extract its audio track as an MP3 file.
+        </p>
+        
+        <Card className="mb-6 shadow-md hover:shadow-lg transition-all duration-300">
           <CardHeader>
-            <CardTitle>Extracted Audio</CardTitle>
-            <CardDescription>Your audio file is ready</CardDescription>
+            <CardTitle>Upload Video</CardTitle>
+            <CardDescription>Select a video file to extract audio</CardDescription>
           </CardHeader>
           <CardContent>
-            <audio 
-              ref={audioRef}
-              src={outputUrl} 
-              controls 
-              className="w-full"
-            />
+            <div className="space-y-4">
+              {!videoFile ? (
+                <UploadBox
+                  title="Drop your video here"
+                  subtitle="Supports MP4, MOV, AVI, and other common video formats"
+                  acceptedFileTypes="video/*"
+                  onFileSelect={handleFileSelect}
+                />
+              ) : (
+                <div className="space-y-4">
+                  <p className="text-sm font-medium">Preview:</p>
+                  <video 
+                    ref={videoRef} 
+                    controls 
+                    className="w-full rounded-md border border-input"
+                    style={{ maxHeight: '300px' }}
+                  />
+                </div>
+              )}
+            </div>
           </CardContent>
-          <CardFooter className="flex justify-end">
-            <Button onClick={handleDownload}>
-              <Download className="mr-2 h-4 w-4" />
-              Download Audio
+          <CardFooter className="flex justify-between">
+            <Button 
+              variant="outline" 
+              onClick={handleReset}
+              className="hover:bg-secondary hover:text-secondary-foreground transition-colors"
+            >
+              Reset
+            </Button>
+            <Button 
+              onClick={handleProcess} 
+              disabled={!videoFile || isProcessing}
+              className="hover:bg-primary/90 transition-colors"
+            >
+              {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Extract Audio
             </Button>
           </CardFooter>
         </Card>
-      )}
+        
+        {outputUrl && (
+          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <CardTitle>Extracted Audio</CardTitle>
+              <CardDescription>Your audio file is ready</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <audio 
+                ref={audioRef}
+                src={outputUrl} 
+                controls 
+                className="w-full"
+              />
+            </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button 
+                onClick={handleDownload}
+                className="bg-gradient-primary hover:opacity-90 transition-colors"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Download Audio
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
+      </div>
+      
+      <Footer />
     </div>
   );
 };
