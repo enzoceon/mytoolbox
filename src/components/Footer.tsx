@@ -1,12 +1,56 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { Mail } from 'lucide-react';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      toast({
+        title: "Success!",
+        description: "You've been subscribed to our newsletter",
+      });
+      setEmail('');
+      setIsSubmitting(false);
+    }, 1000);
+  };
+
   return (
     <footer className="w-full py-8 px-6 md:px-10 mt-10 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">MyToolbox</h3>
             <p className="text-sm text-muted-foreground">
@@ -75,6 +119,33 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
+          </div>
+          
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Subscribe</h3>
+            <p className="text-sm text-muted-foreground">
+              Subscribe to our newsletter to receive updates and tips about our tools.
+            </p>
+            <form onSubmit={handleSubmit} className="mt-2 space-y-3">
+              <div className="relative">
+                <Input
+                  type="email"
+                  placeholder="Your email address"
+                  className="pr-10"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground pointer-events-none" />
+              </div>
+              <Button 
+                type="submit" 
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+              </Button>
+            </form>
           </div>
         </div>
         
