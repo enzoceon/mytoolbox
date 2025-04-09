@@ -1,10 +1,9 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Upload, FileImage, Download, ArrowLeft } from 'lucide-react';
+import { Upload, FileImage, Download } from 'lucide-react';
 // Import Palette separately to ensure it's properly loaded
 import { Palette } from 'lucide-react';
-import { useLocation, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { useLocation } from 'react-router-dom';
 
 const HowToUse = () => {
   const location = useLocation();
@@ -121,15 +120,6 @@ const HowToUse = () => {
   return (
     <section id="how-to-use" ref={sectionRef} className="py-12 px-4 bg-[#070b19]">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
-          <Link to="/tools" className="inline-block">
-            <Button variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm border-border/40">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Tools
-            </Button>
-          </Link>
-        </div>
-        
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-3 text-white">How to Use {toolName}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
