@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Layout } from '@/components/ui/layout';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,7 +68,7 @@ const TextReplacer = () => {
   };
 
   return (
-    <Layout>
+    <div className="min-h-screen bg-background">
       <SEOMetadata />
       <div className="container max-w-5xl py-8 space-y-6">
         <BackButton />
@@ -167,7 +166,7 @@ const TextReplacer = () => {
           </Button>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
