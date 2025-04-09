@@ -250,6 +250,70 @@ const tools: ToolType[] = [
     icon: Bot,
     category: "ai-tools",
     isFunctional: true
+  },
+  {
+    name: "PDF to Text",
+    description: "Extract text content from PDF documents",
+    path: "/pdf-to-text",
+    icon: FileType,
+    category: "conversion",
+    isFunctional: false
+  },
+  {
+    name: "Background Remover",
+    description: "Remove backgrounds from images automatically",
+    path: "/background-remover",
+    icon: FileImage,
+    category: "utilities",
+    isFunctional: false
+  },
+  {
+    name: "PDF Password Remover",
+    description: "Remove passwords from PDF files",
+    path: "/pdf-password-remover",
+    icon: FileType,
+    category: "utilities",
+    isFunctional: false
+  },
+  {
+    name: "Pixelate Image Tool",
+    description: "Apply pixelation effects to images",
+    path: "/pixelate-image",
+    icon: FileImage,
+    category: "design",
+    isFunctional: false
+  },
+  {
+    name: "Random Text Generator",
+    description: "Generate random placeholder text",
+    path: "/random-text",
+    icon: FileType,
+    category: "utilities",
+    isFunctional: false
+  },
+  {
+    name: "Image Watermark Generator",
+    description: "Add custom watermarks to your images",
+    path: "/image-watermark",
+    icon: FileImage, 
+    category: "design",
+    isFunctional: false
+  },
+  {
+    name: "Video Compressor",
+    description: "Compress video files while maintaining quality",
+    path: "/video-compressor",
+    icon: FileVideo,
+    category: "optimization",
+    isFunctional: false
+  },
+  {
+    name: "Video to QR Code",
+    description: "Convert videos to QR codes for easy sharing",
+    path: "/video-to-qr-code",
+    icon: QrCode,
+    category: "conversion",
+    isFunctional: false
   }
 ];
 

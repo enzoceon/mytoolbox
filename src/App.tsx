@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -123,9 +124,19 @@ const AppContent = () => {
         <Route path="/audio-trimmer" element={<AudioTrimmer />} />
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
-        <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-text-generator" element={<AiTextGenerator />} />
-        <Route path="/ai-chatbot" element={<AiChatbot />} />
+        
+        {/* Redirect non-functional tools to ComingSoon page */}
+        <Route path="/ai-image-generator" element={<ComingSoon />} />
+        <Route path="/ai-chatbot" element={<ComingSoon />} />
+        <Route path="/pdf-to-text" element={<ComingSoon />} />
+        <Route path="/background-remover" element={<ComingSoon />} />
+        <Route path="/pdf-password-remover" element={<ComingSoon />} />
+        <Route path="/pixelate-image" element={<ComingSoon />} />
+        <Route path="/random-text" element={<ComingSoon />} />
+        <Route path="/image-watermark" element={<ComingSoon />} />
+        <Route path="/video-compressor" element={<ComingSoon />} />
+        <Route path="/video-to-qr-code" element={<ComingSoon />} />
         
         <Route path="/image-to-qr" element={<ImageToQR />} />
         <Route path="/video-to-qr" element={<VideoToQR />} />

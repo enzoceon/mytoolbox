@@ -12,8 +12,23 @@ interface ToolCardProps {
 const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const IconComponent = tool.icon;
   
-  // For tools marked as non-functional, render a non-navigable card
-  if (tool.path === "/ai-image-generator" || tool.isFunctional === false) {
+  // List of paths for tools that are not functional (coming soon)
+  const comingSoonPaths = [
+    "/ai-image-generator",
+    "/text-to-handwriting",
+    "/pdf-to-text",
+    "/background-remover",
+    "/pdf-password-remover",
+    "/pixelate-image",
+    "/random-text",
+    "/image-watermark",
+    "/ai-chatbot",
+    "/video-compressor",
+    "/video-to-qr-code"
+  ];
+  
+  // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card
+  if (tool.path === "/ai-image-generator" || tool.isFunctional === false || comingSoonPaths.includes(tool.path)) {
     return (
       <div onClick={(e) => e.preventDefault()}>
         <Card className="h-full transition-transform hover:scale-105 hover:shadow-lg bg-card border-border">
