@@ -140,7 +140,7 @@ const Footer = () => {
               </div>
               <Button 
                 type="submit" 
-                className="w-full"
+                className="w-full bg-gradient-primary text-white hover:opacity-90 transition-opacity"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Subscribing...' : 'Subscribe'}
