@@ -1,12 +1,19 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Clock } from 'lucide-react';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import SEOMetadata from '@/components/SEO/SEOMetadata';
 
 const ComingSoon: React.FC = () => {
+  const location = useLocation();
+  
+  // Check if the current path is the text-to-speech path, and redirect if it is
+  if (location.pathname === '/text-to-speech') {
+    return <Navigate to="/text-to-speech" replace />;
+  }
+  
   return (
     <>
       <SEOMetadata />

@@ -31,8 +31,8 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/add-audio-to-video",
     "/ai-content-summarizer",
     "/audio-trimmer",
-    "/pdf-watermark",
-    "/text-to-speech"
+    "/pdf-watermark"
+    // Removed /text-to-speech from this list
   ];
   
   // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card

@@ -1,4 +1,3 @@
-
 import { IconType } from 'react-icons';
 import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles } from 'lucide-react';
 
