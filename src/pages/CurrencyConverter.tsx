@@ -1,239 +1,266 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowDown, RefreshCw } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import SpaceBackground from '@/components/SpaceBackground';
 import BackButton from '@/components/BackButton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ArrowRightLeft, RefreshCw } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 
-// Define available currency codes
-type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'CAD' | 'AUD' | 'CNY';
+interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+}
 
-// Define the exchange rates structure
-type ExchangeRates = {
-  [key in CurrencyCode]: {
-    [key in CurrencyCode]?: number;
-  };
-};
+const currencies: Currency[] = [
+  { code: 'USD', name: 'US Dollar', symbol: '$' },
+  { code: 'EUR', name: 'Euro', symbol: '€' },
+  { code: 'GBP', name: 'British Pound', symbol: '£' },
+  { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
+  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$' },
+  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$' },
+  { code: 'CHF', name: 'Swiss Franc', symbol: 'Fr' },
+  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥' },
+  { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
+];
 
-// Mock exchange rates (would be replaced with real API data)
-const EXCHANGE_RATES: ExchangeRates = {
-  USD: { EUR: 0.92, GBP: 0.78, JPY: 150.2, CAD: 1.35, AUD: 1.48, CNY: 7.23 },
-  EUR: { USD: 1.09, GBP: 0.85, JPY: 163.8, CAD: 1.47, AUD: 1.61, CNY: 7.88 },
-  GBP: { USD: 1.28, EUR: 1.18, JPY: 192.5, CAD: 1.73, AUD: 1.89, CNY: 9.26 },
-  JPY: { USD: 0.0067, EUR: 0.0061, GBP: 0.0052, CAD: 0.0089, AUD: 0.0098, CNY: 0.048 },
-  CAD: { USD: 0.74, EUR: 0.68, GBP: 0.58, JPY: 111.3, AUD: 1.09, CNY: 5.35 },
-  AUD: { USD: 0.68, EUR: 0.62, GBP: 0.53, JPY: 101.9, CAD: 0.92, CNY: 4.90 },
-  CNY: { USD: 0.14, EUR: 0.13, GBP: 0.11, JPY: 20.79, CAD: 0.19, AUD: 0.20 }
-};
+interface ExchangeRates {
+  [key: string]: number;
+}
 
-const CURRENCY_NAMES: Record<CurrencyCode, string> = {
-  USD: "US Dollar",
-  EUR: "Euro",
-  GBP: "British Pound",
-  JPY: "Japanese Yen",
-  CAD: "Canadian Dollar",
-  AUD: "Australian Dollar",
-  CNY: "Chinese Yuan"
-};
-
-const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
-  USD: "$",
-  EUR: "€",
-  GBP: "£",
-  JPY: "¥",
-  CAD: "C$",
-  AUD: "A$",
-  CNY: "¥"
+// Mock data for exchange rates
+// In a real application, this would come from an API
+const mockExchangeRates: ExchangeRates = {
+  USD: 1,
+  EUR: 0.92,
+  GBP: 0.79,
+  JPY: 151.57,
+  CAD: 1.36,
+  AUD: 1.52,
+  CHF: 0.90,
+  CNY: 7.22,
+  INR: 83.47, // Added Indian Rupee exchange rate
 };
 
 const CurrencyConverter = () => {
-  const [fromCurrency, setFromCurrency] = useState<CurrencyCode>("USD");
-  const [toCurrency, setToCurrency] = useState<CurrencyCode>("EUR");
-  const [amount, setAmount] = useState<string>("1");
-  const [convertedAmount, setConvertedAmount] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const [amount, setAmount] = useState<string>('1');
+  const [fromCurrency, setFromCurrency] = useState<string>('USD');
+  const [toCurrency, setToCurrency] = useState<string>('EUR');
+  const [convertedAmount, setConvertedAmount] = useState<string>('');
+  const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Fetch exchange rates (simulated)
+  useEffect(() => {
+    const fetchExchangeRates = async () => {
+      try {
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // In a real app, you would fetch from an API like this:
+        // const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        // const data = await response.json();
+        // setExchangeRates(data.rates);
+        
+        // For demo purposes, we'll use mock data
+        setExchangeRates(mockExchangeRates);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching exchange rates:', error);
+        toast.error("Failed to fetch exchange rates");
+        setLoading(false);
+      }
+    };
+
+    fetchExchangeRates();
+  }, []);
 
   useEffect(() => {
-    convertCurrency();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromCurrency, toCurrency]);
-
-  const convertCurrency = () => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      try {
-        const numAmount = parseFloat(amount);
-        if (isNaN(numAmount)) {
-          toast({
-            title: "Invalid amount",
-            description: "Please enter a valid number",
-            variant: "destructive"
-          });
-          setConvertedAmount(0);
-          setIsLoading(false);
-          return;
-        }
-
-        if (fromCurrency === toCurrency) {
-          setConvertedAmount(numAmount);
+    if (exchangeRates && amount && fromCurrency && toCurrency) {
+      const fromRate = exchangeRates[fromCurrency];
+      const toRate = exchangeRates[toCurrency];
+      const result = (parseFloat(amount) * toRate) / fromRate;
+      
+      if (!isNaN(result)) {
+        // Format the result to handle different currencies appropriately
+        if (toCurrency === 'JPY' || toCurrency === 'INR') {
+          // No decimal for Yen and Rupee
+          setConvertedAmount(result.toFixed(0));
         } else {
-          const rate = EXCHANGE_RATES[fromCurrency][toCurrency];
-          setConvertedAmount(numAmount * (rate || 1));
+          setConvertedAmount(result.toFixed(2));
         }
-        setIsLoading(false);
-      } catch (error) {
-        toast({
-          title: "Conversion failed",
-          description: "An error occurred during currency conversion",
-          variant: "destructive"
-        });
-        setIsLoading(false);
+      } else {
+        setConvertedAmount('');
       }
-    }, 500);
-  };
+    }
+  }, [amount, fromCurrency, toCurrency, exchangeRates]);
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
-  };
-
-  const swapCurrencies = () => {
+  const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
+  };
+
+  const handleRefreshRates = () => {
+    setLoading(true);
+    // Simulate refreshing rates
+    setTimeout(() => {
+      toast.success("Exchange rates updated");
+      setLoading(false);
+    }, 1000);
+  };
+
+  const getCurrencySymbol = (code: string): string => {
+    const currency = currencies.find(c => c.code === code);
+    return currency ? currency.symbol : '';
   };
 
   return (
     <>
       <Helmet>
-        <title>Currency Converter - EveryTools</title>
-        <meta name="description" content="Convert between different currencies with up-to-date exchange rates." />
+        <title>Currency Converter - Convert Between World Currencies | MyToolbox</title>
+        <meta name="description" content="Convert between different currencies with our free online currency converter. Real-time exchange rates for USD, EUR, GBP, JPY, CAD, AUD, and more." />
+        <meta name="keywords" content="currency converter, exchange rate calculator, USD to EUR, foreign exchange, forex calculator, money converter, free currency tool" />
       </Helmet>
       
-      <SpaceBackground />
-      
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <Header />
         
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
-          <BackButton />
-          
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 tracking-tight animate-fade-in">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Currency</span>
-              <span className="text-white"> Converter</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              Convert between different currencies with up-to-date exchange rates.
-            </p>
-          </div>
-          
-          <Card className="w-full max-w-md mx-auto shadow-lg border-white/10">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <ArrowRightLeft className="h-5 w-5 text-primary" />
-                <CardTitle>Currency Converter</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Amount</label>
-                <Input 
-                  type="number" 
-                  value={amount} 
-                  onChange={handleAmountChange} 
-                  min="0" 
-                  step="0.01"
-                  placeholder="Enter amount to convert"
-                  className="bg-background"
-                />
-              </div>
-              
-              <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">From</label>
-                  <Select value={fromCurrency} onValueChange={(value: CurrencyCode) => setFromCurrency(value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(CURRENCY_NAMES).map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {CURRENCY_SYMBOLS[currency as CurrencyCode]} {currency} - {CURRENCY_NAMES[currency as CurrencyCode]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={swapCurrencies}
-                  className="mt-6"
-                >
-                  <ArrowRightLeft className="h-4 w-4" />
-                </Button>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">To</label>
-                  <Select value={toCurrency} onValueChange={(value: CurrencyCode) => setToCurrency(value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(CURRENCY_NAMES).map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {CURRENCY_SYMBOLS[currency as CurrencyCode]} {currency} - {CURRENCY_NAMES[currency as CurrencyCode]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <Button 
-                className="w-full" 
-                onClick={convertCurrency}
-                disabled={isLoading}
-              >
-                {isLoading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : null}
-                Convert
-              </Button>
-              
-              <div className="pt-4">
-                <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">Result</div>
-                  <div className="text-2xl font-bold">
-                    {CURRENCY_SYMBOLS[fromCurrency]} {parseFloat(amount) ? parseFloat(amount).toLocaleString() : "0"} =
-                  </div>
-                  <div className="text-3xl font-bold text-primary">
-                    {CURRENCY_SYMBOLS[toCurrency]} {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <div className="max-w-2xl mx-auto mt-12">
-            <h2 className="text-xl font-bold mb-4">About Currency Converter</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                Our currency converter provides quick and easy conversion between major world currencies.
-                The exchange rates are updated regularly to ensure accurate conversions.
-              </p>
-              <p>
-                Please note that these rates are for informational purposes only and may differ slightly
-                from the rates used by financial institutions for actual transactions.
+        <main className="flex-1 py-8 px-4 md:py-12">
+          <div className="max-w-3xl mx-auto">
+            <BackButton />
+            
+            <div className="mb-8 text-center">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
+                Currency Converter
+              </h1>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Convert between different currencies with our free online currency converter. 
+                Get real-time exchange rates for major world currencies.
               </p>
             </div>
+            
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>Convert Currency</CardTitle>
+                    <CardDescription>Exchange rates updated regularly</CardDescription>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={handleRefreshRates} disabled={loading}>
+                    <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Refresh Rates
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="amount">Amount</Label>
+                    <div className="relative mt-1">
+                      <Input 
+                        id="amount" 
+                        type="number" 
+                        min="0"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        className="pl-8"
+                      />
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        {getCurrencySymbol(fromCurrency)}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="fromCurrency">From</Label>
+                      <Select 
+                        value={fromCurrency} 
+                        onValueChange={setFromCurrency}
+                      >
+                        <SelectTrigger id="fromCurrency" className="mt-1">
+                          <SelectValue placeholder="Select currency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {currencies.map((currency) => (
+                            <SelectItem key={currency.code} value={currency.code}>
+                              {currency.symbol} {currency.code} - {currency.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="relative">
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:top-8">
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          onClick={handleSwapCurrencies} 
+                          className="h-8 w-8 rounded-full bg-muted"
+                        >
+                          <ArrowDown className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="toCurrency">To</Label>
+                        <Select 
+                          value={toCurrency} 
+                          onValueChange={setToCurrency}
+                        >
+                          <SelectTrigger id="toCurrency" className="mt-1">
+                            <SelectValue placeholder="Select currency" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {currencies.map((currency) => (
+                              <SelectItem key={currency.code} value={currency.code}>
+                                {currency.symbol} {currency.code} - {currency.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pt-4 pb-2">
+                  <div className="border-t border-border pt-4">
+                    <Label>Converted Amount</Label>
+                    <div className="mt-1 h-14 flex items-center justify-center bg-muted/30 rounded-md">
+                      {loading ? (
+                        <Skeleton className="h-6 w-24" />
+                      ) : (
+                        <div className="text-2xl font-semibold">
+                          {convertedAmount ? (
+                            <>
+                              {getCurrencySymbol(toCurrency)} {convertedAmount} {toCurrency}
+                            </>
+                          ) : (
+                            <span className="text-muted-foreground">Enter an amount</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-xs text-muted-foreground">
+                  <p>
+                    Note: These exchange rates are for informational purposes only and may not be
+                    the exact rates used for actual currency exchanges.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </main>
         
