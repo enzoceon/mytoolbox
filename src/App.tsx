@@ -32,24 +32,17 @@ import PdfMerger from "./pages/PdfMerger";
 import PdfSplitter from "./pages/PdfSplitter";
 import PdfCompressor from "./pages/PdfCompressor";
 import TextToSpeech from "./pages/TextToSpeech";
-import AudioTrimmer from "./pages/AudioTrimmer";
 import OcrTool from "./pages/OcrTool";
-import AiContentSummarizer from "./pages/AiContentSummarizer";
 import CurrencyConverter from "./pages/CurrencyConverter";
 import TextReplacer from "./pages/TextReplacer";
 import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
-import VideoToGif from "./pages/VideoToGif";
-import GifToVideo from "./pages/GifToVideo";
 import ImageToQR from "./pages/ImageToQR";
 import VideoToQR from "./pages/VideoToQR";
 import AudioToQR from "./pages/AudioToQR";
 import FileRenamer from "./pages/FileRenamer";
 import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvider";
-import AiImageGenerator from "./pages/AiImageGenerator";
-import AiTextGenerator from "./pages/AiTextGenerator";
-import AiChatbot from "./pages/AiChatbot";
 import ComingSoon from "./pages/ComingSoon";
 import HowToUse from "./pages/HowToUse";
 import { restoreScrollPosition } from "./utils/scrollUtils";
@@ -121,17 +114,20 @@ const AppContent = () => {
         <Route path="/pdf-merger" element={<PdfMerger />} />
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="/pdf-compressor" element={<PdfCompressor />} />
-        <Route path="/text-to-speech" element={<TextToSpeech />} />
-        <Route path="/audio-trimmer" element={<AudioTrimmer />} />
+        <Route path="/text-to-speech" element={<ComingSoon />} />
         <Route path="/extract-text-from-image" element={<OcrTool />} />
-        <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
-        <Route path="/ai-text-generator" element={<AiTextGenerator />} />
-        <Route path="/gif-to-video" element={<GifToVideo />} />
-        <Route path="/video-to-gif" element={<VideoToGif />} />
+        <Route path="/text-to-emoji" element={<TextToEmoji />} />
         
         {/* Redirect non-functional tools to ComingSoon page */}
         <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-chatbot" element={<ComingSoon />} />
+        <Route path="/ai-text-generator" element={<ComingSoon />} />
+        <Route path="/ai-content-summarizer" element={<ComingSoon />} />
+        <Route path="/audio-trimmer" element={<ComingSoon />} />
+        <Route path="/video-to-gif" element={<ComingSoon />} />
+        <Route path="/gif-to-video" element={<ComingSoon />} />
+        <Route path="/pdf-watermark" element={<ComingSoon />} />
+        <Route path="/add-audio-to-video" element={<ComingSoon />} />
         <Route path="/pdf-to-text" element={<ComingSoon />} />
         <Route path="/background-remover" element={<ComingSoon />} />
         <Route path="/pdf-password-remover" element={<ComingSoon />} />
@@ -149,7 +145,6 @@ const AppContent = () => {
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />
         <Route path="/image-cropper" element={<ImageCropper />} />
-        <Route path="/text-to-emoji" element={<TextToEmoji />} />
         
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />
