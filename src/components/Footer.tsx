@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Mail } from 'lucide-react';
+import { Mail, Instagram, Twitter, Youtube } from 'lucide-react';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -57,8 +57,40 @@ const Footer = () => {
               Your one-stop destination for free, powerful online tools. 
               Fast. Free. Fluid.
             </p>
+            
+            {/* Social Media Icons */}
+            <div className="flex items-center space-x-3 pt-2">
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                aria-label="YouTube"
+              >
+                <Youtube size={16} />
+              </a>
+              <a 
+                href="https://twitter.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                aria-label="Twitter"
+              >
+                <Twitter size={16} />
+              </a>
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                aria-label="Instagram"
+              >
+                <Instagram size={16} />
+              </a>
+            </div>
           </div>
           
+          {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
@@ -90,6 +122,7 @@ const Footer = () => {
             </ul>
           </div>
           
+          {/* Legal section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Legal</h3>
             <ul className="space-y-2">
@@ -121,6 +154,7 @@ const Footer = () => {
             </ul>
           </div>
           
+          {/* Subscribe newsletter section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Subscribe</h3>
             <p className="text-sm text-muted-foreground">
