@@ -3,13 +3,15 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { saveScrollPosition } from '@/utils/scrollUtils';
 
 const BackButton = () => {
   const navigate = useNavigate();
   
   const handleBack = () => {
-    navigate(-1); // This will trigger the browser's back functionality
+    // Navigate to the tools page directly instead of using browser history
+    navigate('/tools');
+    // Ensure we're at the top of the page
+    window.scrollTo(0, 0);
   };
   
   return (
