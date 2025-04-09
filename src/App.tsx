@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,14 +51,11 @@ const ScrollToTop = () => {
   const navigationType = useNavigationType();
 
   useEffect(() => {
-    // If we're navigating to /tools via back navigation, try to restore scroll position
     if ((pathname === '/tools' || pathname === '/') && navigationType === 'POP') {
-      // Use setTimeout to ensure DOM is fully loaded before scrolling
       setTimeout(() => {
         restoreScrollPosition();
       }, 0);
     } else if (!hash) {
-      // For other pages without hash, scroll to top
       window.scrollTo(0, 0);
     }
   }, [pathname, hash, navigationType]);
@@ -118,7 +114,6 @@ const AppContent = () => {
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
         
-        {/* Redirect non-functional tools to ComingSoon page */}
         <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-chatbot" element={<ComingSoon />} />
         <Route path="/ai-text-generator" element={<ComingSoon />} />
@@ -160,6 +155,8 @@ const AppContent = () => {
             <FileRenamer />
           </FileRenamerProvider>
         } />
+        <Route path="/remove-audio-from-video" element={<ComingSoon />} />
+        <Route path="/extract-audio-from-video" element={<ComingSoon />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>

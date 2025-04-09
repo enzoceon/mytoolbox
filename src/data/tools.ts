@@ -350,10 +350,18 @@ export const tools: ToolType[] = [
     category: 'pdf'
   },
   {
-    id: 'audio-extractor',
-    name: 'Audio Extractor',
+    id: 'remove-audio-from-video',
+    name: 'Remove Audio from Video',
+    description: 'Remove audio tracks from video files',
+    path: '/remove-audio-from-video',
+    icon: VolumeX,
+    category: 'video'
+  },
+  {
+    id: 'extract-audio-from-video',
+    name: 'Extract Audio from Video',
     description: 'Extract audio tracks from video files',
-    path: '/audio-extractor',
+    path: '/extract-audio-from-video',
     icon: Mic,
     category: 'audio'
   },
@@ -363,14 +371,6 @@ export const tools: ToolType[] = [
     description: 'Convert animated GIFs to video formats',
     path: '/gif-to-video',
     icon: Gift,
-    category: 'video'
-  },
-  {
-    id: 'video-audio-remover',
-    name: 'Video Audio Remover',
-    description: 'Remove audio tracks from video files',
-    path: '/video-audio-remover',
-    icon: VolumeX,
     category: 'video'
   },
   {
