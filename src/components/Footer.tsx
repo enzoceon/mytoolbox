@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Mail, Instagram, Twitter, Youtube, Facebook, TikTok } from 'lucide-react';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -60,33 +60,36 @@ const Footer = () => {
             
             {/* Social Media Icons */}
             <div className="flex items-center space-x-3 pt-2">
-              <a 
-                href="https://youtube.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+              <div 
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="YouTube"
               >
                 <Youtube size={16} />
-              </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+              </div>
+              <div 
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Twitter"
               >
                 <Twitter size={16} />
-              </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+              </div>
+              <div 
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Instagram"
               >
                 <Instagram size={16} />
-              </a>
+              </div>
+              <div 
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
+                aria-label="Facebook"
+              >
+                <Facebook size={16} />
+              </div>
+              <div 
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
+                aria-label="TikTok"
+              >
+                <TikTok size={16} />
+              </div>
             </div>
           </div>
           
