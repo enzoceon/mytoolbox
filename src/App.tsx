@@ -41,6 +41,7 @@ import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
 import VideoToGif from "./pages/VideoToGif";
+import GifToVideo from "./pages/GifToVideo";
 import ImageToQR from "./pages/ImageToQR";
 import VideoToQR from "./pages/VideoToQR";
 import AudioToQR from "./pages/AudioToQR";
@@ -125,6 +126,8 @@ const AppContent = () => {
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/ai-content-summarizer" element={<AiContentSummarizer />} />
         <Route path="/ai-text-generator" element={<AiTextGenerator />} />
+        <Route path="/gif-to-video" element={<GifToVideo />} />
+        <Route path="/video-to-gif" element={<VideoToGif />} />
         
         {/* Redirect non-functional tools to ComingSoon page */}
         <Route path="/ai-image-generator" element={<ComingSoon />} />
@@ -137,6 +140,7 @@ const AppContent = () => {
         <Route path="/image-watermark" element={<ComingSoon />} />
         <Route path="/video-compressor" element={<ComingSoon />} />
         <Route path="/video-to-qr-code" element={<ComingSoon />} />
+        <Route path="/text-to-handwriting" element={<ComingSoon />} />
         
         <Route path="/image-to-qr" element={<ImageToQR />} />
         <Route path="/video-to-qr" element={<VideoToQR />} />
@@ -145,9 +149,7 @@ const AppContent = () => {
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />
         <Route path="/image-cropper" element={<ImageCropper />} />
-        <Route path="/text-to-handwriting" element={<ComingSoon />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
-        <Route path="/video-to-gif" element={<VideoToGif />} />
         
         <Route path="/tools" element={<AllTools />} />
         <Route path="/about" element={<About />} />

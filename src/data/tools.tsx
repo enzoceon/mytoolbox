@@ -1,3 +1,4 @@
+
 import { IconType } from 'react-icons';
 import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles } from 'lucide-react';
 
@@ -228,6 +229,14 @@ const tools: ToolType[] = [
     isFunctional: true
   },
   {
+    name: "GIF to Video",
+    description: "Convert animated GIFs to video formats",
+    path: "/gif-to-video",
+    icon: FileVideo,
+    category: "conversion",
+    isFunctional: true
+  },
+  {
     name: "AI Image Generator",
     description: "Generate images from text descriptions using AI",
     path: "/ai-image-generator",
@@ -249,7 +258,7 @@ const tools: ToolType[] = [
     path: "/ai-chatbot",
     icon: Bot,
     category: "ai-tools",
-    isFunctional: true
+    isFunctional: false
   },
   {
     name: "PDF to Text",
