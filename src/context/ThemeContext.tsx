@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 // Make sure this is a properly defined function component
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Initialize state with a non-hook conditional approach
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('dark');
   
   // Initialize theme on mount only
   useEffect(() => {
@@ -22,9 +22,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (savedTheme) {
       setTheme(savedTheme);
     } else {
-      // Check for system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      // Default to dark theme instead of checking system preference
+      setTheme('dark');
     }
   }, []);
 
@@ -49,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const handleChange = (e: MediaQueryListEvent) => {
       // Only update if user hasn't explicitly set a preference
       if (!localStorage.getItem('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
+        setTheme('dark'); // Always default to dark when no preference set
       }
     };
     

@@ -2,7 +2,6 @@
 import React from 'react';
 import Logo from './header/Logo';
 import MainNavLinks from './header/MainNavLinks';
-import ThemeToggle from './ThemeToggle';
 import MobileMenu from './header/MobileMenu';
 import { Menu } from 'lucide-react';
 
@@ -17,7 +16,6 @@ const Header = () => {
         <MainNavLinks />
         
         <div className="flex items-center space-x-4">
-          <ThemeToggle />
           <MobileMenu icon={<Menu className="h-5 w-5" />} />
         </div>
       </nav>
