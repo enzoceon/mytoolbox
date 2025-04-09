@@ -134,7 +134,7 @@ const AppContent = () => {
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />
         <Route path="/image-cropper" element={<ImageCropper />} />
-        <Route path="/text-to-handwriting" element={<TextToHandwriting />} />
+        <Route path="/text-to-handwriting" element={<ComingSoon />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
         <Route path="/video-to-gif" element={<VideoToGif />} />
         

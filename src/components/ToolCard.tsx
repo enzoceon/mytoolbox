@@ -12,7 +12,7 @@ interface ToolCardProps {
 const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const IconComponent = tool.icon;
   
-  // For AI Image Generator, render a non-navigable card
+  // For tools marked as non-functional, render a non-navigable card
   if (tool.path === "/ai-image-generator" || tool.isFunctional === false) {
     return (
       <div onClick={(e) => e.preventDefault()}>

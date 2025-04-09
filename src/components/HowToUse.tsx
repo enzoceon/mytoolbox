@@ -26,6 +26,7 @@ const HowToUse = () => {
   const isJPGtoPNG = location.pathname === '/jpg-to-png';
   const isPdfToImage = location.pathname === '/pdf-to-image';
   const isQrCodeGenerator = location.pathname === '/qr-code-generator';
+  const isTextToEmoji = location.pathname === '/text-to-emoji';
   
   const jpgToPngSteps = [
     {
@@ -99,6 +100,24 @@ const HowToUse = () => {
     }
   ];
   
+  const textToEmojiSteps = [
+    {
+      icon: <FileImage className="h-8 w-8 text-blue-500" />,
+      title: 'Enter Your Text',
+      description: 'Type or paste the words or phrases you want to convert to emojis in the text area. You can enter single words or complete sentences.'
+    },
+    {
+      icon: <FileImage className="h-8 w-8 text-blue-500" />,
+      title: 'Convert to Emojis',
+      description: 'Click the "Convert to Emojis" button to transform your text into multiple relevant emojis for each word.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Copy Your Emojis',
+      description: 'Browse through the emoji results for each word and click on any emoji to copy it to your clipboard for easy use elsewhere.'
+    }
+  ];
+  
   // Choose the appropriate steps based on the current page
   let steps;
   let toolName;
@@ -112,6 +131,9 @@ const HowToUse = () => {
   } else if (isQrCodeGenerator) {
     steps = qrCodeGeneratorSteps;
     toolName = 'QR Code Generator';
+  } else if (isTextToEmoji) {
+    steps = textToEmojiSteps;
+    toolName = 'Text to Emoji';
   } else {
     steps = imageToPathSteps;
     toolName = 'Image to PDF';
@@ -129,7 +151,9 @@ const HowToUse = () => {
                 ? 'MyToolbox makes converting your PDF to high-quality images simple and fast. Follow these three easy steps to get started.'
                 : isQrCodeGenerator
                   ? 'MyToolbox makes generating custom QR codes simple and fast. Follow these three easy steps to get started.'
-                  : 'MyToolbox makes converting your images to PDF simple and fast. Follow these three easy steps to get started.'
+                  : isTextToEmoji
+                    ? 'MyToolbox makes converting your text to expressive emojis simple and fast. Follow these three easy steps to get started.'
+                    : 'MyToolbox makes converting your images to PDF simple and fast. Follow these three easy steps to get started.'
             }
           </p>
         </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   FileImage, FileUp, FileDown, QrCode, CloudUpload, Code, Palette, KeySquare, Clock, FileText, FileArchive, 
@@ -460,7 +459,8 @@ export const tools: ToolType[] = [
     description: 'Convert typed text into realistic handwritten-style images',
     path: '/text-to-handwriting',
     icon: HandMetal,
-    category: 'text'
+    category: 'text',
+    isFunctional: false
   },
   {
     id: 'text-to-emoji',
