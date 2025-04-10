@@ -1,67 +1,32 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'light' | 'dark';
+import React, { createContext, useContext, useEffect } from 'react';
 
 type ThemeContextType = {
-  theme: Theme;
+  theme: 'dark';
   toggleTheme: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Make sure this is a properly defined function component
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize state with a non-hook conditional approach
-  const [theme, setTheme] = useState<Theme>('dark');
-  
-  // Initialize theme on mount only
+  // Always enforce dark theme
   useEffect(() => {
-    // Check if theme preference is stored in localStorage
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      // Default to dark theme instead of checking system preference
-      setTheme('dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    // Update the document class when theme changes
+    // Update the document class for dark mode
     const root = window.document.documentElement;
-    
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    root.classList.add('dark');
     
     // Save the preference to localStorage
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  // Listen for changes in system color scheme preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = (e: MediaQueryListEvent) => {
-      // Only update if user hasn't explicitly set a preference
-      if (!localStorage.getItem('theme')) {
-        setTheme('dark'); // Always default to dark when no preference set
-      }
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    localStorage.setItem('theme', 'dark');
   }, []);
 
+  // Dummy toggle function that does nothing since we only support dark theme
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    // Do nothing - we're always in dark mode
+    console.log('Dark mode is permanently enabled');
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: 'dark', toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

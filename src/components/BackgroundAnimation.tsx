@@ -1,6 +1,5 @@
 
 import React, { useMemo } from 'react';
-import { useTheme } from '@/context/ThemeContext';
 
 interface Particle {
   id: number;
@@ -14,9 +13,6 @@ interface Particle {
 }
 
 const BackgroundAnimation = () => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  
   const particles = useMemo(() => {
     return Array.from({ length: 30 }).map((_, index) => {
       // Generate colors in the blue/purple/pink spectrum for a cosmic feel
@@ -88,8 +84,8 @@ const BackgroundAnimation = () => {
         />
       ))}
       
-      {/* Overlay to make the background more subtle */}
-      <div className={`absolute inset-0 ${isDark ? 'bg-background/70' : 'bg-background/60'} backdrop-blur-[50px]`} />
+      {/* Overlay to make the background more subtle - always dark */}
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-[50px]" />
     </div>
   );
 };
