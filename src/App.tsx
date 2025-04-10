@@ -59,6 +59,7 @@ import WordCounter from "./pages/WordCounter";
 import UnitConverter from "./pages/UnitConverter";
 import PdfToText from "./pages/PdfToText";
 import ImageToQR from "./pages/ImageToQR";
+import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvider";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
