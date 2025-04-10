@@ -426,7 +426,7 @@ const originalTools: ToolType[] = [
     icon: ScanSearch,
     category: 'qrcode',
     isFunctional: true,
-    isNew: true
+    isNew: false
   },
   {
     id: 'qr-code-styler',
@@ -436,7 +436,7 @@ const originalTools: ToolType[] = [
     icon: PencilRuler,
     category: 'qrcode',
     isFunctional: true,
-    isNew: true
+    isNew: false
   },
   {
     id: 'pdf-to-text',

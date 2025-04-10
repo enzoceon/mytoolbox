@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Zap, DollarSign, Ruler, Image, FileSearch, FileEdit, 
@@ -182,14 +181,12 @@ export const getToolsSectionsData = (): ToolCategoryData[] => {
         {
           path: "/qr-code-scanner",
           icon: <QrCode className="h-8 w-8 text-purple-500 mx-auto mb-2" />,
-          name: "QR Scanner",
-          comingSoon: true
+          name: "QR Scanner"
         },
         {
           path: "/qr-code-styler",
           icon: <QrCode className="h-8 w-8 text-pink-500 mx-auto mb-2" />,
-          name: "QR Styler",
-          comingSoon: true
+          name: "QR Styler"
         },
         {
           path: "/image-to-qr-code",
