@@ -11,7 +11,7 @@ interface AdPlacementProps {
  * AdPlacement component that displays Google AdSense ads
  */
 const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', contentLoaded = true, className = '' }) => {
-  const adRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLElement>(null);
   
   useEffect(() => {
     // Only attempt to load ads if the content is loaded (helps with performance)
