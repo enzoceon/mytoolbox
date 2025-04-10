@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,7 +38,6 @@ import TextReplacer from "./pages/TextReplacer";
 import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
-import ImageToQR from "./pages/ImageToQR";
 import VideoToQR from "./pages/VideoToQR";
 import AudioToQR from "./pages/AudioToQR";
 import FileRenamer from "./pages/FileRenamer";
@@ -153,10 +153,11 @@ const AppContent = () => {
         <Route path="/video-to-qr-code" element={<ComingSoon />} />
         <Route path="/text-to-handwriting" element={<ComingSoon />} />
         
-        <Route path="/image-to-qr" element={<ImageToQR />} />
-        <Route path="/image-to-qr-code" element={<ImageToQR />} />
-        <Route path="/video-to-qr" element={<VideoToQR />} />
-        <Route path="/audio-to-qr" element={<AudioToQR />} />
+        {/* Mark these as coming soon */}
+        <Route path="/image-to-qr" element={<ComingSoon />} />
+        <Route path="/image-to-qr-code" element={<ComingSoon />} />
+        <Route path="/pdf-to-qr-code" element={<ComingSoon />} />
+        <Route path="/audio-to-qr" element={<ComingSoon />} />
         
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />
