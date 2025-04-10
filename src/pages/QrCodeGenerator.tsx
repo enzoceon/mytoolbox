@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout';
 import PageContainer from '@/components/PageContainer';
 import BackButton from '@/components/BackButton';
 import PageHeader from '@/components/PageHeader';
@@ -28,6 +28,7 @@ import { SliderWithTooltip } from '@/components/SliderWithTooltip';
 import { Download, Share2, Copy, Check } from 'lucide-react';
 import { ColorPicker } from '@/components/color-picker/ColorPicker';
 import { toast } from "sonner";
+import type { QRCodeErrorCorrectionLevel, QRCodeRenderersOptions, QRCodeToDataURLOptions } from 'qrcode';
 
 const QrCodeGenerator = () => {
   const [qrCodeData, setQrCodeData] = useState('https://mytoolbox.site');
@@ -35,7 +36,7 @@ const QrCodeGenerator = () => {
   const [qrSize, setQrSize] = useState(300);
   const [bgColor, setBgColor] = useState('#ffffff');
   const [fgColor, setFgColor] = useState('#000000');
-  const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('H');
+  const [errorCorrectionLevel, setErrorCorrectionLevel] = useState<QRCodeErrorCorrectionLevel>('H');
   const [quietZone, setQuietZone] = useState(4);
   const [copied, setCopied] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -104,7 +105,7 @@ const QrCodeGenerator = () => {
       const QRCode = (await import('qrcode')).default;
       
       // Generate QR code with enhanced options for ultra high quality
-      const options = {
+      const options: QRCodeToDataURLOptions = {
         errorCorrectionLevel: errorCorrectionLevel,
         margin: quietZone,
         width: qrSize,
@@ -123,7 +124,16 @@ const QrCodeGenerator = () => {
       
       // Also draw on canvas for additional customization options
       if (canvasRef.current) {
-        await QRCode.toCanvas(canvasRef.current, qrCodeData, options);
+        const canvasOptions: QRCodeRenderersOptions = {
+          errorCorrectionLevel: errorCorrectionLevel,
+          margin: quietZone,
+          width: qrSize,
+          color: {
+            dark: fgColor,
+            light: bgColor
+          }
+        };
+        await QRCode.toCanvas(canvasRef.current, qrCodeData, canvasOptions);
       }
     } catch (err) {
       toast.error("Error generating QR code");
@@ -177,7 +187,7 @@ const QrCodeGenerator = () => {
       
       toast.success("QR code shared");
     } catch (err) {
-      if (err.name !== 'AbortError') {
+      if ((err as Error).name !== 'AbortError') {
         toast.error("Failed to share QR code");
         console.error("Share failed:", err);
       }
@@ -440,7 +450,7 @@ const QrCodeGenerator = () => {
                   <Label htmlFor="error-correction">Error Correction Level</Label>
                   <Select 
                     value={errorCorrectionLevel} 
-                    onValueChange={setErrorCorrectionLevel}
+                    onValueChange={(value) => setErrorCorrectionLevel(value as QRCodeErrorCorrectionLevel)}
                   >
                     <SelectTrigger id="error-correction">
                       <SelectValue placeholder="Select error correction level" />

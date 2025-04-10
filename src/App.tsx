@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -39,7 +38,6 @@ import ImageCropper from "./pages/ImageCropper";
 import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
 import VideoToQR from "./pages/VideoToQR";
-import AudioToQR from "./pages/AudioToQR";
 import FileRenamer from "./pages/FileRenamer";
 import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvider";
 import ComingSoon from "./pages/ComingSoon";
@@ -60,6 +58,7 @@ import RarExtractor from "./pages/RarExtractor";
 import WordCounter from "./pages/WordCounter";
 import UnitConverter from "./pages/UnitConverter";
 import PdfToText from "./pages/PdfToText";
+import ImageToQR from "./pages/ImageToQR";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -144,7 +143,6 @@ const AppContent = () => {
         <Route path="/video-to-gif" element={<VideoToGif />} />
         <Route path="/gif-to-video" element={<GifToVideo />} />
         <Route path="/pdf-watermark" element={<ComingSoon />} />
-        <Route path="/pdf-to-text" element={<ComingSoon />} />
         <Route path="/background-remover" element={<ComingSoon />} />
         <Route path="/pixelate-image" element={<ComingSoon />} />
         <Route path="/random-text" element={<ComingSoon />} />
@@ -153,11 +151,15 @@ const AppContent = () => {
         <Route path="/video-to-qr-code" element={<ComingSoon />} />
         <Route path="/text-to-handwriting" element={<ComingSoon />} />
         
-        {/* Mark these as coming soon */}
-        <Route path="/image-to-qr" element={<ComingSoon />} />
-        <Route path="/image-to-qr-code" element={<ComingSoon />} />
+        <Route path="/image-to-qr" element={<ImageToQR />} />
+        <Route path="/image-to-qr-code" element={<ImageToQR />} />
         <Route path="/pdf-to-qr-code" element={<ComingSoon />} />
-        <Route path="/audio-to-qr" element={<ComingSoon title="Audio to QR Code Converter" description="Convert audio files to QR codes for easy sharing" />} />
+        <Route path="/audio-to-qr" element={
+          <ComingSoon 
+            title="Audio to QR Code Converter" 
+            description="Convert audio files to QR codes for easy sharing. This feature is coming soon!" 
+          />
+        } />
         
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />

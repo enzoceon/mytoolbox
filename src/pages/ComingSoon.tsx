@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout';
 import PageContainer from '@/components/PageContainer';
 import BackButton from '@/components/BackButton';
 import PageHeader from '@/components/PageHeader';
