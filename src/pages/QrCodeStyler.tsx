@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import PageContainer from '@/components/PageContainer';
@@ -21,6 +20,7 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import QRCodeStyling from 'qr-code-styling';
 import QrCodeStylerSEO from '@/components/SEO/QrCodeStylerSEO';
+import Layout from '@/components/layout';
 
 // Define types for the QR code options
 interface QRCodeOptions {
@@ -638,654 +638,683 @@ const QrCodeStyler = () => {
   };
 
   return (
-    <PageContainer>
+    <Layout>
       <QrCodeStylerSEO />
-      <PageHeader 
-        title="QR Code Styler" 
-        description="Create beautiful, customized QR codes for your business, events, or personal use"
-      />
-      
-      <div className="container mx-auto py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* QR Code Preview */}
-          <div className="lg:col-span-1 flex flex-col space-y-6">
-            <Card className="p-6">
-              <div className="text-xl font-bold mb-4 flex items-center gap-2">
-                <QrCode className="h-5 w-5" />
-                Preview
-              </div>
-              
-              <div className="flex flex-col items-center">
-                <div 
-                  ref={qrCodeRef} 
-                  className="qr-code-container mb-4 flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg p-4"
-                ></div>
-                
-                <div className="w-full space-y-4">
-                  <div className="flex flex-col space-y-2">
-                    <Label htmlFor="qr-name">File Name (for download)</Label>
-                    <Input 
-                      id="qr-name"
-                      placeholder="styled-qr-code"
-                      value={qrName}
-                      onChange={(e) => setQrName(e.target.value)}
-                    />
-                  </div>
-                  
-                  <div className="flex flex-col space-y-2">
-                    <Label>Download Format</Label>
-                    <div className="flex space-x-2">
-                      <Button 
-                        variant={downloadFormat === 'svg' ? "default" : "outline"} 
-                        size="sm"
-                        onClick={() => setDownloadFormat('svg')}
-                      >
-                        SVG
-                      </Button>
-                      <Button 
-                        variant={downloadFormat === 'png' ? "default" : "outline"} 
-                        size="sm"
-                        onClick={() => setDownloadFormat('png')}
-                      >
-                        PNG
-                      </Button>
-                      <Button 
-                        variant={downloadFormat === 'jpeg' ? "default" : "outline"} 
-                        size="sm"
-                        onClick={() => setDownloadFormat('jpeg')}
-                      >
-                        JPEG
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <Button className="flex-1 gap-2" onClick={downloadQRCode}>
-                      <Download className="h-4 w-4" />
-                      Download
-                    </Button>
-                    <Button variant="outline" className="gap-2" onClick={copyQRCodeAsDataURL}>
-                      {copied ? (
-                        <>
-                          <CheckCheck className="h-4 w-4" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Clipboard className="h-4 w-4" />
-                          Copy
-                        </>
-                      )}
-                    </Button>
-                  </div>
+      <PageContainer>
+        <PageHeader 
+          title="QR Code Styler" 
+          description="Create beautiful, customized QR codes for your business, events, or personal use"
+        />
+        
+        <div className="container mx-auto py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* QR Code Preview */}
+            <div className="lg:col-span-1 flex flex-col space-y-6 order-2 lg:order-1">
+              <Card className="p-6 hover:shadow-md transition-shadow">
+                <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <QrCode className="h-5 w-5" />
+                  Preview
                 </div>
-              </div>
-            </Card>
-            
-            {/* Templates */}
-            <Card className="p-6">
-              <div className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Layers className="h-5 w-5" />
-                Templates
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {templates.map((template, index) => (
-                  <Button 
-                    key={index}
-                    variant="outline"
-                    className="h-auto p-4 flex flex-col"
-                    onClick={() => applyTemplate(index)}
-                  >
-                    <span className="text-sm font-medium mb-1">{template.name}</span>
-                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-md m-1 flex items-center justify-center">
-                      <div className="w-12 h-12 opacity-70">
-                        <QrCode size={48} />
+                
+                <div className="flex flex-col items-center">
+                  <div 
+                    ref={qrCodeRef} 
+                    className="qr-code-container mb-4 flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg p-4 w-full h-64 sm:h-72"
+                  ></div>
+                  
+                  <div className="w-full space-y-4">
+                    <div className="flex flex-col space-y-2">
+                      <Label htmlFor="qr-name">File Name (for download)</Label>
+                      <Input 
+                        id="qr-name"
+                        placeholder="styled-qr-code"
+                        value={qrName}
+                        onChange={(e) => setQrName(e.target.value)}
+                        className="hover:border-primary focus:border-primary transition-colors"
+                      />
+                    </div>
+                    
+                    <div className="flex flex-col space-y-2">
+                      <Label>Download Format</Label>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant={downloadFormat === 'svg' ? "default" : "outline"} 
+                          size="sm"
+                          onClick={() => setDownloadFormat('svg')}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          SVG
+                        </Button>
+                        <Button 
+                          variant={downloadFormat === 'png' ? "default" : "outline"} 
+                          size="sm"
+                          onClick={() => setDownloadFormat('png')}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          PNG
+                        </Button>
+                        <Button 
+                          variant={downloadFormat === 'jpeg' ? "default" : "outline"} 
+                          size="sm"
+                          onClick={() => setDownloadFormat('jpeg')}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          JPEG
+                        </Button>
                       </div>
                     </div>
-                  </Button>
-                ))}
-              </div>
-            </Card>
-          </div>
-          
-          {/* QR Code Content & Styling */}
-          <div className="lg:col-span-2 flex flex-col space-y-6">
-            {/* Content */}
-            <Card className="p-6">
-              <div className="text-xl font-bold mb-4 flex items-center gap-2">
-                <PencilRuler className="h-5 w-5" />
-                QR Code Content
-              </div>
-              
-              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ContentType)}>
-                <TabsList className="grid grid-cols-3 md:grid-cols-7 mb-4">
-                  <TabsTrigger value="text" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    Text
-                  </TabsTrigger>
-                  <TabsTrigger value="url" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <LinkIcon className="h-3 w-3 hidden sm:block" />
-                    URL
-                  </TabsTrigger>
-                  <TabsTrigger value="email" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <Mail className="h-3 w-3 hidden sm:block" />
-                    Email
-                  </TabsTrigger>
-                  <TabsTrigger value="phone" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <Phone className="h-3 w-3 hidden sm:block" />
-                    Phone
-                  </TabsTrigger>
-                  <TabsTrigger value="wifi" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <Wifi className="h-3 w-3 hidden sm:block" />
-                    WiFi
-                  </TabsTrigger>
-                  <TabsTrigger value="location" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <MapPin className="h-3 w-3 hidden sm:block" />
-                    Location
-                  </TabsTrigger>
-                  <TabsTrigger value="vcard" className="text-xs sm:text-sm flex items-center justify-center gap-1">
-                    <Smartphone className="h-3 w-3 hidden sm:block" />
-                    vCard
-                  </TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="text" className="space-y-4">
-                  <Textarea 
-                    placeholder="Enter text content" 
-                    onChange={(e) => handleContentChange('text', e.target.value)}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="url" className="space-y-4">
-                  <Input 
-                    placeholder="example.com or https://example.com" 
-                    defaultValue="lovable.dev"
-                    onChange={(e) => handleContentChange('url', e.target.value)}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="email" className="space-y-4">
-                  <Input 
-                    placeholder="example@email.com" 
-                    onChange={(e) => handleContentChange('email', e.target.value)}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="phone" className="space-y-4">
-                  <Input 
-                    placeholder="+1234567890" 
-                    onChange={(e) => handleContentChange('phone', e.target.value)}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="wifi" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="wifi-ssid">Network Name (SSID)</Label>
-                      <Input 
-                        id="wifi-ssid" 
-                        placeholder="WiFi Network Name" 
-                        onChange={() => handleContentChange('wifi', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="wifi-password">Password</Label>
-                      <Input 
-                        id="wifi-password" 
-                        type="password"
-                        placeholder="WiFi Password" 
-                        onChange={() => handleContentChange('wifi', '')}
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wifi-encryption">Security Type</Label>
-                    <Select 
-                      defaultValue="WPA" 
-                      onValueChange={() => handleContentChange('wifi', '')}
-                    >
-                      <SelectTrigger id="wifi-encryption">
-                        <SelectValue placeholder="Security Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="WPA">WPA/WPA2</SelectItem>
-                        <SelectItem value="WEP">WEP</SelectItem>
-                        <SelectItem value="nopass">No Password</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="location" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="location-lat">Latitude</Label>
-                      <Input 
-                        id="location-lat" 
-                        placeholder="40.7128" 
-                        onChange={() => handleContentChange('location', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="location-lon">Longitude</Label>
-                      <Input 
-                        id="location-lon" 
-                        placeholder="-74.0060" 
-                        onChange={() => handleContentChange('location', '')}
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="vcard" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-name">Full Name</Label>
-                      <Input 
-                        id="vcard-name" 
-                        placeholder="John Doe" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-org">Organization</Label>
-                      <Input 
-                        id="vcard-org" 
-                        placeholder="Company Name" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-phone">Phone</Label>
-                      <Input 
-                        id="vcard-phone" 
-                        placeholder="+1234567890" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-email">Email</Label>
-                      <Input 
-                        id="vcard-email" 
-                        placeholder="john@example.com" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-website">Website</Label>
-                      <Input 
-                        id="vcard-website" 
-                        placeholder="example.com" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="vcard-address">Address</Label>
-                      <Input 
-                        id="vcard-address" 
-                        placeholder="123 Street, City, Country" 
-                        onChange={() => handleContentChange('vcard', '')}
-                      />
-                    </div>
-                  </div>
-                  <Button variant="outline" className="w-full" onClick={() => handleContentChange('vcard', '')}>
-                    Generate vCard
-                  </Button>
-                </TabsContent>
-              </Tabs>
-            </Card>
-            
-            {/* Logo */}
-            <Card className="p-6">
-              <div className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Image className="h-5 w-5" />
-                Add Logo
-              </div>
-              
-              <div className="space-y-4">
-                {logoImage ? (
-                  <div className="flex flex-col items-center space-y-4">
-                    <div className="relative w-24 h-24 border rounded-lg overflow-hidden">
-                      <img src={logoImage} alt="Logo" className="w-full h-full object-contain" />
-                    </div>
+                    
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={removeLogo}>
-                        Remove Logo
+                      <Button className="flex-1 gap-2 hover:bg-primary/90 transition-colors" onClick={downloadQRCode}>
+                        <Download className="h-4 w-4" />
+                        Download
+                      </Button>
+                      <Button variant="outline" className="gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" onClick={copyQRCodeAsDataURL}>
+                        {copied ? (
+                          <>
+                            <CheckCheck className="h-4 w-4" />
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <Clipboard className="h-4 w-4" />
+                            Copy
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>
-                ) : (
-                  <div 
-                    className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Click to upload your logo
-                    </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                      PNG, JPG, SVG up to 2MB
-                    </p>
-                  </div>
-                )}
+                </div>
+              </Card>
+              
+              {/* Templates */}
+              <Card className="p-6 hover:shadow-md transition-shadow">
+                <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Layers className="h-5 w-5" />
+                  Templates
+                </div>
                 
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                />
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {templates.map((template, index) => (
+                    <Button 
+                      key={index}
+                      variant="outline"
+                      className="h-auto p-4 flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      onClick={() => applyTemplate(index)}
+                    >
+                      <span className="text-sm font-medium mb-1">{template.name}</span>
+                      <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-md m-1 flex items-center justify-center">
+                        <div className="w-12 h-12 opacity-70">
+                          <QrCode size={48} />
+                        </div>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </Card>
+            </div>
+            
+            {/* QR Code Content & Styling */}
+            <div className="lg:col-span-2 flex flex-col space-y-6 order-1 lg:order-2">
+              {/* Content */}
+              <Card className="p-6 hover:shadow-md transition-shadow">
+                <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <PencilRuler className="h-5 w-5" />
+                  QR Code Content
+                </div>
                 
-                {logoImage && (
-                  <div className="space-y-4">
+                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ContentType)}>
+                  <TabsList className="grid grid-cols-3 md:grid-cols-7 mb-4">
+                    <TabsTrigger value="text" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      Text
+                    </TabsTrigger>
+                    <TabsTrigger value="url" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <LinkIcon className="h-3 w-3 hidden sm:block" />
+                      URL
+                    </TabsTrigger>
+                    <TabsTrigger value="email" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <Mail className="h-3 w-3 hidden sm:block" />
+                      Email
+                    </TabsTrigger>
+                    <TabsTrigger value="phone" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <Phone className="h-3 w-3 hidden sm:block" />
+                      Phone
+                    </TabsTrigger>
+                    <TabsTrigger value="wifi" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <Wifi className="h-3 w-3 hidden sm:block" />
+                      WiFi
+                    </TabsTrigger>
+                    <TabsTrigger value="location" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <MapPin className="h-3 w-3 hidden sm:block" />
+                      Location
+                    </TabsTrigger>
+                    <TabsTrigger value="vcard" className="text-xs sm:text-sm flex items-center justify-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <Smartphone className="h-3 w-3 hidden sm:block" />
+                      vCard
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="text" className="space-y-4">
+                    <Textarea 
+                      placeholder="Enter text content" 
+                      onChange={(e) => handleContentChange('text', e.target.value)}
+                      className="hover:border-primary focus:border-primary transition-colors"
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="url" className="space-y-4">
+                    <Input 
+                      placeholder="example.com or https://example.com" 
+                      defaultValue="lovable.dev"
+                      onChange={(e) => handleContentChange('url', e.target.value)}
+                      className="hover:border-primary focus:border-primary transition-colors"
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="email" className="space-y-4">
+                    <Input 
+                      placeholder="example@email.com" 
+                      onChange={(e) => handleContentChange('email', e.target.value)}
+                      className="hover:border-primary focus:border-primary transition-colors"
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="phone" className="space-y-4">
+                    <Input 
+                      placeholder="+1234567890" 
+                      onChange={(e) => handleContentChange('phone', e.target.value)}
+                      className="hover:border-primary focus:border-primary transition-colors"
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="wifi" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="wifi-ssid">Network Name (SSID)</Label>
+                        <Input 
+                          id="wifi-ssid" 
+                          placeholder="WiFi Network Name" 
+                          onChange={() => handleContentChange('wifi', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="wifi-password">Password</Label>
+                        <Input 
+                          id="wifi-password" 
+                          type="password"
+                          placeholder="WiFi Password" 
+                          onChange={() => handleContentChange('wifi', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                    </div>
                     <div className="space-y-2">
-                      <Label>Logo Size</Label>
+                      <Label htmlFor="wifi-encryption">Security Type</Label>
+                      <Select 
+                        defaultValue="WPA" 
+                        onValueChange={() => handleContentChange('wifi', '')}
+                      >
+                        <SelectTrigger id="wifi-encryption">
+                          <SelectValue placeholder="Security Type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-900">
+                          <SelectItem value="WPA">WPA/WPA2</SelectItem>
+                          <SelectItem value="WEP">WEP</SelectItem>
+                          <SelectItem value="nopass">No Password</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="location" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="location-lat">Latitude</Label>
+                        <Input 
+                          id="location-lat" 
+                          placeholder="40.7128" 
+                          onChange={() => handleContentChange('location', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="location-lon">Longitude</Label>
+                        <Input 
+                          id="location-lon" 
+                          placeholder="-74.0060" 
+                          onChange={() => handleContentChange('location', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="vcard" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-name">Full Name</Label>
+                        <Input 
+                          id="vcard-name" 
+                          placeholder="John Doe" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-org">Organization</Label>
+                        <Input 
+                          id="vcard-org" 
+                          placeholder="Company Name" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-phone">Phone</Label>
+                        <Input 
+                          id="vcard-phone" 
+                          placeholder="+1234567890" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-email">Email</Label>
+                        <Input 
+                          id="vcard-email" 
+                          placeholder="john@example.com" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-website">Website</Label>
+                        <Input 
+                          id="vcard-website" 
+                          placeholder="example.com" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vcard-address">Address</Label>
+                        <Input 
+                          id="vcard-address" 
+                          placeholder="123 Street, City, Country" 
+                          onChange={() => handleContentChange('vcard', '')}
+                          className="hover:border-primary focus:border-primary transition-colors"
+                        />
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="w-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" 
+                      onClick={() => handleContentChange('vcard', '')}
+                    >
+                      Generate vCard
+                    </Button>
+                  </TabsContent>
+                </Tabs>
+              </Card>
+              
+              {/* Logo */}
+              <Card className="p-6 hover:shadow-md transition-shadow">
+                <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Image className="h-5 w-5" />
+                  Add Logo
+                </div>
+                
+                <div className="space-y-4">
+                  {logoImage ? (
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="relative w-24 h-24 border rounded-lg overflow-hidden">
+                        <img src={logoImage} alt="Logo" className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={removeLogo} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                          Remove Logo
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div 
+                      className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Click to upload your logo
+                      </p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                        PNG, JPG, SVG up to 2MB
+                      </p>
+                    </div>
+                  )}
+                  
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                  />
+                  
+                  {logoImage && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Logo Size</Label>
+                        <Slider
+                          value={[qrOptions.imageOptions?.imageSize ? qrOptions.imageOptions.imageSize * 100 : 30]}
+                          min={10}
+                          max={50}
+                          step={1}
+                          onValueChange={(value) => {
+                            setQrOptions(prev => ({
+                              ...prev,
+                              imageOptions: {
+                                ...prev.imageOptions,
+                                imageSize: value[0] / 100
+                              }
+                            }));
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <div className="flex justify-between text-xs text-gray-500">
+                          <span>Small</span>
+                          <span>Large</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Card>
+              
+              {/* Styling */}
+              <Card className="p-6 hover:shadow-md transition-shadow">
+                <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Palette className="h-5 w-5" />
+                  Style Options
+                </div>
+                
+                <Tabs defaultValue="general">
+                  <TabsList className="mb-4">
+                    <TabsTrigger value="general" className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">General</TabsTrigger>
+                    <TabsTrigger value="dots" className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Dots</TabsTrigger>
+                    <TabsTrigger value="corners" className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Corners</TabsTrigger>
+                    <TabsTrigger value="colors" className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Colors</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="general" className="space-y-6">
+                    <div className="space-y-2">
+                      <Label>QR Code Size</Label>
                       <Slider
-                        value={[qrOptions.imageOptions?.imageSize ? qrOptions.imageOptions.imageSize * 100 : 30]}
-                        min={10}
-                        max={50}
-                        step={1}
-                        onValueChange={(value) => {
-                          setQrOptions(prev => ({
-                            ...prev,
-                            imageOptions: {
-                              ...prev.imageOptions,
-                              imageSize: value[0] / 100
-                            }
-                          }));
-                        }}
+                        value={[qrOptions.width]}
+                        min={100}
+                        max={500}
+                        step={10}
+                        onValueChange={(value) => updateQRStyle('size', value[0])}
+                        className="cursor-pointer"
                       />
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>Small</span>
+                        <span>Small (100px)</span>
+                        <span>Large (500px)</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Margin</Label>
+                      <Slider
+                        value={[qrOptions.margin]}
+                        min={0}
+                        max={40}
+                        step={5}
+                        onValueChange={(value) => updateQRStyle('margin', value[0])}
+                        className="cursor-pointer"
+                      />
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>None</span>
                         <span>Large</span>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            </Card>
-            
-            {/* Styling */}
-            <Card className="p-6">
-              <div className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Palette className="h-5 w-5" />
-                Style Options
-              </div>
-              
-              <Tabs defaultValue="general">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="general">General</TabsTrigger>
-                  <TabsTrigger value="dots">Dots</TabsTrigger>
-                  <TabsTrigger value="corners">Corners</TabsTrigger>
-                  <TabsTrigger value="colors">Colors</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="general" className="space-y-6">
-                  <div className="space-y-2">
-                    <Label>QR Code Size</Label>
-                    <Slider
-                      value={[qrOptions.width]}
-                      min={100}
-                      max={500}
-                      step={10}
-                      onValueChange={(value) => updateQRStyle('size', value[0])}
-                    />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>Small (100px)</span>
-                      <span>Large (500px)</span>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="error-correction">Error Correction Level</Label>
+                      <Select 
+                        value={qrOptions.qrOptions.errorCorrectionLevel}
+                        onValueChange={(value) => updateQRStyle('errorCorrection', value)}
+                      >
+                        <SelectTrigger id="error-correction" className="hover:border-primary focus:border-primary transition-colors">
+                          <SelectValue placeholder="Error Correction" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-900">
+                          <SelectItem value="L">Low (7%)</SelectItem>
+                          <SelectItem value="M">Medium (15%)</SelectItem>
+                          <SelectItem value="Q">Quartile (25%)</SelectItem>
+                          <SelectItem value="H">High (30%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-gray-500">
+                        Higher correction levels make QR codes more reliable but denser.
+                      </p>
                     </div>
-                  </div>
+                  </TabsContent>
                   
-                  <div className="space-y-2">
-                    <Label>Margin</Label>
-                    <Slider
-                      value={[qrOptions.margin]}
-                      min={0}
-                      max={40}
-                      step={5}
-                      onValueChange={(value) => updateQRStyle('margin', value[0])}
-                    />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>None</span>
-                      <span>Large</span>
+                  <TabsContent value="dots" className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="dots-style">Dots Style</Label>
+                      <Select 
+                        value={qrOptions.dotsOptions.type}
+                        onValueChange={(value) => updateQRStyle('dotsType', value)}
+                      >
+                        <SelectTrigger id="dots-style" className="hover:border-primary focus:border-primary transition-colors">
+                          <SelectValue placeholder="Dots Style" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-900">
+                          <SelectItem value="square">Square</SelectItem>
+                          <SelectItem value="dots">Dots</SelectItem>
+                          <SelectItem value="rounded">Rounded</SelectItem>
+                          <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
+                          <SelectItem value="classy">Classy</SelectItem>
+                          <SelectItem value="classy-rounded">Classy Rounded</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="error-correction">Error Correction Level</Label>
-                    <Select 
-                      value={qrOptions.qrOptions.errorCorrectionLevel}
-                      onValueChange={(value) => updateQRStyle('errorCorrection', value)}
-                    >
-                      <SelectTrigger id="error-correction">
-                        <SelectValue placeholder="Error Correction" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="L">Low (7%)</SelectItem>
-                        <SelectItem value="M">Medium (15%)</SelectItem>
-                        <SelectItem value="Q">Quartile (25%)</SelectItem>
-                        <SelectItem value="H">High (30%)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-gray-500">
-                      Higher correction levels make QR codes more reliable but denser.
-                    </p>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="dots" className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="dots-style">Dots Style</Label>
-                    <Select 
-                      value={qrOptions.dotsOptions.type}
-                      onValueChange={(value) => updateQRStyle('dotsType', value)}
-                    >
-                      <SelectTrigger id="dots-style">
-                        <SelectValue placeholder="Dots Style" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="square">Square</SelectItem>
-                        <SelectItem value="dots">Dots</SelectItem>
-                        <SelectItem value="rounded">Rounded</SelectItem>
-                        <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
-                        <SelectItem value="classy">Classy</SelectItem>
-                        <SelectItem value="classy-rounded">Classy Rounded</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="dots-color">Dots Color</Label>
-                    <div className="flex space-x-2">
-                      <Input
-                        id="dots-color"
-                        type="color"
-                        value={usingGradient 
-                          ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
-                          : qrOptions.dotsOptions.color}
-                        className="w-16 h-10 p-1"
-                        onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
-                      />
-                      <Input 
-                        value={usingGradient 
-                          ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
-                          : qrOptions.dotsOptions.color}
-                        className="flex-1"
-                        onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="corners" className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="corners-style">Corner Squares Style</Label>
-                    <Select 
-                      value={qrOptions.cornersSquareOptions.type}
-                      onValueChange={(value) => updateQRStyle('cornersType', value)}
-                    >
-                      <SelectTrigger id="corners-style">
-                        <SelectValue placeholder="Corner Style" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="square">Square</SelectItem>
-                        <SelectItem value="dot">Dot</SelectItem>
-                        <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="corners-color">Corner Squares Color</Label>
-                    <div className="flex space-x-2">
-                      <Input
-                        id="corners-color"
-                        type="color"
-                        value={usingGradient 
-                          ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
-                          : qrOptions.cornersSquareOptions.color}
-                        className="w-16 h-10 p-1"
-                        onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
-                      />
-                      <Input 
-                        value={usingGradient 
-                          ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
-                          : qrOptions.cornersSquareOptions.color}
-                        className="flex-1"
-                        onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="corner-dots-style">Corner Dots Style</Label>
-                    <Select 
-                      value={qrOptions.cornersDotOptions.type}
-                      onValueChange={(value) => updateQRStyle('cornersDotType', value)}
-                    >
-                      <SelectTrigger id="corner-dots-style">
-                        <SelectValue placeholder="Corner Dots Style" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="square">Square</SelectItem>
-                        <SelectItem value="dot">Dot</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="corner-dots-color">Corner Dots Color</Label>
-                    <div className="flex space-x-2">
-                      <Input
-                        id="corner-dots-color"
-                        type="color"
-                        value={usingGradient 
-                          ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
-                          : qrOptions.cornersDotOptions.color}
-                        className="w-16 h-10 p-1"
-                        onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
-                      />
-                      <Input 
-                        value={usingGradient 
-                          ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
-                          : qrOptions.cornersDotOptions.color}
-                        className="flex-1"
-                        onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="colors" className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="use-gradient">Use Gradient</Label>
-                    <Switch
-                      id="use-gradient"
-                      checked={usingGradient}
-                      onCheckedChange={(checked) => updateQRStyle('useGradient', checked)}
-                    />
-                  </div>
-                  
-                  {usingGradient && (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor="gradient-type">Gradient Type</Label>
-                        <Select 
-                          value={qrOptions.dotsOptions.gradient?.type || 'linear'}
-                          onValueChange={(value: 'linear' | 'radial') => updateQRStyle('gradientType', value)}
-                        >
-                          <SelectTrigger id="gradient-type">
-                            <SelectValue placeholder="Gradient Type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="linear">Linear</SelectItem>
-                            <SelectItem value="radial">Radial</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label>Gradient Rotation</Label>
-                        <Slider
-                          value={[qrOptions.dotsOptions.gradient?.rotation || 0]}
-                          min={0}
-                          max={360}
-                          step={15}
-                          onValueChange={(value) => updateQRStyle('gradientRotation', value[0])}
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="dots-color">Dots Color</Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="dots-color"
+                          type="color"
+                          value={usingGradient 
+                            ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
+                            : qrOptions.dotsOptions.color}
+                          className="w-16 h-10 p-1 cursor-pointer"
+                          onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
                         />
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>0°</span>
-                          <span>360°</span>
-                        </div>
+                        <Input 
+                          value={usingGradient 
+                            ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
+                            : qrOptions.dotsOptions.color}
+                          className="flex-1 hover:border-primary focus:border-primary transition-colors"
+                          onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
+                        />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="secondary-gradient-color">Secondary Gradient Color</Label>
-                        <div className="flex space-x-2">
-                          <Input
-                            id="secondary-gradient-color"
-                            type="color"
-                            value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
-                            className="w-16 h-10 p-1"
-                            onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
-                          />
-                          <Input 
-                            value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
-                            className="flex-1"
-                            onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  )}
+                    </div>
+                  </TabsContent>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="background-color">Background Color</Label>
-                    <div className="flex space-x-2">
-                      <Input
-                        id="background-color"
-                        type="color"
-                        value={qrOptions.backgroundOptions.color}
-                        className="w-16 h-10 p-1"
-                        onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
-                      />
-                      <Input 
-                        value={qrOptions.backgroundOptions.color}
-                        className="flex-1"
-                        onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
+                  <TabsContent value="corners" className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="corners-style">Corner Squares Style</Label>
+                      <Select 
+                        value={qrOptions.cornersSquareOptions.type}
+                        onValueChange={(value) => updateQRStyle('cornersType', value)}
+                      >
+                        <SelectTrigger id="corners-style" className="hover:border-primary focus:border-primary transition-colors">
+                          <SelectValue placeholder="Corner Style" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-900">
+                          <SelectItem value="square">Square</SelectItem>
+                          <SelectItem value="dot">Dot</SelectItem>
+                          <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="corners-color">Corner Squares Color</Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="corners-color"
+                          type="color"
+                          value={usingGradient 
+                            ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
+                            : qrOptions.cornersSquareOptions.color}
+                          className="w-16 h-10 p-1 cursor-pointer"
+                          onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
+                        />
+                        <Input 
+                          value={usingGradient 
+                            ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
+                            : qrOptions.cornersSquareOptions.color}
+                          className="flex-1 hover:border-primary focus:border-primary transition-colors"
+                          onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="corner-dots-style">Corner Dots Style</Label>
+                      <Select 
+                        value={qrOptions.cornersDotOptions.type}
+                        onValueChange={(value) => updateQRStyle('cornersDotType', value)}
+                      >
+                        <SelectTrigger id="corner-dots-style" className="hover:border-primary focus:border-primary transition-colors">
+                          <SelectValue placeholder="Corner Dots Style" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-900">
+                          <SelectItem value="square">Square</SelectItem>
+                          <SelectItem value="dot">Dot</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="corner-dots-color">Corner Dots Color</Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="corner-dots-color"
+                          type="color"
+                          value={usingGradient 
+                            ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
+                            : qrOptions.cornersDotOptions.color}
+                          className="w-16 h-10 p-1 cursor-pointer"
+                          onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
+                        />
+                        <Input 
+                          value={usingGradient 
+                            ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
+                            : qrOptions.cornersDotOptions.color}
+                          className="flex-1 hover:border-primary focus:border-primary transition-colors"
+                          onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="colors" className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="use-gradient">Use Gradient</Label>
+                      <Switch
+                        id="use-gradient"
+                        checked={usingGradient}
+                        onCheckedChange={(checked) => updateQRStyle('useGradient', checked)}
+                        className="cursor-pointer"
                       />
                     </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </Card>
+                    
+                    {usingGradient && (
+                      <>
+                        <div className="space-y-2">
+                          <Label htmlFor="gradient-type">Gradient Type</Label>
+                          <Select 
+                            value={qrOptions.dotsOptions.gradient?.type || 'linear'}
+                            onValueChange={(value: 'linear' | 'radial') => updateQRStyle('gradientType', value)}
+                          >
+                            <SelectTrigger id="gradient-type" className="hover:border-primary focus:border-primary transition-colors">
+                              <SelectValue placeholder="Gradient Type" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white dark:bg-gray-900">
+                              <SelectItem value="linear">Linear</SelectItem>
+                              <SelectItem value="radial">Radial</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label>Gradient Rotation</Label>
+                          <Slider
+                            value={[qrOptions.dotsOptions.gradient?.rotation || 0]}
+                            min={0}
+                            max={360}
+                            step={15}
+                            onValueChange={(value) => updateQRStyle('gradientRotation', value[0])}
+                            className="cursor-pointer"
+                          />
+                          <div className="flex justify-between text-xs text-gray-500">
+                            <span>0°</span>
+                            <span>360°</span>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="secondary-gradient-color">Secondary Gradient Color</Label>
+                          <div className="flex space-x-2">
+                            <Input
+                              id="secondary-gradient-color"
+                              type="color"
+                              value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
+                              className="w-16 h-10 p-1 cursor-pointer"
+                              onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
+                            />
+                            <Input 
+                              value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
+                              className="flex-1 hover:border-primary focus:border-primary transition-colors"
+                              onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="background-color">Background Color</Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="background-color"
+                          type="color"
+                          value={qrOptions.backgroundOptions.color}
+                          className="w-16 h-10 p-1 cursor-pointer"
+                          onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
+                        />
+                        <Input 
+                          value={qrOptions.backgroundOptions.color}
+                          className="flex-1 hover:border-primary focus:border-primary transition-colors"
+                          onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
-    </PageContainer>
+      </PageContainer>
+    </Layout>
   );
 };
 
