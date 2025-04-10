@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -27,6 +28,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/audio-trimmer",
     "/pdf-watermark",
     "/audio-to-qr",
+    "/audio-to-qr-code",
     "/pdf-to-qr-code"
   ];
   
