@@ -1,3 +1,4 @@
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -39,7 +40,6 @@ import TextToHandwriting from "./pages/TextToHandwriting";
 import TextToEmoji from "./pages/TextToEmoji";
 import VideoToQR from "./pages/VideoToQR";
 import FileRenamer from "./pages/FileRenamer";
-import { FileRenamerProvider } from "./components/file-renamer/FileRenamerProvider";
 import ComingSoon from "./pages/ComingSoon";
 import HowToUse from "./pages/HowToUse";
 import { restoreScrollPosition } from "./utils/scrollUtils";
@@ -151,8 +151,18 @@ const AppContent = () => {
         <Route path="/video-to-qr-code" element={<ComingSoon />} />
         <Route path="/text-to-handwriting" element={<ComingSoon />} />
         
-        <Route path="/image-to-qr" element={<ImageToQR />} />
-        <Route path="/image-to-qr-code" element={<ImageToQR />} />
+        <Route path="/image-to-qr" element={
+          <ComingSoon 
+            title="Image to QR Code Converter" 
+            description="Convert your images to scannable QR codes. This feature is coming soon!" 
+          />
+        } />
+        <Route path="/image-to-qr-code" element={
+          <ComingSoon 
+            title="Image to QR Code Converter" 
+            description="Convert your images to scannable QR codes. This feature is coming soon!" 
+          />
+        } />
         <Route path="/pdf-to-qr-code" element={<ComingSoon />} />
         <Route path="/audio-to-qr" element={
           <ComingSoon 
