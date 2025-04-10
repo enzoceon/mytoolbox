@@ -1,5 +1,6 @@
+
 import { IconType } from 'react-icons';
-import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles } from 'lucide-react';
+import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Music, Clipboard, Lock, ImageIcon, Info } from 'lucide-react';
 
 export interface ToolType {
   name: string;
@@ -276,12 +277,44 @@ const tools: ToolType[] = [
     isFunctional: false
   },
   {
-    name: "PDF Password Remover",
-    description: "Remove passwords from PDF files",
-    path: "/pdf-password-remover",
-    icon: FileType,
+    name: "PDF Locker",
+    description: "Password protect your PDF files for secure sharing",
+    path: "/pdf-locker",
+    icon: Lock,
     category: "utilities",
-    isFunctional: false
+    isFunctional: true
+  },
+  {
+    name: "Image Metadata Viewer",
+    description: "View and optionally remove EXIF data from images",
+    path: "/image-metadata",
+    icon: ImageIcon,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "File Metadata Viewer",
+    description: "View detailed metadata information for any file",
+    path: "/file-metadata",
+    icon: Info,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "Clipboard Manager",
+    description: "Store and organize multiple clipboard items",
+    path: "/clipboard-manager",
+    icon: Clipboard,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "Add Audio to Video",
+    description: "Add or replace audio tracks in videos",
+    path: "/add-audio-to-video",
+    icon: Music,
+    category: "video",
+    isFunctional: true
   },
   {
     name: "Pixelate Image Tool",
@@ -313,14 +346,6 @@ const tools: ToolType[] = [
     path: "/video-compressor",
     icon: FileVideo,
     category: "optimization",
-    isFunctional: false
-  },
-  {
-    name: "Video to QR Code",
-    description: "Convert videos to QR codes for easy sharing",
-    path: "/video-to-qr-code",
-    icon: QrCode,
-    category: "conversion",
     isFunctional: false
   }
 ];

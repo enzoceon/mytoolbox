@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -48,6 +47,11 @@ import HowToUse from "./pages/HowToUse";
 import { restoreScrollPosition } from "./utils/scrollUtils";
 import RemoveAudioFromVideo from "./pages/RemoveAudioFromVideo";
 import ExtractAudioFromVideo from "./pages/ExtractAudioFromVideo";
+import AddAudioToVideo from "./pages/AddAudioToVideo";
+import ClipboardManager from "./pages/ClipboardManager";
+import PdfLocker from "./pages/PdfLocker";
+import ImageMetadataViewer from "./pages/ImageMetadataViewer";
+import FileMetadataViewer from "./pages/FileMetadataViewer";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -125,10 +129,8 @@ const AppContent = () => {
         <Route path="/video-to-gif" element={<ComingSoon />} />
         <Route path="/gif-to-video" element={<ComingSoon />} />
         <Route path="/pdf-watermark" element={<ComingSoon />} />
-        <Route path="/add-audio-to-video" element={<ComingSoon />} />
         <Route path="/pdf-to-text" element={<ComingSoon />} />
         <Route path="/background-remover" element={<ComingSoon />} />
-        <Route path="/pdf-password-remover" element={<ComingSoon />} />
         <Route path="/pixelate-image" element={<ComingSoon />} />
         <Route path="/random-text" element={<ComingSoon />} />
         <Route path="/image-watermark" element={<ComingSoon />} />
@@ -160,6 +162,11 @@ const AppContent = () => {
         } />
         <Route path="/remove-audio-from-video" element={<RemoveAudioFromVideo />} />
         <Route path="/extract-audio-from-video" element={<ExtractAudioFromVideo />} />
+        <Route path="/add-audio-to-video" element={<AddAudioToVideo />} />
+        <Route path="/clipboard-manager" element={<ClipboardManager />} />
+        <Route path="/pdf-locker" element={<PdfLocker />} />
+        <Route path="/image-metadata" element={<ImageMetadataViewer />} />
+        <Route path="/file-metadata" element={<FileMetadataViewer />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>

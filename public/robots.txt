@@ -37,6 +37,11 @@ Allow: /cookies
 Allow: /contact
 Allow: /tools
 Allow: /pdf-to-image
+Allow: /add-audio-to-video
+Allow: /clipboard-manager
+Allow: /pdf-locker
+Allow: /image-metadata
+Allow: /file-metadata
 
 # Special directives for major search engines
 User-agent: Googlebot
