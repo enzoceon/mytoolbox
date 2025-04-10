@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import PageContainer from '@/components/PageContainer';
@@ -930,3 +931,356 @@ const QrCodeStyler = () => {
             
             {/* Logo */}
             <Card className="p-6">
+              <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Image className="h-5 w-5" />
+                Add Logo
+              </div>
+              
+              <div className="space-y-4">
+                {logoImage ? (
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="relative w-24 h-24 border rounded-lg overflow-hidden">
+                      <img src={logoImage} alt="Logo" className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm" onClick={removeLogo}>
+                        Remove Logo
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div 
+                    className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Click to upload your logo
+                    </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                      PNG, JPG, SVG up to 2MB
+                    </p>
+                  </div>
+                )}
+                
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                />
+                
+                {logoImage && (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Logo Size</Label>
+                      <Slider
+                        value={[qrOptions.imageOptions?.imageSize ? qrOptions.imageOptions.imageSize * 100 : 30]}
+                        min={10}
+                        max={50}
+                        step={1}
+                        onValueChange={(value) => {
+                          setQrOptions(prev => ({
+                            ...prev,
+                            imageOptions: {
+                              ...prev.imageOptions,
+                              imageSize: value[0] / 100
+                            }
+                          }));
+                        }}
+                      />
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>Small</span>
+                        <span>Large</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Card>
+            
+            {/* Styling */}
+            <Card className="p-6">
+              <div className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Palette className="h-5 w-5" />
+                Style Options
+              </div>
+              
+              <Tabs defaultValue="general">
+                <TabsList className="mb-4">
+                  <TabsTrigger value="general">General</TabsTrigger>
+                  <TabsTrigger value="dots">Dots</TabsTrigger>
+                  <TabsTrigger value="corners">Corners</TabsTrigger>
+                  <TabsTrigger value="colors">Colors</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="general" className="space-y-6">
+                  <div className="space-y-2">
+                    <Label>QR Code Size</Label>
+                    <Slider
+                      value={[qrOptions.width]}
+                      min={100}
+                      max={500}
+                      step={10}
+                      onValueChange={(value) => updateQRStyle('size', value[0])}
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>Small (100px)</span>
+                      <span>Large (500px)</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Margin</Label>
+                    <Slider
+                      value={[qrOptions.margin]}
+                      min={0}
+                      max={40}
+                      step={5}
+                      onValueChange={(value) => updateQRStyle('margin', value[0])}
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>None</span>
+                      <span>Large</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="error-correction">Error Correction Level</Label>
+                    <Select 
+                      value={qrOptions.qrOptions.errorCorrectionLevel}
+                      onValueChange={(value) => updateQRStyle('errorCorrection', value)}
+                    >
+                      <SelectTrigger id="error-correction">
+                        <SelectValue placeholder="Error Correction" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="L">Low (7%)</SelectItem>
+                        <SelectItem value="M">Medium (15%)</SelectItem>
+                        <SelectItem value="Q">Quartile (25%)</SelectItem>
+                        <SelectItem value="H">High (30%)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-gray-500">
+                      Higher correction levels make QR codes more reliable but denser.
+                    </p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="dots" className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="dots-style">Dots Style</Label>
+                    <Select 
+                      value={qrOptions.dotsOptions.type}
+                      onValueChange={(value) => updateQRStyle('dotsType', value)}
+                    >
+                      <SelectTrigger id="dots-style">
+                        <SelectValue placeholder="Dots Style" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="square">Square</SelectItem>
+                        <SelectItem value="dots">Dots</SelectItem>
+                        <SelectItem value="rounded">Rounded</SelectItem>
+                        <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
+                        <SelectItem value="classy">Classy</SelectItem>
+                        <SelectItem value="classy-rounded">Classy Rounded</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="dots-color">Dots Color</Label>
+                    <div className="flex space-x-2">
+                      <Input
+                        id="dots-color"
+                        type="color"
+                        value={usingGradient 
+                          ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
+                          : qrOptions.dotsOptions.color}
+                        className="w-16 h-10 p-1"
+                        onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
+                      />
+                      <Input 
+                        value={usingGradient 
+                          ? qrOptions.dotsOptions.gradient?.colorStops[0].color || '#6366f1'
+                          : qrOptions.dotsOptions.color}
+                        className="flex-1"
+                        onChange={(e) => updateQRStyle('dotsColor', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="corners" className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="corners-style">Corner Squares Style</Label>
+                    <Select 
+                      value={qrOptions.cornersSquareOptions.type}
+                      onValueChange={(value) => updateQRStyle('cornersType', value)}
+                    >
+                      <SelectTrigger id="corners-style">
+                        <SelectValue placeholder="Corner Style" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="square">Square</SelectItem>
+                        <SelectItem value="dot">Dot</SelectItem>
+                        <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="corners-color">Corner Squares Color</Label>
+                    <div className="flex space-x-2">
+                      <Input
+                        id="corners-color"
+                        type="color"
+                        value={usingGradient 
+                          ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
+                          : qrOptions.cornersSquareOptions.color}
+                        className="w-16 h-10 p-1"
+                        onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
+                      />
+                      <Input 
+                        value={usingGradient 
+                          ? qrOptions.cornersSquareOptions.gradient?.colorStops[0].color || '#8b5cf6'
+                          : qrOptions.cornersSquareOptions.color}
+                        className="flex-1"
+                        onChange={(e) => updateQRStyle('cornersColor', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="corner-dots-style">Corner Dots Style</Label>
+                    <Select 
+                      value={qrOptions.cornersDotOptions.type}
+                      onValueChange={(value) => updateQRStyle('cornersDotType', value)}
+                    >
+                      <SelectTrigger id="corner-dots-style">
+                        <SelectValue placeholder="Corner Dots Style" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="square">Square</SelectItem>
+                        <SelectItem value="dot">Dot</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="corner-dots-color">Corner Dots Color</Label>
+                    <div className="flex space-x-2">
+                      <Input
+                        id="corner-dots-color"
+                        type="color"
+                        value={usingGradient 
+                          ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
+                          : qrOptions.cornersDotOptions.color}
+                        className="w-16 h-10 p-1"
+                        onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
+                      />
+                      <Input 
+                        value={usingGradient 
+                          ? qrOptions.cornersDotOptions.gradient?.colorStops[0].color || '#6366f1'
+                          : qrOptions.cornersDotOptions.color}
+                        className="flex-1"
+                        onChange={(e) => updateQRStyle('cornersDotColor', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="colors" className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="use-gradient">Use Gradient</Label>
+                    <Switch
+                      id="use-gradient"
+                      checked={usingGradient}
+                      onCheckedChange={(checked) => updateQRStyle('useGradient', checked)}
+                    />
+                  </div>
+                  
+                  {usingGradient && (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="gradient-type">Gradient Type</Label>
+                        <Select 
+                          value={qrOptions.dotsOptions.gradient?.type || 'linear'}
+                          onValueChange={(value) => updateQRStyle('gradientType', value)}
+                        >
+                          <SelectTrigger id="gradient-type">
+                            <SelectValue placeholder="Gradient Type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="linear">Linear</SelectItem>
+                            <SelectItem value="radial">Radial</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label>Gradient Rotation</Label>
+                        <Slider
+                          value={[qrOptions.dotsOptions.gradient?.rotation || 0]}
+                          min={0}
+                          max={360}
+                          step={15}
+                          onValueChange={(value) => updateQRStyle('gradientRotation', value[0])}
+                        />
+                        <div className="flex justify-between text-xs text-gray-500">
+                          <span>0°</span>
+                          <span>360°</span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="secondary-gradient-color">Secondary Gradient Color</Label>
+                        <div className="flex space-x-2">
+                          <Input
+                            id="secondary-gradient-color"
+                            type="color"
+                            value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
+                            className="w-16 h-10 p-1"
+                            onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
+                          />
+                          <Input 
+                            value={qrOptions.dotsOptions.gradient?.colorStops[1]?.color || '#8b5cf6'}
+                            className="flex-1"
+                            onChange={(e) => updateQRStyle('secondaryGradientColor', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="background-color">Background Color</Label>
+                    <div className="flex space-x-2">
+                      <Input
+                        id="background-color"
+                        type="color"
+                        value={qrOptions.backgroundOptions.color}
+                        className="w-16 h-10 p-1"
+                        onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
+                      />
+                      <Input 
+                        value={qrOptions.backgroundOptions.color}
+                        className="flex-1"
+                        onChange={(e) => updateQRStyle('backgroundColor', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </PageContainer>
+  );
+};
+
+export default QrCodeStyler;
