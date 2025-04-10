@@ -40,7 +40,7 @@ export const categories: CategoryType[] = [
   { id: 'animation', name: 'Animation Tools' }
 ];
 
-export const tools: ToolType[] = [
+const originalTools: ToolType[] = [
   {
     id: 'image-to-pdf',
     name: 'Image to PDF',
@@ -483,6 +483,12 @@ export const tools: ToolType[] = [
     category: 'animation'
   }
 ];
+
+export const tools: ToolType[] = originalTools.map(tool => 
+  (tool.path === '/image-to-qr' || tool.path === '/image-to-qr-code')
+    ? { ...tool, isFunctional: false }
+    : tool
+);
 
 export const getToolsByCategory = (categoryId: string): ToolType[] => {
   return tools.filter(tool => tool.category === categoryId);

@@ -29,7 +29,9 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/pdf-watermark",
     "/audio-to-qr",
     "/audio-to-qr-code",
-    "/pdf-to-qr-code"
+    "/pdf-to-qr-code",
+    "/image-to-qr",
+    "/image-to-qr-code"
   ];
   
   // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card
