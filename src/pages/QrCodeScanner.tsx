@@ -9,7 +9,7 @@ import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Camera, FileUp, Copy, AlertCircle } from 'lucide-react';
+import { Upload, Camera, FileUp, Copy, AlertCircle, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import UploadBox from '@/components/UploadBox';
@@ -279,8 +279,9 @@ const QrCodeScanner = () => {
                     acceptedFileTypes="image/*"
                     onFileSelect={handleImageUpload}
                     multiple={false}
-                    icon={<FileUp size={40} />}
-                  />
+                  >
+                    <FileUp size={40} />
+                  </UploadBox>
                 </Card>
               </TabsContent>
             </Tabs>
