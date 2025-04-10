@@ -28,7 +28,10 @@ import { SliderWithTooltip } from '@/components/SliderWithTooltip';
 import { Download, Share2, Copy, Check } from 'lucide-react';
 import { ColorPicker } from '@/components/color-picker/ColorPicker';
 import { toast } from "sonner";
-import type { QRCodeErrorCorrectionLevel, QRCodeRenderersOptions, QRCodeToDataURLOptions } from 'qrcode';
+import QRCode from 'qrcode';
+
+// Define proper types for QR code parameters
+type QRCodeErrorCorrectionLevel = 'L' | 'M' | 'H';
 
 const QrCodeGenerator = () => {
   const [qrCodeData, setQrCodeData] = useState('https://mytoolbox.site');
@@ -101,20 +104,14 @@ const QrCodeGenerator = () => {
     if (!qrCodeData) return;
     
     try {
-      // Import QRCode.js dynamically to avoid SSR issues
-      const QRCode = (await import('qrcode')).default;
-      
       // Generate QR code with enhanced options for ultra high quality
-      const options: QRCodeToDataURLOptions = {
+      const options = {
         errorCorrectionLevel: errorCorrectionLevel,
         margin: quietZone,
         width: qrSize,
         color: {
           dark: fgColor,
           light: bgColor
-        },
-        rendererOpts: {
-          quality: 1.0 // Highest quality rendering
         }
       };
       
@@ -124,16 +121,7 @@ const QrCodeGenerator = () => {
       
       // Also draw on canvas for additional customization options
       if (canvasRef.current) {
-        const canvasOptions: QRCodeRenderersOptions = {
-          errorCorrectionLevel: errorCorrectionLevel,
-          margin: quietZone,
-          width: qrSize,
-          color: {
-            dark: fgColor,
-            light: bgColor
-          }
-        };
-        await QRCode.toCanvas(canvasRef.current, qrCodeData, canvasOptions);
+        await QRCode.toCanvas(canvasRef.current, qrCodeData, options);
       }
     } catch (err) {
       toast.error("Error generating QR code");
@@ -144,13 +132,32 @@ const QrCodeGenerator = () => {
   const handleDownload = () => {
     if (!qrCodeUrl) return;
     
-    const link = document.createElement('a');
-    link.download = 'qrcode.png';
-    link.href = qrCodeUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success("QR code downloaded");
+    // Create a higher resolution version for download
+    const canvas = document.createElement('canvas');
+    canvas.width = qrSize * 4; // 4x the display size for higher quality
+    canvas.height = qrSize * 4;
+    
+    const img = new Image();
+    img.onload = () => {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      
+      // Use high-quality scaling
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      // Export as PNG for highest quality
+      const highQualityUrl = canvas.toDataURL('image/png');
+      
+      const link = document.createElement('a');
+      link.download = 'high-quality-qrcode.png';
+      link.href = highQualityUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("High-quality QR code downloaded");
+    };
+    img.src = qrCodeUrl;
   };
   
   const handleCopyToClipboard = async () => {
@@ -326,28 +333,28 @@ const QrCodeGenerator = () => {
                           setContactTitle(e.target.value);
                           setTimeout(updateContactVcard, 0);
                         }}
-                        placeholder="Software Engineer"
+                        placeholder="Software Developer"
                       />
                     </div>
-                    <div className="space-y-2 sm:col-span-2">
-                      <Label htmlFor="address">Address</Label>
-                      <Input 
-                        id="address" 
-                        value={contactAddress} 
-                        onChange={(e) => {
-                          setContactAddress(e.target.value);
-                          setTimeout(updateContactVcard, 0);
-                        }}
-                        placeholder="123 Main St, City, Country"
-                      />
-                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="address">Address</Label>
+                    <Input 
+                      id="address" 
+                      value={contactAddress} 
+                      onChange={(e) => {
+                        setContactAddress(e.target.value);
+                        setTimeout(updateContactVcard, 0);
+                      }}
+                      placeholder="123 Main St, City, Country"
+                    />
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="wifi" className="mt-4 space-y-4">
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="ssid">Network Name (SSID)</Label>
+                      <Label htmlFor="ssid">WiFi Network Name (SSID)</Label>
                       <Input 
                         id="ssid" 
                         value={wifiSsid} 
@@ -355,7 +362,7 @@ const QrCodeGenerator = () => {
                           setWifiSsid(e.target.value);
                           setTimeout(updateWifiData, 0);
                         }}
-                        placeholder="WiFi Network Name"
+                        placeholder="My WiFi Network"
                       />
                     </div>
                     <div className="space-y-2">
@@ -381,25 +388,25 @@ const QrCodeGenerator = () => {
                         }}
                       >
                         <SelectTrigger id="encryption">
-                          <SelectValue placeholder="Select encryption type" />
+                          <SelectValue placeholder="Select encryption" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="WPA">WPA/WPA2</SelectItem>
+                          <SelectItem value="WPA">WPA/WPA2/WPA3</SelectItem>
                           <SelectItem value="WEP">WEP</SelectItem>
-                          <SelectItem value="nopass">None</SelectItem>
+                          <SelectItem value="nopass">No Password</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <input 
-                        type="checkbox" 
-                        id="hidden" 
-                        className="rounded" 
-                        checked={wifiHidden} 
+                      <input
+                        type="checkbox"
+                        id="hidden"
+                        checked={wifiHidden}
                         onChange={(e) => {
                           setWifiHidden(e.target.checked);
                           setTimeout(updateWifiData, 0);
                         }}
+                        className="rounded border-gray-300"
                       />
                       <Label htmlFor="hidden">Hidden Network</Label>
                     </div>
@@ -407,139 +414,132 @@ const QrCodeGenerator = () => {
                 </TabsContent>
               </Tabs>
             </CardContent>
-            
-            <CardHeader className="pt-0">
-              <CardTitle>QR Code Options</CardTitle>
-              <CardDescription>
-                Customize the appearance of your QR code
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <Label htmlFor="size">Size (pixels)</Label>
-                    <span className="text-sm text-muted-foreground">{qrSize}px</span>
-                  </div>
-                  <SliderWithTooltip 
-                    id="size"
-                    min={100} 
-                    max={1000} 
-                    step={10} 
-                    value={[qrSize]} 
-                    onValueChange={(values) => setQrSize(values[0])}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <Label htmlFor="quiet-zone">Quiet Zone Size</Label>
-                    <span className="text-sm text-muted-foreground">{quietZone} modules</span>
-                  </div>
-                  <SliderWithTooltip 
-                    id="quiet-zone"
-                    min={0} 
-                    max={10} 
-                    step={1} 
-                    value={[quietZone]} 
-                    onValueChange={(values) => setQuietZone(values[0])}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="error-correction">Error Correction Level</Label>
-                  <Select 
-                    value={errorCorrectionLevel} 
-                    onValueChange={(value) => setErrorCorrectionLevel(value as QRCodeErrorCorrectionLevel)}
-                  >
-                    <SelectTrigger id="error-correction">
-                      <SelectValue placeholder="Select error correction level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="L">Low (7%)</SelectItem>
-                      <SelectItem value="M">Medium (15%)</SelectItem>
-                      <SelectItem value="H">High (30%)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Higher correction allows QR code to be readable even if partially damaged or covered.
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Foreground Color</Label>
-                    <ColorPicker 
-                      color={fgColor} 
-                      onChange={setFgColor} 
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Background Color</Label>
-                    <ColorPicker 
-                      color={bgColor} 
-                      onChange={setBgColor} 
-                      className="w-full"
-                    />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader>
-              <CardTitle>QR Code Preview</CardTitle>
-              <CardDescription>
-                Scan this code with a QR code scanner to test
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center py-6">
-              <div className="flex flex-col items-center">
-                <div className="relative">
-                  {qrCodeUrl ? (
-                    <img 
-                      src={qrCodeUrl} 
-                      alt="QR Code" 
-                      className="max-w-full rounded-lg shadow-md border"
-                      style={{ width: qrSize + 'px', height: qrSize + 'px' }}
-                    />
-                  ) : (
-                    <div 
-                      className="bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center"
-                      style={{ width: qrSize + 'px', height: qrSize + 'px' }}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>QR Code Settings</CardTitle>
+                <CardDescription>
+                  Customize the appearance of your QR code
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="error-level">Error Correction Level</Label>
+                    <Select 
+                      value={errorCorrectionLevel} 
+                      onValueChange={(value) => setErrorCorrectionLevel(value as QRCodeErrorCorrectionLevel)}
                     >
-                      Generating...
+                      <SelectTrigger id="error-level">
+                        <SelectValue placeholder="Select level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="L">Low (7%)</SelectItem>
+                        <SelectItem value="M">Medium (15%)</SelectItem>
+                        <SelectItem value="H">High (30%)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Higher correction levels make QR codes more resistant to damage but increase complexity.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label htmlFor="qr-size">QR Code Size (px): {qrSize}</Label>
                     </div>
-                  )}
-                  {/* Hidden canvas for additional customization options */}
-                  <canvas 
-                    ref={canvasRef} 
-                    className="hidden" 
-                    width={qrSize} 
-                    height={qrSize}
-                  />
+                    <SliderWithTooltip
+                      id="qr-size"
+                      value={[qrSize]}
+                      min={100}
+                      max={1000}
+                      step={10}
+                      onValueChange={(values) => setQrSize(values[0])}
+                      className="py-2"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label htmlFor="quiet-zone">Quiet Zone (Margin): {quietZone}</Label>
+                    </div>
+                    <SliderWithTooltip
+                      id="quiet-zone"
+                      value={[quietZone]}
+                      min={0}
+                      max={10}
+                      step={1}
+                      onValueChange={(values) => setQuietZone(values[0])}
+                      className="py-2"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      The quiet zone is the white space around the QR code that improves scanning reliability.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Foreground Color</Label>
+                      <ColorPicker 
+                        color={fgColor} 
+                        onChange={setFgColor} 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Background Color</Label>
+                      <ColorPicker 
+                        color={bgColor} 
+                        onChange={setBgColor} 
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-center gap-4 flex-wrap">
-              <Button onClick={handleDownload} className="flex items-center gap-2">
-                <Download size={16} />
-                Download
-              </Button>
-              <Button onClick={handleCopyToClipboard} variant="outline" className="flex items-center gap-2">
-                {copied ? <Check size={16} /> : <Copy size={16} />}
-                {copied ? 'Copied' : 'Copy to Clipboard'}
-              </Button>
-              {navigator.share && (
-                <Button onClick={handleShare} variant="outline" className="flex items-center gap-2">
-                  <Share2 size={16} />
-                  Share
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>QR Code Preview</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center">
+                <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
+                  <canvas ref={canvasRef} width={qrSize} height={qrSize} className="max-w-full h-auto"></canvas>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-wrap gap-2 justify-center">
+                <Button
+                  onClick={handleDownload}
+                  className="flex-1 bg-gradient-primary text-white"
+                  disabled={!qrCodeUrl}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Ultra HD
                 </Button>
-              )}
-            </CardFooter>
-          </Card>
+                <Button
+                  onClick={handleCopyToClipboard}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={!qrCodeUrl}
+                >
+                  {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                  {copied ? "Copied" : "Copy to Clipboard"}
+                </Button>
+                {navigator.share && (
+                  <Button
+                    onClick={handleShare}
+                    variant="secondary"
+                    className="flex-1"
+                    disabled={!qrCodeUrl}
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Share
+                  </Button>
+                )}
+              </CardFooter>
+            </Card>
+          </div>
         </div>
       </PageContainer>
     </Layout>
