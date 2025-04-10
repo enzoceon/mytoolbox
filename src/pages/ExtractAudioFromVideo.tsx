@@ -1,7 +1,6 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Download } from 'lucide-react';
 import BackButton from '@/components/BackButton';
@@ -9,14 +8,15 @@ import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
+import ExtractAudioFromVideoSEO from '@/components/SEO/ExtractAudioFromVideoSEO';
 
 const ExtractAudioFromVideo = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const handleFileSelect = (files: FileList) => {
@@ -25,6 +25,7 @@ const ExtractAudioFromVideo = () => {
       if (file.type.startsWith('video/')) {
         setVideoFile(file);
         setOutputUrl(null);
+        setProgress(0);
         
         // Display preview
         const url = URL.createObjectURL(file);
@@ -41,7 +42,7 @@ const ExtractAudioFromVideo = () => {
     }
   };
   
-  const handleProcess = () => {
+  const handleProcess = async () => {
     if (!videoFile) {
       toast({
         title: "No video selected",
@@ -52,23 +53,100 @@ const ExtractAudioFromVideo = () => {
     }
     
     setIsProcessing(true);
+    setProgress(0);
     
-    // Simulating processing time
-    setTimeout(() => {
-      // In a real implementation, we would use a library like FFmpeg.wasm
-      // to actually extract the audio from the video
+    try {
+      // Create a URL from the video file
+      const videoURL = URL.createObjectURL(videoFile);
       
-      // For now, we'll just create an audio element with the video as source
-      const url = URL.createObjectURL(videoFile);
-      setOutputUrl(url);
+      // Create audio context
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Set up media element source
+      const mediaElement = document.createElement('video');
+      mediaElement.src = videoURL;
+      await mediaElement.play();
+      mediaElement.pause();
+      
+      // Create media element source
+      const mediaSource = audioContext.createMediaElementSource(mediaElement);
+      
+      // Create a media stream destination
+      const destination = audioContext.createMediaStreamDestination();
+      
+      // Connect the media source to the destination
+      mediaSource.connect(destination);
+      
+      // Create a media recorder to record the audio stream
+      const mediaRecorder = new MediaRecorder(destination.stream);
+      const audioChunks: Blob[] = [];
+      
+      // Set up event listeners for the media recorder
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+      
+      mediaRecorder.onstart = () => {
+        mediaElement.currentTime = 0;
+        mediaElement.play();
+      };
+      
+      // Progress tracking
+      const duration = mediaElement.duration || 0;
+      const updateProgress = () => {
+        if (mediaElement.currentTime && duration) {
+          const newProgress = Math.min(100, Math.round((mediaElement.currentTime / duration) * 100));
+          setProgress(newProgress);
+        }
+        
+        if (mediaElement.currentTime < duration) {
+          requestAnimationFrame(updateProgress);
+        }
+      };
+      
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        setOutputUrl(audioUrl);
+        setIsProcessing(false);
+        setProgress(100);
+        
+        // Set the audio source for playback
+        if (audioRef.current) {
+          audioRef.current.src = audioUrl;
+        }
+        
+        toast({
+          title: "Audio extracted successfully",
+          description: "Your audio file is ready to play and download",
+          variant: "default",
+        });
+      };
+      
+      // Start recording
+      mediaRecorder.start();
+      updateProgress();
+      
+      // Listen for the end of the video
+      mediaElement.onended = () => {
+        mediaRecorder.stop();
+        mediaElement.onended = null;
+      };
+      
+    } catch (error) {
+      console.error('Audio extraction error:', error);
       setIsProcessing(false);
+      setProgress(0);
       
       toast({
-        title: "Audio extracted successfully",
-        description: "Your audio file is ready to play and download",
-        variant: "default",
+        title: "Extraction failed",
+        description: "There was an error extracting the audio. Please try again.",
+        variant: "destructive",
       });
-    }, 2000);
+    }
   };
   
   const handleDownload = () => {
@@ -79,19 +157,31 @@ const ExtractAudioFromVideo = () => {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      
+      toast({
+        title: "Download started",
+        description: "Your audio file will download shortly",
+        variant: "default",
+      });
     }
   };
   
   const handleReset = () => {
-    setVideoFile(null);
-    setOutputUrl(null);
-    if (inputRef.current) inputRef.current.value = '';
     if (videoRef.current) videoRef.current.src = '';
     if (audioRef.current) audioRef.current.src = '';
+    
+    if (outputUrl) {
+      URL.revokeObjectURL(outputUrl);
+    }
+    
+    setVideoFile(null);
+    setOutputUrl(null);
+    setProgress(0);
   };
   
   return (
     <div className="flex flex-col min-h-screen">
+      <ExtractAudioFromVideoSEO />
       <Header />
       
       <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
@@ -143,7 +233,7 @@ const ExtractAudioFromVideo = () => {
               className="hover:bg-primary/90 transition-colors"
             >
               {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Extract Audio
+              {isProcessing ? `Processing ${progress}%` : 'Extract Audio'}
             </Button>
           </CardFooter>
         </Card>

@@ -1,22 +1,23 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Upload, Download } from 'lucide-react';
+import { Loader2, Download } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
 import RemoveAudioFromVideoSEO from '@/components/SEO/RemoveAudioFromVideoSEO';
+import { Progress } from '@/components/ui/progress';
 
 const RemoveAudioFromVideo = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const outputVideoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
 
   const handleFileSelect = (files: FileList) => {
@@ -25,6 +26,7 @@ const RemoveAudioFromVideo = () => {
       if (file.type.startsWith('video/')) {
         setVideoFile(file);
         setOutputUrl(null);
+        setProgress(0);
         
         const url = URL.createObjectURL(file);
         if (videoRef.current) {
@@ -40,7 +42,7 @@ const RemoveAudioFromVideo = () => {
     }
   };
   
-  const handleProcess = () => {
+  const handleProcess = async () => {
     if (!videoFile) {
       toast({
         title: "No video selected",
@@ -51,36 +53,130 @@ const RemoveAudioFromVideo = () => {
     }
     
     setIsProcessing(true);
+    setProgress(0);
     
-    setTimeout(() => {
-      const url = URL.createObjectURL(videoFile);
-      setOutputUrl(url);
+    try {
+      // Create a URL from the video file
+      const videoURL = URL.createObjectURL(videoFile);
+      
+      // Create a video element to load the source video
+      const sourceVideo = document.createElement('video');
+      sourceVideo.src = videoURL;
+      
+      // Wait for the video to be loaded
+      await new Promise((resolve) => {
+        sourceVideo.onloadedmetadata = resolve;
+        sourceVideo.load();
+      });
+      
+      // Create a canvas element to capture video frames
+      const canvas = document.createElement('canvas');
+      canvas.width = sourceVideo.videoWidth;
+      canvas.height = sourceVideo.videoHeight;
+      const ctx = canvas.getContext('2d');
+      
+      if (!ctx) {
+        throw new Error('Failed to get canvas context');
+      }
+      
+      // Set up MediaRecorder to record from canvas
+      const stream = canvas.captureStream();
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm;codecs=vp9',
+      });
+      
+      const chunks: Blob[] = [];
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data);
+        }
+      };
+      
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        
+        setOutputUrl(url);
+        setIsProcessing(false);
+        setProgress(100);
+        
+        if (outputVideoRef.current) {
+          outputVideoRef.current.src = url;
+        }
+        
+        toast({
+          title: "Audio removed successfully",
+          description: "Your video is ready to download",
+          variant: "default",
+        });
+      };
+      
+      // Start recording
+      mediaRecorder.start();
+      
+      // Function to draw frames at the video's frame rate
+      const drawFrame = () => {
+        if (sourceVideo.ended || !isProcessing) {
+          mediaRecorder.stop();
+          return;
+        }
+        
+        // Draw the current frame to the canvas
+        ctx.drawImage(sourceVideo, 0, 0, canvas.width, canvas.height);
+        
+        // Update progress
+        const currentProgress = Math.min(100, Math.round((sourceVideo.currentTime / sourceVideo.duration) * 100));
+        setProgress(currentProgress);
+        
+        // Request the next frame
+        requestAnimationFrame(drawFrame);
+      };
+      
+      // Start playback and drawing frames
+      sourceVideo.onplay = drawFrame;
+      sourceVideo.play();
+      
+    } catch (error) {
+      console.error('Remove audio error:', error);
       setIsProcessing(false);
+      setProgress(0);
       
       toast({
-        title: "Audio removed successfully",
-        description: "Your video is ready to download",
-        variant: "default",
+        title: "Process failed",
+        description: "There was an error removing the audio. Please try again.",
+        variant: "destructive",
       });
-    }, 2000);
+    }
   };
   
   const handleDownload = () => {
     if (outputUrl) {
       const a = document.createElement('a');
       a.href = outputUrl;
-      a.download = `no_audio_${videoFile?.name || 'video.mp4'}`;
+      a.download = `no_audio_${videoFile?.name || 'video.webm'}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      
+      toast({
+        title: "Download started",
+        description: "Your video will download shortly",
+        variant: "default",
+      });
     }
   };
   
   const handleReset = () => {
+    if (videoRef.current) videoRef.current.src = '';
+    if (outputVideoRef.current) outputVideoRef.current.src = '';
+    
+    if (outputUrl) {
+      URL.revokeObjectURL(outputUrl);
+    }
+    
     setVideoFile(null);
     setOutputUrl(null);
-    if (inputRef.current) inputRef.current.value = '';
-    if (videoRef.current) videoRef.current.src = '';
+    setProgress(0);
   };
   
   return (
@@ -123,22 +219,33 @@ const RemoveAudioFromVideo = () => {
               )}
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button 
-              variant="outline" 
-              onClick={handleReset}
-              className="hover:bg-secondary hover:text-secondary-foreground transition-colors"
-            >
-              Reset
-            </Button>
-            <Button 
-              onClick={handleProcess} 
-              disabled={!videoFile || isProcessing}
-              className="hover:bg-primary/90 transition-colors"
-            >
-              {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Remove Audio
-            </Button>
+          <CardFooter className="flex flex-col space-y-4 w-full">
+            {isProcessing && (
+              <div className="w-full space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Processing video...</span>
+                  <span>{progress}%</span>
+                </div>
+                <Progress value={progress} className="w-full" />
+              </div>
+            )}
+            <div className="flex justify-between w-full">
+              <Button 
+                variant="outline" 
+                onClick={handleReset}
+                className="hover:bg-secondary hover:text-secondary-foreground transition-colors"
+              >
+                Reset
+              </Button>
+              <Button 
+                onClick={handleProcess} 
+                disabled={!videoFile || isProcessing}
+                className="hover:bg-primary/90 transition-colors"
+              >
+                {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Remove Audio
+              </Button>
+            </div>
           </CardFooter>
         </Card>
         
@@ -150,7 +257,7 @@ const RemoveAudioFromVideo = () => {
             </CardHeader>
             <CardContent>
               <video 
-                src={outputUrl} 
+                ref={outputVideoRef}
                 controls 
                 className="w-full rounded-md border border-input"
                 style={{ maxHeight: '300px' }}

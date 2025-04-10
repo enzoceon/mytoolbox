@@ -52,6 +52,8 @@ import ClipboardManager from "./pages/ClipboardManager";
 import PdfLocker from "./pages/PdfLocker";
 import ImageMetadataViewer from "./pages/ImageMetadataViewer";
 import FileMetadataViewer from "./pages/FileMetadataViewer";
+import GifToVideo from "./pages/GifToVideo";
+import VideoToGif from "./pages/VideoToGif";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -126,8 +128,8 @@ const AppContent = () => {
         <Route path="/ai-text-generator" element={<ComingSoon />} />
         <Route path="/ai-content-summarizer" element={<ComingSoon />} />
         <Route path="/audio-trimmer" element={<ComingSoon />} />
-        <Route path="/video-to-gif" element={<ComingSoon />} />
-        <Route path="/gif-to-video" element={<ComingSoon />} />
+        <Route path="/video-to-gif" element={<VideoToGif />} />
+        <Route path="/gif-to-video" element={<GifToVideo />} />
         <Route path="/pdf-watermark" element={<ComingSoon />} />
         <Route path="/pdf-to-text" element={<ComingSoon />} />
         <Route path="/background-remover" element={<ComingSoon />} />
