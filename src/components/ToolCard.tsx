@@ -27,7 +27,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/ai-content-summarizer",
     "/audio-trimmer",
     "/pdf-watermark"
-    // Removed tools that are now functional
+    // These tools are now functional and removed from this list
   ];
   
   // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card
