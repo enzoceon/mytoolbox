@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Download, Palette, Image as ImageIcon, FileImage, Copy, Qr, 
+  Download, Palette, Image as ImageIcon, FileImage, Copy, 
   Check, AlertCircle, Trash, Upload, Globe, Phone, Mail, MessageSquare,
   Smartphone, QrCode, Plus, Minus, Settings, Scale, User
 } from 'lucide-react';
