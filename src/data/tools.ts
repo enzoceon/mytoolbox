@@ -317,7 +317,8 @@ const originalTools: ToolType[] = [
     description: 'Convert images to scannable QR codes',
     path: '/image-to-qr-code',
     icon: QrCode,
-    category: 'qrcode'
+    category: 'qrcode',
+    isFunctional: false
   },
   {
     id: 'video-to-qr-code',
@@ -484,11 +485,7 @@ const originalTools: ToolType[] = [
   }
 ];
 
-export const tools: ToolType[] = originalTools.map(tool => 
-  (tool.path === '/image-to-qr' || tool.path === '/image-to-qr-code')
-    ? { ...tool, isFunctional: false }
-    : tool
-);
+export const tools: ToolType[] = originalTools;
 
 export const getToolsByCategory = (categoryId: string): ToolType[] => {
   return tools.filter(tool => tool.category === categoryId);
