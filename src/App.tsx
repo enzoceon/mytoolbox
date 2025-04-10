@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,8 +11,8 @@ import AllTools from "./pages/AllTools";
 import PdfToImage from "./pages/PdfToImage";
 import JPGtoPNG from "./pages/JPGtoPNG";
 import QrCodeGenerator from "./pages/QrCodeGenerator";
-import QrCodeScanner from "./pages/QrCodeScanner"; // Add Scanner
-import QrCodeStyler from "./pages/QrCodeStyler"; // Add Styler
+import QrCodeScanner from "./pages/QrCodeScanner";
+import QrCodeStyler from "./pages/QrCodeStyler";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
