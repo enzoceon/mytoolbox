@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -13,7 +14,6 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   
   // List of paths for tools that are not functional (coming soon)
   const comingSoonPaths = [
-    "/ai-image-generator",
     "/text-to-handwriting",
     "/pdf-to-text",
     "/background-remover",
