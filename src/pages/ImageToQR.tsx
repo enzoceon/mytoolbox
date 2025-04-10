@@ -1,7 +1,6 @@
-
 import React, { useState, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Layout } from '@/components/layout';
+import Layout from '@/components/layout';
 import PageHeader from '@/components/PageHeader';
 import BackButton from '@/components/BackButton';
 import UploadBox from '@/components/UploadBox';
@@ -79,7 +78,7 @@ const ImageToQR = () => {
       let imageData = imagePreview;
       
       if (enableCompression) {
-        const img = new window.Image();
+        const img = new Image();
         img.src = imagePreview;
         await new Promise<void>((resolve) => {
           img.onload = () => resolve();
@@ -205,7 +204,11 @@ const ImageToQR = () => {
                     variant="destructive" 
                     size="sm" 
                     className="absolute top-2 right-2"
-                    onClick={handleRemoveImage}
+                    onClick={() => {
+                      setSelectedImage(null);
+                      setImagePreview(null);
+                      setQrCodeImage(null);
+                    }}
                   >
                     Remove
                   </Button>
@@ -308,7 +311,16 @@ const ImageToQR = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={resetSettings}
+                        onClick={() => {
+                          setErrorCorrectionLevel('M');
+                          setQrSize(300);
+                          setDarkColor('#000000');
+                          setLightColor('#FFFFFF');
+                          setMargin(1);
+                          setEnableCompression(true);
+                          
+                          toast.info("Settings reset to default values");
+                        }}
                       >
                         <RefreshCw className="h-4 w-4 mr-2" />
                         Reset Settings
@@ -364,7 +376,18 @@ const ImageToQR = () => {
                 
                 <div className="flex gap-3">
                   <Button
-                    onClick={handleDownload}
+                    onClick={() => {
+                      if (!qrCodeImage) return;
+                      
+                      const link = document.createElement('a');
+                      link.href = qrCodeImage;
+                      link.download = 'image-qr-code.png';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      
+                      toast.success("QR code downloaded successfully!");
+                    }}
                     className="flex-1 bg-accent text-white"
                   >
                     <Download className="h-4 w-4 mr-2" />
@@ -372,7 +395,22 @@ const ImageToQR = () => {
                   </Button>
                   
                   <Button
-                    onClick={copyToClipboard}
+                    onClick={async () => {
+                      if (!qrCodeImage) return;
+                      
+                      try {
+                        const blob = await fetch(qrCodeImage).then(r => r.blob());
+                        await navigator.clipboard.write([
+                          new ClipboardItem({
+                            [blob.type]: blob
+                          })
+                        ]);
+                        toast.success("QR code copied to clipboard!");
+                      } catch (err) {
+                        console.error('Failed to copy:', err);
+                        toast.error("Failed to copy to clipboard. Please try downloading instead.");
+                      }
+                    }}
                     variant="outline"
                     className="flex-1"
                   >

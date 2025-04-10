@@ -154,6 +154,7 @@ const AppContent = () => {
         <Route path="/text-to-handwriting" element={<ComingSoon />} />
         
         <Route path="/image-to-qr" element={<ImageToQR />} />
+        <Route path="/image-to-qr-code" element={<ImageToQR />} />
         <Route path="/video-to-qr" element={<VideoToQR />} />
         <Route path="/audio-to-qr" element={<AudioToQR />} />
         

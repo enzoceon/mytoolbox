@@ -62,13 +62,13 @@ const Footer = () => {
             {/* Social Media Icons */}
             <div className="flex items-center space-x-3 pt-2">
               <span 
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white opacity-50 cursor-not-allowed"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="YouTube"
               >
                 <Youtube size={16} />
               </span>
               <span 
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white opacity-50 cursor-not-allowed"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Twitter"
               >
                 <Twitter size={16} />
@@ -83,13 +83,13 @@ const Footer = () => {
                 <Instagram size={16} />
               </a>
               <span 
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white opacity-50 cursor-not-allowed"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Facebook"
               >
                 <Facebook size={16} />
               </span>
               <span 
-                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white opacity-50 cursor-not-allowed"
+                className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="TikTok"
               >
                 <TikTokIcon size={16} />
