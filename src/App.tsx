@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -54,6 +55,10 @@ import ImageMetadataViewer from "./pages/ImageMetadataViewer";
 import FileMetadataViewer from "./pages/FileMetadataViewer";
 import GifToVideo from "./pages/GifToVideo";
 import VideoToGif from "./pages/VideoToGif";
+import ZipExtractor from "./pages/ZipExtractor";
+import ZipCreator from "./pages/ZipCreator";
+import RarExtractor from "./pages/RarExtractor";
+import WordCounter from "./pages/WordCounter";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -122,6 +127,12 @@ const AppContent = () => {
         <Route path="/text-to-speech" element={<TextToSpeech />} />
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
+        
+        {/* New tool routes */}
+        <Route path="/zip-extractor" element={<ZipExtractor />} />
+        <Route path="/zip-creator" element={<ZipCreator />} />
+        <Route path="/rar-extractor" element={<RarExtractor />} />
+        <Route path="/word-counter" element={<WordCounter />} />
         
         <Route path="/ai-image-generator" element={<ComingSoon />} />
         <Route path="/ai-chatbot" element={<ComingSoon />} />

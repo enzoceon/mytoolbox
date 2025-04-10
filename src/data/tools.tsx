@@ -1,6 +1,6 @@
 
 import { IconType } from 'react-icons';
-import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Music, Clipboard, Lock, ImageIcon, Info } from 'lucide-react';
+import { FileType, QrCode, FileImage, File, Camera, Download, Undo, Link, Palette, ArrowRightLeft, Volume2, FileVideo, FileBox, FileAudio, PencilLine, RotateCcw, RefreshCcw, Wand2, Coffee, HandMetal, Replace, Crop, LucideIcon, Brain, BrainCircuit, Bot, Sparkles, Music, Clipboard, Lock, ImageIcon, Info, FileArchive, Archive } from 'lucide-react';
 
 export interface ToolType {
   name: string;
@@ -162,7 +162,7 @@ const tools: ToolType[] = [
     path: "/audio-trimmer",
     icon: FileAudio,
     category: "utilities",
-    isFunctional: true
+    isFunctional: false
   },
   {
     name: "OCR Tool",
@@ -178,7 +178,7 @@ const tools: ToolType[] = [
     path: "/ai-content-summarizer",
     icon: Wand2,
     category: "ai-tools",
-    isFunctional: true
+    isFunctional: false
   },
   {
     name: "Currency Converter",
@@ -250,7 +250,7 @@ const tools: ToolType[] = [
     path: "/ai-text-generator",
     icon: Brain,
     category: "ai-tools",
-    isFunctional: true
+    isFunctional: false
   },
   {
     name: "AI Chatbot",
@@ -317,6 +317,14 @@ const tools: ToolType[] = [
     isFunctional: true
   },
   {
+    name: "Extract Audio from Video",
+    description: "Extract audio tracks from video files",
+    path: "/extract-audio-from-video",
+    icon: FileAudio,
+    category: "video",
+    isFunctional: true
+  },
+  {
     name: "Pixelate Image Tool",
     description: "Apply pixelation effects to images",
     path: "/pixelate-image",
@@ -336,7 +344,8 @@ const tools: ToolType[] = [
     name: "Image Watermark Generator",
     description: "Add custom watermarks to your images",
     path: "/image-watermark",
-    icon: FileImage, 
+    icon: FileImage,
+
     category: "design",
     isFunctional: false
   },
@@ -347,6 +356,38 @@ const tools: ToolType[] = [
     icon: FileVideo,
     category: "optimization",
     isFunctional: false
+  },
+  {
+    name: "ZIP Extractor",
+    description: "Extract contents from ZIP archive files online",
+    path: "/zip-extractor",
+    icon: FileArchive,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "ZIP File Creator",
+    description: "Create ZIP archives from multiple files",
+    path: "/zip-creator",
+    icon: Archive,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "RAR Extractor",
+    description: "Extract contents from RAR archive files",
+    path: "/rar-extractor",
+    icon: FileArchive,
+    category: "utilities",
+    isFunctional: true
+  },
+  {
+    name: "Word Counter",
+    description: "Count words, characters, and paragraphs in text",
+    path: "/word-counter",
+    icon: PencilLine,
+    category: "text",
+    isFunctional: true
   }
 ];
 

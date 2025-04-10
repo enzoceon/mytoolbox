@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -26,13 +25,10 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/video-compressor",
     "/video-to-qr-code",
     "/ai-text-generator",
-    "/video-to-gif",
-    "/gif-to-video",
-    "/add-audio-to-video",
     "/ai-content-summarizer",
     "/audio-trimmer",
     "/pdf-watermark"
-    // Removed /text-to-speech from this list
+    // Removed tools that are now functional
   ];
   
   // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card
