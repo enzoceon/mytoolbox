@@ -424,7 +424,9 @@ const originalTools: ToolType[] = [
     description: 'Scan and decode QR codes from images or webcam',
     path: '/qr-code-scanner',
     icon: ScanSearch,
-    category: 'qrcode'
+    category: 'qrcode',
+    isFunctional: true,
+    isNew: true
   },
   {
     id: 'qr-code-styler',
@@ -432,7 +434,9 @@ const originalTools: ToolType[] = [
     description: 'Create custom styled QR codes with logos and colors',
     path: '/qr-code-styler',
     icon: PencilRuler,
-    category: 'qrcode'
+    category: 'qrcode',
+    isFunctional: true,
+    isNew: true
   },
   {
     id: 'pdf-to-text',

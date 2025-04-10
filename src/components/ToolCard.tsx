@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -56,6 +55,9 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     );
   }
 
+  // Display "New" badge for new tools
+  const isNewTool = tool.isNew === true;
+
   // Existing behavior for other tools
   return (
     <Link to={tool.path}>
@@ -65,9 +67,15 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
               <IconComponent className="h-6 w-6 text-indigo-400" />
             </div>
-            <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
-              Available
-            </Badge>
+            {isNewTool ? (
+              <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                New
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                Available
+              </Badge>
+            )}
           </div>
           <CardTitle className="text-lg mt-2">{tool.name}</CardTitle>
           <CardDescription>{tool.description}</CardDescription>

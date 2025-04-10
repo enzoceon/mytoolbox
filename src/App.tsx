@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,6 +12,8 @@ import AllTools from "./pages/AllTools";
 import PdfToImage from "./pages/PdfToImage";
 import JPGtoPNG from "./pages/JPGtoPNG";
 import QrCodeGenerator from "./pages/QrCodeGenerator";
+import QrCodeScanner from "./pages/QrCodeScanner"; // Add Scanner
+import QrCodeStyler from "./pages/QrCodeStyler"; // Add Styler
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -116,6 +119,8 @@ const AppContent = () => {
           </JPGtoPNGProvider>
         } />
         <Route path="/qr-code-generator" element={<QrCodeGenerator />} />
+        <Route path="/qr-code-scanner" element={<QrCodeScanner />} />
+        <Route path="/qr-code-styler" element={<QrCodeStyler />} />
         <Route path="/image-compressor" element={<ImageCompressor />} />
         <Route path="/html-to-pdf" element={<HtmlToPdf />} />
         <Route path="/color-picker" element={<ColorPicker />} />
