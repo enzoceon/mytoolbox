@@ -78,8 +78,8 @@ export const formatFileSize = (bytes: number): string => {
  * @param file - Image file to extract EXIF data from
  * @returns Promise that resolves to EXIF data object
  */
-export const extractImageMetadata = (file: File): Promise<Record<string, any>> {
-  return new Promise((resolve, reject) => {
+export const extractImageMetadata = (file: File) => {
+  return new Promise<Record<string, any>>((resolve, reject) => {
     try {
       // Basic metadata available without EXIF extraction
       const basicMetadata = extractFileMetadata(file);
