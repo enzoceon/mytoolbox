@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -25,8 +26,12 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     "/ai-text-generator",
     "/ai-content-summarizer",
     "/audio-trimmer",
-    "/pdf-watermark"
-    // These tools are now functional and removed from this list
+    "/pdf-watermark",
+    // Adding the requested QR code-related paths
+    "/image-to-qr",
+    "/image-to-qr-code",
+    "/pdf-to-qr-code",
+    "/audio-to-qr"
   ];
   
   // For tools marked as non-functional or in the comingSoonPaths list, render a non-navigable card
