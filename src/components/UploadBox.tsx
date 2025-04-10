@@ -1,8 +1,8 @@
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, forwardRef, ForwardedRef } from 'react';
 import { Upload } from 'lucide-react';
 
-interface UploadBoxProps {
+export interface UploadBoxProps {
   title: string;
   subtitle: string;
   acceptedFileTypes?: string;
@@ -10,14 +10,17 @@ interface UploadBoxProps {
   multiple?: boolean;
 }
 
-const UploadBox: React.FC<UploadBoxProps> = ({
+const UploadBox = forwardRef<HTMLInputElement, UploadBoxProps>(({
   title,
   subtitle,
   acceptedFileTypes = "*",
   onFileSelect,
   multiple = false
-}) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+}, ref) => {
+  const localFileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Use either the forwarded ref or local ref
+  const fileInputRef = (ref || localFileInputRef) as React.RefObject<HTMLInputElement>;
   
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -35,7 +38,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  }, []);
+  }, [fileInputRef]);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -86,6 +89,8 @@ const UploadBox: React.FC<UploadBoxProps> = ({
       </div>
     </div>
   );
-};
+});
+
+UploadBox.displayName = 'UploadBox';
 
 export default UploadBox;
