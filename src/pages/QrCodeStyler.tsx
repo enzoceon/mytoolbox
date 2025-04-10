@@ -66,7 +66,7 @@ const QrCodeStyler = () => {
       if (centerImage) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          const img = new Image();
+          const img = new globalThis.Image();
           img.onload = () => {
             // Calculate logo size (max 30% of QR code)
             const logoSize = qrSize * 0.3;
