@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
@@ -8,6 +7,7 @@ import PdfUploader from '@/components/PdfUploader';
 import PdfConversionArea from '@/components/PdfConversionArea';
 import HowToUse from '@/components/HowToUse';
 import BackButton from '@/components/BackButton';
+import PdfToImageSEO from '@/components/SEO/PdfToImageSEO';
 
 const PdfToImage = () => {
   const [selectedPdf, setSelectedPdf] = useState<File | null>(null);
@@ -42,10 +42,7 @@ const PdfToImage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>PDF to Image Converter - Free Online Tool</title>
-        <meta name="description" content="Convert PDF documents to JPG, PNG and other image formats online. Free, secure with no watermarks." />
-      </Helmet>
+      <PdfToImageSEO />
       
       <SpaceBackground />
       

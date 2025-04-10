@@ -3,6 +3,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
                             http://www.google.com/schemas/sitemap-image/1.1
@@ -28,8 +29,8 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/pdf-to-image-og.jpg</image:loc>
-      <image:title>PDF to Image - Convert PDF to JPG and PNG</image:title>
-      <image:caption>Transform PDFs into high-quality images easily with our free online tool</image:caption>
+      <image:title>PDF to Image Converter | Convert PDF to JPG and PNG Online Free</image:title>
+      <image:caption>Transform PDFs into high-quality images easily with our free online tool. No registration needed.</image:caption>
     </image:image>
   </url>
   
@@ -41,9 +42,42 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/add-audio-to-video-og.jpg</image:loc>
-      <image:title>Add Audio to Video - Combine Video with Audio</image:title>
-      <image:caption>Add or replace audio tracks in your videos with our free online tool</image:caption>
+      <image:title>Add Audio to Video | Free Online Video Sound Mixer & Editor</image:title>
+      <image:caption>Add or replace audio tracks in your videos with our free online tool. No software installation needed.</image:caption>
     </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://mytoolbox.site/add-audio-to-video-thumbnail.jpg</video:thumbnail_loc>
+      <video:title>How to Add Audio to Video Online Free</video:title>
+      <video:description>This tutorial shows how to easily add audio tracks to your videos using our free online tool.</video:description>
+      <video:content_loc>https://mytoolbox.site/tutorials/add-audio-to-video-demo.mp4</video:content_loc>
+      <video:duration>45</video:duration>
+      <video:publication_date>2025-04-05T08:00:00+01:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+    </video:video>
+  </url>
+  
+  <!-- Remove Audio from Video Tool -->
+  <url>
+    <loc>https://mytoolbox.site/remove-audio-from-video</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/remove-audio-from-video-og.jpg</image:loc>
+      <image:title>Remove Audio from Video | Mute Video Online Free & Easy</image:title>
+      <image:caption>Remove audio tracks from videos online for free. Create silent videos without losing quality.</image:caption>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://mytoolbox.site/remove-audio-from-video-thumbnail.jpg</video:thumbnail_loc>
+      <video:title>How to Remove Audio from Video Online Free</video:title>
+      <video:description>This tutorial shows how to easily remove audio tracks from your videos using our free online tool.</video:description>
+      <video:content_loc>https://mytoolbox.site/tutorials/remove-audio-from-video-demo.mp4</video:content_loc>
+      <video:duration>35</video:duration>
+      <video:publication_date>2025-04-05T08:00:00+01:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+    </video:video>
   </url>
   
   <!-- Clipboard Manager Tool -->
@@ -54,8 +88,8 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/clipboard-manager-og.jpg</image:loc>
-      <image:title>Clipboard Manager - Store Multiple Clipboard Items</image:title>
-      <image:caption>Store and organize multiple clipboard items for easy access with our free online tool</image:caption>
+      <image:title>Advanced Clipboard Manager | Store Multiple Clipboard Items Online</image:title>
+      <image:caption>Store and organize multiple clipboard items for easy access with our free online clipboard manager.</image:caption>
     </image:image>
   </url>
   
@@ -67,8 +101,8 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/pdf-locker-og.jpg</image:loc>
-      <image:title>PDF Locker - Password Protect Your PDFs</image:title>
-      <image:caption>Secure your PDF files with password protection using our free online tool</image:caption>
+      <image:title>PDF Password Protector | Secure PDF Files Online Free</image:title>
+      <image:caption>Add 256-bit AES encryption to protect your PDF files with passwords. No registration required.</image:caption>
     </image:image>
   </url>
   
@@ -80,8 +114,8 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/image-metadata-og.jpg</image:loc>
-      <image:title>Image Metadata Viewer - View and Remove EXIF Data</image:title>
-      <image:caption>View and remove hidden metadata from your images with our free online tool</image:caption>
+      <image:title>EXIF Data Viewer & Remover | View & Remove Image Metadata Online</image:title>
+      <image:caption>View and remove hidden metadata from your images for privacy protection with our free online tool.</image:caption>
     </image:image>
   </url>
   
@@ -93,8 +127,73 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/file-metadata-og.jpg</image:loc>
-      <image:title>File Metadata Viewer - View File Information</image:title>
-      <image:caption>View detailed metadata information for any file type with our free online tool</image:caption>
+      <image:title>File Metadata Viewer | View Hidden File Information Online Free</image:title>
+      <image:caption>View detailed metadata and hidden information in any file type with our free online tool.</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Text Replacer Tool -->
+  <url>
+    <loc>https://mytoolbox.site/text-replacer</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/text-replacer-og.jpg</image:loc>
+      <image:title>Text Replacer Tool | Find & Replace Multiple Text Online Free</image:title>
+      <image:caption>Find and replace text within documents online for free. Fast batch text replacement tool.</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Text to Emoji Tool -->
+  <url>
+    <loc>https://mytoolbox.site/text-to-emoji</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/text-to-emoji-og.jpg</image:loc>
+      <image:title>Text to Emoji Converter | Make Emojified Messages Online</image:title>
+      <image:caption>Convert your text to emoji-filled messages with our free online text to emoji converter tool.</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Text Editor Tool -->
+  <url>
+    <loc>https://mytoolbox.site/text-editor</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/text-editor-og.jpg</image:loc>
+      <image:title>Online Text Editor | Format and Edit Text Free</image:title>
+      <image:caption>Edit and format text documents online for free with our easy-to-use text editor tool.</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Audio to QR Tool -->
+  <url>
+    <loc>https://mytoolbox.site/audio-to-qr</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/audio-to-qr-og.jpg</image:loc>
+      <image:title>Audio to QR Code Converter | Share Sound Through QR</image:title>
+      <image:caption>Convert audio files to QR codes. Share music, sound effects, voice messages through scannable QR codes.</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- AI Content Summarizer Tool -->
+  <url>
+    <loc>https://mytoolbox.site/ai-content-summarizer</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/ai-content-summarizer-og.jpg</image:loc>
+      <image:title>AI Content Summarizer | Condense Long Articles Instantly</image:title>
+      <image:caption>Automatically summarize long articles and documents with our free AI-powered content summarizer.</image:caption>
     </image:image>
   </url>
   
@@ -106,8 +205,8 @@
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://mytoolbox.site/tools-preview.jpg</image:loc>
-      <image:title>All Online Tools - Free Utilities for Document Conversion</image:title>
-      <image:caption>Access all our free conversion tools in one place</image:caption>
+      <image:title>Free Online Tools Collection | MyToolbox</image:title>
+      <image:caption>Access all our free conversion tools in one place - PDF, Image, Audio, Video and Text utilities</image:caption>
     </image:image>
   </url>
   

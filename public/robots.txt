@@ -29,6 +29,20 @@ Crawl-delay: 1
 # Sitemap location
 Sitemap: https://mytoolbox.site/sitemap.xml
 
+# Main Tool Pages - Important to index
+Allow: /pdf-to-image
+Allow: /add-audio-to-video
+Allow: /remove-audio-from-video
+Allow: /clipboard-manager
+Allow: /pdf-locker
+Allow: /image-metadata
+Allow: /file-metadata
+Allow: /text-replacer
+Allow: /text-to-emoji
+Allow: /text-editor
+Allow: /audio-to-qr
+Allow: /ai-content-summarizer
+
 # Important pages
 Allow: /about
 Allow: /privacy
@@ -36,12 +50,6 @@ Allow: /terms
 Allow: /cookies
 Allow: /contact
 Allow: /tools
-Allow: /pdf-to-image
-Allow: /add-audio-to-video
-Allow: /clipboard-manager
-Allow: /pdf-locker
-Allow: /image-metadata
-Allow: /file-metadata
 
 # Special directives for major search engines
 User-agent: Googlebot
@@ -55,3 +63,13 @@ Allow: /
 
 User-agent: DuckDuckBot
 Allow: /
+
+# Set crawl priority for major search engines
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: Bingbot
+Crawl-delay: 2
+
+User-agent: Yandexbot
+Crawl-delay: 2

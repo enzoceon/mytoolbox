@@ -12,7 +12,7 @@ import UploadBox from '@/components/UploadBox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Helmet } from 'react-helmet-async';
+import AddAudioToVideoSEO from '@/components/SEO/AddAudioToVideoSEO';
 
 const AddAudioToVideo = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -151,11 +151,7 @@ const AddAudioToVideo = () => {
   
   return (
     <div className="flex flex-col min-h-screen">
-      <Helmet>
-        <title>Add Audio to Video - MyToolbox</title>
-        <meta name="description" content="Add or replace audio tracks in video files with our free online tool. No registration required." />
-      </Helmet>
-
+      <AddAudioToVideoSEO />
       <Header />
       
       <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">

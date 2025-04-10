@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import UploadBox from '@/components/UploadBox';
+import RemoveAudioFromVideoSEO from '@/components/SEO/RemoveAudioFromVideoSEO';
 
 const RemoveAudioFromVideo = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -84,6 +85,7 @@ const RemoveAudioFromVideo = () => {
   
   return (
     <div className="flex flex-col min-h-screen">
+      <RemoveAudioFromVideoSEO />
       <Header />
       
       <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">

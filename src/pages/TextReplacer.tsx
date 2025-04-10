@@ -6,9 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Copy, FileText, Replace } from 'lucide-react';
 import { toast } from 'sonner';
 import BackButton from '@/components/BackButton';
-import SEOMetadata from '@/components/SEO/SEOMetadata';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TextReplacerSEO from '@/components/SEO/TextReplacerSEO';
 
 const TextReplacer = () => {
   const [inputText, setInputText] = useState('');
@@ -71,8 +71,9 @@ const TextReplacer = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <TextReplacerSEO />
       <Header />
-      <SEOMetadata />
+      
       <div className="container max-w-5xl py-8 space-y-6 flex-grow">
         <BackButton />
         

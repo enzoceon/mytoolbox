@@ -12,7 +12,7 @@ import BackButton from '@/components/BackButton';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Helmet } from 'react-helmet-async';
+import ClipboardManagerSEO from '@/components/SEO/ClipboardManagerSEO';
 
 interface ClipboardItem {
   id: string;
@@ -172,11 +172,7 @@ const ClipboardManager = () => {
   
   return (
     <div className="flex flex-col min-h-screen">
-      <Helmet>
-        <title>Clipboard Manager - MyToolbox</title>
-        <meta name="description" content="Store and organize multiple clipboard items for easy access with our free online clipboard manager." />
-      </Helmet>
-
+      <ClipboardManagerSEO />
       <Header />
       
       <div className="container max-w-5xl mx-auto px-4 py-8 flex-grow">
@@ -239,8 +235,8 @@ const ClipboardManager = () => {
                 </>
               ) : (
                 <>
-                  <Button variant="ghost" onClick={() => setCurrentText('')}>
-                    <Trash className="mr-2 h-4 w-4" />
+                  <Button variant="ghost" onClick={() => { setCurrentText(''); setCurrentTitle(''); }}>
+                    <X className="mr-2 h-4 w-4" />
                     Clear
                   </Button>
                   <Button onClick={handleSaveItem}>
@@ -252,128 +248,119 @@ const ClipboardManager = () => {
             </CardFooter>
           </Card>
           
-          {/* Saved Items Section */}
+          {/* Items List */}
           <Card className="md:col-span-2 shadow-md hover:shadow-lg transition-all duration-300">
             <CardHeader>
               <CardTitle>Saved Items</CardTitle>
               <CardDescription>
-                {clipboardItems.length === 0 
-                  ? 'No saved items yet. Add some by pasting into the form.' 
-                  : `You have ${clipboardItems.length} saved item${clipboardItems.length !== 1 ? 's' : ''}.`}
+                Click on an item to copy it to your clipboard
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[400px] pr-4">
-                {clipboardItems.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-[300px] text-center text-muted-foreground">
-                    <Clipboard className="h-12 w-12 mb-4" />
-                    <p>Your saved clipboard items will appear here</p>
-                  </div>
-                ) : (
+              {clipboardItems.length === 0 ? (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground">No items saved yet</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Add items using the form on the left
+                  </p>
+                </div>
+              ) : (
+                <ScrollArea className="h-[400px] rounded-md border p-4">
                   <div className="space-y-4">
                     {clipboardItems.map((item) => (
-                      <div key={item.id} className="group">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-medium">{item.title}</h3>
-                          <div className="flex space-x-1">
-                            <Button
-                              variant="ghost"
+                      <div key={item.id} className="space-y-2">
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-medium line-clamp-1">{item.title}</h3>
+                          <div className="flex space-x-2">
+                            <Button 
+                              variant="ghost" 
                               size="sm"
-                              className="h-8 w-8 p-0"
+                              onClick={() => handleEditItem(item)}
+                            >
+                              Edit
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
                               onClick={() => handleCopyItem(item.content, item.title)}
                             >
                               <Copy className="h-4 w-4" />
-                              <span className="sr-only">Copy</span>
                             </Button>
-                            <Button
-                              variant="ghost"
+                            <Button 
+                              variant="ghost" 
                               size="sm"
-                              className="h-8 w-8 p-0"
-                              onClick={() => handleEditItem(item)}
+                              onClick={() => handleDeleteItem(item.id)}
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
-                                <path d="m15 5 4 4"></path>
-                              </svg>
-                              <span className="sr-only">Edit</span>
+                              <Trash className="h-4 w-4" />
                             </Button>
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0 text-destructive/80 hover:text-destructive"
-                                >
-                                  <Trash className="h-4 w-4" />
-                                  <span className="sr-only">Delete</span>
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Delete Item</DialogTitle>
-                                  <DialogDescription>
-                                    Are you sure you want to delete "{item.title}"? This action cannot be undone.
-                                  </DialogDescription>
-                                </DialogHeader>
-                                <DialogFooter>
-                                  <Button variant="outline" onClick={() => document.body.click()}>Cancel</Button>
-                                  <Button variant="destructive" onClick={() => {
-                                    handleDeleteItem(item.id);
-                                    document.body.click();
-                                  }}>Delete</Button>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
                           </div>
                         </div>
-                        
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Saved {formatTimestamp(item.timestamp)}
-                        </p>
-                        
-                        <div className="bg-card/30 p-3 rounded-md border border-input text-sm max-h-24 overflow-y-auto break-words">
-                          {item.content}
-                        </div>
-                        
-                        <Separator className="my-4" />
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <div className="cursor-pointer hover:bg-accent p-2 rounded-md transition-colors">
+                              <p className="text-sm text-muted-foreground line-clamp-2">
+                                {item.content}
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {formatTimestamp(item.timestamp)}
+                              </p>
+                            </div>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>{item.title}</DialogTitle>
+                              <DialogDescription>
+                                Saved on {formatTimestamp(item.timestamp)}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="mt-4 bg-muted p-4 rounded-md max-h-[300px] overflow-auto">
+                              <pre className="whitespace-pre-wrap break-words text-sm">
+                                {item.content}
+                              </pre>
+                            </div>
+                            <DialogFooter>
+                              <Button 
+                                onClick={() => handleCopyItem(item.content, item.title)}
+                              >
+                                <Copy className="mr-2 h-4 w-4" />
+                                Copy to Clipboard
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                        <Separator />
                       </div>
                     ))}
                   </div>
-                )}
-              </ScrollArea>
+                </ScrollArea>
+              )}
             </CardContent>
-            {clipboardItems.length > 0 && (
-              <CardFooter>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                      <Trash className="mr-2 h-4 w-4" />
-                      Clear All Items
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Clear All Items</DialogTitle>
-                      <DialogDescription>
-                        Are you sure you want to delete all clipboard items? This action cannot be undone.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button variant="outline" onClick={() => document.body.click()}>Cancel</Button>
-                      <Button variant="destructive" onClick={() => {
-                        setClipboardItems([]);
-                        document.body.click();
-                        toast({
-                          title: "All items deleted",
-                          description: "Your clipboard manager has been cleared",
-                        });
-                      }}>Delete All</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </CardFooter>
-            )}
           </Card>
+        </div>
+        
+        <div className="mt-8 p-6 border rounded-lg">
+          <h2 className="text-xl font-bold mb-4">About Clipboard Manager</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              The Clipboard Manager helps you store multiple texts, snippets, and other content that you copy frequently. 
+              It's perfect for anyone who works with multiple pieces of text and needs quick access to them.
+            </p>
+            <p>
+              <strong>Key features:</strong>
+            </p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Store unlimited clipboard items</li>
+              <li>Add titles for easy organization</li>
+              <li>Edit saved items anytime</li>
+              <li>One-click copying back to clipboard</li>
+              <li>All data stored locally in your browser</li>
+              <li>No registration or login required</li>
+            </ul>
+            <p>
+              <strong>Note:</strong> All your clipboard items are stored in your browser's local storage. 
+              They will persist between sessions but will be lost if you clear your browser data.
+            </p>
+          </div>
         </div>
       </div>
       
