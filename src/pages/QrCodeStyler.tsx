@@ -428,32 +428,34 @@ END:VCARD`;
           <div className="lg:hidden">
             <Card className="mb-4 overflow-hidden">
               <div className="p-4 bg-primary/5">
-                <TabsList className="w-full grid grid-cols-6 h-auto p-0 bg-transparent gap-1">
-                  <TabsTrigger value="url" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <Globe className="h-4 w-4 mb-1" />
-                    <span className="text-xs">URL</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="text" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <Mail className="h-4 w-4 mb-1" />
-                    <span className="text-xs">TEXT</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="email" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <Mail className="h-4 w-4 mb-1" />
-                    <span className="text-xs">EMAIL</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="phone" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <Phone className="h-4 w-4 mb-1" />
-                    <span className="text-xs">PHONE</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="sms" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <MessageSquare className="h-4 w-4 mb-1" />
-                    <span className="text-xs">SMS</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="vcard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
-                    <User className="h-4 w-4 mb-1" />
-                    <span className="text-xs">VCARD</span>
-                  </TabsTrigger>
-                </TabsList>
+                <Tabs defaultValue="url" onValueChange={(value) => setContentType(value as any)} className="w-full">
+                  <TabsList className="w-full grid grid-cols-6 h-auto p-0 bg-transparent gap-1">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <Globe className="h-4 w-4 mb-1" />
+                      <span className="text-xs">URL</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="text" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <FileImage className="h-4 w-4 mb-1" />
+                      <span className="text-xs">TEXT</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="email" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <Mail className="h-4 w-4 mb-1" />
+                      <span className="text-xs">EMAIL</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="phone" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <Phone className="h-4 w-4 mb-1" />
+                      <span className="text-xs">PHONE</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="sms" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <MessageSquare className="h-4 w-4 mb-1" />
+                      <span className="text-xs">SMS</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="vcard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3 flex flex-col items-center">
+                      <User className="h-4 w-4 mb-1" />
+                      <span className="text-xs">VCARD</span>
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
               
               <Tabs defaultValue="url" onValueChange={(value) => setContentType(value as any)} className="w-full">
