@@ -61,36 +61,51 @@ const Footer = () => {
             
             {/* Social Media Icons */}
             <div className="flex items-center space-x-3 pt-2">
-              <div 
+              <a 
+                href="https://www.youtube.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="YouTube"
               >
                 <Youtube size={16} />
-              </div>
-              <div 
+              </a>
+              <a 
+                href="https://www.twitter.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Twitter"
               >
                 <Twitter size={16} />
-              </div>
-              <div 
+              </a>
+              <a 
+                href="https://www.instagram.com/mytoolbox.site" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Instagram"
               >
                 <Instagram size={16} />
-              </div>
-              <div 
+              </a>
+              <a 
+                href="https://www.facebook.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="Facebook"
               >
                 <Facebook size={16} />
-              </div>
-              <div 
+              </a>
+              <a 
+                href="https://www.tiktok.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white hover:opacity-90 transition-opacity cursor-pointer"
                 aria-label="TikTok"
               >
                 <TikTokIcon size={16} />
-              </div>
+              </a>
             </div>
           </div>
           
