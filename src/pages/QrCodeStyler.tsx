@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import QRCodeStyling from 'qr-code-styling';
+import QrCodeStylerSEO from '@/components/SEO/QrCodeStylerSEO';
 
 // Define types for the QR code options
 interface QRCodeOptions {
@@ -29,7 +30,7 @@ interface QRCodeOptions {
   data: string;
   margin: number;
   qrOptions: {
-    typeNumber: number;
+    typeNumber: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40;
     mode: 'Byte';
     errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H';
   };
@@ -74,6 +75,7 @@ interface QRCodeOptions {
       colorStops: Array<{ offset: number; color: string }>;
     };
   };
+  image?: string;
 }
 
 // Content types for the tabs
@@ -127,7 +129,7 @@ const templates = [
         ...defaultOptions.dotsOptions,
         color: '#000000',
         gradient: {
-          type: 'linear',
+          type: 'linear' as const,
           rotation: 45,
           colorStops: [
             { offset: 0, color: '#8b5cf6' },
@@ -139,7 +141,7 @@ const templates = [
         ...defaultOptions.cornersSquareOptions,
         color: '#000000',
         gradient: {
-          type: 'linear',
+          type: 'linear' as const,
           rotation: 45,
           colorStops: [
             { offset: 0, color: '#8b5cf6' },
@@ -234,21 +236,23 @@ const QrCodeStyler = () => {
 
   // Initialize QR code on mount
   useEffect(() => {
-    // We need to dynamically import because this is a client-side only library
-    import('qr-code-styling').then((QRCodeStyling) => {
-      qrCode.current = new QRCodeStyling.default(qrOptions);
-      if (qrCodeRef.current) {
-        qrCodeRef.current.innerHTML = '';
-        qrCode.current.append(qrCodeRef.current);
-      }
-    }).catch(err => {
-      console.error('Failed to load QR code styling library:', err);
-      toast({
-        title: 'Error',
-        description: 'Failed to load QR code generator',
-        variant: 'destructive'
+    if (typeof window !== 'undefined') {
+      import('qr-code-styling').then((QRCodeStylingModule) => {
+        const QRCodeStylingClass = QRCodeStylingModule.default;
+        qrCode.current = new QRCodeStylingClass(qrOptions);
+        if (qrCodeRef.current) {
+          qrCodeRef.current.innerHTML = '';
+          qrCode.current.append(qrCodeRef.current);
+        }
+      }).catch(err => {
+        console.error('Failed to load QR code styling library:', err);
+        toast({
+          title: 'Error',
+          description: 'Failed to load QR code generator',
+          variant: 'destructive'
+        });
       });
-    });
+    }
 
     return () => {
       // Clean up on unmount
@@ -507,14 +511,15 @@ const QrCodeStyler = () => {
         case 'gradientType':
           if (usingGradient) {
             // Update type in all gradients
+            const gradientType = value as 'linear' | 'radial';
             if (newOptions.dotsOptions.gradient) {
-              newOptions.dotsOptions.gradient.type = value;
+              newOptions.dotsOptions.gradient.type = gradientType;
             }
             if (newOptions.cornersSquareOptions.gradient) {
-              newOptions.cornersSquareOptions.gradient.type = value;
+              newOptions.cornersSquareOptions.gradient.type = gradientType;
             }
             if (newOptions.cornersDotOptions.gradient) {
-              newOptions.cornersDotOptions.gradient.type = value;
+              newOptions.cornersDotOptions.gradient.type = gradientType;
             }
           }
           break;
@@ -634,6 +639,7 @@ const QrCodeStyler = () => {
 
   return (
     <PageContainer>
+      <QrCodeStylerSEO />
       <PageHeader 
         title="QR Code Styler" 
         description="Create beautiful, customized QR codes for your business, events, or personal use"
@@ -1209,7 +1215,7 @@ const QrCodeStyler = () => {
                         <Label htmlFor="gradient-type">Gradient Type</Label>
                         <Select 
                           value={qrOptions.dotsOptions.gradient?.type || 'linear'}
-                          onValueChange={(value) => updateQRStyle('gradientType', value)}
+                          onValueChange={(value: 'linear' | 'radial') => updateQRStyle('gradientType', value)}
                         >
                           <SelectTrigger id="gradient-type">
                             <SelectValue placeholder="Gradient Type" />
