@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -11,6 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SliderWithTooltip } from '@/components/SliderWithTooltip';
+import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Download, Palette, Image as ImageIcon, FileImage, Copy, 
@@ -28,11 +28,11 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 const QrCodeStyler = () => {
   const [qrContent, setQrContent] = useState('https://mytoolbox.site');
-  const [qrSize, setQrSize] = useState(200); // Changed default to 200px
+  const [qrSize, setQrSize] = useState(200);
   const [fgColor, setFgColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#ffffff');
   const [errorLevel, setErrorLevel] = useState('M');
-  const [margin, setMargin] = useState(0); // Changed default to 0 units
+  const [margin, setMargin] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
   const [qrImage, setQrImage] = useState<string | null>(null);
   const [centerImage, setCenterImage] = useState<string | null>(null);
@@ -47,14 +47,12 @@ const QrCodeStyler = () => {
   const [isLogoOpen, setIsLogoOpen] = useState(false);
   const [isDesignOpen, setIsDesignOpen] = useState(false);
   const [dotType, setDotType] = useState('square');
-  const [quality, setQuality] = useState<number[]>([1000]); // Added quality state
-  const [selectedFormat, setSelectedFormat] = useState<'png' | 'jpg' | null>(null); // Added selected format state
-  
+  const [quality, setQuality] = useState<number[]>([1000]);
+  const [selectedFormat, setSelectedFormat] = useState<'png' | 'jpg' | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  // Generate QR code whenever relevant parameters change
   useEffect(() => {
     if (getFormattedContent().trim()) {
       generateQR();
@@ -95,7 +93,6 @@ END:VCARD`;
     
     setIsBusy(true);
     try {
-      // Generate QR code
       const canvas = canvasRef.current;
       if (!canvas) return;
       
@@ -109,31 +106,25 @@ END:VCARD`;
         errorCorrectionLevel: errorLevel as any
       });
       
-      // If there's a center image, draw it on the canvas
       if (centerImage) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
           const img = new globalThis.Image();
           img.onload = () => {
-            // Calculate logo size (max 30% of QR code)
             const logoSize = qrSize * 0.3;
             const xPos = (qrSize - logoSize) / 2;
             const yPos = (qrSize - logoSize) / 2;
             
-            // Draw white background for logo
             ctx.fillStyle = bgColor;
             ctx.fillRect(xPos - 5, yPos - 5, logoSize + 10, logoSize + 10);
             
-            // Draw logo
             ctx.drawImage(img, xPos, yPos, logoSize, logoSize);
             
-            // Update QR image
             setQrImage(canvas.toDataURL('image/png'));
           };
           img.src = centerImage;
         }
       } else {
-        // Just use the QR code without a center image
         setQrImage(canvas.toDataURL('image/png'));
       }
     } catch (error) {
@@ -182,11 +173,9 @@ END:VCARD`;
     if (!qrImage) return;
     
     try {
-      // Create a blob from the image
       const response = await fetch(qrImage);
       const blob = await response.blob();
       
-      // Copy to clipboard using Clipboard API
       await navigator.clipboard.write([
         new ClipboardItem({
           [blob.type]: blob
@@ -222,16 +211,13 @@ END:VCARD`;
       description: `Your styled QR code has been downloaded as ${format.toUpperCase()}.`
     });
     
-    // Reset selected format after download
     setSelectedFormat(null);
   };
 
-  // New function to handle format selection
   const handleFormatSelect = (format: 'png' | 'jpg') => {
     setSelectedFormat(format);
   };
 
-  // New function to handle download with selected format
   const handleDownload = () => {
     if (selectedFormat) {
       downloadQR(selectedFormat);
@@ -446,7 +432,6 @@ END:VCARD`;
         />
         
         <div className="max-w-6xl mx-auto">
-          {/* Mobile View */}
           <div className="lg:hidden">
             <Card className="mb-4 overflow-hidden">
               <div className="p-4 bg-primary/5">
@@ -644,7 +629,7 @@ END:VCARD`;
                   <div>
                     <Label htmlFor="qr-size">QR Code Size</Label>
                     <div className="flex items-center gap-4">
-                      <Slider
+                      <SliderWithTooltip
                         id="qr-size"
                         min={100}
                         max={800}
@@ -660,7 +645,7 @@ END:VCARD`;
                   <div>
                     <Label htmlFor="qr-margin">QR Code Margin</Label>
                     <div className="flex items-center gap-4">
-                      <Slider
+                      <SliderWithTooltip
                         id="qr-margin"
                         min={0}
                         max={16}
@@ -676,7 +661,6 @@ END:VCARD`;
               </CollapsibleContent>
             </Collapsible>
 
-            {/* QR Code Preview */}
             <div className="flex flex-col items-center mb-6">
               <div className="bg-white p-4 rounded-md shadow-sm mb-4 max-w-full overflow-hidden">
                 {qrImage ? (
@@ -751,9 +735,7 @@ END:VCARD`;
             </div>
           </div>
 
-          {/* Desktop View */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-8">
-            {/* Left Column: QR Code Settings */}
             <Card className="p-6">
               <Tabs defaultValue="url" onValueChange={(value) => setContentType(value as any)} className="w-full">
                 <TabsList className="grid grid-cols-6 w-full mb-6">
@@ -865,14 +847,80 @@ END:VCARD`;
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
-                
-                {/* The rest of the desktop view components would go here - similar to the mobile version but with desktop-specific layouts */}
               </div>
             </Card>
 
-            {/* Right Column: QR Code Preview */}
             <div className="flex flex-col items-center">
-              {/* Preview would go here, similar to the mobile version */}
+              <div className="bg-white p-4 rounded-md shadow-sm mb-4 max-w-full overflow-hidden">
+                {qrImage ? (
+                  <img 
+                    src={qrImage} 
+                    alt="Generated QR Code" 
+                    className="max-w-full h-auto mx-auto"
+                    style={{ maxWidth: '300px' }}
+                  />
+                ) : (
+                  <div 
+                    className="bg-gray-100 flex items-center justify-center mx-auto"
+                    style={{ width: 300, height: 300 }}
+                  >
+                    <AlertCircle className="text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              
+              <canvas ref={canvasRef} className="hidden" />
+              
+              <div className="flex gap-3 justify-center flex-wrap w-full">
+                <Button 
+                  onClick={handleDownload} 
+                  disabled={!qrImage || isBusy || !selectedFormat} 
+                  className="flex-1"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download {selectedFormat ? selectedFormat.toUpperCase() : ""}
+                </Button>
+                <Button variant="outline" onClick={copyToClipboard} disabled={!qrImage || isBusy} className="flex-1">
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy
+                </Button>
+              </div>
+              
+              <div className="flex gap-2 justify-center mt-3 w-full">
+                <Button 
+                  variant={selectedFormat === 'png' ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => handleFormatSelect('png')} 
+                  disabled={!qrImage || isBusy}
+                  className="flex-1 h-10"
+                >
+                  .PNG
+                </Button>
+                <Button 
+                  variant={selectedFormat === 'jpg' ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => handleFormatSelect('jpg')} 
+                  disabled={!qrImage || isBusy}
+                  className="flex-1 h-10"
+                >
+                  .JPG
+                </Button>
+              </div>
+              
+              <div className="flex items-center justify-between w-full mt-4">
+                <span className="text-sm text-muted-foreground">Low Quality</span>
+                <span className="text-sm font-medium">{quality[0]} x {quality[0]} Px</span>
+                <span className="text-sm text-muted-foreground">High Quality</span>
+              </div>
+              
+              <SliderWithTooltip
+                min={100}
+                max={2000}
+                step={100}
+                value={quality}
+                onValueChange={setQuality}
+                className="mt-2 w-full"
+              />
             </div>
           </div>
         </div>
