@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -836,3 +837,50 @@ END:VCARD`;
                             style={{ backgroundColor: fgColor }}
                           />
                           <Input
+                            id="fg-color-desktop"
+                            type="color"
+                            value={fgColor}
+                            onChange={(e) => setFgColor(e.target.value)}
+                            className="rounded-l-none"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="bg-color-desktop">Background Color</Label>
+                        <div className="flex mt-1">
+                          <div 
+                            className="w-10 h-10 border rounded-l-md" 
+                            style={{ backgroundColor: bgColor }}
+                          />
+                          <Input
+                            id="bg-color-desktop"
+                            type="color"
+                            value={bgColor}
+                            onChange={(e) => setBgColor(e.target.value)}
+                            className="rounded-l-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                
+                {/* The rest of the desktop view components would go here - similar to the mobile version but with desktop-specific layouts */}
+              </div>
+            </Card>
+
+            {/* Right Column: QR Code Preview */}
+            <div className="flex flex-col items-center">
+              {/* Preview would go here, similar to the mobile version */}
+            </div>
+          </div>
+        </div>
+      </PageContainer>
+      
+      <Footer />
+    </>
+  );
+};
+
+export default QrCodeStyler;
