@@ -32,6 +32,7 @@ const JPGtoPNG = () => {
       <Helmet>
         <title>JPG to PNG Converter - Free Online Tool</title>
         <meta name="description" content="Convert JPG/JPEG images to PNG format online. Free, secure with no watermarks." />
+        <link rel="canonical" href="https://mytoolbox.site/jpg-to-png" />
       </Helmet>
       
       <SpaceBackground />

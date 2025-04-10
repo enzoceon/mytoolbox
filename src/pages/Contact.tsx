@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -34,9 +35,9 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Contact Us - Image2PDF</title>
-        <meta name="description" content="Get in touch with the Image2PDF team. We welcome your questions, feedback, and suggestions about our free image to PDF converter tool." />
-        <link rel="canonical" href="https://image2pdf.site/contact" />
+        <title>Contact Us - MyToolbox</title>
+        <meta name="description" content="Get in touch with the MyToolbox team. We welcome your questions, feedback, and suggestions about our free online tools." />
+        <link rel="canonical" href="https://mytoolbox.site/contact" />
       </Helmet>
       
       <BackgroundAnimation />
@@ -58,7 +59,7 @@ const Contact = () => {
             <div className="space-y-6">
               <p className="text-foreground">
                 Have a question, suggestion, or just want to say hello? We'd love to hear from you!
-                Our team is here to help with any inquiries about our image to PDF conversion tool.
+                Our team is here to help with any inquiries about our online tools.
               </p>
               
               <div className="flex items-center space-x-3 text-primary font-medium">
@@ -157,7 +158,7 @@ const Contact = () => {
             
             <div className="pb-4">
               <h3 className="text-lg font-medium mb-2">Do you offer custom development services?</h3>
-              <p>While our primary focus is on maintaining and improving Image2PDF, we're open to discussing custom development projects related to document conversion. Please contact us with details about your requirements.</p>
+              <p>While our primary focus is on maintaining and improving MyToolbox, we're open to discussing custom development projects related to document conversion. Please contact us with details about your requirements.</p>
             </div>
           </div>
         </section>

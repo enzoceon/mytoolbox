@@ -21,8 +21,8 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Page Not Found - Image2PDF</title>
-        <meta name="description" content="The page you're looking for doesn't exist. Return to our homepage to convert images to PDF." />
+        <title>Page Not Found - MyToolbox</title>
+        <meta name="description" content="The page you're looking for doesn't exist. Return to our homepage to use our free online tools." />
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       

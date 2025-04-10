@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,13 +29,13 @@ const Privacy = () => {
             <p><strong>Last Updated: April 04, 2025</strong></p>
             
             <p>
-              At Image2PDF, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect
+              At MyToolbox, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect
               your information when you use our website.
             </p>
             
             <h2 className="text-xl font-semibold mt-6 mb-3">Information We Don't Collect</h2>
             <p>
-              Image2PDF is designed with privacy in mind. We do not:
+              MyToolbox is designed with privacy in mind. We do not:
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>Store your images or PDFs on our servers</li>

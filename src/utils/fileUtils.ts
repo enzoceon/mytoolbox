@@ -5,14 +5,14 @@
 
 /**
  * Creates a standardized filename for downloads following the format:
- * everytools.site.<extension>
+ * mytoolbox.site.<extension>
  * 
  * @param fileType - The type of file (pdf, jpg, png, zip, etc.)
  * @param prefix - Optional prefix to add before the domain name
  * @returns Standardized filename
  */
 export const getStandardFilename = (fileType: string, prefix?: string): string => {
-  const baseFilename = prefix ? `${prefix}-everytools.site` : 'everytools.site';
+  const baseFilename = prefix ? `${prefix}-mytoolbox.site` : 'mytoolbox.site';
   return `${baseFilename}.${fileType.toLowerCase()}`;
 };
 

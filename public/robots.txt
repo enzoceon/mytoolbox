@@ -1,6 +1,6 @@
 
-# Image2PDF - Free Online Image to PDF Converter
-# Convert JPG, PNG, GIF, BMP, WEBP, TIFF and other image formats to PDF for free
+# MyToolbox - Free Online Tools Collection
+# Convert images, edit PDFs, transform files, and more for free
 # No registration, no watermarks, secure and easy to use
 # Privacy-focused: all processing happens in your browser
 
@@ -27,7 +27,7 @@ Allow: /*.pdf$
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://image2pdf.site/sitemap.xml
+Sitemap: https://mytoolbox.site/sitemap.xml
 
 # Important pages
 Allow: /about
