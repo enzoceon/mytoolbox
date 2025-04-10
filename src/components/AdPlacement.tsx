@@ -11,6 +11,7 @@ interface AdPlacementProps {
  * AdPlacement component that displays Google AdSense ads
  */
 const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', contentLoaded = true, className = '' }) => {
+  // Using HTMLElement to handle the ins element
   const adRef = useRef<HTMLElement>(null);
   
   useEffect(() => {
@@ -42,8 +43,9 @@ const AdPlacement: React.FC<AdPlacementProps> = ({ format = 'horizontal', conten
   
   return (
     <div className={`ad-container flex justify-center my-4 ${className}`}>
+      {/* Use a type assertion to tell TypeScript that this is okay */}
       <ins
-        ref={adRef}
+        ref={adRef as React.RefObject<HTMLModElement>}
         className="adsbygoogle"
         style={{ display: 'block', width, height }}
         data-ad-client="ca-pub-1941496122967255"
