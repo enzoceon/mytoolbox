@@ -8,6 +8,7 @@ export interface UploadBoxProps {
   acceptedFileTypes?: string;
   onFileSelect: (files: FileList) => void;
   multiple?: boolean;
+  children?: React.ReactNode;
 }
 
 const UploadBox = forwardRef<HTMLInputElement, UploadBoxProps>(({
@@ -15,7 +16,8 @@ const UploadBox = forwardRef<HTMLInputElement, UploadBoxProps>(({
   subtitle,
   acceptedFileTypes = "*",
   onFileSelect,
-  multiple = false
+  multiple = false,
+  children
 }, ref) => {
   const localFileInputRef = useRef<HTMLInputElement>(null);
   
@@ -59,7 +61,7 @@ const UploadBox = forwardRef<HTMLInputElement, UploadBoxProps>(({
     >
       <div className="rounded-2xl border-2 border-dashed border-indigo-400/30 flex flex-col items-center justify-center p-6 bg-[#0e1527]">
         <div className="mb-6 w-14 h-14 rounded-full bg-[#1a2035] flex items-center justify-center">
-          <Upload className="h-6 w-6 text-indigo-400" />
+          {children || <Upload className="h-6 w-6 text-indigo-400" />}
         </div>
         
         <h2 className="text-2xl font-medium text-white mb-2">{title}</h2>

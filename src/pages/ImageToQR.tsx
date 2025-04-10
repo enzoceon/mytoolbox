@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import ImageToQRSEO from '@/components/SEO/ImageToQRSEO';
-import { Download, Image, Copy, QrCode, RefreshCw } from 'lucide-react';
+import { Download, Image as ImageIcon, Copy, QrCode, RefreshCw } from 'lucide-react';
 import QRCode from 'qrcode';
 import HowToUse from '@/components/HowToUse';
 
@@ -79,7 +79,7 @@ const ImageToQR = () => {
       let imageData = imagePreview;
       
       if (enableCompression) {
-        const img = new Image();
+        const img = new window.Image();
         img.src = imagePreview;
         await new Promise<void>((resolve) => {
           img.onload = () => resolve();
@@ -342,8 +342,9 @@ const ImageToQR = () => {
                 acceptedFileTypes="image/*"
                 onFileSelect={handleFileSelect}
                 multiple={false}
-                icon={<Image className="h-10 w-10 text-muted-foreground" />}
-              />
+              >
+                <ImageIcon className="h-10 w-10 text-muted-foreground" />
+              </UploadBox>
             )}
           </div>
           
