@@ -14,7 +14,6 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   // List of paths for tools that are not functional (coming soon)
   const comingSoonPaths = [
     "/text-to-handwriting",
-    "/pdf-to-text",
     "/background-remover",
     "/pdf-password-remover",
     "/pixelate-image",

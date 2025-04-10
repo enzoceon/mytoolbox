@@ -59,6 +59,7 @@ import ZipCreator from "./pages/ZipCreator";
 import RarExtractor from "./pages/RarExtractor";
 import WordCounter from "./pages/WordCounter";
 import UnitConverter from "./pages/UnitConverter";
+import PdfToText from "./pages/PdfToText";
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -127,6 +128,7 @@ const AppContent = () => {
         <Route path="/text-to-speech" element={<TextToSpeech />} />
         <Route path="/extract-text-from-image" element={<OcrTool />} />
         <Route path="/text-to-emoji" element={<TextToEmoji />} />
+        <Route path="/pdf-to-text" element={<PdfToText />} />
         
         <Route path="/zip-extractor" element={<ZipExtractor />} />
         <Route path="/zip-creator" element={<ZipCreator />} />
