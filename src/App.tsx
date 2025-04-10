@@ -157,7 +157,7 @@ const AppContent = () => {
         <Route path="/image-to-qr" element={<ComingSoon />} />
         <Route path="/image-to-qr-code" element={<ComingSoon />} />
         <Route path="/pdf-to-qr-code" element={<ComingSoon />} />
-        <Route path="/audio-to-qr" element={<ComingSoon />} />
+        <Route path="/audio-to-qr" element={<ComingSoon title="Audio to QR Code Converter" description="Convert audio files to QR codes for easy sharing" />} />
         
         <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="/text-replacer" element={<TextReplacer />} />

@@ -1,47 +1,72 @@
 
 import React from 'react';
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Layout from '@/components/layout/Layout';
+import PageContainer from '@/components/PageContainer';
+import BackButton from '@/components/BackButton';
+import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Clock } from 'lucide-react';
-import BackgroundAnimation from '@/components/BackgroundAnimation';
-import SEOMetadata from '@/components/SEO/SEOMetadata';
+import { Clock, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const ComingSoon: React.FC = () => {
-  const location = useLocation();
-  
-  // Check if the current path is the text-to-speech path, and redirect if it is
-  if (location.pathname === '/text-to-speech') {
-    return <Navigate to="/text-to-speech" replace />;
-  }
-  
+interface ComingSoonProps {
+  title?: string;
+  description?: string;
+}
+
+const ComingSoon: React.FC<ComingSoonProps> = ({ 
+  title = "Coming Soon", 
+  description = "This tool is under development and will be available soon." 
+}) => {
   return (
-    <>
-      <SEOMetadata />
-      <BackgroundAnimation />
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center relative z-10">
-        <div className="max-w-md mx-auto">
-          <div className="mb-8 w-24 h-24 mx-auto bg-accent/10 rounded-full flex items-center justify-center">
-            <Clock className="w-12 h-12 text-accent" />
+    <Layout>
+      <Helmet>
+        <title>{title} | Coming Soon - MyToolbox</title>
+        <meta name="description" content={description} />
+      </Helmet>
+      
+      <PageContainer>
+        <BackButton />
+        <div className="max-w-3xl mx-auto text-center mt-10 mb-20">
+          <div className="relative inline-block mb-6">
+            <div className="absolute inset-0 rounded-full bg-purple-500/20 animate-ping-slow"></div>
+            <div className="relative bg-purple-600 text-white p-4 rounded-full">
+              <Clock className="w-10 h-10" />
+            </div>
           </div>
           
-          <h1 className="text-3xl font-bold mb-4 text-foreground">Coming Soon</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-4">
+            {title} 
+            <span className="inline-flex items-center ml-2 px-3 py-1 text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 rounded-full">
+              Coming Soon
+            </span>
+          </h1>
           
-          <p className="text-muted-foreground mb-6">
-            This exciting feature is currently under development. 
-            We're working hard to bring you an amazing AI Image Generator tool 
-            that will transform your creative process.
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            {description}
           </p>
           
-          <div className="flex justify-center">
+          <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-8 flex flex-col sm:flex-row items-center gap-4 text-left">
+            <AlertTriangle className="text-amber-500 w-10 h-10 shrink-0" />
+            <div>
+              <h3 className="font-medium text-amber-800 dark:text-amber-400">Development In Progress</h3>
+              <p className="text-amber-700 dark:text-amber-500 text-sm mt-1">
+                We're working hard to make this tool available as soon as possible. Please check back later or subscribe to our newsletter for updates.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/tools">
-              <Button variant="outline" className="px-6 py-3">
-                Back to Tools
+              <Button className="min-w-[200px]">
+                Explore Available Tools
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
           </div>
         </div>
-      </div>
-    </>
+      </PageContainer>
+    </Layout>
   );
 };
 
