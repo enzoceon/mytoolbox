@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -12,8 +13,7 @@ import {
   Trash2, 
   Copy, 
   Plus, 
-  HistoryIcon as History,
-  ArrowLeft
+  HistoryIcon as History
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -21,6 +21,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "@/utils/toast-utils";
+import HowToUse from '@/components/HowToUse';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 
 interface SavedColor {
   id: string;
@@ -321,466 +324,463 @@ const ColorPicker = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <BackButton />
-          
-          <div className="flex items-center mb-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Color Picker</h1>
-              <p className="text-muted-foreground">Pick colors from images and convert between formats</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div className="glass-card p-6 rounded-xl">
-              <div className="mb-4 w-14 h-14 rounded-full bg-pink-500/20 flex items-center justify-center">
-                <Palette className="h-8 w-8 text-pink-400" />
-              </div>
-              
-              <h2 className="text-xl font-semibold mb-6">Color Selector</h2>
-              
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="picker">Color Picker</TabsTrigger>
-                  <TabsTrigger value="image">From Image</TabsTrigger>
-                  <TabsTrigger value="rgb">RGB</TabsTrigger>
-                  <TabsTrigger value="hsl">HSL</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="picker">
-                  <div className="space-y-4">
-                    <div
-                      className="w-full h-32 rounded-lg shadow-inner cursor-pointer"
-                      style={{ backgroundColor: color }}
-                    />
-                    
-                    <div>
-                      <Label htmlFor="color-input">Hex Color</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          id="color-input"
-                          type="text"
-                          value={color}
-                          onChange={(e) => setColor(e.target.value)}
-                          className="font-mono"
-                        />
-                        <Input
-                          type="color"
-                          value={color}
-                          onChange={(e) => setColor(e.target.value)}
-                          className="w-14 p-1 h-10"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="image">
-                  <div className="space-y-4">
-                    {!imageUrl ? (
-                      <div 
-                        className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors h-48"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <div className="mx-auto w-12 h-12 mb-4 text-muted-foreground">
-                          <Upload className="h-12 w-12" />
-                        </div>
-                        <p className="text-base font-medium mb-2">Upload an image</p>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Click to select an image to pick colors from
-                        </p>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={handleImageUpload}
-                        />
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="relative">
-                          <canvas 
-                            ref={canvasRef} 
-                            width={500} 
-                            height={300} 
-                            className="w-full h-auto rounded-lg cursor-crosshair border shadow-sm" 
-                            onClick={handleCanvasClick}
-                          />
-                          
-                          <div className="mt-2 flex items-center justify-between">
-                            <p className="text-sm text-muted-foreground flex items-center">
-                              <Pipette className="h-4 w-4 mr-1" />
-                              Click on the image to pick a color
-                            </p>
-                            
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => {
-                                setImageUrl(null);
-                                if (fileInputRef.current) fileInputRef.current.value = '';
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4 mr-1" />
-                              Clear Image
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        <div
-                          className="w-full h-16 rounded-lg shadow-inner"
-                          style={{ backgroundColor: color }}
-                        />
-                        
-                        <div className="text-center">
-                          <p className="font-mono">{color}</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="rgb">
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="r-slider">Red: {r}</Label>
-                      </div>
-                      <Slider
-                        id="r-slider"
-                        min={0}
-                        max={255}
-                        step={1}
-                        value={[r]}
-                        onValueChange={(value) => setR(value[0])}
-                        className="mb-6"
-                      />
-                      
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="g-slider">Green: {g}</Label>
-                      </div>
-                      <Slider
-                        id="g-slider"
-                        min={0}
-                        max={255}
-                        step={1}
-                        value={[g]}
-                        onValueChange={(value) => setG(value[0])}
-                        className="mb-6"
-                      />
-                      
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="b-slider">Blue: {b}</Label>
-                      </div>
-                      <Slider
-                        id="b-slider"
-                        min={0}
-                        max={255}
-                        step={1}
-                        value={[b]}
-                        onValueChange={(value) => setB(value[0])}
-                      />
-                    </div>
-                    
-                    <div
-                      className="w-full h-16 rounded-lg shadow-inner"
-                      style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}
-                    />
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <Label htmlFor="rgb-value">RGB Value</Label>
-                        <div className="flex">
-                          <Input
-                            id="rgb-value"
-                            value={`rgb(${r}, ${g}, ${b})`}
-                            readOnly
-                            className="font-mono"
-                          />
-                          <Button 
-                            variant="ghost" 
-                            onClick={() => copyToClipboard(`rgb(${r}, ${g}, ${b})`)}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="hex-value">Hex Value</Label>
-                        <div className="flex">
-                          <Input
-                            id="hex-value"
-                            value={color}
-                            readOnly
-                            className="font-mono"
-                          />
-                          <Button 
-                            variant="ghost" 
-                            onClick={() => copyToClipboard(color)}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="hsl">
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="h-slider">Hue: {h}°</Label>
-                      </div>
-                      <Slider
-                        id="h-slider"
-                        min={0}
-                        max={360}
-                        step={1}
-                        value={[h]}
-                        onValueChange={(value) => setH(value[0])}
-                        className="mb-6"
-                      />
-                      
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="s-slider">Saturation: {s}%</Label>
-                      </div>
-                      <Slider
-                        id="s-slider"
-                        min={0}
-                        max={100}
-                        step={1}
-                        value={[s]}
-                        onValueChange={(value) => setS(value[0])}
-                        className="mb-6"
-                      />
-                      
-                      <div className="flex justify-between mb-2">
-                        <Label htmlFor="l-slider">Lightness: {l}%</Label>
-                      </div>
-                      <Slider
-                        id="l-slider"
-                        min={0}
-                        max={100}
-                        step={1}
-                        value={[l]}
-                        onValueChange={(value) => setL(value[0])}
-                      />
-                    </div>
-                    
-                    <div
-                      className="w-full h-16 rounded-lg shadow-inner"
-                      style={{ backgroundColor: `hsl(${h}, ${s}%, ${l}%)` }}
-                    />
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <Label htmlFor="hsl-value">HSL Value</Label>
-                        <div className="flex">
-                          <Input
-                            id="hsl-value"
-                            value={`hsl(${h}, ${s}%, ${l}%)`}
-                            readOnly
-                            className="font-mono"
-                          />
-                          <Button 
-                            variant="ghost" 
-                            onClick={() => copyToClipboard(`hsl(${h}, ${s}%, ${l}%)`)}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="hex-value-hsl">Hex Value</Label>
-                        <div className="flex">
-                          <Input
-                            id="hex-value-hsl"
-                            value={color}
-                            readOnly
-                            className="font-mono"
-                          />
-                          <Button 
-                            variant="ghost" 
-                            onClick={() => copyToClipboard(color)}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="pt-6 border-t">
-                <div className="flex gap-4 items-center mb-4">
-                  <div
-                    className="w-12 h-12 rounded-lg shadow-sm"
-                    style={{ backgroundColor: color }}
-                  />
-                  <div className="flex-grow">
-                    <Input
-                      placeholder="Color name (optional)"
-                      value={colorName}
-                      onChange={(e) => setColorName(e.target.value)}
-                    />
-                  </div>
-                  <Button onClick={saveColor}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Save
-                  </Button>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full" 
-                      onClick={() => copyToClipboard(color)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Hex
-                    </Button>
-                  </div>
-                  <div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full" 
-                      onClick={() => copyToClipboard(`rgb(${r}, ${g}, ${b})`)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      RGB
-                    </Button>
-                  </div>
-                  <div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full" 
-                      onClick={() => copyToClipboard(`hsl(${h}, ${s}%, ${l}%)`)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      HSL
-                    </Button>
-                  </div>
-                </div>
-              </div>
+        <main className="flex-1">
+          <PageContainer>
+            <BackButton />
+            
+            <div className="text-center mb-10 animate-fade-in">
+              <h1 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+                <span className="text-white">Professional </span>
+                <span className="bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">Color</span>
+                <span className="text-white"> Picker</span>
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Pick colors from images and convert between RGB, HEX, and HSL formats
+              </p>
             </div>
             
-            <div className="glass-card p-6 rounded-xl">
-              <div className="mb-4 w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                <History className="h-8 w-8 text-indigo-400" />
-              </div>
-              
-              <h2 className="text-xl font-semibold mb-6">Saved Colors</h2>
-              
-              {savedColors.length === 0 ? (
-                <div className="text-center py-10 border border-dashed rounded-lg">
-                  <Palette className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    Your saved colors will appear here.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="mt-4"
-                    onClick={saveColor}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Save Current Color
-                  </Button>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              <div className="glass-card p-6 rounded-xl">
+                <div className="mb-4 w-14 h-14 rounded-full bg-pink-500/20 flex items-center justify-center">
+                  <Palette className="h-8 w-8 text-pink-400" />
                 </div>
-              ) : (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {savedColors.map((savedColor) => (
-                      <div 
-                        key={savedColor.id} 
-                        className="rounded-lg overflow-hidden border shadow-sm"
-                      >
+                
+                <h2 className="text-xl font-semibold mb-6">Color Selector</h2>
+                
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+                  <TabsList className="mb-4">
+                    <TabsTrigger value="picker">Color Picker</TabsTrigger>
+                    <TabsTrigger value="image">From Image</TabsTrigger>
+                    <TabsTrigger value="rgb">RGB</TabsTrigger>
+                    <TabsTrigger value="hsl">HSL</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="picker">
+                    <div className="space-y-4">
+                      <div
+                        className="w-full h-32 rounded-lg shadow-inner cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                      
+                      <div>
+                        <Label htmlFor="color-input">Hex Color</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="color-input"
+                            type="text"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                            className="font-mono"
+                          />
+                          <Input
+                            type="color"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                            className="w-14 p-1 h-10"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="image">
+                    <div className="space-y-4">
+                      {!imageUrl ? (
                         <div 
-                          className="h-16 w-full"
-                          style={{ backgroundColor: savedColor.hex }}
-                        />
-                        <div className="p-3">
-                          <div className="flex justify-between items-center mb-2">
-                            <p className="font-medium">{savedColor.name}</p>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 w-8 p-0" 
-                              onClick={() => deleteColor(savedColor.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                          className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors h-48"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <div className="mx-auto w-12 h-12 mb-4 text-muted-foreground">
+                            <Upload className="h-12 w-12" />
+                          </div>
+                          <p className="text-base font-medium mb-2">Upload an image</p>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Click to select an image to pick colors from
+                          </p>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleImageUpload}
+                          />
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div className="relative">
+                            <canvas 
+                              ref={canvasRef} 
+                              width={500} 
+                              height={300} 
+                              className="w-full h-auto rounded-lg cursor-crosshair border shadow-sm" 
+                              onClick={handleCanvasClick}
+                            />
+                            
+                            <div className="mt-2 flex items-center justify-between">
+                              <p className="text-sm text-muted-foreground flex items-center">
+                                <Pipette className="h-4 w-4 mr-1" />
+                                Click on the image to pick a color
+                              </p>
+                              
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => {
+                                  setImageUrl(null);
+                                  if (fileInputRef.current) fileInputRef.current.value = '';
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4 mr-1" />
+                                Clear Image
+                              </Button>
+                            </div>
                           </div>
                           
-                          <div className="grid grid-cols-3 gap-1 text-xs">
+                          <div
+                            className="w-full h-16 rounded-lg shadow-inner"
+                            style={{ backgroundColor: color }}
+                          />
+                          
+                          <div className="text-center">
+                            <p className="font-mono">{color}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="rgb">
+                    <div className="space-y-6">
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="r-slider">Red: {r}</Label>
+                        </div>
+                        <Slider
+                          id="r-slider"
+                          min={0}
+                          max={255}
+                          step={1}
+                          value={[r]}
+                          onValueChange={(value) => setR(value[0])}
+                          className="mb-6"
+                        />
+                        
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="g-slider">Green: {g}</Label>
+                        </div>
+                        <Slider
+                          id="g-slider"
+                          min={0}
+                          max={255}
+                          step={1}
+                          value={[g]}
+                          onValueChange={(value) => setG(value[0])}
+                          className="mb-6"
+                        />
+                        
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="b-slider">Blue: {b}</Label>
+                        </div>
+                        <Slider
+                          id="b-slider"
+                          min={0}
+                          max={255}
+                          step={1}
+                          value={[b]}
+                          onValueChange={(value) => setB(value[0])}
+                        />
+                      </div>
+                      
+                      <div
+                        className="w-full h-16 rounded-lg shadow-inner"
+                        style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}
+                      />
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label htmlFor="rgb-value">RGB Value</Label>
+                          <div className="flex">
+                            <Input
+                              id="rgb-value"
+                              value={`rgb(${r}, ${g}, ${b})`}
+                              readOnly
+                              className="font-mono"
+                            />
                             <Button 
                               variant="ghost" 
-                              size="sm" 
-                              className="h-6 justify-start px-1"
-                              onClick={() => {
-                                copyToClipboard(savedColor.hex);
-                                setColor(savedColor.hex);
-                                setActiveTab('picker');
-                              }}
+                              onClick={() => copyToClipboard(`rgb(${r}, ${g}, ${b})`)}
                             >
-                              <span className="font-mono">{savedColor.hex}</span>
+                              <Copy className="h-4 w-4" />
                             </Button>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor="hex-value">Hex Value</Label>
+                          <div className="flex">
+                            <Input
+                              id="hex-value"
+                              value={color}
+                              readOnly
+                              className="font-mono"
+                            />
                             <Button 
                               variant="ghost" 
-                              size="sm" 
-                              className="h-6 justify-start px-1"
-                              onClick={() => copyToClipboard(savedColor.rgb)}
+                              onClick={() => copyToClipboard(color)}
                             >
-                              <span>RGB</span>
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-6 justify-start px-1"
-                              onClick={() => copyToClipboard(savedColor.hsl)}
-                            >
-                              <span>HSL</span>
+                              <Copy className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="hsl">
+                    <div className="space-y-6">
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="h-slider">Hue: {h}°</Label>
+                        </div>
+                        <Slider
+                          id="h-slider"
+                          min={0}
+                          max={360}
+                          step={1}
+                          value={[h]}
+                          onValueChange={(value) => setH(value[0])}
+                          className="mb-6"
+                        />
+                        
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="s-slider">Saturation: {s}%</Label>
+                        </div>
+                        <Slider
+                          id="s-slider"
+                          min={0}
+                          max={100}
+                          step={1}
+                          value={[s]}
+                          onValueChange={(value) => setS(value[0])}
+                          className="mb-6"
+                        />
+                        
+                        <div className="flex justify-between mb-2">
+                          <Label htmlFor="l-slider">Lightness: {l}%</Label>
+                        </div>
+                        <Slider
+                          id="l-slider"
+                          min={0}
+                          max={100}
+                          step={1}
+                          value={[l]}
+                          onValueChange={(value) => setL(value[0])}
+                        />
+                      </div>
+                      
+                      <div
+                        className="w-full h-16 rounded-lg shadow-inner"
+                        style={{ backgroundColor: `hsl(${h}, ${s}%, ${l}%)` }}
+                      />
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label htmlFor="hsl-value">HSL Value</Label>
+                          <div className="flex">
+                            <Input
+                              id="hsl-value"
+                              value={`hsl(${h}, ${s}%, ${l}%)`}
+                              readOnly
+                              className="font-mono"
+                            />
+                            <Button 
+                              variant="ghost" 
+                              onClick={() => copyToClipboard(`hsl(${h}, ${s}%, ${l}%)`)}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor="hex-value-hsl">Hex Value</Label>
+                          <div className="flex">
+                            <Input
+                              id="hex-value-hsl"
+                              value={color}
+                              readOnly
+                              className="font-mono"
+                            />
+                            <Button 
+                              variant="ghost" 
+                              onClick={() => copyToClipboard(color)}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+                
+                <div className="pt-6 border-t">
+                  <div className="flex gap-4 items-center mb-4">
+                    <div
+                      className="w-12 h-12 rounded-lg shadow-sm"
+                      style={{ backgroundColor: color }}
+                    />
+                    <div className="flex-grow">
+                      <Input
+                        placeholder="Color name (optional)"
+                        value={colorName}
+                        onChange={(e) => setColorName(e.target.value)}
+                      />
+                    </div>
+                    <Button onClick={saveColor}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Save
+                    </Button>
                   </div>
                   
-                  {savedColors.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full" 
+                        onClick={() => copyToClipboard(color)}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Hex
+                      </Button>
+                    </div>
+                    <div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full" 
+                        onClick={() => copyToClipboard(`rgb(${r}, ${g}, ${b})`)}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        RGB
+                      </Button>
+                    </div>
+                    <div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full" 
+                        onClick={() => copyToClipboard(`hsl(${h}, ${s}%, ${l}%)`)}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        HSL
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="glass-card p-6 rounded-xl">
+                <div className="mb-4 w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                  <History className="h-8 w-8 text-indigo-400" />
+                </div>
+                
+                <h2 className="text-xl font-semibold mb-6">Saved Colors</h2>
+                
+                {savedColors.length === 0 ? (
+                  <div className="text-center py-10 border border-dashed rounded-lg">
+                    <Palette className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-muted-foreground">
+                      Your saved colors will appear here.
+                    </p>
                     <Button 
                       variant="outline" 
-                      className="w-full"
-                      onClick={() => {
-                        setSavedColors([]);
-                        localStorage.removeItem('savedColors');
-                        toast.success('All saved colors cleared');
-                      }}
+                      className="mt-4"
+                      onClick={saveColor}
                     >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Clear All Saved Colors
+                      <Plus className="h-4 w-4 mr-2" />
+                      Save Current Color
                     </Button>
-                  )}
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {savedColors.map((savedColor) => (
+                        <div 
+                          key={savedColor.id} 
+                          className="rounded-lg overflow-hidden border shadow-sm"
+                        >
+                          <div 
+                            className="h-16 w-full"
+                            style={{ backgroundColor: savedColor.hex }}
+                          />
+                          <div className="p-3">
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="font-medium">{savedColor.name}</p>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-8 w-8 p-0" 
+                                onClick={() => deleteColor(savedColor.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            
+                            <div className="grid grid-cols-3 gap-1 text-xs">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-6 justify-start px-1"
+                                onClick={() => {
+                                  copyToClipboard(savedColor.hex);
+                                  setColor(savedColor.hex);
+                                  setActiveTab('picker');
+                                }}
+                              >
+                                <span className="font-mono">{savedColor.hex}</span>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-6 justify-start px-1"
+                                onClick={() => copyToClipboard(savedColor.rgb)}
+                              >
+                                <span>RGB</span>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-6 justify-start px-1"
+                                onClick={() => copyToClipboard(savedColor.hsl)}
+                              >
+                                <span>HSL</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {savedColors.length > 0 && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => {
+                          setSavedColors([]);
+                          localStorage.removeItem('savedColors');
+                          toast.success('All saved colors cleared');
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Clear All Saved Colors
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </PageContainer>
           
-          <div className="max-w-3xl mx-auto mt-12 glass-card p-6 rounded-xl">
-            <h2 className="text-2xl font-semibold mb-4">How to Use Color Picker</h2>
-            <ol className="list-decimal list-inside space-y-3 text-muted-foreground">
-              <li>Select a color using the color picker, RGB/HSL sliders, or by uploading an image.</li>
-              <li>Pick colors directly from your uploaded images by clicking on them.</li>
-              <li>Convert between HEX, RGB, and HSL color formats.</li>
-              <li>Save your favorite colors with custom names for future reference.</li>
-              <li>Copy color values to clipboard in different formats.</li>
-            </ol>
-          </div>
+          <HowToUse />
         </main>
         
         <Footer />

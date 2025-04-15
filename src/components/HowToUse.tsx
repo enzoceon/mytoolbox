@@ -1,8 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Upload, FileImage, Download } from 'lucide-react';
-// Import Palette separately to ensure it's properly loaded
-import { Palette } from 'lucide-react';
+import { Upload, FileImage, Download, Palette, Code, Lock, FileText, Pipette } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 const HowToUse = () => {
@@ -23,10 +21,67 @@ const HowToUse = () => {
   }, [location]);
 
   // Determine which page we're on
+  const isColorPicker = location.pathname === '/color-picker';
+  const isHtmlToPdf = location.pathname === '/html-to-pdf';
+  const isPasswordGenerator = location.pathname === '/password-generator';
   const isJPGtoPNG = location.pathname === '/jpg-to-png';
   const isPdfToImage = location.pathname === '/pdf-to-image';
   const isQrCodeGenerator = location.pathname === '/qr-code-generator';
   const isTextToEmoji = location.pathname === '/text-to-emoji';
+  
+  const colorPickerSteps = [
+    {
+      icon: <Palette className="h-8 w-8 text-blue-500" />,
+      title: 'Select a Color',
+      description: 'Use the color picker, RGB/HSL sliders, or upload an image to select a color. You can pick colors directly from your images.'
+    },
+    {
+      icon: <Pipette className="h-8 w-8 text-blue-500" />,
+      title: 'Convert & Edit',
+      description: 'Convert between HEX, RGB, and HSL color formats with real-time preview. Adjust sliders to fine-tune your colors.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Save Your Colors',
+      description: 'Save your favorite colors with custom names and copy them to clipboard in different formats for your projects.'
+    }
+  ];
+  
+  const htmlToPdfSteps = [
+    {
+      icon: <Code className="h-8 w-8 text-blue-500" />,
+      title: 'Enter HTML Code',
+      description: 'Type or paste your HTML code in the editor. You can use our sample HTML or import your own content.'
+    },
+    {
+      icon: <FileText className="h-8 w-8 text-blue-500" />,
+      title: 'Configure Settings',
+      description: 'Adjust page size, orientation, margins, and background settings to customize your PDF document.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Generate & Download PDF',
+      description: 'Click "Generate PDF" to convert your HTML to a PDF document, then download it when you\'re satisfied with the preview.'
+    }
+  ];
+  
+  const passwordGeneratorSteps = [
+    {
+      icon: <Lock className="h-8 w-8 text-blue-500" />,
+      title: 'Set Your Parameters',
+      description: 'Adjust password length and select which characters to include: uppercase, lowercase, numbers, and symbols.'
+    },
+    {
+      icon: <FileText className="h-8 w-8 text-blue-500" />,
+      title: 'Generate Password',
+      description: 'Click "Generate New Password" to create a random, secure password based on your selected parameters.'
+    },
+    {
+      icon: <Download className="h-8 w-8 text-blue-500" />,
+      title: 'Save & Copy',
+      description: 'Copy your password to clipboard or save it with a custom label for future reference.'
+    }
+  ];
   
   const jpgToPngSteps = [
     {
@@ -43,24 +98,6 @@ const HowToUse = () => {
       icon: <Download className="h-8 w-8 text-blue-500" />,
       title: 'Download Your PNGs',
       description: 'Once conversion is complete, download all PNG files individually or as a ZIP archive with a single click.'
-    }
-  ];
-  
-  const imageToPathSteps = [
-    {
-      icon: <Upload className="h-8 w-8 text-blue-500" />,
-      title: 'Upload Your Images',
-      description: 'Drag and drop multiple image files or click to browse and select from your device. Supports JPG, PNG, GIF, BMP, WEBP and TIFF formats.'
-    },
-    {
-      icon: <FileImage className="h-8 w-8 text-blue-500" />,
-      title: 'Convert to PDF',
-      description: 'Click the "Convert to PDF" button to transform your images into a high-quality PDF document.'
-    },
-    {
-      icon: <Download className="h-8 w-8 text-blue-500" />,
-      title: 'Download Your PDF',
-      description: 'Once conversion is complete, download your PDF file with a single click.'
     }
   ];
   
@@ -122,7 +159,16 @@ const HowToUse = () => {
   let steps;
   let toolName;
   
-  if (isJPGtoPNG) {
+  if (isColorPicker) {
+    steps = colorPickerSteps;
+    toolName = 'Color Picker';
+  } else if (isHtmlToPdf) {
+    steps = htmlToPdfSteps;
+    toolName = 'HTML to PDF';
+  } else if (isPasswordGenerator) {
+    steps = passwordGeneratorSteps;
+    toolName = 'Password Generator';
+  } else if (isJPGtoPNG) {
     steps = jpgToPngSteps;
     toolName = 'JPG to PNG';
   } else if (isPdfToImage) {
@@ -135,8 +181,25 @@ const HowToUse = () => {
     steps = textToEmojiSteps;
     toolName = 'Text to Emoji';
   } else {
-    steps = imageToPathSteps;
-    toolName = 'Image to PDF';
+    // Default steps for general tools
+    steps = [
+      {
+        icon: <Upload className="h-8 w-8 text-blue-500" />,
+        title: 'Upload or Input',
+        description: 'Upload your files or input your data to get started with this tool.'
+      },
+      {
+        icon: <FileText className="h-8 w-8 text-blue-500" />,
+        title: 'Customize Settings',
+        description: 'Adjust the settings and options to customize the output according to your needs.'
+      },
+      {
+        icon: <Download className="h-8 w-8 text-blue-500" />,
+        title: 'Download Result',
+        description: 'Process your data and download the results when ready.'
+      }
+    ];
+    toolName = 'This Tool';
   }
 
   return (
@@ -145,16 +208,7 @@ const HowToUse = () => {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-3 text-white">How to Use {toolName}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            {isJPGtoPNG 
-              ? 'MyToolbox makes converting your JPG files to transparent PNG images simple and fast. Follow these three easy steps to get started.'
-              : isPdfToImage 
-                ? 'MyToolbox makes converting your PDF to high-quality images simple and fast. Follow these three easy steps to get started.'
-                : isQrCodeGenerator
-                  ? 'MyToolbox makes generating custom QR codes simple and fast. Follow these three easy steps to get started.'
-                  : isTextToEmoji
-                    ? 'MyToolbox makes converting your text to expressive emojis simple and fast. Follow these three easy steps to get started.'
-                    : 'MyToolbox makes converting your images to PDF simple and fast. Follow these three easy steps to get started.'
-            }
+            EveryTools makes working with {toolName.toLowerCase()} simple and fast. Follow these three easy steps to get started.
           </p>
         </div>
         
@@ -162,7 +216,8 @@ const HowToUse = () => {
           {steps.map((step, index) => (
             <div 
               key={index} 
-              className="bg-[#0c1224] p-6 rounded-xl text-center transition-all duration-300 border border-white/10 shadow-lg flex flex-col items-center"
+              className="bg-[#0c1224] p-6 rounded-xl text-center transition-all duration-300 border border-white/10 shadow-lg flex flex-col items-center animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-900/30 flex items-center justify-center">
                 {step.icon}
