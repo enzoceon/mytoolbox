@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
+import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -61,7 +62,6 @@ const PasswordGenerator = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load saved passwords from localStorage
     const saved = localStorage.getItem('savedPasswords');
     if (saved) {
       try {
@@ -71,7 +71,6 @@ const PasswordGenerator = () => {
       }
     }
     
-    // Generate initial password
     generatePassword();
   }, []);
 
@@ -87,20 +86,17 @@ const PasswordGenerator = () => {
     const numberChars = '0123456789';
     const symbolChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
     
-    // Create character pool based on options
     let charPool = '';
     if (options.includeUppercase) charPool += uppercaseChars;
     if (options.includeLowercase) charPool += lowercaseChars;
     if (options.includeNumbers) charPool += numberChars;
     if (options.includeSymbols) charPool += symbolChars;
     
-    // Ensure at least one option is selected
     if (charPool.length === 0) {
       setOptions(prev => ({ ...prev, includeLowercase: true }));
       charPool = lowercaseChars;
     }
     
-    // Generate password
     let newPassword = '';
     for (let i = 0; i < options.length; i++) {
       const randomIndex = Math.floor(Math.random() * charPool.length);
@@ -111,20 +107,16 @@ const PasswordGenerator = () => {
   };
 
   const calculatePasswordStrength = () => {
-    // Simple password strength calculation
     let strength = 0;
     
-    // Length check
     if (password.length >= 8) strength += 1;
     if (password.length >= 12) strength += 1;
     
-    // Character variety checks
     if (/[A-Z]/.test(password)) strength += 1;
     if (/[a-z]/.test(password)) strength += 1;
     if (/[0-9]/.test(password)) strength += 1;
     if (/[^A-Za-z0-9]/.test(password)) strength += 1;
     
-    // Adjust to 0-4 scale
     strength = Math.min(4, Math.floor(strength / 1.5));
     
     setPasswordStrength(strength);
@@ -187,6 +179,8 @@ const PasswordGenerator = () => {
         <Header />
         
         <main className="flex-1 container mx-auto px-4 py-8">
+          <BackButton />
+          
           <div className="flex items-center mb-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Password Generator</h1>
@@ -195,7 +189,6 @@ const PasswordGenerator = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Password Generator Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center">
                 <Lock className="h-8 w-8 text-blue-400" />
@@ -204,7 +197,6 @@ const PasswordGenerator = () => {
               <h2 className="text-xl font-semibold mb-6">Generate Password</h2>
               
               <div className="space-y-6">
-                {/* Password Display */}
                 <div>
                   <Label htmlFor="password" className="sr-only">Generated Password</Label>
                   <div className="relative">
@@ -239,7 +231,6 @@ const PasswordGenerator = () => {
                   </div>
                 </div>
                 
-                {/* Password Strength Indicator */}
                 <div>
                   <div className="flex justify-between mb-2">
                     <p className="text-sm text-muted-foreground">Password Strength</p>
@@ -253,7 +244,6 @@ const PasswordGenerator = () => {
                   </div>
                 </div>
                 
-                {/* Password Length */}
                 <div>
                   <div className="flex justify-between mb-2">
                     <Label htmlFor="password-length">Length: {options.length} characters</Label>
@@ -268,7 +258,6 @@ const PasswordGenerator = () => {
                   />
                 </div>
                 
-                {/* Character Type Options */}
                 <div className="space-y-3">
                   <h3 className="text-sm font-medium">Include Characters</h3>
                   
@@ -345,7 +334,6 @@ const PasswordGenerator = () => {
                   </div>
                 </div>
                 
-                {/* Generate Button */}
                 <Button 
                   onClick={generatePassword}
                   className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
@@ -354,7 +342,6 @@ const PasswordGenerator = () => {
                   Generate New Password
                 </Button>
                 
-                {/* Save Password */}
                 <div className="pt-4 border-t">
                   <h3 className="text-sm font-medium mb-2">Save Password</h3>
                   <div className="flex gap-2">
@@ -372,7 +359,6 @@ const PasswordGenerator = () => {
               </div>
             </div>
             
-            {/* Password Security & Saved Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center">
                 <Shield className="h-8 w-8 text-green-400" />

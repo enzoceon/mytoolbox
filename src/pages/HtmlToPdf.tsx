@@ -1,9 +1,9 @@
-
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
+import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Code, FileCode, Link as LinkIcon, FileText, RefreshCw, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -129,6 +129,8 @@ const HtmlToPdf = () => {
         <Header />
         
         <main className="flex-1 container mx-auto px-4 py-8">
+          <BackButton />
+          
           <div className="flex items-center mb-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">HTML to PDF</h1>
