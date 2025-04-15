@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AlignJustify, X, Home, FileImage, Video, Music, FileText, File, Camera, Folder, Brain, Crop, Replace, HandMetal, Coffee, Download } from 'lucide-react';
 import {
@@ -7,111 +8,108 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import MenuCategory from './MenuCategory';
+import { tools } from '@/data/tools';
 
 interface MobileMenuProps {
   icon?: React.ReactNode;
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
-  // Menu categories based on the reference image
+  // Filter tools to only include functional ones
+  const functionalTools = tools.filter(tool => tool.isFunctional !== false);
+  
+  // Create a mapping of tools by category
+  const toolsByCategory = functionalTools.reduce((acc, tool) => {
+    if (!acc[tool.category]) {
+      acc[tool.category] = [];
+    }
+    acc[tool.category].push({
+      name: tool.name,
+      path: tool.path
+    });
+    return acc;
+  }, {} as Record<string, {name: string, path: string}[]>);
+  
+  // Menu categories based on the available tools
   const menuCategories = [
     {
       title: "Home",
       icon: <Home className="h-5 w-5" />,
       items: [
         { name: "Home", path: "/" },
-        { name: "All Tools", path: "/tools" },
       ]
     },
     {
       title: "Photo & Image",
       icon: <FileImage className="h-5 w-5" />,
-      items: [
-        { name: "Image to PDF", path: "/image-to-pdf" },
-        { name: "PDF to Image", path: "/pdf-to-image" },
-        { name: "Image Cropper", path: "/image-cropper" },
-        { name: "JPG to PNG", path: "/jpg-to-png" },
-      ]
+      items: toolsByCategory['image'] || []
     },
     {
       title: "Video",
       icon: <Video className="h-5 w-5" />,
-      items: [
-        { name: "Video Converter", path: "/tools" },
-        { name: "Video Compressor", path: "/tools" },
-        { name: "Video to GIF", path: "/video-to-gif" },
-      ]
+      items: toolsByCategory['video'] || []
     },
     {
       title: "Audio",
       icon: <Music className="h-5 w-5" />,
-      items: [
-        { name: "Audio Converter", path: "/tools" },
-        { name: "Audio Compressor", path: "/tools" },
-      ]
+      items: toolsByCategory['audio'] || []
     },
     {
       title: "AI Tools",
       icon: <Brain className="h-5 w-5" />,
-      items: [
-        { name: "AI Text Generator", path: "/ai-text-generator" },
-        { name: "AI Content Summarizer", path: "/ai-content-summarizer" },
-        { name: "AI Chatbot", path: "/ai-chatbot" },
-        { name: "AI Image Generator", path: "/ai-image-generator" },
-      ]
+      items: toolsByCategory['ai'] || []
     },
     {
       title: "PDF",
       icon: <FileText className="h-5 w-5" />,
-      items: [
-        { name: "Unlock PDF", path: "/tools" },
-        { name: "Protect PDF", path: "/tools" },
-        { name: "HTML to PDF", path: "/tools" },
-      ]
+      items: toolsByCategory['pdf'] || []
     },
     {
       title: "Text",
       icon: <File className="h-5 w-5" />,
-      items: [
-        { name: "Text Editor", path: "/tools" },
-        { name: "Text Replacer", path: "/text-replacer" },
-        { name: "Text to Handwriting", path: "/text-to-handwriting" },
-        { name: "Text to Emoji", path: "/text-to-emoji" },
-        { name: "OCR", path: "/extract-text-from-image" },
-      ]
+      items: toolsByCategory['text'] || []
     },
     {
       title: "Scanner & Camera",
       icon: <Camera className="h-5 w-5" />,
-      items: [
-        { name: "Scan Document", path: "/tools" },
-        { name: "Camera to PDF", path: "/tools" },
-      ]
+      items: toolsByCategory['scanner'] || []
     },
     {
       title: "File & Device",
       icon: <Folder className="h-5 w-5" />,
-      items: [
-        { name: "File Converter", path: "/tools" },
-        { name: "File Compressor", path: "/tools" },
-      ]
+      items: toolsByCategory['file'] || []
     },
     {
       title: "Animation",
       icon: <Download className="h-5 w-5" />,
-      items: [
-        { name: "Video to GIF", path: "/video-to-gif" },
-        { name: "GIF to Video", path: "/gif-to-video" },
-      ]
+      items: toolsByCategory['animation'] || []
     },
     {
       title: "Emoji",
       icon: <Coffee className="h-5 w-5" />,
-      items: [
-        { name: "Text to Emoji", path: "/text-to-emoji" },
-      ]
+      items: toolsByCategory['emoji'] || []
+    },
+    {
+      title: "QR Code",
+      icon: <Camera className="h-5 w-5" />,
+      items: toolsByCategory['qrcode'] || []
+    },
+    {
+      title: "Converter",
+      icon: <Replace className="h-5 w-5" />,
+      items: toolsByCategory['converter'] || []
+    },
+    {
+      title: "Utility",
+      icon: <Folder className="h-5 w-5" />,
+      items: toolsByCategory['utility'] || []
     },
   ];
+
+  // Filter out categories with no items
+  const filteredCategories = menuCategories.filter(category => 
+    category.items && category.items.length > 0
+  );
   
   return (
     <Sheet>
@@ -120,7 +118,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
           className="p-2 text-foreground bg-accent/10 hover:bg-accent/15 rounded-md flex items-center justify-center"
           aria-label="Menu"
         >
-          {icon || <AlignJustify className="h-5 w-5" />} {/* Use provided icon or default */}
+          {icon || <AlignJustify className="h-5 w-5" />}
         </button>
       </SheetTrigger>
       <SheetContent 
@@ -140,7 +138,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ icon }) => {
           </div>
           <div className="flex-1 overflow-y-auto">
             <div className="py-4">
-              {menuCategories.map((category) => (
+              {filteredCategories.map((category) => (
                 <MenuCategory 
                   key={category.title}
                   title={category.title}
