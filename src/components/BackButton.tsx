@@ -25,7 +25,7 @@ const BackButton = () => {
   };
   
   return (
-    <div className="mb-6 inline-block hidden sm:block">
+    <div className="mb-6 inline-block hidden sm:block md:block lg:block xl:block">
       <Button 
         variant="outline" 
         size="sm" 
