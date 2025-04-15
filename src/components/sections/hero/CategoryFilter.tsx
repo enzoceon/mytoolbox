@@ -28,6 +28,13 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   const categories: ToolCategory[] = ['All', 'Image', 'Document', 'Video', 'Audio', 'Text', 'AI', 'QR Code'];
 
   const navigateToCategory = (category: string) => {
+    // Store the selected category in sessionStorage (except 'All')
+    if (category.toLowerCase() !== 'all') {
+      sessionStorage.setItem('lastToolCategory', category.toLowerCase());
+    } else {
+      sessionStorage.removeItem('lastToolCategory');
+    }
+    
     navigate(`/tools?category=${category.toLowerCase()}`);
   };
 

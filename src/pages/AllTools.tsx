@@ -30,6 +30,8 @@ const AllTools = () => {
       const categoryExists = categories.some(cat => cat.id === normalizedCategory);
       if (categoryExists) {
         setActiveCategory(normalizedCategory);
+        // Store the category in sessionStorage
+        sessionStorage.setItem('lastToolCategory', normalizedCategory);
       }
     }
     
@@ -63,6 +65,13 @@ const AllTools = () => {
   // Handle category change
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
+    
+    // Store the selected category in sessionStorage
+    if (category !== 'all') {
+      sessionStorage.setItem('lastToolCategory', category);
+    } else {
+      sessionStorage.removeItem('lastToolCategory');
+    }
     
     // Update URL without refreshing page
     const params = new URLSearchParams(location.search);
@@ -179,6 +188,7 @@ const AllTools = () => {
                   onClick={() => {
                     setSearchTerm('');
                     setActiveCategory('all');
+                    sessionStorage.removeItem('lastToolCategory');
                   }}
                 >
                   Reset Filters

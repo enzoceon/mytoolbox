@@ -14,8 +14,17 @@ const MobileBackButton = () => {
   const shouldShow = location.pathname !== '/' && location.pathname !== '/tools';
   
   const handleBack = () => {
-    // Navigate to the tools page directly
-    navigate('/tools');
+    // Check if there's a category in sessionStorage
+    const lastCategory = sessionStorage.getItem('lastToolCategory');
+    
+    if (lastCategory) {
+      // Navigate back to the tools page with the last category
+      navigate(`/tools?category=${lastCategory}`);
+    } else {
+      // Fallback to the general tools page
+      navigate('/tools');
+    }
+    
     // Ensure we're at the top of the page
     window.scrollTo(0, 0);
   };

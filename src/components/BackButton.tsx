@@ -1,15 +1,25 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const BackButton = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
   const handleBack = () => {
-    // Navigate to the tools page directly instead of using browser history
-    navigate('/tools');
+    // Check if there's a category in sessionStorage
+    const lastCategory = sessionStorage.getItem('lastToolCategory');
+    
+    if (lastCategory) {
+      // Navigate back to the tools page with the last category
+      navigate(`/tools?category=${lastCategory}`);
+    } else {
+      // Fallback to the general tools page
+      navigate('/tools');
+    }
+    
     // Ensure we're at the top of the page
     window.scrollTo(0, 0);
   };
