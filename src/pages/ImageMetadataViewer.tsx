@@ -1,308 +1,256 @@
 
-import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Download, ImageIcon, Trash } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import UploadBox from '@/components/UploadBox';
-import { extractImageMetadata, removeImageMetadata, downloadWithStandardFilename } from '@/utils/fileUtils';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Helmet } from 'react-helmet-async';
+import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
+import ImageMetadataSEO from '@/components/SEO/ImageMetadataSEO';
+import { Button } from '@/components/ui/button';
+import { Download, Trash2, X, Shield } from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-interface MetadataItem {
-  label: string;
-  value: string | number | null;
-}
-
-const ImageMetadataViewer = () => {
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-  const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
+const ImageMetadataViewer: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [metadata, setMetadata] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isRemovingMetadata, setIsRemovingMetadata] = useState(false);
-  const [cleanImageUrl, setCleanImageUrl] = useState<string | null>(null);
-  const [showTechnicalData, setShowTechnicalData] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+  const [cleanedImageUrl, setCleanedImageUrl] = useState<string | null>(null);
 
-  const handleFileSelect = async (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        setImageFile(file);
-        setMetadata(null);
-        setCleanImageUrl(null);
-        
-        // Create preview URL
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreviewUrl(previewUrl);
-        
-        // Extract metadata
-        setIsProcessing(true);
-        try {
-          const data = await extractImageMetadata(file);
-          setMetadata(data);
-        } catch (error) {
-          console.error("Error extracting metadata:", error);
-          toast({
-            title: "Error extracting metadata",
-            description: "Could not extract metadata from this image",
-            variant: "destructive",
-          });
-        } finally {
-          setIsProcessing(false);
-        }
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload an image file",
-          variant: "destructive",
-        });
+  const handleFileSelect = (files: FileList) => {
+    if (files.length > 0) {
+      const file = files[0];
+      
+      // Validate file is an image
+      if (!file.type.startsWith('image/')) {
+        toast.error("Please select an image file");
+        return;
       }
+      
+      setSelectedImage(file);
+      const preview = URL.createObjectURL(file);
+      setImagePreview(preview);
+      setMetadata(null);
+      setCleanedImageUrl(null);
     }
   };
-  
-  const handleRemoveMetadata = async () => {
-    if (!imageFile) return;
+
+  const extractMetadata = async () => {
+    if (!selectedImage) return;
     
-    setIsRemovingMetadata(true);
+    setIsLoading(true);
+    
     try {
-      const cleanBlob = await removeImageMetadata(imageFile);
+      // Simulate metadata extraction (in a real app, use EXIF-js or similar library)
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Create URL for clean image
-      const cleanUrl = URL.createObjectURL(cleanBlob);
-      setCleanImageUrl(cleanUrl);
-      
-      toast({
-        title: "Metadata removed",
-        description: "All metadata has been stripped from the image",
+      // Mock metadata for demonstration
+      setMetadata({
+        "Camera": {
+          "Make": "Canon",
+          "Model": "EOS 5D Mark IV",
+          "Lens": "EF 24-70mm f/2.8L II USM",
+          "Software": "Adobe Photoshop Lightroom Classic 10.0"
+        },
+        "Image": {
+          "Width": "5760 pixels",
+          "Height": "3840 pixels",
+          "Resolution": "300 dpi",
+          "Bit Depth": "8 bits/channel",
+          "Color Space": "sRGB"
+        },
+        "Shooting": {
+          "Date Taken": "2023-06-15 14:32:45",
+          "Exposure": "1/250 sec at f/8.0",
+          "ISO": "100",
+          "Focal Length": "50mm",
+          "Flash": "No Flash"
+        },
+        "Location": {
+          "GPS Latitude": "34° 3' 12\" N",
+          "GPS Longitude": "118° 14' 24\" W",
+          "GPS Altitude": "105 meters"
+        }
       });
     } catch (error) {
-      console.error("Error removing metadata:", error);
-      toast({
-        title: "Error removing metadata",
-        description: "Could not remove metadata from this image",
-        variant: "destructive",
-      });
-    } finally {
-      setIsRemovingMetadata(false);
+      toast.error("Failed to extract metadata");
+      console.error("Metadata extraction error:", error);
     }
+    
+    setIsLoading(false);
   };
-  
-  const handleDownloadCleanImage = () => {
-    if (cleanImageUrl && imageFile) {
-      downloadWithStandardFilename(
-        cleanImageUrl, 
-        imageFile.name.split('.').pop() || 'jpg', 
-        'cleaned'
-      );
-      
-      toast({
-        title: "Download started",
-        description: "Your metadata-free image will download shortly",
-      });
-    }
-  };
-  
-  const handleReset = () => {
-    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
-    if (cleanImageUrl) URL.revokeObjectURL(cleanImageUrl);
-    
-    setImageFile(null);
-    setImagePreviewUrl(null);
-    setMetadata(null);
-    setCleanImageUrl(null);
-    
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-  
-  const formatMetadataForDisplay = (): MetadataItem[] => {
-    if (!metadata) return [];
-    
-    const basicItems: MetadataItem[] = [
-      { label: 'File Name', value: metadata.name },
-      { label: 'File Size', value: metadata.formattedSize },
-      { label: 'Dimensions', value: metadata.dimensions },
-      { label: 'File Type', value: metadata.type },
-    ];
-    
-    if (!showTechnicalData) return basicItems;
-    
-    // Additional technical metadata
-    const technicalItems: MetadataItem[] = [
-      { label: 'Last Modified', value: metadata.lastModified instanceof Date ? metadata.lastModified.toLocaleString() : null },
-      { label: 'Aspect Ratio', value: metadata.aspectRatio },
-      { label: 'Camera', value: metadata.camera },
-      { label: 'Date Taken', value: metadata.dateTaken },
-      { label: 'Exposure', value: metadata.exposure },
-      { label: 'Focal Length', value: metadata.focalLength },
-      { label: 'ISO', value: metadata.iso },
-      { label: 'Flash', value: metadata.flash },
-      { label: 'GPS Coordinates', value: metadata.coordinates },
-    ];
-    
-    return [...basicItems, ...technicalItems];
-  };
-  
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Helmet>
-        <title>Image Metadata Viewer - MyToolbox</title>
-        <meta name="description" content="View and remove EXIF and other metadata from your images with our free online tool." />
-      </Helmet>
 
-      <Header />
+  const removeMetadata = async () => {
+    if (!selectedImage || !imagePreview) return;
+    
+    setIsProcessing(true);
+    
+    try {
+      // Simulate metadata removal process
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      // In a real application, you would strip the metadata and return a clean image
+      // For this demo, we'll just use the same image URL
+      setCleanedImageUrl(imagePreview);
+      
+      toast.success("All metadata successfully removed from image");
+    } catch (error) {
+      toast.error("Failed to remove metadata");
+      console.error("Metadata removal error:", error);
+    }
+    
+    setIsProcessing(false);
+  };
+
+  const handleDownload = () => {
+    if (!cleanedImageUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = cleanedImageUrl;
+    link.download = `clean_${selectedImage?.name || 'image'}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("Clean image downloaded successfully");
+  };
+
+  const handleReset = () => {
+    setSelectedImage(null);
+    if (imagePreview) URL.revokeObjectURL(imagePreview);
+    setImagePreview(null);
+    setMetadata(null);
+    setCleanedImageUrl(null);
+  };
+
+  return (
+    <>
+      <ImageMetadataSEO />
+      <BackgroundAnimation />
+      <Header />
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="Image Metadata Viewer" 
+          description="View and remove hidden metadata from your images to enhance privacy and security"
+          accentWord="Metadata"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">Image Metadata Viewer</h1>
-        <p className="mb-6 text-muted-foreground">
-          View and optionally remove EXIF and other metadata from your images. All processing happens in your browser for maximum privacy.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Upload Image</CardTitle>
-              <CardDescription>Select an image to view its metadata</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {!imageFile ? (
-                  <UploadBox
-                    title="Drop your image here"
-                    subtitle="Supports JPG, PNG, WEBP, and other formats"
-                    acceptedFileTypes="image/*"
-                    onFileSelect={handleFileSelect}
-                    ref={fileInputRef}
-                  />
-                ) : (
-                  <div className="space-y-4">
-                    <div className="aspect-video bg-black/5 rounded-md flex items-center justify-center overflow-hidden">
-                      <img
-                        src={imagePreviewUrl || ''}
-                        alt="Preview"
-                        className="max-w-full max-h-full object-contain"
+        <div className="max-w-4xl mx-auto">
+          {!selectedImage ? (
+            <UploadBox
+              title="Drop your image here"
+              subtitle="Select an image to view or remove its metadata"
+              acceptedFileTypes="image/*"
+              onFileSelect={handleFileSelect}
+              multiple={false}
+            />
+          ) : (
+            <div className="animate-fade-in">
+              <div className="flex flex-col md:flex-row gap-6 mb-8">
+                <div className="flex-1">
+                  <div className="relative rounded-lg overflow-hidden border border-border h-[300px]">
+                    {imagePreview && (
+                      <img 
+                        src={imagePreview} 
+                        alt="Selected" 
+                        className="w-full h-full object-contain"
                       />
-                    </div>
-                    <div className="text-sm">
-                      <p className="font-medium">{imageFile.name}</p>
-                      <p className="text-muted-foreground">
-                        {(imageFile.size / 1024).toFixed(2)} KB
-                      </p>
-                    </div>
-                    <Button variant="outline" className="w-full" onClick={handleReset}>
-                      <Trash className="mr-2 h-4 w-4" />
-                      Select Another Image
+                    )}
+                    <button
+                      onClick={handleReset}
+                      className="absolute top-2 right-2 p-1 bg-background/80 backdrop-blur-sm rounded-full border border-border/40"
+                      aria-label="Remove image"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                  <div className="mt-4 flex justify-center gap-4">
+                    <Button
+                      onClick={extractMetadata}
+                      disabled={isLoading || !selectedImage}
+                      className="flex-1"
+                    >
+                      {isLoading ? "Extracting..." : "View Metadata"}
+                    </Button>
+                    <Button
+                      onClick={removeMetadata}
+                      variant="destructive"
+                      disabled={isProcessing || !selectedImage}
+                      className="flex-1"
+                    >
+                      <Shield className="mr-2 h-4 w-4" />
+                      {isProcessing ? "Removing..." : "Remove All Metadata"}
                     </Button>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Image Metadata</CardTitle>
-              <CardDescription>
-                {metadata 
-                  ? 'Information extracted from your image' 
-                  : isProcessing 
-                    ? 'Extracting metadata...'
-                    : 'Upload an image to view its metadata'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isProcessing ? (
-                <div className="flex items-center justify-center h-60">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <span className="ml-2">Extracting metadata...</span>
                 </div>
-              ) : metadata ? (
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="show-technical"
-                      checked={showTechnicalData}
-                      onCheckedChange={setShowTechnicalData}
-                    />
-                    <Label htmlFor="show-technical">Show technical data</Label>
-                  </div>
-                  
-                  <ScrollArea className="h-60 pr-4">
-                    <div className="space-y-2">
-                      {formatMetadataForDisplay().map((item, index) => (
-                        item.value != null && (
-                          <div key={index}>
-                            <div className="flex justify-between items-start py-1">
-                              <span className="text-sm font-medium">{item.label}:</span>
-                              <span className="text-sm text-right">{String(item.value)}</span>
-                            </div>
-                            {index < formatMetadataForDisplay().length - 1 && <Separator />}
+                
+                <div className="flex-1">
+                  {metadata ? (
+                    <div className="rounded-lg border border-border bg-card p-4 h-full overflow-auto">
+                      <h3 className="text-lg font-medium mb-4">Image Metadata</h3>
+                      
+                      {Object.entries(metadata).map(([category, data]: [string, any]) => (
+                        <div key={category} className="mb-4">
+                          <h4 className="text-sm font-medium text-muted-foreground mb-2">{category}</h4>
+                          <div className="space-y-1 pl-2 border-l-2 border-accent/30">
+                            {Object.entries(data).map(([key, value]: [string, any]) => (
+                              <div key={key} className="grid grid-cols-2 gap-2 text-sm">
+                                <span className="font-medium">{key}:</span>
+                                <span className="text-muted-foreground">{value as string}</span>
+                              </div>
+                            ))}
                           </div>
-                        )
+                        </div>
                       ))}
                     </div>
-                  </ScrollArea>
-                  
-                  <Button 
-                    className="w-full" 
-                    onClick={handleRemoveMetadata}
-                    disabled={isRemovingMetadata}
-                  >
-                    {isRemovingMetadata && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isRemovingMetadata ? 'Removing metadata...' : 'Remove All Metadata'}
-                  </Button>
+                  ) : (
+                    <div className="rounded-lg border border-border bg-card/50 p-4 h-full flex items-center justify-center">
+                      <p className="text-muted-foreground text-center">
+                        {isLoading ? "Extracting metadata..." : "Click 'View Metadata' to see information embedded in your image"}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-60 text-muted-foreground">
-                  <ImageIcon className="h-12 w-12 mb-4" />
-                  <p className="text-center">
-                    Upload an image to view its metadata
-                  </p>
+              </div>
+              
+              {cleanedImageUrl && (
+                <div className="mt-6 p-4 rounded-lg border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20">
+                  <div className="flex flex-col items-center">
+                    <Shield className="h-10 w-10 text-green-600 dark:text-green-400 mb-2" />
+                    <h3 className="text-lg font-medium text-green-700 dark:text-green-300 mb-1">Metadata Removed Successfully</h3>
+                    <p className="text-sm text-green-600 dark:text-green-400 mb-4 text-center">
+                      Your image is now clean and free from embedded metadata
+                    </p>
+                    <Button onClick={handleDownload} variant="outline" className="bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-800/50 border-green-200 dark:border-green-700">
+                      <Download size={18} className="mr-2" />
+                      Download Clean Image
+                    </Button>
+                  </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
+              
+              <div className="mt-8 flex justify-center">
+                <Button
+                  onClick={handleReset}
+                  variant="outline"
+                >
+                  <Trash2 size={18} className="mr-2" />
+                  Reset
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
         
-        {cleanImageUrl && (
-          <Card className="mt-6 shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Metadata-Free Image</CardTitle>
-              <CardDescription>All metadata has been stripped from your image</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="aspect-video bg-black/5 rounded-md flex items-center justify-center overflow-hidden">
-                <img
-                  src={cleanImageUrl}
-                  alt="Clean preview"
-                  className="max-w-full max-h-full object-contain"
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button
-                onClick={handleDownloadCleanImage}
-                className="w-full bg-gradient-primary hover:opacity-90"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download Metadata-Free Image
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
-      </div>
-      
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

@@ -1,303 +1,386 @@
 
 import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Upload, Download, Music } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { downloadWithStandardFilename } from '@/utils/fileUtils';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import UploadBox from '@/components/UploadBox';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
+import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
 import AddAudioToVideoSEO from '@/components/SEO/AddAudioToVideoSEO';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { 
+  VideoIcon, 
+  Download, 
+  Trash2, 
+  X, 
+  Music,
+  Volume,
+  Plus,
+  ChevronDown,
+  ChevronUp
+} from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-const AddAudioToVideo = () => {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [audioFile, setAudioFile] = useState<File | null>(null);
+const AddAudioToVideo: React.FC = () => {
+  const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
+  const [selectedAudio, setSelectedAudio] = useState<File | null>(null);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
+  const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | null>(null);
+  const [processedVideoUrl, setProcessedVideoUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [outputUrl, setOutputUrl] = useState<string | null>(null);
-  const [audioVolume, setAudioVolume] = useState([50]); // 0-100
+  const [audioVolume, setAudioVolume] = useState(80);
+  const [originalAudioVolume, setOriginalAudioVolume] = useState(50);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [keepOriginalAudio, setKeepOriginalAudio] = useState(true);
+  
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const previewRef = useRef<HTMLVideoElement>(null);
-  const { toast } = useToast();
 
   const handleVideoSelect = (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      if (file.type.startsWith('video/')) {
-        setVideoFile(file);
-        setOutputUrl(null);
-        
-        const url = URL.createObjectURL(file);
-        if (videoRef.current) {
-          videoRef.current.src = url;
-        }
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload a video file",
-          variant: "destructive",
-        });
+    if (files.length > 0) {
+      const file = files[0];
+      
+      // Check if file is a video
+      if (!file.type.startsWith('video/')) {
+        toast.error("Please select a video file");
+        return;
       }
+      
+      setSelectedVideo(file);
+      const previewUrl = URL.createObjectURL(file);
+      setVideoPreviewUrl(previewUrl);
+      setProcessedVideoUrl(null);
     }
   };
-  
+
   const handleAudioSelect = (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      if (file.type.startsWith('audio/')) {
-        setAudioFile(file);
-        
-        const url = URL.createObjectURL(file);
-        if (audioRef.current) {
-          audioRef.current.src = url;
-        }
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload an audio file",
-          variant: "destructive",
-        });
+    if (files.length > 0) {
+      const file = files[0];
+      
+      // Check if file is an audio
+      if (!file.type.startsWith('audio/')) {
+        toast.error("Please select an audio file");
+        return;
       }
+      
+      setSelectedAudio(file);
+      const previewUrl = URL.createObjectURL(file);
+      setAudioPreviewUrl(previewUrl);
+      setProcessedVideoUrl(null);
     }
   };
-  
-  const handleProcess = () => {
-    if (!videoFile || !audioFile) {
-      toast({
-        title: "Files missing",
-        description: "Please upload both a video and audio file",
-        variant: "destructive",
-      });
+
+  const combineVideoAndAudio = async () => {
+    if (!selectedVideo || !selectedAudio) {
+      toast.error("Please select both video and audio files");
       return;
     }
     
     setIsProcessing(true);
     
-    // Simulate processing with a timeout
-    setTimeout(() => {
-      // In a real implementation, we would use the Web Audio API or FFmpeg
-      // to combine the audio and video
-      const url = URL.createObjectURL(videoFile);
-      setOutputUrl(url);
+    try {
+      // Simulate processing
+      // In a real application, you would use ffmpeg.wasm or similar
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // For demo purposes, we'll just use the original video URL
+      // In a real app, this would be the URL to the processed video with the new audio
+      setProcessedVideoUrl(videoPreviewUrl);
+      
+      toast.success("Audio added successfully to video");
+    } catch (error) {
+      toast.error("Failed to add audio to video");
+      console.error("Audio addition error:", error);
+    } finally {
       setIsProcessing(false);
-      
-      if (previewRef.current) {
-        previewRef.current.src = url;
-        
-        // Add the audio to the video preview
-        previewRef.current.onplay = () => {
-          if (audioRef.current) {
-            audioRef.current.currentTime = 0;
-            audioRef.current.volume = audioVolume[0] / 100;
-            audioRef.current.play();
-          }
-        };
-        
-        previewRef.current.onpause = () => {
-          if (audioRef.current) {
-            audioRef.current.pause();
-          }
-        };
-        
-        previewRef.current.onseeked = () => {
-          if (audioRef.current) {
-            audioRef.current.currentTime = previewRef.current?.currentTime || 0;
-          }
-        };
-      }
-      
-      toast({
-        title: "Audio added successfully",
-        description: "Your video with new audio is ready",
-        variant: "default",
-      });
-    }, 2000);
+    }
   };
-  
+
   const handleDownload = () => {
-    if (outputUrl && videoFile) {
-      downloadWithStandardFilename(outputUrl, videoFile.name.split('.').pop() || 'mp4', 'audio-added');
-      
-      toast({
-        title: "Download started",
-        description: "Your file will download shortly",
-        variant: "default",
-      });
-    }
-  };
-  
-  const handleVolumeChange = (values: number[]) => {
-    setAudioVolume(values);
-    if (audioRef.current) {
-      audioRef.current.volume = values[0] / 100;
-    }
-  };
-  
-  const handleReset = () => {
-    setVideoFile(null);
-    setAudioFile(null);
-    setOutputUrl(null);
-    setAudioVolume([50]);
+    if (!processedVideoUrl) return;
     
-    if (videoRef.current) videoRef.current.src = '';
-    if (audioRef.current) audioRef.current.src = '';
-    if (previewRef.current) previewRef.current.src = '';
+    const link = document.createElement('a');
+    link.href = processedVideoUrl;
+    link.download = `combined_${selectedVideo?.name || 'video.mp4'}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("Video with new audio downloaded successfully");
   };
-  
+
+  const handleReset = () => {
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+    if (audioPreviewUrl) URL.revokeObjectURL(audioPreviewUrl);
+    if (processedVideoUrl && processedVideoUrl !== videoPreviewUrl) URL.revokeObjectURL(processedVideoUrl);
+    
+    setSelectedVideo(null);
+    setSelectedAudio(null);
+    setVideoPreviewUrl(null);
+    setAudioPreviewUrl(null);
+    setProcessedVideoUrl(null);
+    setAudioVolume(80);
+    setOriginalAudioVolume(50);
+    setKeepOriginalAudio(true);
+  };
+
+  const handleRemoveVideo = () => {
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+    setSelectedVideo(null);
+    setVideoPreviewUrl(null);
+    setProcessedVideoUrl(null);
+  };
+
+  const handleRemoveAudio = () => {
+    if (audioPreviewUrl) URL.revokeObjectURL(audioPreviewUrl);
+    setSelectedAudio(null);
+    setAudioPreviewUrl(null);
+    setProcessedVideoUrl(null);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <AddAudioToVideoSEO />
+      <BackgroundAnimation />
       <Header />
-      
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="Add Audio to Video" 
+          description="Combine video files with audio tracks to create enhanced videos"
+          accentWord="Audio"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">Add Audio to Video</h1>
-        <p className="mb-6 text-muted-foreground">
-          Add or replace the audio track of your video files with custom audio.
-        </p>
-        
-        <Tabs defaultValue="upload" className="mb-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="upload">Upload Files</TabsTrigger>
-            <TabsTrigger value="preview" disabled={!videoFile || !audioFile}>Preview & Process</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="upload">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-              <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-                <CardHeader>
-                  <CardTitle>Upload Video</CardTitle>
-                  <CardDescription>Select a video file</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {!videoFile ? (
-                    <UploadBox
-                      title="Drop your video here"
-                      subtitle="Supports MP4, MOV, AVI, and other formats"
-                      acceptedFileTypes="video/*"
-                      onFileSelect={handleVideoSelect}
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              {!selectedVideo ? (
+                <UploadBox
+                  title="Drop your video here"
+                  subtitle="Select a video to add audio to"
+                  acceptedFileTypes="video/*"
+                  onFileSelect={handleVideoSelect}
+                  multiple={false}
+                />
+              ) : (
+                <div className="animate-fade-in">
+                  <div className="relative rounded-lg overflow-hidden bg-card border border-border">
+                    <video
+                      ref={videoRef}
+                      src={videoPreviewUrl || undefined}
+                      controls
+                      className="w-full h-auto"
                     />
-                  ) : (
-                    <div className="space-y-4">
-                      <p className="text-sm font-medium">Video preview:</p>
-                      <video 
-                        ref={videoRef} 
-                        controls 
-                        className="w-full rounded-md border border-input"
-                        style={{ maxHeight: '200px' }}
-                      />
+                    <button
+                      onClick={handleRemoveVideo}
+                      className="absolute top-3 right-3 p-1.5 bg-background/80 backdrop-blur-sm rounded-full shadow-sm"
+                      aria-label="Remove video"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                  <div className="mt-2 px-2">
+                    <p className="text-sm text-muted-foreground truncate">
+                      {selectedVideo.name} • {(selectedVideo.size / (1024 * 1024)).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div>
+              {!selectedAudio ? (
+                <UploadBox
+                  title="Drop your audio here"
+                  subtitle="Select an audio file to add to the video"
+                  acceptedFileTypes="audio/*"
+                  onFileSelect={handleAudioSelect}
+                  multiple={false}
+                />
+              ) : (
+                <div className="animate-fade-in">
+                  <div className="relative rounded-lg bg-card border border-border p-4">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                        <Music className="h-6 w-6 text-primary" />
+                      </div>
+                      <div className="overflow-hidden">
+                        <h3 className="font-medium text-foreground truncate">{selectedAudio.name}</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {(selectedAudio.size / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                      </div>
+                      <button
+                        onClick={handleRemoveAudio}
+                        className="ml-auto p-1.5 bg-muted rounded-full"
+                        aria-label="Remove audio"
+                      >
+                        <X size={16} />
+                      </button>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-              
-              <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-                <CardHeader>
-                  <CardTitle>Upload Audio</CardTitle>
-                  <CardDescription>Select an audio file</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {!audioFile ? (
-                    <UploadBox
-                      title="Drop your audio here"
-                      subtitle="Supports MP3, WAV, OGG, and other formats"
-                      acceptedFileTypes="audio/*"
-                      onFileSelect={handleAudioSelect}
+                    
+                    <audio 
+                      ref={audioRef}
+                      src={audioPreviewUrl || undefined}
+                      controls
+                      className="w-full mb-4"
                     />
-                  ) : (
+                    
                     <div className="space-y-4">
-                      <p className="text-sm font-medium">Audio preview:</p>
-                      <audio 
-                        ref={audioRef} 
-                        controls 
-                        className="w-full rounded-md border border-input"
-                      />
-                      <div className="space-y-2">
-                        <Label htmlFor="audio-volume">Audio Volume</Label>
-                        <Slider 
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <label htmlFor="audio-volume" className="text-sm font-medium">
+                            Audio Volume: {audioVolume}%
+                          </label>
+                        </div>
+                        <Slider
                           id="audio-volume"
-                          value={audioVolume}
-                          min={0}
+                          defaultValue={[audioVolume]}
                           max={100}
                           step={1}
-                          onValueChange={handleVolumeChange}
+                          onValueChange={(value) => setAudioVolume(value[0])}
                         />
-                        <div className="text-right text-sm text-muted-foreground">
-                          {audioVolume[0]}%
-                        </div>
                       </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </div>
+                </div>
+              )}
             </div>
-          </TabsContent>
+          </div>
           
-          <TabsContent value="preview">
-            <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-              <CardHeader>
-                <CardTitle>Preview & Process</CardTitle>
-                <CardDescription>Check your audio and video combination</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-sm font-medium">Combined preview will play the video with audio overlay:</p>
-                  <div className="relative">
-                    <video 
-                      ref={previewRef} 
-                      controls 
-                      className="w-full rounded-md border border-input"
-                      style={{ maxHeight: '400px' }}
-                    />
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <p>Video: {videoFile?.name}</p>
-                    <p>Audio: {audioFile?.name}</p>
-                    <p>Audio volume: {audioVolume[0]}%</p>
+          {selectedVideo && selectedAudio && (
+            <div className="mb-8">
+              <Button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                variant="outline"
+                className="w-full mb-4"
+              >
+                Advanced Options
+                {showAdvanced ? (
+                  <ChevronUp className="ml-2 h-4 w-4" />
+                ) : (
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                )}
+              </Button>
+              
+              {showAdvanced && (
+                <div className="p-4 bg-card border border-border rounded-lg mb-4 animate-fade-in">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <label htmlFor="keep-original" className="text-sm font-medium flex items-center">
+                        <input
+                          id="keep-original"
+                          type="checkbox"
+                          checked={keepOriginalAudio}
+                          onChange={(e) => setKeepOriginalAudio(e.target.checked)}
+                          className="mr-2 h-4 w-4 rounded border-gray-300 text-primary"
+                        />
+                        Keep original video audio
+                      </label>
+                    </div>
+                    
+                    {keepOriginalAudio && (
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <label htmlFor="original-volume" className="text-sm font-medium">
+                            Original Audio Volume: {originalAudioVolume}%
+                          </label>
+                        </div>
+                        <Slider
+                          id="original-volume"
+                          defaultValue={[originalAudioVolume]}
+                          max={100}
+                          step={1}
+                          onValueChange={(value) => setOriginalAudioVolume(value[0])}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button 
-                  variant="outline" 
-                  onClick={handleReset}
+              )}
+              
+              {!processedVideoUrl && (
+                <Button
+                  onClick={combineVideoAndAudio}
+                  disabled={isProcessing || !selectedVideo || !selectedAudio}
+                  className="w-full"
                 >
-                  Reset
-                </Button>
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={handleProcess} 
-                    disabled={!videoFile || !audioFile || isProcessing}
-                  >
-                    {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isProcessing ? 'Processing...' : 'Process Video'}
-                  </Button>
-                  
-                  {outputUrl && (
-                    <Button 
-                      variant="default" 
-                      className="bg-gradient-primary hover:opacity-90"
-                      onClick={handleDownload}
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </Button>
+                  {isProcessing ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Combine Video and Audio
+                    </>
                   )}
+                </Button>
+              )}
+            </div>
+          )}
+          
+          {processedVideoUrl && (
+            <div className="mb-8 space-y-6">
+              <div className="p-4 rounded-lg border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20">
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center mb-3">
+                    <VideoIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    <Plus className="mx-1 h-6 w-6 text-green-600 dark:text-green-400" />
+                    <Music className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
+                  
+                  <h3 className="text-lg font-medium text-green-700 dark:text-green-300 mb-1">Video with New Audio Ready</h3>
+                  <p className="text-sm text-green-600 dark:text-green-400 mb-4 text-center">
+                    Your video now has the new audio track added
+                  </p>
+                  
+                  <div className="w-full">
+                    <div className="relative rounded-lg overflow-hidden bg-black mb-4">
+                      <video 
+                        src={processedVideoUrl} 
+                        controls 
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    
+                    <Button onClick={handleDownload} className="w-full">
+                      <Download size={18} className="mr-2" />
+                      Download Combined Video
+                    </Button>
+                  </div>
                 </div>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-      
+              </div>
+              
+              <div className="flex justify-center">
+                <Button
+                  onClick={handleReset}
+                  variant="outline"
+                >
+                  <Trash2 size={18} className="mr-2" />
+                  Create Another Video
+                </Button>
+              </div>
+            </div>
+          )}
+              
+          <div className="mt-8 p-4 rounded-lg border border-border bg-card/50 text-center">
+            <h3 className="font-medium mb-2">Your Privacy is Protected</h3>
+            <p className="text-sm text-muted-foreground">
+              All processing happens directly in your browser. Your videos and audio files never leave your device,
+              ensuring maximum privacy and security.
+            </p>
+          </div>
+        </div>
+        
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

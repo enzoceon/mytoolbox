@@ -1,371 +1,343 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Clipboard, Copy, Trash, Save, Check, Plus, X } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import BackButton from '@/components/BackButton';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import HowToUse from '@/components/HowToUse';
 import ClipboardManagerSEO from '@/components/SEO/ClipboardManagerSEO';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { 
+  Clipboard, 
+  Copy, 
+  Trash2, 
+  Plus, 
+  Check, 
+  Edit,
+  ChevronUp,
+  ChevronDown,
+  Search
+} from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
 interface ClipboardItem {
   id: string;
-  content: string;
   title: string;
+  content: string;
   timestamp: number;
 }
 
-const ClipboardManager = () => {
-  const [clipboardItems, setClipboardItems] = useState<ClipboardItem[]>([]);
-  const [currentText, setCurrentText] = useState('');
-  const [currentTitle, setCurrentTitle] = useState('');
-  const [editingItem, setEditingItem] = useState<ClipboardItem | null>(null);
-  const { toast } = useToast();
+const ClipboardManager: React.FC = () => {
+  const [items, setItems] = useState<ClipboardItem[]>([]);
+  const [newItemTitle, setNewItemTitle] = useState('');
+  const [newItemContent, setNewItemContent] = useState('');
+  const [editingItem, setEditingItem] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'alphabetical'>('newest');
 
-  // Load saved items from localStorage on component mount
   useEffect(() => {
+    // Load saved clipboard items from localStorage
     const savedItems = localStorage.getItem('clipboardItems');
     if (savedItems) {
       try {
-        setClipboardItems(JSON.parse(savedItems));
-      } catch (e) {
-        console.error('Error parsing saved clipboard items:', e);
+        setItems(JSON.parse(savedItems));
+      } catch (error) {
+        console.error("Error loading clipboard items:", error);
       }
     }
   }, []);
 
-  // Save items to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('clipboardItems', JSON.stringify(clipboardItems));
-  }, [clipboardItems]);
-  
-  // Try to get clipboard content when focused
-  const handleGetClipboard = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setCurrentText(text);
-      setCurrentTitle(generateDefaultTitle(text));
-      
-      toast({
-        title: "Clipboard content loaded",
-        description: "Text has been loaded from your clipboard",
-      });
-    } catch (error) {
-      console.error('Failed to read clipboard content:', error);
-      toast({
-        title: "Could not access clipboard",
-        description: "Please check your browser permissions",
-        variant: "destructive",
-      });
-    }
-  };
-  
-  const generateDefaultTitle = (content: string): string => {
-    const firstLine = content.split('\n')[0].trim();
-    return firstLine.substring(0, 30) + (firstLine.length > 30 ? '...' : '');
-  };
-  
-  const handleSaveItem = () => {
-    if (!currentText.trim()) {
-      toast({
-        title: "Cannot save empty content",
-        description: "Please enter some text to save",
-        variant: "destructive",
-      });
+    // Save items to localStorage whenever they change
+    localStorage.setItem('clipboardItems', JSON.stringify(items));
+  }, [items]);
+
+  const handleAddItem = () => {
+    if (!newItemContent.trim()) {
+      toast.error("Content cannot be empty");
       return;
     }
-    
-    const title = currentTitle.trim() || generateDefaultTitle(currentText);
-    
-    if (editingItem) {
-      // Update existing item
-      setClipboardItems(items => 
-        items.map(item => 
-          item.id === editingItem.id 
-            ? { ...item, content: currentText, title, timestamp: Date.now() }
-            : item
-        )
-      );
-      
-      toast({
-        title: "Item updated",
-        description: `"${title}" has been updated`,
-      });
-    } else {
-      // Create new item
-      const newItem: ClipboardItem = {
-        id: Date.now().toString(),
-        content: currentText,
-        title,
-        timestamp: Date.now()
-      };
-      
-      setClipboardItems(items => [newItem, ...items]);
-      
-      toast({
-        title: "Item saved",
-        description: `"${title}" has been added to your clipboard manager`,
-      });
-    }
-    
-    // Reset form
-    setCurrentText('');
-    setCurrentTitle('');
-    setEditingItem(null);
+
+    const newItem: ClipboardItem = {
+      id: Date.now().toString(),
+      title: newItemTitle.trim() || `Clip ${items.length + 1}`,
+      content: newItemContent.trim(),
+      timestamp: Date.now()
+    };
+
+    setItems([newItem, ...items]);
+    setNewItemTitle('');
+    setNewItemContent('');
+    toast.success("Item added to clipboard manager");
   };
-  
-  const handleCopyItem = (content: string, title: string) => {
+
+  const handleCopyItem = (content: string) => {
     navigator.clipboard.writeText(content)
-      .then(() => {
-        toast({
-          title: "Copied to clipboard",
-          description: `"${title}" has been copied`,
-        });
-      })
-      .catch(err => {
-        console.error('Failed to copy:', err);
-        toast({
-          title: "Failed to copy",
-          description: "Could not copy to clipboard",
-          variant: "destructive",
-        });
-      });
+      .then(() => toast.success("Copied to clipboard"))
+      .catch(() => toast.error("Failed to copy"));
   };
-  
-  const handleEditItem = (item: ClipboardItem) => {
-    setCurrentText(item.content);
-    setCurrentTitle(item.title);
-    setEditingItem(item);
-  };
-  
+
   const handleDeleteItem = (id: string) => {
-    setClipboardItems(items => items.filter(item => item.id !== id));
-    
-    toast({
-      title: "Item deleted",
-      description: "The item has been removed",
-    });
-    
-    // If we were editing this item, reset the form
-    if (editingItem && editingItem.id === id) {
-      setCurrentText('');
-      setCurrentTitle('');
-      setEditingItem(null);
-    }
+    setItems(items.filter(item => item.id !== id));
+    toast.success("Item deleted");
   };
-  
-  const handleCancelEdit = () => {
-    setCurrentText('');
-    setCurrentTitle('');
+
+  const handleEditStart = (item: ClipboardItem) => {
+    setEditingItem(item.id);
+    setEditTitle(item.title);
+    setEditContent(item.content);
+  };
+
+  const handleEditSave = (id: string) => {
+    if (!editContent.trim()) {
+      toast.error("Content cannot be empty");
+      return;
+    }
+
+    setItems(items.map(item => 
+      item.id === id 
+        ? { ...item, title: editTitle.trim() || item.title, content: editContent.trim() }
+        : item
+    ));
+    
+    setEditingItem(null);
+    toast.success("Item updated");
+  };
+
+  const handleEditCancel = () => {
     setEditingItem(null);
   };
-  
-  const formatTimestamp = (timestamp: number): string => {
-    return new Date(timestamp).toLocaleString();
+
+  const changeSortOrder = (order: 'newest' | 'oldest' | 'alphabetical') => {
+    setSortOrder(order);
   };
-  
+
+  // Filter and sort items based on search term and sort order
+  const filteredAndSortedItems = items
+    .filter(item => 
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.content.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortOrder === 'newest') {
+        return b.timestamp - a.timestamp;
+      } else if (sortOrder === 'oldest') {
+        return a.timestamp - b.timestamp;
+      } else {
+        return a.title.localeCompare(b.title);
+      }
+    });
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <ClipboardManagerSEO />
+      <BackgroundAnimation />
       <Header />
-      
-      <div className="container max-w-5xl mx-auto px-4 py-8 flex-grow">
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="Clipboard Manager" 
+          description="Save and organize multiple clipboard items for easy access"
+          accentWord="Clipboard"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">Clipboard Manager</h1>
-        <p className="mb-6 text-muted-foreground">
-          Store and organize multiple clipboard items for easy access. All data is stored locally in your browser.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Input Section */}
-          <Card className="md:col-span-1 shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>{editingItem ? 'Edit Item' : 'New Item'}</CardTitle>
-              <CardDescription>
-                {editingItem ? 'Update this clipboard item' : 'Add a new clipboard item'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="item-title" className="text-sm font-medium">Title</label>
-                <Input 
-                  id="item-title"
-                  placeholder="Enter a title or leave blank for auto-title"
-                  value={currentTitle}
-                  onChange={(e) => setCurrentTitle(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="item-content" className="text-sm font-medium">Content</label>
-                <Textarea 
-                  id="item-content"
-                  placeholder="Enter text or paste from clipboard"
-                  className="min-h-[150px]"
-                  value={currentText}
-                  onChange={(e) => setCurrentText(e.target.value)}
-                />
-              </div>
-              <Button 
-                variant="outline" 
-                onClick={handleGetClipboard}
-                className="w-full"
-              >
-                <Clipboard className="mr-2 h-4 w-4" />
-                Paste from Clipboard
-              </Button>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              {editingItem ? (
-                <>
-                  <Button variant="ghost" onClick={handleCancelEdit}>
-                    <X className="mr-2 h-4 w-4" />
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSaveItem}>
-                    <Save className="mr-2 h-4 w-4" />
-                    Update
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="ghost" onClick={() => { setCurrentText(''); setCurrentTitle(''); }}>
-                    <X className="mr-2 h-4 w-4" />
-                    Clear
-                  </Button>
-                  <Button onClick={handleSaveItem}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Save
-                  </Button>
-                </>
-              )}
-            </CardFooter>
-          </Card>
-          
-          {/* Items List */}
-          <Card className="md:col-span-2 shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Saved Items</CardTitle>
-              <CardDescription>
-                Click on an item to copy it to your clipboard
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {clipboardItems.length === 0 ? (
-                <div className="text-center py-6">
-                  <p className="text-muted-foreground">No items saved yet</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Add items using the form on the left
-                  </p>
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <div className="bg-card rounded-lg border border-border p-4">
+              <h3 className="text-lg font-medium mb-4">Add New Item</h3>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="item-title" className="text-sm font-medium block mb-2">
+                    Title (Optional)
+                  </label>
+                  <Input
+                    id="item-title"
+                    placeholder="Enter a title for your clipboard item"
+                    value={newItemTitle}
+                    onChange={(e) => setNewItemTitle(e.target.value)}
+                  />
                 </div>
-              ) : (
-                <ScrollArea className="h-[400px] rounded-md border p-4">
-                  <div className="space-y-4">
-                    {clipboardItems.map((item) => (
-                      <div key={item.id} className="space-y-2">
-                        <div className="flex justify-between items-start">
-                          <h3 className="font-medium line-clamp-1">{item.title}</h3>
-                          <div className="flex space-x-2">
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
-                              onClick={() => handleEditItem(item)}
-                            >
-                              Edit
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
-                              onClick={() => handleCopyItem(item.content, item.title)}
-                            >
-                              <Copy className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
-                              onClick={() => handleDeleteItem(item.id)}
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
+                
+                <div>
+                  <label htmlFor="item-content" className="text-sm font-medium block mb-2">
+                    Content
+                  </label>
+                  <Textarea
+                    id="item-content"
+                    placeholder="Paste or type content to save"
+                    rows={4}
+                    value={newItemContent}
+                    onChange={(e) => setNewItemContent(e.target.value)}
+                    className="resize-y"
+                  />
+                </div>
+                
+                <Button onClick={handleAddItem} className="w-full">
+                  <Plus size={16} className="mr-2" />
+                  Add to Clipboard
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div className="mb-4 flex justify-between items-center">
+              <h3 className="text-lg font-medium">Saved Clipboard Items</h3>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search items..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 h-9 w-[200px]"
+                  />
+                </div>
+                <div className="flex space-x-1">
+                  <Button
+                    variant={sortOrder === 'newest' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => changeSortOrder('newest')}
+                  >
+                    <ChevronUp className="h-4 w-4 mr-1" />
+                    New
+                  </Button>
+                  <Button
+                    variant={sortOrder === 'oldest' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => changeSortOrder('oldest')}
+                  >
+                    <ChevronDown className="h-4 w-4 mr-1" />
+                    Old
+                  </Button>
+                  <Button
+                    variant={sortOrder === 'alphabetical' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => changeSortOrder('alphabetical')}
+                  >
+                    A-Z
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            {filteredAndSortedItems.length === 0 ? (
+              <div className="text-center py-10 bg-card/50 rounded-lg border border-border">
+                <Clipboard className="mx-auto h-12 w-12 text-muted-foreground opacity-50 mb-2" />
+                <p className="text-muted-foreground">
+                  {searchTerm ? "No matching clipboard items found" : "No clipboard items saved yet"}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredAndSortedItems.map(item => (
+                  <div key={item.id} className="bg-card rounded-lg border border-border overflow-hidden">
+                    {editingItem === item.id ? (
+                      <div className="p-4">
+                        <Input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="mb-2"
+                          placeholder="Enter title"
+                        />
+                        <Textarea
+                          value={editContent}
+                          onChange={(e) => setEditContent(e.target.value)}
+                          rows={4}
+                          className="mb-3 resize-y"
+                        />
+                        <div className="flex justify-end space-x-2">
+                          <Button variant="outline" size="sm" onClick={handleEditCancel}>
+                            Cancel
+                          </Button>
+                          <Button size="sm" onClick={() => handleEditSave(item.id)}>
+                            <Check size={16} className="mr-2" />
+                            Save Changes
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="p-4 bg-muted/30">
+                          <div className="flex justify-between items-center">
+                            <h4 className="font-medium truncate">{item.title}</h4>
+                            <div className="flex items-center space-x-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleEditStart(item)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit size={16} />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleCopyItem(item.content)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Copy size={16} />
+                                <span className="sr-only">Copy</span>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleDeleteItem(item.id)}
+                                className="h-8 w-8 p-0 text-red-500 hover:text-red-600"
+                              >
+                                <Trash2 size={16} />
+                                <span className="sr-only">Delete</span>
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {new Date(item.timestamp).toLocaleString()}
                           </div>
                         </div>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <div className="cursor-pointer hover:bg-accent p-2 rounded-md transition-colors">
-                              <p className="text-sm text-muted-foreground line-clamp-2">
-                                {item.content}
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {formatTimestamp(item.timestamp)}
-                              </p>
-                            </div>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>{item.title}</DialogTitle>
-                              <DialogDescription>
-                                Saved on {formatTimestamp(item.timestamp)}
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="mt-4 bg-muted p-4 rounded-md max-h-[300px] overflow-auto">
-                              <pre className="whitespace-pre-wrap break-words text-sm">
-                                {item.content}
-                              </pre>
-                            </div>
-                            <DialogFooter>
-                              <Button 
-                                onClick={() => handleCopyItem(item.content, item.title)}
-                              >
-                                <Copy className="mr-2 h-4 w-4" />
-                                Copy to Clipboard
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                        <Separator />
-                      </div>
-                    ))}
+                        <div className="p-4 bg-card">
+                          <pre className="text-sm whitespace-pre-wrap break-all">
+                            {item.content}
+                          </pre>
+                        </div>
+                        <div className="p-2 bg-muted/30 flex justify-end">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleCopyItem(item.content)}
+                            className="text-xs"
+                          >
+                            <Copy size={14} className="mr-1" />
+                            Copy to Clipboard
+                          </Button>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </ScrollArea>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-        
-        <div className="mt-8 p-6 border rounded-lg">
-          <h2 className="text-xl font-bold mb-4">About Clipboard Manager</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p>
-              The Clipboard Manager helps you store multiple texts, snippets, and other content that you copy frequently. 
-              It's perfect for anyone who works with multiple pieces of text and needs quick access to them.
-            </p>
-            <p>
-              <strong>Key features:</strong>
-            </p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Store unlimited clipboard items</li>
-              <li>Add titles for easy organization</li>
-              <li>Edit saved items anytime</li>
-              <li>One-click copying back to clipboard</li>
-              <li>All data stored locally in your browser</li>
-              <li>No registration or login required</li>
-            </ul>
-            <p>
-              <strong>Note:</strong> All your clipboard items are stored in your browser's local storage. 
-              They will persist between sessions but will be lost if you clear your browser data.
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-8 p-4 rounded-lg border border-border bg-card/50 text-center">
+            <h3 className="font-medium mb-2">Your Data is Local and Private</h3>
+            <p className="text-sm text-muted-foreground">
+              All clipboard items are stored locally in your browser. They are never sent to any server,
+              ensuring complete privacy. Be aware that clearing your browser data will remove saved items.
             </p>
           </div>
         </div>
-      </div>
-      
+        
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

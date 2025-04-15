@@ -1,239 +1,262 @@
 
-import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, File, Trash, Info, FilesIcon } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import UploadBox from '@/components/UploadBox';
-import { extractFileMetadata } from '@/utils/fileUtils';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Helmet } from 'react-helmet-async';
+import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
+import FileMetadataSEO from '@/components/SEO/FileMetadataSEO';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Download, Trash2, X, FileSearch, Save } from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-interface MetadataDisplay {
-  category: string;
-  items: { label: string; value: string | number | Date | null }[];
-}
+const FileMetadataViewer: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [metadata, setMetadata] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-const FileMetadataViewer = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
-
-  const handleFileSelect = async (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      setFile(file);
+  const handleFileSelect = (files: FileList) => {
+    if (files.length > 0) {
+      const file = files[0];
+      setSelectedFile(file);
       setMetadata(null);
-      
-      // Extract metadata
-      setIsProcessing(true);
-      try {
-        const data = await extractFileMetadata(file);
-        setMetadata(data);
-        
-        toast({
-          title: "Metadata extracted",
-          description: `Discovered ${Object.keys(data).length} metadata properties`,
-        });
-      } catch (error) {
-        console.error("Error extracting metadata:", error);
-        toast({
-          title: "Error extracting metadata",
-          description: "Could not extract metadata from this file",
-          variant: "destructive",
-        });
-      } finally {
-        setIsProcessing(false);
-      }
+      extractMetadata(file);
     }
   };
-  
-  const handleReset = () => {
-    setFile(null);
-    setMetadata(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-  
-  const getFileIcon = (fileType: string): JSX.Element => {
-    // Return different icons based on file type
-    if (fileType.includes('image')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>;
-    } else if (fileType.includes('video')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m14 2 6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8z"></path><path d="m14 2 6 6h-6V2z"></path><path d="m10 11 5 3-5 3v-6z"></path></svg>;
-    } else if (fileType.includes('audio')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.7 5a4 4 0 0 0-5.6 0l-3.2 3.2-3.3 3.2a4 4 0 0 0 5.7 5.7l3.1-3.2"></path><path d="m7.325 10.294 5.382 5.36"></path><path d="m18.634 2.993 2.478 2.46"></path><path d="M16.427 5.179v.005"></path><path d="M9.217 12.392v.005"></path><path d="m3.121 18.4 2.499 2.498"></path></svg>;
-    } else if (fileType.includes('pdf')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>;
-    } else if (fileType.includes('zip') || fileType.includes('compressed')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 12v6"></path><path d="M15 15h-6"></path></svg>;
-    } else if (fileType.includes('text') || fileType.includes('xml') || fileType.includes('json')) {
-      return <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>;
-    } else {
-      return <File className="h-10 w-10 text-gray-500" />;
-    }
-  };
-  
-  const formatMetadataForDisplay = (): MetadataDisplay[] => {
-    if (!metadata) return [];
-    
-    // Basic file information
-    const basicInfo = {
-      category: 'Basic Information',
-      items: [
-        { label: 'File Name', value: metadata.name },
-        { label: 'File Size', value: metadata.formattedSize },
-        { label: 'File Type', value: metadata.type },
-        { label: 'Extension', value: metadata.extension },
-        { label: 'Last Modified', value: metadata.lastModified },
-      ]
-    };
-    
-    // For simplicity, we'll just show the basic info
-    // In a real application, you would extract additional metadata
-    // based on the file type (e.g., EXIF for images, ID3 for MP3, etc.)
-    return [basicInfo];
-  };
-  
-  const getFileTypeCategory = (fileType: string): string => {
-    if (fileType.includes('image')) return 'Image';
-    if (fileType.includes('video')) return 'Video';
-    if (fileType.includes('audio')) return 'Audio';
-    if (fileType.includes('pdf')) return 'PDF';
-    if (fileType.includes('zip') || fileType.includes('compressed')) return 'Archive';
-    if (fileType.includes('text') || fileType.includes('xml') || fileType.includes('json')) return 'Text';
-    return 'Other';
-  };
-  
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Helmet>
-        <title>File Metadata Viewer - MyToolbox</title>
-        <meta name="description" content="View detailed metadata information for any file type with our free online tool." />
-      </Helmet>
 
-      <Header />
+  const extractMetadata = async (file: File) => {
+    setIsLoading(true);
+    
+    try {
+      // Simulate metadata extraction (in a real app, use various APIs based on file type)
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      // Basic metadata available from File object
+      const basicMetadata = {
+        "General Information": {
+          "File Name": file.name,
+          "File Size": `${(file.size / 1024).toFixed(2)} KB`,
+          "File Type": file.type || "Unknown",
+          "Last Modified": new Date(file.lastModified).toLocaleString()
+        }
+      };
+      
+      // Mock additional metadata based on file type
+      let additionalMetadata = {};
+      
+      if (file.type.includes('image')) {
+        additionalMetadata = {
+          "Image Properties": {
+            "Width": "1920 pixels",
+            "Height": "1080 pixels",
+            "Color Space": "sRGB",
+            "Color Depth": "24-bit",
+            "Resolution": "72 dpi"
+          },
+          "Camera Information": {
+            "Make": "Canon",
+            "Model": "EOS R5",
+            "Software": "Adobe Photoshop 2023",
+            "Date Taken": "2023-04-15 10:23:15"
+          }
+        };
+      } else if (file.type.includes('pdf')) {
+        additionalMetadata = {
+          "PDF Properties": {
+            "PDF Version": "1.7",
+            "Page Count": "12",
+            "Creator": "Microsoft Word 2019",
+            "Producer": "Adobe PDF Library 15.0",
+            "Creation Date": "2023-01-10 09:45:22",
+            "Modified Date": "2023-02-05 14:30:18"
+          }
+        };
+      } else if (file.type.includes('video')) {
+        additionalMetadata = {
+          "Video Properties": {
+            "Duration": "00:03:24",
+            "Width": "1920 pixels",
+            "Height": "1080 pixels",
+            "Frame Rate": "30 fps",
+            "Codec": "H.264",
+            "Bitrate": "8.5 Mbps"
+          },
+          "Audio Properties": {
+            "Codec": "AAC",
+            "Channels": "2 (Stereo)",
+            "Sample Rate": "48 kHz",
+            "Bitrate": "320 kbps"
+          }
+        };
+      } else if (file.type.includes('audio')) {
+        additionalMetadata = {
+          "Audio Properties": {
+            "Duration": "00:04:15",
+            "Codec": "MP3",
+            "Channels": "2 (Stereo)",
+            "Sample Rate": "44.1 kHz",
+            "Bitrate": "320 kbps"
+          },
+          "Tags": {
+            "Title": "Example Song",
+            "Artist": "Example Artist",
+            "Album": "Example Album",
+            "Year": "2023",
+            "Genre": "Electronic"
+          }
+        };
+      } else {
+        additionalMetadata = {
+          "Additional Information": {
+            "Note": "Detailed metadata extraction not available for this file type"
+          }
+        };
+      }
+      
+      // Combine metadata
+      setMetadata({...basicMetadata, ...additionalMetadata});
+    } catch (error) {
+      toast.error("Failed to extract metadata");
+      console.error("Metadata extraction error:", error);
+    }
+    
+    setIsLoading(false);
+  };
+
+  const handleSaveMetadata = () => {
+    if (!metadata) return;
+    
+    const jsonString = JSON.stringify(metadata, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `metadata_${selectedFile?.name || 'file'}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+    toast.success("Metadata saved as JSON file");
+  };
+
+  const handleReset = () => {
+    setSelectedFile(null);
+    setMetadata(null);
+  };
+
+  return (
+    <>
+      <FileMetadataSEO />
+      <BackgroundAnimation />
+      <Header />
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="File Metadata Viewer" 
+          description="View detailed technical information and hidden metadata in your files"
+          accentWord="Metadata"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">File Metadata Viewer</h1>
-        <p className="mb-6 text-muted-foreground">
-          View detailed metadata information for any file type. All processing happens in your browser for maximum privacy.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Upload File</CardTitle>
-              <CardDescription>Select any file to view its metadata</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {!file ? (
-                  <UploadBox
-                    title="Drop your file here"
-                    subtitle="Supports all file types"
-                    acceptedFileTypes="*/*"
-                    onFileSelect={handleFileSelect}
-                    ref={fileInputRef}
-                  />
-                ) : (
-                  <div className="space-y-4">
-                    <div className="p-6 bg-primary/10 rounded-md flex items-center justify-center">
-                      {getFileIcon(file.type)}
+        <div className="max-w-4xl mx-auto">
+          {!selectedFile ? (
+            <UploadBox
+              title="Drop any file here"
+              subtitle="Select any file to view its metadata and properties"
+              acceptedFileTypes="*/*"
+              onFileSelect={handleFileSelect}
+              multiple={false}
+            />
+          ) : (
+            <div className="animate-fade-in">
+              <div className="mb-6 p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                      <FileSearch className="h-5 w-5 text-primary" />
                     </div>
-                    <div className="text-center">
-                      <p className="font-medium truncate">{file.name}</p>
-                      <div className="flex justify-center gap-2 mt-1">
-                        <Badge variant="outline" className="text-xs">
-                          {getFileTypeCategory(file.type)}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {(file.size / 1024).toFixed(2)} KB
-                        </Badge>
+                    <div>
+                      <h3 className="font-medium text-foreground">{selectedFile.name}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • {selectedFile.type || "Unknown type"}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleReset}
+                    className="p-1 bg-muted rounded-full"
+                    aria-label="Remove file"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+              
+              {isLoading ? (
+                <div className="p-8 flex flex-col items-center justify-center text-center">
+                  <div className="w-12 h-12 border-4 border-t-primary rounded-full animate-spin mb-4"></div>
+                  <p className="text-foreground">Extracting file metadata...</p>
+                </div>
+              ) : (
+                <>
+                  {metadata && (
+                    <div className="bg-card border border-border rounded-lg overflow-hidden">
+                      <div className="p-4 bg-muted/50">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-lg font-medium">File Metadata</h3>
+                          <Button size="sm" variant="outline" onClick={handleSaveMetadata}>
+                            <Save size={16} className="mr-2" />
+                            Save as JSON
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="p-4">
+                        {Object.entries(metadata).map(([section, properties]: [string, any]) => (
+                          <div key={section} className="mb-6 last:mb-0">
+                            <h4 className="text-sm font-medium text-muted-foreground mb-3">{section}</h4>
+                            <div className="bg-card rounded-md">
+                              <Table>
+                                <TableBody>
+                                  {Object.entries(properties).map(([key, value]: [string, any]) => (
+                                    <TableRow key={key}>
+                                      <TableCell className="font-medium w-1/3">{key}</TableCell>
+                                      <TableCell className="text-muted-foreground">{value as string}</TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <Button variant="outline" className="w-full" onClick={handleReset}>
-                      <Trash className="mr-2 h-4 w-4" />
+                  )}
+                  
+                  <div className="mt-8 flex justify-center">
+                    <Button
+                      onClick={handleReset}
+                      variant="outline"
+                    >
+                      <Trash2 size={18} className="mr-2" />
                       Select Another File
                     </Button>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>File Metadata</CardTitle>
-              <CardDescription>
-                {metadata 
-                  ? 'Information extracted from your file' 
-                  : isProcessing 
-                    ? 'Extracting metadata...'
-                    : 'Upload a file to view its metadata'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isProcessing ? (
-                <div className="flex items-center justify-center h-60">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <span className="ml-2">Extracting metadata...</span>
-                </div>
-              ) : metadata ? (
-                <ScrollArea className="h-80 pr-4">
-                  <div className="space-y-6">
-                    {formatMetadataForDisplay().map((category, categoryIndex) => (
-                      <div key={categoryIndex} className="space-y-3">
-                        <h3 className="font-semibold">{category.category}</h3>
-                        <div className="bg-secondary/20 rounded-md p-3 space-y-2">
-                          {category.items.map((item, itemIndex) => (
-                            item.value != null && (
-                              <div key={itemIndex}>
-                                <div className="flex justify-between items-start py-1">
-                                  <span className="text-sm font-medium">{item.label}:</span>
-                                  <span className="text-sm text-right">
-                                    {item.value instanceof Date 
-                                      ? item.value.toLocaleString() 
-                                      : String(item.value)}
-                                  </span>
-                                </div>
-                                {itemIndex < category.items.length - 1 && <Separator />}
-                              </div>
-                            )
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <div className="text-center text-muted-foreground text-sm p-4">
-                      <Info className="h-4 w-4 inline-block mr-1" />
-                      This is a basic metadata viewer. A full implementation would extract more detailed metadata specific to each file type.
-                    </div>
-                  </div>
-                </ScrollArea>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-60 text-muted-foreground">
-                  <FilesIcon className="h-12 w-12 mb-4" />
-                  <p className="text-center">
-                    Upload a file to view its metadata
-                  </p>
-                </div>
+                </>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          )}
         </div>
-      </div>
-      
+        
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

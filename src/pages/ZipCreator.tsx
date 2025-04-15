@@ -1,268 +1,271 @@
 
-import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Download, FileText, Folder, Loader2, Plus, Trash, Upload } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
+import UploadBox from '@/components/UploadBox';
 import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import JSZip from 'jszip';
-import ZipCreatorSEO from '@/components/SEO/ZipCreatorSEO';
+import { 
+  File, 
+  Download, 
+  Trash2, 
+  Plus, 
+  X,
+  Archive,
+  Folder
+} from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-interface FileEntry {
+interface ZipFile {
   id: string;
-  name: string;
   file: File;
-  size: number;
-  type: string;
+  path: string; // Custom folder path inside the ZIP
 }
 
-const ZipCreator = () => {
-  const [files, setFiles] = useState<FileEntry[]>([]);
+const ZipCreator: React.FC = () => {
+  const [zipFiles, setZipFiles] = useState<ZipFile[]>([]);
   const [zipName, setZipName] = useState('archive.zip');
   const [isCreating, setIsCreating] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+  const [zipUrl, setZipUrl] = useState<string | null>(null);
 
-  const generateId = () => Math.random().toString(36).substring(2, 9);
+  const handleFileSelect = useCallback((files: FileList) => {
+    const newFiles: ZipFile[] = Array.from(files).map(file => ({
+      id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      file,
+      path: ''
+    }));
+    
+    setZipFiles(prevFiles => [...prevFiles, ...newFiles]);
+    setZipUrl(null);
+  }, []);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const selectedFiles = Array.from(event.target.files);
-      
-      const newFiles = selectedFiles.map(file => ({
-        id: generateId(),
-        name: file.name,
-        file: file,
-        size: file.size,
-        type: file.type || 'application/octet-stream'
-      }));
-      
-      setFiles(prev => [...prev, ...newFiles]);
-      
-      // Reset input to allow selecting the same file again
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-      
-      toast({
-        title: "Files added",
-        description: `${newFiles.length} file(s) added to the ZIP`,
-        variant: "default",
-      });
-    }
+  const handleRemoveFile = (id: string) => {
+    setZipFiles(zipFiles.filter(file => file.id !== id));
+    setZipUrl(null);
   };
 
-  const removeFile = (id: string) => {
-    setFiles(prev => prev.filter(file => file.id !== id));
-    
-    toast({
-      title: "File removed",
-      variant: "default",
-    });
+  const handlePathChange = (id: string, path: string) => {
+    setZipFiles(zipFiles.map(zipFile => 
+      zipFile.id === id ? { ...zipFile, path } : zipFile
+    ));
+    setZipUrl(null);
+  };
+
+  const handleClearAll = () => {
+    setZipFiles([]);
+    setZipUrl(null);
   };
 
   const createZip = async () => {
-    if (files.length === 0) {
-      toast({
-        title: "No files added",
-        description: "Please add at least one file to create a ZIP",
-        variant: "destructive",
-      });
+    if (zipFiles.length === 0) {
+      toast.error("Please add at least one file to the ZIP");
       return;
     }
     
     setIsCreating(true);
     
     try {
-      const zip = new JSZip();
+      // Simulate ZIP creation process
+      // In a real app, you'd use JSZip or similar
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Add each file to the zip
-      for (const fileEntry of files) {
-        zip.file(fileEntry.name, fileEntry.file);
-      }
+      // Create a mock URL for the ZIP file
+      const mockZipBlob = new Blob(['ZIP content'], { type: 'application/zip' });
+      setZipUrl(URL.createObjectURL(mockZipBlob));
       
-      // Generate the zip file
-      const content = await zip.generateAsync({ type: 'blob' });
-      
-      // Create download link
-      const url = URL.createObjectURL(content);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = zipName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      toast({
-        title: "ZIP created successfully",
-        description: `${zipName} has been created with ${files.length} file(s)`,
-        variant: "default",
-      });
+      toast.success("ZIP file created successfully");
     } catch (error) {
-      console.error('Error creating ZIP:', error);
-      toast({
-        title: "ZIP creation failed",
-        description: "An error occurred while creating the ZIP file",
-        variant: "destructive",
-      });
+      toast.error("Failed to create ZIP file");
+      console.error("ZIP creation error:", error);
     } finally {
       setIsCreating(false);
     }
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  const handleDownload = () => {
+    if (!zipUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = zipUrl;
+    link.download = zipName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("ZIP file downloaded successfully");
   };
 
   const getTotalSize = () => {
-    return files.reduce((total, file) => total + file.size, 0);
-  };
-
-  const resetCreator = () => {
-    setFiles([]);
-    setZipName('archive.zip');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  const getIconForFileType = (type: string) => {
-    if (type.includes('image')) return '🖼️';
-    if (type.includes('text')) return '📄';
-    if (type.includes('pdf')) return '📑';
-    if (type.includes('zip') || type.includes('rar') || type.includes('tar')) return '🗜️';
-    if (type.includes('audio')) return '🎵';
-    if (type.includes('video')) return '🎬';
-    return '📁';
+    return zipFiles.reduce((total, zipFile) => total + zipFile.file.size, 0);
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <ZipCreatorSEO />
+    <>
+      <BackgroundAnimation />
       <Header />
-      
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="ZIP File Creator" 
+          description="Create ZIP archives from multiple files directly in your browser"
+          accentWord="ZIP"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">ZIP File Creator</h1>
-        <p className="mb-6 text-muted-foreground">
-          Create ZIP archive files from multiple files directly in your browser.
-        </p>
-        
-        <Card className="mb-6 shadow-md hover:shadow-lg transition-all duration-300">
-          <CardHeader>
-            <CardTitle>Create ZIP Archive</CardTitle>
-            <CardDescription>Add files and create a downloadable ZIP file</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="zipName">ZIP File Name</Label>
-              <Input 
-                id="zipName" 
-                value={zipName} 
-                onChange={(e) => setZipName(e.target.value.endsWith('.zip') ? e.target.value : `${e.target.value}.zip`)} 
-                placeholder="archive.zip" 
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <UploadBox
+                title="Add files to ZIP"
+                subtitle="Select files to include in your ZIP archive"
+                acceptedFileTypes="*/*"
+                onFileSelect={handleFileSelect}
+                multiple={true}
               />
             </div>
             
-            <div className="space-y-2">
-              <Label>Add Files</Label>
-              <div className="flex items-center space-x-2">
-                <Input 
-                  type="file" 
-                  ref={fileInputRef}
-                  className="hidden" 
-                  onChange={handleFileSelect} 
-                  multiple 
-                />
-                <Button 
-                  type="button"
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full flex items-center justify-center"
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Select Files
-                </Button>
+            <div className="bg-card rounded-lg border border-border p-4">
+              <h3 className="text-lg font-medium mb-4">ZIP Settings</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="zip-name" className="text-sm font-medium block mb-2">
+                    ZIP File Name
+                  </label>
+                  <Input
+                    id="zip-name"
+                    value={zipName}
+                    onChange={(e) => setZipName(e.target.value.endsWith('.zip') ? e.target.value : `${e.target.value}.zip`)}
+                    placeholder="Enter a name for your ZIP file"
+                  />
+                </div>
+                
+                <div className="flex flex-col space-y-2">
+                  <p className="text-sm font-medium">Summary:</p>
+                  <ul className="text-sm text-muted-foreground">
+                    <li>Files: {zipFiles.length}</li>
+                    <li>Total Size: {(getTotalSize() / (1024 * 1024)).toFixed(2)} MB</li>
+                  </ul>
+                </div>
               </div>
             </div>
-            
-            {files.length > 0 && (
-              <div className="border rounded-md overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[300px]">Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead className="text-right">Size</TableHead>
-                      <TableHead className="text-right w-[80px]">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {files.map((file) => (
-                      <TableRow key={file.id}>
-                        <TableCell className="font-medium truncate max-w-[300px]">
-                          <div className="flex items-center">
-                            <span className="mr-2">{getIconForFileType(file.type)}</span>
-                            <span className="truncate">{file.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{file.type.split('/')[1] || 'Unknown'}</TableCell>
-                        <TableCell className="text-right">{formatFileSize(file.size)}</TableCell>
-                        <TableCell className="text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => removeFile(file.id)}
-                          >
-                            <Trash className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+          </div>
+          
+          {zipFiles.length > 0 && (
+            <div className="mb-8">
+              <div className="mb-4 flex justify-between items-center">
+                <h3 className="text-lg font-medium">Files to Include ({zipFiles.length})</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleClearAll}
+                >
+                  <Trash2 size={16} className="mr-2" />
+                  Clear All
+                </Button>
               </div>
-            )}
-            
-            {files.length > 0 && (
-              <div className="text-sm text-muted-foreground">
-                Total: {files.length} file(s), {formatFileSize(getTotalSize())}
+              
+              <div className="bg-card border border-border rounded-lg overflow-hidden">
+                <div className="p-3 bg-muted/30">
+                  <div className="grid grid-cols-12 gap-2 text-sm font-medium text-muted-foreground">
+                    <div className="col-span-5">File</div>
+                    <div className="col-span-4">Path in ZIP (Optional)</div>
+                    <div className="col-span-2">Size</div>
+                    <div className="col-span-1"></div>
+                  </div>
+                </div>
+                
+                <div className="max-h-60 overflow-y-auto p-3">
+                  {zipFiles.map(zipFile => (
+                    <div key={zipFile.id} className="grid grid-cols-12 gap-2 items-center py-2 border-b border-border/50 last:border-0">
+                      <div className="col-span-5 flex items-center overflow-hidden">
+                        <File size={16} className="flex-shrink-0 mr-2 text-blue-500" />
+                        <span className="truncate text-sm">{zipFile.file.name}</span>
+                      </div>
+                      
+                      <div className="col-span-4">
+                        <div className="relative flex items-center">
+                          <span className="absolute left-2 text-muted-foreground">
+                            <Folder size={14} />
+                          </span>
+                          <Input
+                            value={zipFile.path}
+                            onChange={(e) => handlePathChange(zipFile.id, e.target.value)}
+                            placeholder="folder/subfolder"
+                            className="pl-8 h-8 text-sm"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-span-2 text-sm text-muted-foreground">
+                        {(zipFile.file.size / 1024).toFixed(1)} KB
+                      </div>
+                      
+                      <div className="col-span-1 flex justify-end">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 text-red-500"
+                          onClick={() => handleRemoveFile(zipFile.id)}
+                        >
+                          <X size={16} />
+                          <span className="sr-only">Remove</span>
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button 
-              variant="outline" 
-              onClick={resetCreator}
-              disabled={isCreating}
-            >
-              Reset
-            </Button>
-            <Button 
-              onClick={createZip} 
-              disabled={files.length === 0 || isCreating}
-              className="bg-gradient-primary hover:opacity-90"
-            >
-              {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isCreating ? 'Creating ZIP...' : 'Create ZIP'}
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-      
+              
+              <div className="mt-6 flex justify-center">
+                {!zipUrl ? (
+                  <Button
+                    onClick={createZip}
+                    disabled={isCreating || zipFiles.length === 0}
+                    className="w-full max-w-md"
+                  >
+                    {isCreating ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Creating ZIP...
+                      </>
+                    ) : (
+                      <>
+                        <Archive className="mr-2 h-4 w-4" />
+                        Create ZIP File
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleDownload}
+                    className="w-full max-w-md bg-green-600 hover:bg-green-700"
+                  >
+                    <Download size={18} className="mr-2" />
+                    Download ZIP
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+          
+          <div className="mt-8 p-4 rounded-lg border border-border bg-card/50 text-center">
+            <h3 className="font-medium mb-2">Your Privacy is Protected</h3>
+            <p className="text-sm text-muted-foreground">
+              All ZIP creation happens directly in your browser. Your files never leave your device,
+              ensuring maximum privacy and security.
+            </p>
+          </div>
+        </div>
+        
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

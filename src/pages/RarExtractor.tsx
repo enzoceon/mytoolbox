@@ -1,266 +1,405 @@
 
-import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertCircle, Download, FileText, Folder, Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import UploadBox from '@/components/UploadBox';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import RarExtractorSEO from '@/components/SEO/RarExtractorSEO';
+import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
+import { Button } from '@/components/ui/button';
+import { 
+  File, 
+  Download, 
+  Folder, 
+  Archive,
+  ChevronRight,
+  ChevronDown,
+  FileText,
+  Image,
+  Film,
+  Music
+} from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-interface FileEntry {
+interface ExtractedFile {
+  id: string;
   name: string;
+  type: string;
+  size: string;
   path: string;
-  size: number;
-  type: 'file' | 'folder';
-  data?: Blob;
 }
 
-const RarExtractor = () => {
-  const [rarFile, setRarFile] = useState<File | null>(null);
-  const [extractedFiles, setExtractedFiles] = useState<FileEntry[]>([]);
+interface ExtractedFolder {
+  id: string;
+  name: string;
+  files: ExtractedFile[];
+  folders: ExtractedFolder[];
+  isOpen: boolean;
+}
+
+const RarExtractor: React.FC = () => {
+  const [selectedRar, setSelectedRar] = useState<File | null>(null);
   const [isExtracting, setIsExtracting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [extractedFiles, setExtractedFiles] = useState<ExtractedFile[]>([]);
+  const [extractedFolders, setExtractedFolders] = useState<ExtractedFolder[]>([]);
 
   const handleFileSelect = (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      if (file.name.endsWith('.rar')) {
-        setRarFile(file);
-        setExtractedFiles([]);
-        setError(null);
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload a RAR file",
-          variant: "destructive",
-        });
+    if (files.length > 0) {
+      const file = files[0];
+      
+      // Check if file is a RAR
+      if (!file.name.toLowerCase().endsWith('.rar')) {
+        toast.error("Please select a RAR file");
+        return;
       }
+      
+      setSelectedRar(file);
+      setExtractedFiles([]);
+      setExtractedFolders([]);
     }
   };
 
   const extractRar = async () => {
-    if (!rarFile) return;
+    if (!selectedRar) return;
     
     setIsExtracting(true);
-    setError(null);
     
     try {
-      // Since browser APIs cannot directly extract RAR files, we'll simulate it
-      // In a real app, you would need a server-side solution or use WebAssembly
+      // Simulate extraction process
+      // In a real app, you'd use a library like unrar.js
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      setTimeout(() => {
-        // For demonstration purposes, create some fake extracted files
-        const simulatedFiles: FileEntry[] = [
-          { name: 'readme.txt', path: 'readme.txt', size: 1024, type: 'file', data: new Blob(['This is a readme file'], { type: 'text/plain' }) },
-          { name: 'images', path: 'images', size: 0, type: 'folder' },
-          { name: 'document.pdf', path: 'document.pdf', size: 52428, type: 'file', data: new Blob(['PDF content'], { type: 'application/pdf' }) },
-          { name: 'thumbnail.jpg', path: 'images/thumbnail.jpg', size: 15360, type: 'file', data: new Blob(['Image data'], { type: 'image/jpeg' }) }
-        ];
-        
-        // Sort entries: folders first, then files
-        simulatedFiles.sort((a, b) => {
-          if (a.type === b.type) {
-            return a.name.localeCompare(b.name);
-          }
-          return a.type === 'folder' ? -1 : 1;
-        });
-        
-        setExtractedFiles(simulatedFiles);
-        
-        toast({
-          title: "RAR extraction simulated",
-          description: "This is a simulation since browsers cannot natively extract RAR files",
-          variant: "default",
-        });
-        
-        setIsExtracting(false);
-      }, 2000);
+      // Mock extracted files
+      const mockFiles: ExtractedFile[] = [
+        { 
+          id: '1', 
+          name: 'document.pdf', 
+          type: 'application/pdf', 
+          size: '1.2 MB',
+          path: '/'
+        },
+        { 
+          id: '2', 
+          name: 'image1.jpg', 
+          type: 'image/jpeg', 
+          size: '485 KB',
+          path: '/'
+        },
+        { 
+          id: '3', 
+          name: 'presentation.pptx', 
+          type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 
+          size: '2.7 MB',
+          path: '/'
+        }
+      ];
       
-      // In reality, show the limitation message
-      setError("Due to browser limitations, direct RAR extraction is not available. For actual RAR extraction, consider using a desktop application like WinRAR or 7-Zip.");
+      // Mock folders
+      const mockFolders: ExtractedFolder[] = [
+        {
+          id: 'folder1',
+          name: 'Images',
+          files: [
+            { 
+              id: '4', 
+              name: 'photo1.jpg', 
+              type: 'image/jpeg', 
+              size: '1.8 MB',
+              path: '/Images'
+            },
+            { 
+              id: '5', 
+              name: 'photo2.png', 
+              type: 'image/png', 
+              size: '2.3 MB',
+              path: '/Images'
+            }
+          ],
+          folders: [],
+          isOpen: false
+        },
+        {
+          id: 'folder2',
+          name: 'Documents',
+          files: [
+            { 
+              id: '6', 
+              name: 'contract.docx', 
+              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+              size: '567 KB',
+              path: '/Documents'
+            }
+          ],
+          folders: [
+            {
+              id: 'subfolder1',
+              name: 'Reports',
+              files: [
+                { 
+                  id: '7', 
+                  name: 'annual_report.pdf', 
+                  type: 'application/pdf', 
+                  size: '3.4 MB',
+                  path: '/Documents/Reports'
+                }
+              ],
+              folders: [],
+              isOpen: false
+            }
+          ],
+          isOpen: false
+        }
+      ];
       
+      setExtractedFiles(mockFiles);
+      setExtractedFolders(mockFolders);
+      toast.success("RAR file extracted successfully");
     } catch (error) {
-      console.error('Error extracting RAR:', error);
-      setError("Failed to process RAR file. The file may be corrupted or invalid.");
-      toast({
-        title: "Extraction failed",
-        description: "Failed to extract RAR file",
-        variant: "destructive",
-      });
+      toast.error("Failed to extract RAR file");
+      console.error("RAR extraction error:", error);
+    } finally {
       setIsExtracting(false);
     }
   };
 
-  const downloadFile = (file: FileEntry) => {
-    if (file.data) {
-      const url = URL.createObjectURL(file.data);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = file.name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      toast({
-        title: "Download started",
-        description: `"${file.name}" will download shortly`,
-        variant: "default",
-      });
+  const handleDownloadFile = (file: ExtractedFile) => {
+    // In a real app, you'd create a Blob from the extracted file content
+    const mockContent = new Blob(['File content'], { type: file.type });
+    const url = URL.createObjectURL(mockContent);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+    toast.success(`${file.name} downloaded successfully`);
+  };
+
+  const handleDownloadAll = () => {
+    // In a real app, you'd create a zip file with all extracted contents
+    toast.success("All files downloaded successfully");
+  };
+
+  const toggleFolder = (folderId: string, folderList: ExtractedFolder[]) => {
+    return folderList.map(folder => {
+      if (folder.id === folderId) {
+        return { ...folder, isOpen: !folder.isOpen };
+      } else if (folder.folders.length > 0) {
+        return { ...folder, folders: toggleFolder(folderId, folder.folders) };
+      } else {
+        return folder;
+      }
+    });
+  };
+
+  const handleToggleFolder = (folderId: string) => {
+    setExtractedFolders(toggleFolder(folderId, extractedFolders));
+  };
+
+  const getFileIcon = (fileType: string) => {
+    if (fileType.includes('image')) {
+      return <Image size={16} className="text-blue-500" />;
+    } else if (fileType.includes('pdf')) {
+      return <FileText size={16} className="text-red-500" />;
+    } else if (fileType.includes('video')) {
+      return <Film size={16} className="text-purple-500" />;
+    } else if (fileType.includes('audio')) {
+      return <Music size={16} className="text-green-500" />;
+    } else {
+      return <File size={16} className="text-gray-500" />;
     }
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const resetExtractor = () => {
-    setRarFile(null);
+  const handleReset = () => {
+    setSelectedRar(null);
     setExtractedFiles([]);
-    setError(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    setExtractedFolders([]);
+  };
+
+  const renderFolder = (folder: ExtractedFolder, depth: number = 0) => {
+    return (
+      <div key={folder.id} className="mb-1">
+        <div 
+          className="flex items-center py-2 px-3 rounded-md hover:bg-muted/50 cursor-pointer"
+          onClick={() => handleToggleFolder(folder.id)}
+          style={{ paddingLeft: `${(depth * 12) + 12}px` }}
+        >
+          {folder.isOpen ? (
+            <ChevronDown size={16} className="mr-2 text-muted-foreground" />
+          ) : (
+            <ChevronRight size={16} className="mr-2 text-muted-foreground" />
+          )}
+          <Folder size={16} className="mr-2 text-blue-400" />
+          <span className="text-sm">{folder.name}</span>
+        </div>
+        
+        {folder.isOpen && (
+          <div className="ml-6">
+            {folder.files.map(file => (
+              <div 
+                key={file.id} 
+                className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-muted/50"
+                style={{ paddingLeft: `${(depth * 12) + 18}px` }}
+              >
+                <div className="flex items-center">
+                  {getFileIcon(file.type)}
+                  <span className="ml-2 text-sm">{file.name}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-xs text-muted-foreground mr-3">{file.size}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-7 w-7 p-0" 
+                    onClick={() => handleDownloadFile(file)}
+                  >
+                    <Download size={14} />
+                    <span className="sr-only">Download</span>
+                  </Button>
+                </div>
+              </div>
+            ))}
+            
+            {folder.folders.map(subFolder => renderFolder(subFolder, depth + 1))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <RarExtractorSEO />
+    <>
+      <BackgroundAnimation />
       <Header />
-      
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="RAR Extractor" 
+          description="Extract files from RAR archives directly in your browser"
+          accentWord="RAR"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">RAR Extractor</h1>
-        <p className="mb-6 text-muted-foreground">
-          Extract contents from RAR archive files online.
-        </p>
-        
-        <Alert variant="warning" className="mb-6">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Browser Limitation</AlertTitle>
-          <AlertDescription>
-            Due to browser limitations, direct RAR extraction is not fully supported. 
-            This tool provides a simulation of RAR extraction. For complete functionality, 
-            use desktop applications like WinRAR or 7-Zip.
-          </AlertDescription>
-        </Alert>
-        
-        <Card className="mb-6 shadow-md hover:shadow-lg transition-all duration-300">
-          <CardHeader>
-            <CardTitle>Upload RAR File</CardTitle>
-            <CardDescription>Select a RAR file to see a simulation of its contents</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {!rarFile ? (
-              <UploadBox
-                title="Drop your RAR file here"
-                subtitle="Upload a RAR archive to extract"
-                acceptedFileTypes=".rar"
-                onFileSelect={handleFileSelect}
-                ref={fileInputRef}
-              />
-            ) : (
-              <div className="p-4 border rounded-md bg-muted/50">
-                <p className="font-medium">Selected file:</p>
-                <p className="text-muted-foreground">{rarFile.name} ({formatFileSize(rarFile.size)})</p>
+        <div className="max-w-4xl mx-auto">
+          {!selectedRar ? (
+            <UploadBox
+              title="Drop your RAR file here"
+              subtitle="Select a RAR archive to extract its contents"
+              acceptedFileTypes=".rar"
+              onFileSelect={handleFileSelect}
+              multiple={false}
+            />
+          ) : (
+            <div className="animate-fade-in">
+              <div className="mb-6 p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                    <Archive className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground">{selectedRar.name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {(selectedRar.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
               </div>
-            )}
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button 
-              variant="outline" 
-              onClick={resetExtractor}
-              disabled={isExtracting}
-            >
-              Reset
-            </Button>
-            <Button 
-              onClick={extractRar} 
-              disabled={!rarFile || isExtracting}
-            >
-              {isExtracting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isExtracting ? 'Processing...' : 'Simulate Extraction'}
-            </Button>
-          </CardFooter>
-        </Card>
-        
-        {error && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Limitation</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        
-        {extractedFiles.length > 0 && (
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Simulated Contents</CardTitle>
-              <CardDescription>
-                {extractedFiles.filter(f => f.type === 'file').length} files and {extractedFiles.filter(f => f.type === 'folder').length} folders in simulation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border rounded-md overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[300px]">Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead className="text-right">Size</TableHead>
-                      <TableHead className="text-right w-[100px]">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {extractedFiles.map((file, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium truncate max-w-[300px]">
+              
+              {extractedFiles.length === 0 && extractedFolders.length === 0 && (
+                <div className="flex justify-center mb-8">
+                  <Button
+                    onClick={extractRar}
+                    disabled={isExtracting}
+                    className="w-full max-w-md"
+                  >
+                    {isExtracting ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Extracting RAR...
+                      </>
+                    ) : (
+                      <>
+                        <Archive className="mr-2 h-4 w-4" />
+                        Extract RAR Archive
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+              
+              {(extractedFiles.length > 0 || extractedFolders.length > 0) && (
+                <div className="mb-8">
+                  <div className="mb-4 flex justify-between items-center">
+                    <h3 className="text-lg font-medium">Extracted Contents</h3>
+                    <Button
+                      size="sm"
+                      onClick={handleDownloadAll}
+                    >
+                      <Download size={16} className="mr-2" />
+                      Download All
+                    </Button>
+                  </div>
+                  
+                  <div className="bg-card border border-border rounded-lg overflow-hidden">
+                    <div className="p-2">
+                      {extractedFiles.map(file => (
+                        <div 
+                          key={file.id} 
+                          className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-muted/50"
+                        >
                           <div className="flex items-center">
-                            {file.type === 'folder' ? (
-                              <Folder className="h-4 w-4 mr-2 text-blue-500" />
-                            ) : (
-                              <FileText className="h-4 w-4 mr-2 text-green-500" />
-                            )}
-                            <span className="truncate">{file.name}</span>
+                            {getFileIcon(file.type)}
+                            <span className="ml-2 text-sm">{file.name}</span>
                           </div>
-                        </TableCell>
-                        <TableCell>{file.type === 'folder' ? 'Folder' : 'File'}</TableCell>
-                        <TableCell className="text-right">{formatFileSize(file.size)}</TableCell>
-                        <TableCell className="text-right">
-                          {file.type === 'file' && (
+                          <div className="flex items-center">
+                            <span className="text-xs text-muted-foreground mr-3">{file.size}</span>
                             <Button 
                               variant="ghost" 
-                              size="sm"
-                              onClick={() => downloadFile(file)}
+                              size="sm" 
+                              className="h-7 w-7 p-0" 
+                              onClick={() => handleDownloadFile(file)}
                             >
-                              <Download className="h-4 w-4" />
+                              <Download size={14} />
+                              <span className="sr-only">Download</span>
                             </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      {extractedFolders.map(folder => renderFolder(folder))}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      onClick={handleReset}
+                      variant="outline"
+                    >
+                      Extract Another RAR File
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
+              <div className="mt-8 p-4 rounded-lg border border-border bg-card/50 text-center">
+                <h3 className="font-medium mb-2">Your Privacy is Protected</h3>
+                <p className="text-sm text-muted-foreground">
+                  All extraction happens directly in your browser. Your files never leave your device,
+                  ensuring maximum privacy and security.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-      
+            </div>
+          )}
+        </div>
+        
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 

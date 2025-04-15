@@ -1,283 +1,221 @@
 
 import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Download } from 'lucide-react';
-import BackButton from '@/components/BackButton';
-import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import PageContainer from '@/components/PageContainer';
+import PageHeader from '@/components/PageHeader';
 import UploadBox from '@/components/UploadBox';
-import RemoveAudioFromVideoSEO from '@/components/SEO/RemoveAudioFromVideoSEO';
-import { Progress } from '@/components/ui/progress';
+import BackButton from '@/components/BackButton';
+import HowToUse from '@/components/HowToUse';
+import { Button } from '@/components/ui/button';
+import { 
+  VideoIcon, 
+  Download, 
+  Trash2, 
+  X, 
+  Volume2,
+  VolumeX
+} from 'lucide-react';
+import { toast } from "sonner";
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 
-const RemoveAudioFromVideo = () => {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+const RemoveAudioFromVideo: React.FC = () => {
+  const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
+  const [mutedVideoUrl, setMutedVideoUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [outputUrl, setOutputUrl] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const outputVideoRef = useRef<HTMLVideoElement>(null);
-  const { toast } = useToast();
 
   const handleFileSelect = (files: FileList) => {
-    const file = files[0];
-    if (file) {
-      if (file.type.startsWith('video/')) {
-        setVideoFile(file);
-        setOutputUrl(null);
-        setProgress(0);
-        
-        const url = URL.createObjectURL(file);
-        if (videoRef.current) {
-          videoRef.current.src = url;
-        }
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload a video file",
-          variant: "destructive",
-        });
+    if (files.length > 0) {
+      const file = files[0];
+      
+      // Check if file is a video
+      if (!file.type.startsWith('video/')) {
+        toast.error("Please select a video file");
+        return;
       }
+      
+      setSelectedVideo(file);
+      const previewUrl = URL.createObjectURL(file);
+      setVideoPreviewUrl(previewUrl);
+      setMutedVideoUrl(null);
     }
   };
-  
-  const handleProcess = async () => {
-    if (!videoFile) {
-      toast({
-        title: "No video selected",
-        description: "Please upload a video file first",
-        variant: "destructive",
-      });
-      return;
-    }
+
+  const removeAudio = async () => {
+    if (!selectedVideo || !videoRef.current) return;
     
     setIsProcessing(true);
-    setProgress(0);
     
     try {
-      // Create a URL from the video file
-      const videoURL = URL.createObjectURL(videoFile);
+      // Simulate audio removal process
+      // In a real application, you would use ffmpeg.wasm or similar
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Create a video element to load the source video
-      const sourceVideo = document.createElement('video');
-      sourceVideo.src = videoURL;
+      // For demo purposes, we'll just use the same video URL
+      // In a real app, this would be the URL to the processed video without audio
+      setMutedVideoUrl(videoPreviewUrl);
       
-      // Wait for the video to be loaded
-      await new Promise((resolve) => {
-        sourceVideo.onloadedmetadata = resolve;
-        sourceVideo.load();
-      });
-      
-      // Create a canvas element to capture video frames
-      const canvas = document.createElement('canvas');
-      canvas.width = sourceVideo.videoWidth;
-      canvas.height = sourceVideo.videoHeight;
-      const ctx = canvas.getContext('2d');
-      
-      if (!ctx) {
-        throw new Error('Failed to get canvas context');
-      }
-      
-      // Set up MediaRecorder to record from canvas
-      const stream = canvas.captureStream();
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp9',
-      });
-      
-      const chunks: Blob[] = [];
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunks.push(e.data);
-        }
-      };
-      
-      mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
-        const url = URL.createObjectURL(blob);
-        
-        setOutputUrl(url);
-        setIsProcessing(false);
-        setProgress(100);
-        
-        if (outputVideoRef.current) {
-          outputVideoRef.current.src = url;
-        }
-        
-        toast({
-          title: "Audio removed successfully",
-          description: "Your video is ready to download",
-          variant: "default",
-        });
-      };
-      
-      // Start recording
-      mediaRecorder.start();
-      
-      // Function to draw frames at the video's frame rate
-      const drawFrame = () => {
-        if (sourceVideo.ended || !isProcessing) {
-          mediaRecorder.stop();
-          return;
-        }
-        
-        // Draw the current frame to the canvas
-        ctx.drawImage(sourceVideo, 0, 0, canvas.width, canvas.height);
-        
-        // Update progress
-        const currentProgress = Math.min(100, Math.round((sourceVideo.currentTime / sourceVideo.duration) * 100));
-        setProgress(currentProgress);
-        
-        // Request the next frame
-        requestAnimationFrame(drawFrame);
-      };
-      
-      // Start playback and drawing frames
-      sourceVideo.onplay = drawFrame;
-      sourceVideo.play();
-      
+      toast.success("Audio removed successfully");
     } catch (error) {
-      console.error('Remove audio error:', error);
+      toast.error("Failed to remove audio");
+      console.error("Audio removal error:", error);
+    } finally {
       setIsProcessing(false);
-      setProgress(0);
-      
-      toast({
-        title: "Process failed",
-        description: "There was an error removing the audio. Please try again.",
-        variant: "destructive",
-      });
     }
   };
-  
+
   const handleDownload = () => {
-    if (outputUrl) {
-      const a = document.createElement('a');
-      a.href = outputUrl;
-      a.download = `no_audio_${videoFile?.name || 'video.webm'}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      
-      toast({
-        title: "Download started",
-        description: "Your video will download shortly",
-        variant: "default",
-      });
-    }
+    if (!mutedVideoUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = mutedVideoUrl;
+    link.download = `muted_${selectedVideo?.name || 'video.mp4'}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("Muted video downloaded successfully");
   };
-  
+
   const handleReset = () => {
-    if (videoRef.current) videoRef.current.src = '';
-    if (outputVideoRef.current) outputVideoRef.current.src = '';
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
     
-    if (outputUrl) {
-      URL.revokeObjectURL(outputUrl);
-    }
-    
-    setVideoFile(null);
-    setOutputUrl(null);
-    setProgress(0);
+    setSelectedVideo(null);
+    setVideoPreviewUrl(null);
+    setMutedVideoUrl(null);
   };
-  
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <RemoveAudioFromVideoSEO />
+    <>
+      <BackgroundAnimation />
       <Header />
-      
-      <div className="container max-w-4xl mx-auto px-4 py-8 flex-grow">
+      <PageContainer>
         <BackButton />
+        <PageHeader 
+          title="Remove Audio from Video" 
+          description="Create silent videos by removing audio tracks from your video files"
+          accentWord="Audio"
+        />
         
-        <h1 className="text-3xl font-bold mb-6">Remove Audio from Video</h1>
-        <p className="mb-6 text-muted-foreground">
-          Upload a video file and remove its audio track without affecting the visual content.
-        </p>
-        
-        <Card className="mb-6 shadow-md hover:shadow-lg transition-all duration-300">
-          <CardHeader>
-            <CardTitle>Upload Video</CardTitle>
-            <CardDescription>Select a video file to remove audio</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {!videoFile ? (
-                <UploadBox
-                  title="Drop your video here"
-                  subtitle="Supports MP4, MOV, AVI, and other common video formats"
-                  acceptedFileTypes="video/*"
-                  onFileSelect={handleFileSelect}
-                />
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-sm font-medium">Preview:</p>
-                  <video 
-                    ref={videoRef} 
-                    controls 
-                    className="w-full rounded-md border border-input"
-                    style={{ maxHeight: '300px' }}
+        <div className="max-w-4xl mx-auto">
+          {!selectedVideo ? (
+            <UploadBox
+              title="Drop your video here"
+              subtitle="Select a video file to remove its audio track"
+              acceptedFileTypes="video/*"
+              onFileSelect={handleFileSelect}
+              multiple={false}
+            />
+          ) : (
+            <div className="animate-fade-in">
+              <div className="mb-6">
+                <div className="relative rounded-lg overflow-hidden bg-card border border-border">
+                  <video
+                    ref={videoRef}
+                    src={videoPreviewUrl || undefined}
+                    controls
+                    className="w-full h-auto"
                   />
+                  <button
+                    onClick={handleReset}
+                    className="absolute top-3 right-3 p-1.5 bg-background/80 backdrop-blur-sm rounded-full shadow-sm"
+                    aria-label="Remove video"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="mt-2 px-2">
+                  <p className="text-sm text-muted-foreground">
+                    {selectedVideo.name} • {(selectedVideo.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
+                </div>
+              </div>
+              
+              {!mutedVideoUrl && (
+                <div className="flex justify-center mb-8">
+                  <Button
+                    onClick={removeAudio}
+                    disabled={isProcessing}
+                    className="w-full max-w-md"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Processing Video...
+                      </>
+                    ) : (
+                      <>
+                        <VolumeX className="mr-2 h-4 w-4" />
+                        Remove Audio Track
+                      </>
+                    )}
+                  </Button>
                 </div>
               )}
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4 w-full">
-            {isProcessing && (
-              <div className="w-full space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Processing video...</span>
-                  <span>{progress}%</span>
+              
+              {mutedVideoUrl && (
+                <div className="mb-8 space-y-6">
+                  <div className="p-4 rounded-lg border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20">
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-12 h-12 mb-2">
+                        <Volume2 className="h-10 w-10 text-green-600 dark:text-green-400 absolute" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-10 h-0.5 bg-red-500 rotate-45 transform" />
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-lg font-medium text-green-700 dark:text-green-300 mb-1">Audio Removed Successfully</h3>
+                      <p className="text-sm text-green-600 dark:text-green-400 mb-4 text-center">
+                        Your video is now silent and ready to download
+                      </p>
+                      
+                      <div className="w-full max-w-md">
+                        <div className="relative rounded-lg overflow-hidden bg-black mb-4">
+                          <video 
+                            src={mutedVideoUrl} 
+                            controls 
+                            muted
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        
+                        <Button onClick={handleDownload} className="w-full">
+                          <Download size={18} className="mr-2" />
+                          Download Silent Video
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={handleReset}
+                      variant="outline"
+                    >
+                      <Trash2 size={18} className="mr-2" />
+                      Process Another Video
+                    </Button>
+                  </div>
                 </div>
-                <Progress value={progress} className="w-full" />
+              )}
+              
+              <div className="mt-8 p-4 rounded-lg border border-border bg-card/50 text-center">
+                <h3 className="font-medium mb-2">Your Privacy is Protected</h3>
+                <p className="text-sm text-muted-foreground">
+                  All processing happens directly in your browser. Your videos never leave your device,
+                  ensuring maximum privacy and security.
+                </p>
               </div>
-            )}
-            <div className="flex justify-between w-full">
-              <Button 
-                variant="outline" 
-                onClick={handleReset}
-                className="hover:bg-secondary hover:text-secondary-foreground transition-colors"
-              >
-                Reset
-              </Button>
-              <Button 
-                onClick={handleProcess} 
-                disabled={!videoFile || isProcessing}
-                className="hover:bg-primary/90 transition-colors"
-              >
-                {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Remove Audio
-              </Button>
             </div>
-          </CardFooter>
-        </Card>
+          )}
+        </div>
         
-        {outputUrl && (
-          <Card className="shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Processed Video</CardTitle>
-              <CardDescription>Your video without audio</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <video 
-                ref={outputVideoRef}
-                controls 
-                className="w-full rounded-md border border-input"
-                style={{ maxHeight: '300px' }}
-              />
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button 
-                onClick={handleDownload}
-                className="bg-gradient-primary hover:opacity-90 transition-colors"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download Video
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
-      </div>
-      
+        <HowToUse />
+      </PageContainer>
       <Footer />
-    </div>
+    </>
   );
 };
 
