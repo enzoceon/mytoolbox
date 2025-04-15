@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,7 +14,7 @@ import {
   Trash2, 
   X, 
   Music,
-  Waveform
+  AudioWaveform
 } from 'lucide-react';
 import { toast } from "sonner";
 import BackgroundAnimation from '@/components/BackgroundAnimation';
@@ -145,7 +144,7 @@ const ExtractAudioFromVideo: React.FC = () => {
                   >
                     {isExtracting ? (
                       <>
-                        <Waveform className="mr-2 h-4 w-4 animate-pulse" />
+                        <AudioWaveform className="mr-2 h-4 w-4 animate-pulse" />
                         Extracting Audio...
                       </>
                     ) : (
@@ -162,7 +161,7 @@ const ExtractAudioFromVideo: React.FC = () => {
                 <div className="mb-8 space-y-6">
                   <div className="p-4 rounded-lg border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20">
                     <div className="flex flex-col items-center">
-                      <Waveform className="h-10 w-10 text-green-600 dark:text-green-400 mb-2" />
+                      <AudioWaveform className="h-10 w-10 text-green-600 dark:text-green-400 mb-2" />
                       <h3 className="text-lg font-medium text-green-700 dark:text-green-300 mb-1">Audio Extracted Successfully</h3>
                       <p className="text-sm text-green-600 dark:text-green-400 mb-4 text-center">
                         The audio track has been extracted from your video and is ready to download
