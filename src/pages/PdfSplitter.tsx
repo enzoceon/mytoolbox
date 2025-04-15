@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
@@ -27,6 +26,7 @@ import {
 import { toast } from 'sonner';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import { splitPdfFile } from '@/utils/pdfUtils';
+import PdfSplitterSEO from '@/components/SEO/PdfSplitterSEO';
 
 const PdfSplitter = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
@@ -125,10 +125,7 @@ const PdfSplitter = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>PDF Splitter | EveryTools</title>
-        <meta name="description" content="Split PDF files into separate pages or sections. Free online PDF splitter tool." />
-      </Helmet>
+      <PdfSplitterSEO />
       
       <BackgroundAnimation />
       <Header />

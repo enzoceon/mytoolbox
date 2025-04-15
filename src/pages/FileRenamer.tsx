@@ -1,23 +1,17 @@
 
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import BackButton from '@/components/BackButton';
 import { FileRenamerProvider } from '@/components/file-renamer/FileRenamerProvider';
 import FileRenamerArea from '@/components/file-renamer/FileRenamerArea';
+import FileRenamerSEO from '@/components/SEO/FileRenamerSEO';
 
 const FileRenamer = () => {
   return (
     <>
-      <Helmet>
-        <title>File Renamer | MyToolbox</title>
-        <meta 
-          name="description" 
-          content="Easily rename multiple files with custom patterns, prefixes, and suffixes. Download as a ZIP archive." 
-        />
-      </Helmet>
+      <FileRenamerSEO />
       
       <SpaceBackground />
       

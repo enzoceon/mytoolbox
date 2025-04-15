@@ -1,75 +1,28 @@
 
-# MyToolbox - Free Online Tools Collection
-# Convert images, edit PDFs, transform files, and more for free
-# No registration, no watermarks, secure and easy to use
-# Privacy-focused: all processing happens in your browser
-
+# robots.txt for MyToolbox - https://mytoolbox.site
 User-agent: *
 Allow: /
-Disallow: /404.html
 
-# Allow search engines to crawl JS and CSS files
-Allow: /*.js$
-Allow: /*.css$
+# Allow crawling of all content
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /internal/
+Disallow: /tmp/
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+Disallow: /search?*
 
-# Image files
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.png$
-Allow: /*.gif$
-Allow: /*.svg$
-Allow: /*.webp$
-
-# Document files
-Allow: /*.pdf$
-
-# Crawl delay
+# Crawl-delay directive
 Crawl-delay: 1
 
-# Sitemap location
+# Sitemaps
 Sitemap: https://mytoolbox.site/sitemap.xml
 
-# Main Tool Pages - Important to index
-Allow: /pdf-to-image
-Allow: /add-audio-to-video
-Allow: /remove-audio-from-video
-Allow: /clipboard-manager
-Allow: /pdf-locker
-Allow: /image-metadata
-Allow: /file-metadata
-Allow: /text-replacer
-Allow: /text-to-emoji
-Allow: /text-editor
-Allow: /audio-to-qr
-Allow: /ai-content-summarizer
+# Block specific bots that might cause issues
+User-agent: YandexBot
+Crawl-delay: 5
 
-# Important pages
-Allow: /about
-Allow: /privacy
-Allow: /terms
-Allow: /cookies
-Allow: /contact
-Allow: /tools
-
-# Special directives for major search engines
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-# Set crawl priority for major search engines
-User-agent: Googlebot
-Crawl-delay: 1
-
-User-agent: Bingbot
-Crawl-delay: 2
-
-User-agent: Yandexbot
-Crawl-delay: 2
+User-agent: Baiduspider
+Crawl-delay: 5

@@ -1,9 +1,10 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
                             http://www.google.com/schemas/sitemap-image/1.1
@@ -11,7 +12,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://mytoolbox.site/</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,12 +20,20 @@
       <image:title>MyToolbox - Free Online Tools Collection</image:title>
       <image:caption>Access dozens of free online tools - no registration required</image:caption>
     </image:image>
+    <news:news>
+      <news:publication>
+        <news:name>MyToolbox</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2025-04-15</news:publication_date>
+      <news:title>New Tools Added to MyToolbox - Free PDF Splitter and File Renamer</news:title>
+    </news:news>
   </url>
   
   <!-- PDF to Image Tool -->
   <url>
     <loc>https://mytoolbox.site/pdf-to-image</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -32,12 +41,65 @@
       <image:title>PDF to Image Converter | Convert PDF to JPG and PNG Online Free</image:title>
       <image:caption>Transform PDFs into high-quality images easily with our free online tool. No registration needed.</image:caption>
     </image:image>
+    <mobile:mobile/>
+  </url>
+  
+  <!-- File Renamer Tool -->
+  <url>
+    <loc>https://mytoolbox.site/file-renamer</loc>
+    <lastmod>2025-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/file-renamer-og.jpg</image:loc>
+      <image:title>Batch File Renamer | Rename Multiple Files Online Free</image:title>
+      <image:caption>Rename multiple files at once with our free online batch file renamer. No software installation required.</image:caption>
+    </image:image>
+    <mobile:mobile/>
+  </url>
+  
+  <!-- PDF Splitter Tool -->
+  <url>
+    <loc>https://mytoolbox.site/pdf-splitter</loc>
+    <lastmod>2025-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/pdf-splitter-og.jpg</image:loc>
+      <image:title>PDF Splitter | Split PDF Files Online Free | MyToolbox</image:title>
+      <image:caption>Split PDF files into individual pages or custom page ranges. Extract specific pages from PDF documents.</image:caption>
+    </image:image>
+    <mobile:mobile/>
+  </url>
+  
+  <!-- Text to Speech Tool -->
+  <url>
+    <loc>https://mytoolbox.site/text-to-speech</loc>
+    <lastmod>2025-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mytoolbox.site/text-to-speech-og.jpg</image:loc>
+      <image:title>Text to Speech Converter | Free Online TTS Generator</image:title>
+      <image:caption>Convert text to natural-sounding speech with our free online text to speech tool.</image:caption>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://mytoolbox.site/text-to-speech-thumbnail.jpg</video:thumbnail_loc>
+      <video:title>How to Convert Text to Speech Online Free</video:title>
+      <video:description>This tutorial shows how to easily convert text to speech using our free online tool.</video:description>
+      <video:content_loc>https://mytoolbox.site/tutorials/text-to-speech-demo.mp4</video:content_loc>
+      <video:duration>60</video:duration>
+      <video:publication_date>2025-04-05T08:00:00+01:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+    </video:video>
+    <mobile:mobile/>
   </url>
   
   <!-- Add Audio to Video Tool -->
   <url>
     <loc>https://mytoolbox.site/add-audio-to-video</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -55,12 +117,13 @@
       <video:family_friendly>yes</video:family_friendly>
       <video:requires_subscription>no</video:requires_subscription>
     </video:video>
+    <mobile:mobile/>
   </url>
   
   <!-- Remove Audio from Video Tool -->
   <url>
     <loc>https://mytoolbox.site/remove-audio-from-video</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -78,12 +141,13 @@
       <video:family_friendly>yes</video:family_friendly>
       <video:requires_subscription>no</video:requires_subscription>
     </video:video>
+    <mobile:mobile/>
   </url>
   
   <!-- Clipboard Manager Tool -->
   <url>
     <loc>https://mytoolbox.site/clipboard-manager</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -91,12 +155,13 @@
       <image:title>Advanced Clipboard Manager | Store Multiple Clipboard Items Online</image:title>
       <image:caption>Store and organize multiple clipboard items for easy access with our free online clipboard manager.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- PDF Locker Tool -->
   <url>
     <loc>https://mytoolbox.site/pdf-locker</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -104,12 +169,13 @@
       <image:title>PDF Password Protector | Secure PDF Files Online Free</image:title>
       <image:caption>Add 256-bit AES encryption to protect your PDF files with passwords. No registration required.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Image Metadata Viewer Tool -->
   <url>
     <loc>https://mytoolbox.site/image-metadata</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -117,12 +183,13 @@
       <image:title>EXIF Data Viewer & Remover | View & Remove Image Metadata Online</image:title>
       <image:caption>View and remove hidden metadata from your images for privacy protection with our free online tool.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- File Metadata Viewer Tool -->
   <url>
     <loc>https://mytoolbox.site/file-metadata</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -130,12 +197,13 @@
       <image:title>File Metadata Viewer | View Hidden File Information Online Free</image:title>
       <image:caption>View detailed metadata and hidden information in any file type with our free online tool.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Text Replacer Tool -->
   <url>
     <loc>https://mytoolbox.site/text-replacer</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -143,12 +211,13 @@
       <image:title>Text Replacer Tool | Find & Replace Multiple Text Online Free</image:title>
       <image:caption>Find and replace text within documents online for free. Fast batch text replacement tool.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Text to Emoji Tool -->
   <url>
     <loc>https://mytoolbox.site/text-to-emoji</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -156,12 +225,13 @@
       <image:title>Text to Emoji Converter | Make Emojified Messages Online</image:title>
       <image:caption>Convert your text to emoji-filled messages with our free online text to emoji converter tool.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Text Editor Tool -->
   <url>
     <loc>https://mytoolbox.site/text-editor</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -169,12 +239,13 @@
       <image:title>Online Text Editor | Format and Edit Text Free</image:title>
       <image:caption>Edit and format text documents online for free with our easy-to-use text editor tool.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Audio to QR Tool -->
   <url>
     <loc>https://mytoolbox.site/audio-to-qr</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -182,12 +253,13 @@
       <image:title>Audio to QR Code Converter | Share Sound Through QR</image:title>
       <image:caption>Convert audio files to QR codes. Share music, sound effects, voice messages through scannable QR codes.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- AI Content Summarizer Tool -->
   <url>
     <loc>https://mytoolbox.site/ai-content-summarizer</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -195,12 +267,13 @@
       <image:title>AI Content Summarizer | Condense Long Articles Instantly</image:title>
       <image:caption>Automatically summarize long articles and documents with our free AI-powered content summarizer.</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Tools Page -->
   <url>
     <loc>https://mytoolbox.site/tools</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -208,12 +281,13 @@
       <image:title>Free Online Tools Collection | MyToolbox</image:title>
       <image:caption>Access all our free conversion tools in one place - PDF, Image, Audio, Video and Text utilities</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- About Page -->
   <url>
     <loc>https://mytoolbox.site/about</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <image:image>
@@ -221,37 +295,42 @@
       <image:title>About MyToolbox</image:title>
       <image:caption>Learn about our mission to provide free, high-quality tools</image:caption>
     </image:image>
+    <mobile:mobile/>
   </url>
   
   <!-- Privacy Policy -->
   <url>
     <loc>https://mytoolbox.site/privacy</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <mobile:mobile/>
   </url>
   
   <!-- Terms of Service -->
   <url>
     <loc>https://mytoolbox.site/terms</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <mobile:mobile/>
   </url>
   
   <!-- Cookie Policy -->
   <url>
     <loc>https://mytoolbox.site/cookies</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <mobile:mobile/>
   </url>
   
   <!-- Contact Page -->
   <url>
     <loc>https://mytoolbox.site/contact</loc>
-    <lastmod>2025-04-10</lastmod>
+    <lastmod>2025-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <mobile:mobile/>
   </url>
 </urlset>

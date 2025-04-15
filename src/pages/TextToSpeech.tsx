@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
@@ -12,6 +11,7 @@ import VoiceControls from '@/components/text-to-speech/VoiceControls';
 import AudioPreview from '@/components/text-to-speech/AudioPreview';
 import Instructions from '@/components/text-to-speech/Instructions';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
+import TextToSpeechSEO from '@/components/SEO/TextToSpeechSEO';
 
 const TextToSpeech = () => {
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
@@ -55,10 +55,7 @@ const TextToSpeech = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Text to Speech Converter | MyToolbox</title>
-        <meta name="description" content="Convert text to natural-sounding speech with our free online text to speech tool. Adjust voice, speed, and pitch to your preference." />
-      </Helmet>
+      <TextToSpeechSEO />
       
       <BackgroundAnimation />
       <Header />
