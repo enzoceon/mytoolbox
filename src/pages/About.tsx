@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -22,14 +21,6 @@ const About = () => {
       <Header />
       
       <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-10">
-        <div className="mb-4">
-          <Link to="/">
-            <Button variant="ghost" className="flex items-center gap-1 mb-4">
-              <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Button>
-          </Link>
-        </div>
-        
         <section className="glass-card rounded-xl p-8 mb-10 animate-fade-in">
           <h1 className="text-3xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">About MyToolbox</h1>
           

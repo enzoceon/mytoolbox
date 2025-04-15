@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -20,15 +19,6 @@ const HowToUse = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)]">
-        <div className="mb-6">
-          <Link to="/" className="inline-block">
-            <Button variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm border-border/40">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
-        </div>
-        
         <div className="max-w-4xl mx-auto">
           <div className="glass-card p-8 rounded-xl bg-[#0c1224] border border-white/10 text-gray-100">
             <h1 className="text-3xl font-bold mb-6">How to Use MyToolbox</h1>

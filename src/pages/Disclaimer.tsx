@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -22,14 +21,6 @@ const Disclaimer = () => {
         <Header />
         
         <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-8">
-          <div className="mb-4">
-            <Link to="/">
-              <Button variant="ghost" className="flex items-center gap-1">
-                <ArrowLeft className="h-4 w-4" /> Back to Home
-              </Button>
-            </Link>
-          </div>
-          
           <div className="glass-card p-8 rounded-xl">
             <h1 className="text-3xl font-bold mb-6">Disclaimer</h1>
             
