@@ -90,7 +90,7 @@ const Cookies = () => {
             <h2 className="text-xl font-semibold mt-6 mb-3">Contact Us</h2>
             <p>
               If you have any questions about our Cookie Policy, please contact us at:
-              <a href="mailto:everytoolssite@gmail.com" className="text-primary hover:underline ml-1">everytoolssite@gmail.com</a>
+              <a href="mailto:mytoolboxsite@gmail.com" className="text-primary hover:underline ml-1">mytoolboxsite@gmail.com</a>
             </p>
           </div>
         </section>

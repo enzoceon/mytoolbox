@@ -51,7 +51,7 @@ const TextToHandwriting = () => {
   return (
     <>
       <Helmet>
-        <title>Text to Handwriting Converter | EveryTools</title>
+        <title>Text to Handwriting Converter | MyToolbox</title>
         <meta name="description" content="Convert plain text into realistic handwritten text with various styles and colors." />
       </Helmet>
       

@@ -315,7 +315,7 @@ const ColorPicker = () => {
   return (
     <>
       <Helmet>
-        <title>Color Picker | Free Online Color Tool | EveryTools</title>
+        <title>Color Picker | Free Online Color Tool | MyToolbox</title>
         <meta name="description" content="Pick colors from images, create custom color palettes, and convert between color formats. Free online color picker tool." />
       </Helmet>
       

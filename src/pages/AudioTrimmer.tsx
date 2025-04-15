@@ -415,7 +415,7 @@ const AudioTrimmer = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Audio Trimmer | EveryTools</title>
+        <title>Audio Trimmer | MyToolbox</title>
         <meta name="description" content="Trim and cut audio files online. Simple, free tool to trim your audio files with no registration required." />
       </Helmet>
       

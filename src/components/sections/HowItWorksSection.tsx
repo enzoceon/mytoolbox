@@ -9,7 +9,7 @@ const HowItWorksSection = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">How It Works</h2>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Using EveryTools is simple and straightforward. Follow these three easy steps.
+            Using MyToolbox is simple and straightforward. Follow these three easy steps.
           </p>
         </div>
         

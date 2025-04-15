@@ -189,7 +189,7 @@ const OcrTool = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Extract Text from Image - Free Online OCR Tool | EveryTools</title>
+        <title>Extract Text from Image - Free Online OCR Tool | MyToolbox</title>
         <meta name="description" content="Extract text from images with our free online OCR (Optical Character Recognition) tool. Supports multiple languages and image formats." />
       </Helmet>
       

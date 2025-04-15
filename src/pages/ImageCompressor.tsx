@@ -170,7 +170,7 @@ const ImageCompressor = () => {
   return (
     <>
       <Helmet>
-        <title>Image Compressor | Free Online Image Compression Tool | EveryTools</title>
+        <title>Image Compressor | Free Online Image Compression Tool | MyToolbox</title>
         <meta name="description" content="Compress your images online for free. Reduce file size while maintaining quality. No registration required, works in your browser." />
       </Helmet>
       

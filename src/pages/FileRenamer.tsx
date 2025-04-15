@@ -12,7 +12,7 @@ const FileRenamer = () => {
   return (
     <>
       <Helmet>
-        <title>File Renamer | EveryTools</title>
+        <title>File Renamer | MyToolbox</title>
         <meta 
           name="description" 
           content="Easily rename multiple files with custom patterns, prefixes, and suffixes. Download as a ZIP archive." 

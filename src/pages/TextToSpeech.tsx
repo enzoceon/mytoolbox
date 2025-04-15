@@ -56,7 +56,7 @@ const TextToSpeech = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Text to Speech Converter | EveryTools</title>
+        <title>Text to Speech Converter | MyToolbox</title>
         <meta name="description" content="Convert text to natural-sounding speech with our free online text to speech tool. Adjust voice, speed, and pitch to your preference." />
       </Helmet>
       

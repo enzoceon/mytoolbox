@@ -119,7 +119,7 @@ const CountdownTimer = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Countdown Timer | EveryTools</title>
+        <title>Countdown Timer | MyToolbox</title>
         <meta name="description" content="Create countdown timers for events and deadlines. Free online countdown timer tool." />
       </Helmet>
       

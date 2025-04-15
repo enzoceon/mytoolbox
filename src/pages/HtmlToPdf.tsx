@@ -123,7 +123,7 @@ const HtmlToPdf = () => {
   return (
     <>
       <Helmet>
-        <title>HTML to PDF Converter | Free Online Tool | EveryTools</title>
+        <title>HTML to PDF Converter | Free Online Tool | MyToolbox</title>
         <meta name="description" content="Convert HTML code to PDF documents online. Free, secure, and no registration required. Customize page size, orientation, and more." />
       </Helmet>
       

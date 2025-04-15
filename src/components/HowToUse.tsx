@@ -208,7 +208,7 @@ const HowToUse = () => {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-3 text-white">How to Use {toolName}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            EveryTools makes working with {toolName.toLowerCase()} simple and fast. Follow these three easy steps to get started.
+            MyToolbox makes working with {toolName.toLowerCase()} simple and fast. Follow these three easy steps to get started.
           </p>
         </div>
         

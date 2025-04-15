@@ -237,7 +237,7 @@ const VideoToGif = () => {
   return (
     <>
       <Helmet>
-        <title>Video to GIF Converter | EveryTools</title>
+        <title>Video to GIF Converter | MyToolbox</title>
         <meta name="description" content="Convert video clips to animated GIFs. Select timing and quality for perfect GIF animations." />
       </Helmet>
       
