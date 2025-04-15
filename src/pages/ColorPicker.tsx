@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { 
+  Palette, 
+  Upload, 
+  Pipette, 
+  Trash2, 
+  Copy, 
+  Plus, 
+  HistoryIcon as History,
+  ArrowLeft
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { toast } from "@/hooks/use-toast";
 
 interface SavedColor {
   id: string;

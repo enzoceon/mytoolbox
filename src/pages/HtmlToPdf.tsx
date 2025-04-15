@@ -1,11 +1,20 @@
-import React from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Code, FileCode, Link as LinkIcon, FileText, RefreshCw, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "@/hooks/use-toast";
+import { jsPDF } from "jspdf";
 
 const HtmlToPdf = () => {
   const [htmlContent, setHtmlContent] = useState<string>('');
