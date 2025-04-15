@@ -1,28 +1,11 @@
-
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { 
-  FileText, 
-  Download, 
-  RefreshCw, 
-  Link as LinkIcon,
-  FileCode,
-  ArrowLeft,
-  Code
-} from 'lucide-react';
-import { toast } from 'sonner';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { jsPDF } from 'jspdf';
 
 const HtmlToPdf = () => {
   const [htmlContent, setHtmlContent] = useState<string>('');
@@ -51,37 +34,30 @@ const HtmlToPdf = () => {
     setIsGenerating(true);
     
     try {
-      // Create an iframe to render the HTML
       const iframe = iframeRef.current;
       if (!iframe) throw new Error('Iframe not available');
       
       const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
       if (!iframeDoc) throw new Error('Cannot access iframe document');
       
-      // Write the HTML to the iframe
       iframeDoc.open();
       iframeDoc.write(htmlContent);
       iframeDoc.close();
       
-      // Wait for iframe to load
       await new Promise<void>((resolve) => {
         setTimeout(resolve, 1000);
       });
       
-      // Initialize jsPDF
       const pdf = new jsPDF({
         orientation: orientation as "portrait" | "landscape",
         unit: 'mm',
         format: pageSize
       });
       
-      // Get the element to convert
       const element = iframeDoc.body;
       
-      // Generate PDF using html2canvas internally
       await pdf.html(element, {
         callback: (pdf) => {
-          // Create blob URL for preview and download
           const pdfBlob = pdf.output('blob');
           const url = URL.createObjectURL(pdfBlob);
           setPdfUrl(url);
@@ -107,8 +83,6 @@ const HtmlToPdf = () => {
       return;
     }
     
-    // For safety reasons, we won't actually fetch external URLs in this demo
-    // In a real implementation, you would use a server-side proxy to fetch the content
     toast.info('Due to security limitations, external URL fetching is disabled in this demo. Try using the HTML tab instead.');
   };
 
@@ -147,12 +121,6 @@ const HtmlToPdf = () => {
         
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="flex items-center mb-6">
-            <Link to="/" className="inline-flex items-center mr-4">
-              <Button variant="ghost" size="sm" className="gap-1">
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-            </Link>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">HTML to PDF</h1>
               <p className="text-muted-foreground">Convert HTML code or webpages to PDF documents</p>
@@ -160,7 +128,6 @@ const HtmlToPdf = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Input Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center">
                 <Code className="h-8 w-8 text-emerald-400" />
@@ -321,7 +288,6 @@ const HtmlToPdf = () => {
               </div>
             </div>
             
-            {/* Result Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center">
                 <FileText className="h-8 w-8 text-blue-400" />
@@ -365,7 +331,6 @@ const HtmlToPdf = () => {
                 </div>
               )}
               
-              {/* Hidden iframe for rendering HTML */}
               <iframe 
                 ref={iframeRef} 
                 style={{ display: 'none' }} 

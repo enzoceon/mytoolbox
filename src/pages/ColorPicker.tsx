@@ -1,24 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { 
-  Palette, 
-  Copy, 
-  Plus, 
-  Trash2, 
-  ArrowLeft,
-  Upload,
-  Pipette,
-  History
-} from 'lucide-react';
-import { toast } from 'sonner';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface SavedColor {
@@ -29,7 +15,6 @@ interface SavedColor {
   name: string;
 }
 
-// RGB to HSL conversion function
 const rgbToHsl = (r: number, g: number, b: number) => {
   r /= 255;
   g /= 255;
@@ -72,7 +57,6 @@ const ColorPicker = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load saved colors from localStorage
     const saved = localStorage.getItem('savedColors');
     if (saved) {
       try {
@@ -83,9 +67,7 @@ const ColorPicker = () => {
     }
   }, []);
 
-  // Convert between color formats
   useEffect(() => {
-    // HEX to RGB
     const hexToRgb = (hex: string) => {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       if (!result) return { r: 0, g: 0, b: 0 };
@@ -98,7 +80,6 @@ const ColorPicker = () => {
     };
     
     if (activeTab === 'picker') {
-      // HEX changed, update RGB and HSL
       const { r: newR, g: newG, b: newB } = hexToRgb(color);
       setR(newR);
       setG(newG);
@@ -111,7 +92,6 @@ const ColorPicker = () => {
     }
   }, [color, activeTab]);
 
-  // RGB changed, update HEX and HSL
   useEffect(() => {
     if (activeTab === 'rgb') {
       const hexValue = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
@@ -124,7 +104,6 @@ const ColorPicker = () => {
     }
   }, [r, g, b, activeTab]);
 
-  // HSL changed, update HEX and RGB
   useEffect(() => {
     if (activeTab === 'hsl') {
       const hslToRgb = (h: number, s: number, l: number) => {
@@ -177,7 +156,6 @@ const ColorPicker = () => {
 
     const file = files[0];
     
-    // Check if file is an image
     if (!file.type.match('image.*')) {
       toast.error('Please select an image file');
       return;
@@ -188,7 +166,6 @@ const ColorPicker = () => {
       const result = e.target?.result as string;
       setImageUrl(result);
       
-      // Create image and load to canvas
       const img = new Image();
       img.onload = () => {
         const canvas = canvasRef.current;
@@ -197,7 +174,6 @@ const ColorPicker = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
         
-        // Calculate dimensions to fit canvas while maintaining aspect ratio
         const maxWidth = canvas.width;
         const maxHeight = canvas.height;
         let width = img.width;
@@ -213,7 +189,6 @@ const ColorPicker = () => {
           height = maxHeight;
         }
         
-        // Center image in canvas
         const x = (maxWidth - width) / 2;
         const y = (maxHeight - height) / 2;
         
@@ -279,8 +254,6 @@ const ColorPicker = () => {
   };
 
   const generateColorName = (hex: string) => {
-    // Simple algorithm to generate a name from hex
-    // In a real app, you might use a color name API or database
     const colors = [
       { name: 'Red', hue: 0 },
       { name: 'Orange', hue: 30 },
@@ -295,17 +268,14 @@ const ColorPicker = () => {
       { name: 'Pink', hue: 330 }
     ];
     
-    // Find closest color name based on hue
     const closestColor = colors.reduce((prev, curr) => {
       return Math.abs(curr.hue - h) < Math.abs(prev.hue - h) ? curr : prev;
     });
     
-    // Add brightness indicator
     let brightness = '';
     if (l < 30) brightness = 'Dark ';
     else if (l > 70) brightness = 'Light ';
     
-    // Add saturation indicator
     let saturation = '';
     if (s < 30) saturation = 'Muted ';
     
@@ -338,12 +308,6 @@ const ColorPicker = () => {
         
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="flex items-center mb-6">
-            <Link to="/" className="inline-flex items-center mr-4">
-              <Button variant="ghost" size="sm" className="gap-1">
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-            </Link>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Color Picker</h1>
               <p className="text-muted-foreground">Pick colors from images and convert between formats</p>
@@ -351,7 +315,6 @@ const ColorPicker = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Color Selection Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-pink-500/20 flex items-center justify-center">
                 <Palette className="h-8 w-8 text-pink-400" />
@@ -690,7 +653,6 @@ const ColorPicker = () => {
               </div>
             </div>
             
-            {/* Saved Colors Section */}
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-4 w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center">
                 <History className="h-8 w-8 text-indigo-400" />

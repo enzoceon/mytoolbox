@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
@@ -189,12 +188,6 @@ const PasswordGenerator = () => {
         
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="flex items-center mb-6">
-            <Link to="/" className="inline-flex items-center mr-4">
-              <Button variant="ghost" size="sm" className="gap-1">
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-            </Link>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Password Generator</h1>
               <p className="text-muted-foreground">Create strong, secure passwords instantly</p>
