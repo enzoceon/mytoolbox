@@ -19,7 +19,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/utils/toast-utils";
 
 interface SavedColor {
   id: string;
